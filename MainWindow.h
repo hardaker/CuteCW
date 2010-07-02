@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtMultimedia/QAudioOutput>
+#include "Generator.h"
 
 namespace Ui {
     class MainWindow;
@@ -24,6 +25,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QAudioOutput   *m_audioOutput;
+    Generator      *m_gen;
 };
 
 #endif // MAINWINDOW_H

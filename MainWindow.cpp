@@ -6,7 +6,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_audioOutput(0)
+    m_audioOutput(0),
+    m_gen(0)
 
 {
     ui->setupUi(this);
@@ -23,6 +24,7 @@ MainWindow::startIt()
 {
     if (! m_audioOutput)
         createAudioOutput();
+
 }
 
 void
@@ -39,5 +41,10 @@ MainWindow::createAudioOutput()
 
     m_audioOutput = new QAudioOutput(settings);
     qDebug() << "here";
+
+    m_gen = new Generator(this);
+    qDebug() << "here";
+    m_gen->start();
+    m_audioOutput->start(m_gen);
 }
 
