@@ -18,6 +18,9 @@ public:
 
     void createAudioOutput();
 
+public slots:
+    void startIt();
+
 private:
     Ui::MainWindow *ui;
     QAudioOutput   *m_audioOutput;

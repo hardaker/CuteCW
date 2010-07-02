@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QtMultimedia/QAudioFormat>
+#include <qdebug.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,11 +10,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
 {
     ui->setupUi(this);
+    connect(ui->start, SIGNAL(clicked()), this, SLOT(startIt()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void
+MainWindow::startIt()
+{
+    if (! m_audioOutput)
+        createAudioOutput();
 }
 
 void
@@ -29,4 +38,6 @@ MainWindow::createAudioOutput()
     settings.setSampleType(QAudioFormat::SignedInt);
 
     m_audioOutput = new QAudioOutput(settings);
+    qDebug() << "here";
 }
+
