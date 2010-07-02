@@ -4,16 +4,18 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 TARGET = qtcw
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+        Morse.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    Morse.h
 
 FORMS    += MainWindow.ui
 
