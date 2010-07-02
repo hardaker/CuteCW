@@ -3,11 +3,13 @@
 
 #include <QtCore/QIODevice>
 
+#define FREQ        1200
+
 class Generator : public QIODevice
 {
     Q_OBJECT
 public:
-    Generator(QObject *parent);
+    Generator(QObject *parent, float secs = .5, int freq=1200);
     ~Generator();
 
     void start();
@@ -32,7 +34,7 @@ public slots:
 
 private:
     int putShort(char *t, unsigned int value);
-    int fillData(char *start, int frequency, int seconds);
+    int fillData(char *start, int frequency, float seconds);
 };
 
 

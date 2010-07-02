@@ -8,17 +8,16 @@
 #endif
 
 #define SECONDS     1
-#define FREQ        1200
 #define SYSTEM_FREQ 44100
 
-Generator::Generator(QObject *parent)
+Generator::Generator(QObject *parent, float secs, int freq)
     :QIODevice( parent )
 {
     finished = false;
-    buffer = new char[SECONDS*SYSTEM_FREQ*4+1000];
+    buffer = new char[int(secs * SYSTEM_FREQ * 4) + 1000];
     t=buffer;
-    m_freq = FREQ;
-    len=fillData(t,m_freq,SECONDS); /* mono FREQHz sine */
+    m_freq = freq;
+    len=fillData(t, m_freq, secs); /* mono FREQHz sine */
     pos   = 0;
     total = len;
 }
@@ -45,11 +44,11 @@ int Generator::putShort(char *t, unsigned int value)
     return 2;
 }
 
-int Generator::fillData(char *start, int frequency, int seconds)
+int Generator::fillData(char *start, int frequency, float seconds)
 {
     int i, len=0;
     int value;
-    for(i=0; i<seconds*SYSTEM_FREQ; i++) {
+    for(i=0; i<int(seconds*SYSTEM_FREQ); i++) {
         value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
         putShort(start, value);
         start += 4;

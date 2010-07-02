@@ -25,7 +25,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QAudioOutput   *m_audioOutput;
-    Generator      *m_gen;
+
+    Generator      *m_dit, *m_dah, *m_space, *m_pause;
 };
 
 #endif // MAINWINDOW_H
