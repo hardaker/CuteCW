@@ -17,6 +17,10 @@ Morse::playSequence()
 {
     m_dit->restartData();
     m_audioOutput->start(m_dit);
+    m_pause->restartData();
+    m_audioOutput->start(m_pause);
+    m_dah->restartData();
+    m_audioOutput->start(m_dah);
 }
 
 void
@@ -40,9 +44,17 @@ Morse::add(Generator *nextSound)
 void
 Morse::createTones()
 {
-    m_dit = new Generator();
-    qDebug() << "here";
+    m_dit = new Generator(.25);
     m_dit->start();
+
+    m_dah = new Generator(.75,900);
+    m_dah->start();
+
+    m_pause = new Generator(.75,10);
+    m_pause->start();
+
+    m_space = new Generator(1.5,10);
+    m_space->start();
 }
 
 
