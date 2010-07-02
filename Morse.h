@@ -21,6 +21,7 @@ public:
     void setSequence(const QString &sequence);
     void clearList();
     void add(Generator *nextsound);
+    void add(QChar c, bool addpause = true);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 3, int spaceMult = 6);
 
     Generator *dit();

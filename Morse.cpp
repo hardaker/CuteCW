@@ -9,7 +9,7 @@ Morse::Morse()
 Morse::Morse(QAudioOutput *output)
     : m_audioOutput(output)
 {
-    createTones(float(.25));
+    createTones(float(.1));
 }
 
 void
@@ -54,6 +54,30 @@ Morse::add(Generator *nextSound)
 }
 
 void
+Morse::add(QChar c, bool addpause)
+{
+    QList<ditdah>::iterator iter;
+    QList<ditdah>::iterator endat = code[c]->end();
+
+    for(iter = code[c]->begin(); iter != endat; iter++)
+    {
+        switch (*iter) {
+        case DIT:
+            add(dit());
+            break;
+        case DAH:
+            add(dah());
+            break;
+        default:
+            qWarning() << "error: illegal morse type added";
+        }
+    }
+    if (addpause) {
+        add(pause());
+    }
+}
+
+void
 Morse::createTones(float ditSecs, int dahMult, int pauseMult, int spaceMult)
 {
     m_dit = new Generator(ditSecs);
@@ -62,10 +86,10 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int spaceMult)
     m_dah = new Generator(ditSecs * dahMult);
     m_dah->start();
 
-    m_pause = new Generator(ditSecs * pauseMult,10);
+    m_pause = new Generator(ditSecs * pauseMult, 10);
     m_pause->start();
 
-    m_space = new Generator(ditSecs * spaceMult,10);
+    m_space = new Generator(ditSecs * spaceMult, 10);
     m_space->start();
 
     #include "morse_code.h"
