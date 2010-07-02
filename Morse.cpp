@@ -3,11 +3,12 @@
 #include <qdebug.h>
 
 Morse::Morse()
+    : m_audioOutput(), m_dit(), m_dah(0), m_space(0), m_pause(0)
 {
 }
 
 Morse::Morse(QAudioOutput *output)
-    : m_audioOutput(output)
+    : m_audioOutput(output), m_dit(), m_dah(0), m_space(0), m_pause(0)
 {
     createTones(float(.1));
 }
@@ -15,8 +16,11 @@ Morse::Morse(QAudioOutput *output)
 void
 Morse::playSequence()
 {
-    m_listPos = m_gens.begin();
-    nextSequence(QAudio::IdleState);
+    m_playBuffer->restartData();
+    m_playBuffer->start();
+    qDebug() << "left: " << m_playBuffer->bytes_left;
+    m_audioOutput->start(m_playBuffer);
+    return;
 }
 
 void
@@ -25,14 +29,6 @@ Morse::nextSequence(QAudio::State state)
     qDebug() << "got here: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
-
-    if (m_listPos != m_gens.end()) {
-        (*m_listPos)->restartData();
-        m_audioOutput->start(*m_listPos);
-        m_listPos++;
-    } else {
-        m_audioOutput->stop();
-    }
 }
 
 void
@@ -44,13 +40,13 @@ Morse::setSequence(const QString &sequence)
 void
 Morse::clearList()
 {
-    m_gens.clear();
+    m_playBuffer->clearBuffer();
 }
 
 void
 Morse::add(Generator *nextSound)
 {
-    m_gens.append(nextSound);
+    m_playBuffer->appendDataFrom(nextSound);
 }
 
 void
@@ -92,9 +88,13 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int spaceMult)
     m_space = new Generator(ditSecs * spaceMult, 10);
     m_space->start();
 
+    m_playBuffer = new Generator(m_pause);
+    m_playBuffer->start();
+
     #include "morse_code.h"
 
-    connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(nextSequence(QAudio::State)));
+    qDebug() << "created tones";
+    //connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(nextSequence(QAudio::State)));
 }
 
 

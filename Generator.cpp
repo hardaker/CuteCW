@@ -19,7 +19,7 @@ Generator::Generator(float secs, int freq)
     m_freq = freq;
     len=fillData(t, m_freq, secs); /* mono FREQHz sine */
     pos   = 0;
-    total = len;
+    bytes_left = len;
 }
 
 Generator::Generator(Generator *copyFrom)
@@ -31,7 +31,7 @@ Generator::Generator(Generator *copyFrom)
     m_freq = copyFrom->m_freq;
     len = copyFrom->len;
     pos = 0;
-    total = len;
+    bytes_left = len;
 }
 
 Generator::~Generator()
@@ -39,12 +39,24 @@ Generator::~Generator()
     delete [] buffer;
 }
 
+void Generator::clearBuffer() {
+    delete buffer;
+    buffer = new char[1];
+    buffer[0] = 0;
+    t = buffer;
+    len = bytes_left = 1;
+    pos = 0;
+}
+
 void Generator::appendDataFrom(const Generator *copyFrom) {
     char *newbuf = new char[len + copyFrom->len];
-    memcpy(buffer + len, copyFrom->buffer, copyFrom->len);
+    memcpy(newbuf, buffer, len);
+    memcpy(newbuf + len, copyFrom->buffer, copyFrom->len);
     len += copyFrom->len;
-    total = len;
+    bytes_left += copyFrom->len;
+    delete buffer;
     buffer = t = newbuf;
+    qDebug() << "new left: "<< bytes_left;
 }
 
 void Generator::start()
@@ -74,14 +86,14 @@ int Generator::fillData(char *start, int frequency, float seconds)
         start += 4;
         len+=2;
     }
-    bytes_left = buf_size = len;
+    bytes_left = len;
     pos = 0;
     return len;
 }
 
 void Generator::restartData()
 {
-    bytes_left = buf_size;
+    bytes_left = len;
     pos = 0;
 }
 

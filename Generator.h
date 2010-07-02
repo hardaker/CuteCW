@@ -17,16 +17,16 @@ public:
     void start();
     void stop();
 
+    void clearBuffer();
+
     char *t;
     int  len;
     int  pos;
-    int  total;
     char *buffer;
     bool finished;
     int  chunk_size;
     int  m_freq;
     qint64 bytes_left;
-    qint64 buf_size;
 
 public slots:
     void restartData();

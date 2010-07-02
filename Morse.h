@@ -18,6 +18,8 @@ public:
 
     enum ditdah{ DIT, DAH };
 
+    enum mode { PLAY, TEST };
+
     void setSequence(const QString &sequence);
     void clearList();
     void add(Generator *nextsound);
@@ -36,8 +38,7 @@ public slots:
 private:
     QAudioOutput *m_audioOutput;
     Generator      *m_dit, *m_dah, *m_space, *m_pause;
-    QList<Generator *> m_gens;
-    QList<Generator *>::iterator m_listPos;
+    Generator    *m_playBuffer;
     QMap<QChar, QList<ditdah> *> code;
 };
 
