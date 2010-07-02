@@ -12,10 +12,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-        Morse.cpp
+        Morse.cpp \
+    Generator.cpp
 
 HEADERS  += MainWindow.h \
-    Morse.h
+    Morse.h \
+    Generator.h
 
 FORMS    += MainWindow.ui
 
