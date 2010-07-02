@@ -17,6 +17,7 @@ SOURCES += main.cpp\
 
 HEADERS  += MainWindow.h \
     Morse.h \
+    morse_code.h \
     Generator.h
 
 FORMS    += MainWindow.ui

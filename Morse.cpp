@@ -9,7 +9,7 @@ Morse::Morse()
 Morse::Morse(QAudioOutput *output)
     : m_audioOutput(output)
 {
-    createTones();
+    createTones(float(.25));
 }
 
 void
@@ -54,19 +54,21 @@ Morse::add(Generator *nextSound)
 }
 
 void
-Morse::createTones()
+Morse::createTones(float ditSecs, int dahMult, int pauseMult, int spaceMult)
 {
-    m_dit = new Generator(.25);
+    m_dit = new Generator(ditSecs);
     m_dit->start();
 
-    m_dah = new Generator(.75,900);
+    m_dah = new Generator(ditSecs * dahMult);
     m_dah->start();
 
-    m_pause = new Generator(.75,10);
+    m_pause = new Generator(ditSecs * pauseMult,10);
     m_pause->start();
 
-    m_space = new Generator(1.5,10);
+    m_space = new Generator(ditSecs * spaceMult,10);
     m_space->start();
+
+    #include "morse_code.h"
 
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(nextSequence(QAudio::State)));
 }

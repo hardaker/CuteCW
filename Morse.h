@@ -3,6 +3,8 @@
 
 #include <QtCore/QString>
 #include <QtMultimedia/QAudioOutput>
+#include <QtCore/QMap>
+#include <QtCore/QList>
 
 #include "Generator.h"
 
@@ -14,10 +16,12 @@ public:
     Morse();
     Morse(QAudioOutput *output);
 
+    enum ditdah{ DIT, DAH };
+
     void setSequence(const QString &sequence);
     void clearList();
     void add(Generator *nextsound);
-    void createTones();
+    void createTones(float ditSecs, int dahMult = 3, int pauseMult = 3, int spaceMult = 6);
 
     Generator *dit();
     Generator *dah();
@@ -33,6 +37,7 @@ private:
     Generator      *m_dit, *m_dah, *m_space, *m_pause;
     QList<Generator *> m_gens;
     QList<Generator *>::iterator m_listPos;
+    QMap<QChar, QList<ditdah> *> code;
 };
 
 #endif // MORSE_H
