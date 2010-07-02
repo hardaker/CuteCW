@@ -29,6 +29,11 @@ MainWindow::startIt()
     }
     m_morse->clearList();
     m_morse->add(m_morse->dit());
+    m_morse->add(m_morse->pause());
+    m_morse->add(m_morse->dit());
+    m_morse->add(m_morse->pause());
+    m_morse->add(m_morse->dah());
+
     m_morse->playSequence();
 }
 

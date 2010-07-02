@@ -15,12 +15,24 @@ Morse::Morse(QAudioOutput *output)
 void
 Morse::playSequence()
 {
-    m_dit->restartData();
-    m_audioOutput->start(m_dit);
-    m_pause->restartData();
-    m_audioOutput->start(m_pause);
-    m_dah->restartData();
-    m_audioOutput->start(m_dah);
+    m_listPos = m_gens.begin();
+    nextSequence(QAudio::IdleState);
+}
+
+void
+Morse::nextSequence(QAudio::State state)
+{
+    qDebug() << "got here: " << state;
+    if (state != QAudio::IdleState && state != QAudio::StoppedState)
+        return;
+
+    if (m_listPos != m_gens.end()) {
+        (*m_listPos)->restartData();
+        m_audioOutput->start(*m_listPos);
+        m_listPos++;
+    } else {
+        m_audioOutput->stop();
+    }
 }
 
 void
@@ -55,6 +67,8 @@ Morse::createTones()
 
     m_space = new Generator(1.5,10);
     m_space->start();
+
+    connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(nextSequence(QAudio::State)));
 }
 
 

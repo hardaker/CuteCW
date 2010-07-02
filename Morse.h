@@ -6,8 +6,10 @@
 
 #include "Generator.h"
 
-class Morse
+class Morse : QObject
 {
+    Q_OBJECT
+
 public:
     Morse();
     Morse(QAudioOutput *output);
@@ -24,6 +26,7 @@ public:
 
 public slots:
     void playSequence();
+    void nextSequence(QAudio::State state);
 
 private:
     QAudioOutput *m_audioOutput;
