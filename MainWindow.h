@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtMultimedia/QAudioOutput>
 #include "Generator.h"
+#include "Morse.h"
 
 namespace Ui {
     class MainWindow;
@@ -25,8 +26,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QAudioOutput   *m_audioOutput;
-
-    Generator      *m_dit, *m_dah, *m_space, *m_pause;
+    Morse          *m_morse;
 };
 
 #endif // MAINWINDOW_H

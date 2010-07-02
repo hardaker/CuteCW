@@ -10,17 +10,26 @@ class Morse
 {
 public:
     Morse();
-    Morse(const QString &sequence, QAudioOutput *output);
+    Morse(QAudioOutput *output);
 
     void setSequence(const QString &sequence);
     void clearList();
-    void appendList(Generator *nextsound);
+    void add(Generator *nextsound);
+    void createTones();
+
+    Generator *dit();
+    Generator *dah();
+    Generator *pause();
+    Generator *space();
+
+public slots:
     void playSequence();
 
 private:
-    QString m_sequence;
-    QAudioOutput *m_output;
+    QAudioOutput *m_audioOutput;
+    Generator      *m_dit, *m_dah, *m_space, *m_pause;
     QList<Generator *> m_gens;
+    QList<Generator *>::iterator m_listPos;
 };
 
 #endif // MORSE_H

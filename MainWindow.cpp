@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_audioOutput(0),
-    m_dit(0)
+    m_morse(0)
 
 {
     ui->setupUi(this);
@@ -26,10 +26,10 @@ MainWindow::startIt()
         createAudioOutput();
     else {
         qDebug() << "restarting";
-        m_dit->restartData();
-        m_audioOutput->start(m_dit);
     }
-
+    m_morse->clearList();
+    m_morse->add(m_morse->dit());
+    m_morse->playSequence();
 }
 
 void
@@ -47,9 +47,6 @@ MainWindow::createAudioOutput()
     m_audioOutput = new QAudioOutput(settings);
     qDebug() << "here";
 
-    m_dit = new Generator(this);
-    qDebug() << "here";
-    m_dit->start();
-    m_audioOutput->start(m_dit);
+    m_morse = new Morse(m_audioOutput);
 }
 

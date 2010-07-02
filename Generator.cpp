@@ -10,8 +10,8 @@
 #define SECONDS     1
 #define SYSTEM_FREQ 44100
 
-Generator::Generator(QObject *parent, float secs, int freq)
-    :QIODevice( parent )
+Generator::Generator(float secs, int freq)
+    :QIODevice( )
 {
     finished = false;
     buffer = new char[int(secs * SYSTEM_FREQ * 4) + 1000];
