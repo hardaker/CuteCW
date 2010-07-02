@@ -22,9 +22,29 @@ Generator::Generator(float secs, int freq)
     total = len;
 }
 
+Generator::Generator(Generator *copyFrom)
+    : QIODevice()
+{
+    buffer = new char[copyFrom->len];
+    memcpy(buffer, copyFrom->buffer, copyFrom->len);
+    t = buffer;
+    m_freq = copyFrom->m_freq;
+    len = copyFrom->len;
+    pos = 0;
+    total = len;
+}
+
 Generator::~Generator()
 {
     delete [] buffer;
+}
+
+void Generator::appendDataFrom(const Generator *copyFrom) {
+    char *newbuf = new char[len + copyFrom->len];
+    memcpy(buffer + len, copyFrom->buffer, copyFrom->len);
+    len += copyFrom->len;
+    total = len;
+    buffer = t = newbuf;
 }
 
 void Generator::start()

@@ -10,8 +10,10 @@ class Generator : public QIODevice
     Q_OBJECT
 public:
     Generator(float secs = .5, int freq=1200);
+    Generator(Generator *copyFrom);
     ~Generator();
 
+    void appendDataFrom(const Generator *copyFrom);
     void start();
     void stop();
 
