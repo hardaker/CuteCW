@@ -24,6 +24,11 @@ MainWindow::startIt()
 {
     if (! m_audioOutput)
         createAudioOutput();
+    else {
+        qDebug() << "restarting";
+        m_gen->restartData();
+        m_audioOutput->start(m_gen);
+    }
 
 }
 

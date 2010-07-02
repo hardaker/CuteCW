@@ -1,4 +1,5 @@
 #include "Generator.h"
+#include <qdebug.h>
 
 #include <math.h>
 
@@ -7,7 +8,7 @@
 #endif
 
 #define SECONDS     1
-#define FREQ        1500
+#define FREQ        1200
 #define SYSTEM_FREQ 44100
 
 Generator::Generator(QObject *parent)
@@ -16,7 +17,8 @@ Generator::Generator(QObject *parent)
     finished = false;
     buffer = new char[SECONDS*SYSTEM_FREQ*4+1000];
     t=buffer;
-    len=fillData(t,FREQ,SECONDS); /* mono FREQHz sine */
+    m_freq = FREQ;
+    len=fillData(t,m_freq,SECONDS); /* mono FREQHz sine */
     pos   = 0;
     total = len;
 }
@@ -53,7 +55,15 @@ int Generator::fillData(char *start, int frequency, int seconds)
         start += 4;
         len+=2;
     }
+    bytes_left = buf_size = len;
+    pos = 0;
     return len;
+}
+
+void Generator::restartData()
+{
+    bytes_left = buf_size;
+    pos = 0;
 }
 
 qint64 Generator::readData(char *data, qint64 maxlen)
@@ -62,15 +72,22 @@ qint64 Generator::readData(char *data, qint64 maxlen)
     if (len > 16384)
         len = 16384;
 
-    if (len < (SECONDS*SYSTEM_FREQ*2)-pos) {
+    qDebug() << "left: " << bytes_left << " / wanted: " << len;
+
+    if (bytes_left <= 0)
+        return -1;
+
+    if (len < bytes_left) {
         // Normal
         memcpy(data,t+pos,len);
-        pos+=len;
+        pos += len;
+        bytes_left -= len;
         return len;
     } else {
         // Whats left and reset to start
-        qint64 left = (SECONDS*SYSTEM_FREQ*2)-pos;
+        qint64 left = bytes_left - pos;
         memcpy(data,t+pos,left);
+        bytes_left = 0;
         pos=0;
         return left;
     }

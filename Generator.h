@@ -20,6 +20,12 @@ public:
     char *buffer;
     bool finished;
     int  chunk_size;
+    int  m_freq;
+    qint64 bytes_left;
+    qint64 buf_size;
+
+public slots:
+    void restartData();
 
     qint64 readData(char *data, qint64 maxlen);
     qint64 writeData(const char *data, qint64 len);
