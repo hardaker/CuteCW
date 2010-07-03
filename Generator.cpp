@@ -41,10 +41,10 @@ Generator::~Generator()
 
 void Generator::clearBuffer() {
     delete buffer;
-    buffer = new char[1];
-    buffer[0] = 0;
+    buffer = new char[4];
+    buffer[0] = buffer[1] = buffer[2] = buffer[3] = 0;
     t = buffer;
-    len = bytes_left = 1;
+    len = bytes_left = 4;
     pos = 0;
 }
 
