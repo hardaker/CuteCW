@@ -28,9 +28,6 @@ MainWindow::startIt()
         qDebug() << "restarting";
     }
     m_morse->clearList();
-    m_morse->add(m_morse->dit());
-    m_morse->add(m_morse->pause());
-    m_morse->add(m_morse->dah());
     //m_morse->add('w');
     //m_morse->add('s');
 
@@ -53,5 +50,6 @@ MainWindow::createAudioOutput()
     qDebug() << "here";
 
     m_morse = new Morse(m_audioOutput);
+    connect(ui->input, SIGNAL(textChanged(QString)), m_morse, SLOT(keyPressed(QString)));
 }
 

@@ -3,12 +3,12 @@
 #include <qdebug.h>
 
 Morse::Morse()
-    : m_audioOutput(), m_dit(), m_dah(0), m_space(0), m_pause(0)
+    : QObject(), m_audioOutput(), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED)
 {
 }
 
 Morse::Morse(QAudioOutput *output)
-    : m_audioOutput(output), m_dit(), m_dah(0), m_space(0), m_pause(0)
+    : QObject(), m_audioOutput(output), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED)
 {
     createTones(float(.1));
 }
@@ -20,7 +20,26 @@ Morse::playSequence()
     m_playBuffer->start();
     qDebug() << "left: " << m_playBuffer->bytes_left;
     m_audioOutput->start(m_playBuffer);
+    m_playingMode = PLAYING;
     return;
+}
+
+void Morse::maybePlaySequence() {
+    if (m_playingMode == STOPPED) {
+        playSequence();
+    }
+}
+
+void Morse::addAndPlayIt(QChar c) {
+    if (m_playingMode == STOPPED)
+        clearList();
+    add(c);
+    maybePlaySequence();
+}
+
+void Morse::keyPressed(QString newtext) {
+    QChar newletter = newtext.at(newtext.length()-1);
+    addAndPlayIt(newletter);
 }
 
 void
@@ -29,6 +48,7 @@ Morse::nextSequence(QAudio::State state)
     qDebug() << "got here: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
+    m_playingMode = STOPPED;
 }
 
 void
