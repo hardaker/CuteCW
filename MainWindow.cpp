@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QtMultimedia/QAudioFormat>
+#include <QtGui/QMenu>
 #include <qdebug.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -12,6 +13,23 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->start, SIGNAL(clicked()), this, SLOT(startIt()));
+
+    // setup mode menu
+    m_signalMapper = new QSignalMapper(this);
+
+    QMenu *modeMenu = new QMenu(ui->modeMenu);
+    ui->modeMenu->setMenu(modeMenu);
+
+    QAction *action = modeMenu->addAction("play");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::PLAY);
+
+    action = modeMenu->addAction("train");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::TRAIN);
+
+    createAudioOutput();
+
 }
 
 MainWindow::~MainWindow()
@@ -51,5 +69,6 @@ MainWindow::createAudioOutput()
 
     m_morse = new Morse(m_audioOutput);
     connect(ui->input, SIGNAL(textChanged(QString)), m_morse, SLOT(keyPressed(QString)));
+    connect(m_signalMapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
 }
 

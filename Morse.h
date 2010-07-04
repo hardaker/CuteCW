@@ -7,6 +7,7 @@
 #include <QtCore/QList>
 
 #include "Generator.h"
+#include "MorseStat.h"
 
 class Morse : public QObject
 {
@@ -19,7 +20,7 @@ public:
 
     enum ditdah{ DIT, DAH };
 
-    enum mode { PLAY, TEST };
+    enum mode { PLAY, TRAIN, TEST };
     enum playingmode { STOPPED, PLAYING };
 
     void setSequence(const QString &sequence);
@@ -39,13 +40,17 @@ public slots:
     void maybePlaySequence();
     void nextSequence(QAudio::State state);
     void keyPressed(QString newtext);
+    void switchMode(int newMode);
 
 private:
-    QAudioOutput                 *m_audioOutput;
-    Generator                    *m_dit, *m_dah, *m_space, *m_pause;
-    Generator                    *m_playBuffer;
-    QMap<QChar, QList<ditdah> *>  code;
-    playingmode                   m_playingMode;
+    QAudioOutput                    *m_audioOutput;
+    Generator                       *m_dit, *m_dah, *m_space, *m_pause;
+    Generator                       *m_playBuffer;
+    QMap<QChar, QList<ditdah> *>    code;
+    playingmode                     m_playingMode;
+    mode                            m_gameMode;
+    int                             m_currentWPMGoal;
+    QMap<QChar, MorseStat *>        m_stats;
 };
 
 #endif // MORSE_H

@@ -33,6 +33,13 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="modeMenu">
+         <property name="text">
+          <string>Mode</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>

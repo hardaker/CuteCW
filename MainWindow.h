@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtMultimedia/QAudioOutput>
+#include <QtCore/QSignalMapper>
 #include "Generator.h"
 #include "Morse.h"
 
@@ -27,6 +28,7 @@ private:
     Ui::MainWindow *ui;
     QAudioOutput   *m_audioOutput;
     Morse          *m_morse;
+    QSignalMapper  *m_signalMapper;
 };
 
 #endif // MAINWINDOW_H

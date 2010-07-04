@@ -3,12 +3,12 @@
 #include <qdebug.h>
 
 Morse::Morse()
-    : QObject(), m_audioOutput(), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED)
+    : QObject(), m_audioOutput(), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED), m_gameMode(PLAY)
 {
 }
 
 Morse::Morse(QAudioOutput *output)
-    : QObject(), m_audioOutput(output), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED)
+    : QObject(), m_audioOutput(output), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED), m_gameMode(PLAY)
 {
     createTones(float(.1));
 }
@@ -19,8 +19,8 @@ Morse::playSequence()
     m_playBuffer->restartData();
     m_playBuffer->start();
     qDebug() << "left: " << m_playBuffer->bytes_left;
-    m_audioOutput->start(m_playBuffer);
     m_playingMode = PLAYING;
+    m_audioOutput->start(m_playBuffer);
     return;
 }
 
@@ -38,8 +38,10 @@ void Morse::addAndPlayIt(QChar c) {
 }
 
 void Morse::keyPressed(QString newtext) {
-    QChar newletter = newtext.at(newtext.length()-1);
-    addAndPlayIt(newletter);
+    if (m_gameMode == PLAY) {
+        QChar newletter = newtext.at(newtext.length()-1);
+        addAndPlayIt(newletter);
+    }
 }
 
 void
@@ -67,6 +69,11 @@ void
 Morse::add(Generator *nextSound)
 {
     m_playBuffer->appendDataFrom(nextSound);
+}
+
+void Morse::switchMode(int newmode) {
+    m_gameMode = (Morse::mode) newmode;
+    qDebug() << "switch to:" << m_gameMode;
 }
 
 void
