@@ -2,13 +2,17 @@
 
 #include <qdebug.h>
 
+#define WPMGOAL 20
+
 Morse::Morse()
-    : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(0)
+    : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(0),
+    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP)
 {
 }
 
 Morse::Morse(QAudioOutput *output, QLabel *statusBar)
-    : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar)
+    : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar),
+    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP)
 {
     createTones(float(.1));
     setStatus("ready: Play Mode");
@@ -41,11 +45,16 @@ void Morse::addAndPlayIt(QChar c) {
 
 void Morse::keyPressed(QString newtext) {
     QChar newletter = newtext.at(newtext.length()-1);
+    qDebug() << "user pressed: " << newletter << "and last key was: " << m_lastKey;
 
     if (m_gameMode == PLAY) {
         addAndPlayIt(newletter);
     } else if (m_gameMode == TRAIN) {
-        getStat(newletter)->addTime(m_lastTime.elapsed());
+        qDebug() << "training... " << m_lastTime;
+        getStat(m_lastKey)->addTime(m_lastTime.elapsed());
+        if (newletter != m_lastKey)
+            getStat(newletter)->addTime(2.0 * getStat(m_lastKey)->getAverageTime());
+        startNextTrainingKey();
     }
 }
 
@@ -60,36 +69,52 @@ void Morse::startNextTrainingKey() {
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
+    qDebug() << " in next";
     for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
         letterCount++;
         MorseStat *stat = getStat(*letter);
         thisTime = stat->getAverageTime();
         totalTime += thisTime;
-        if (thisTime == 0) {
+        if (thisTime < 0) {
             // never keyed yet; do it immediately if we got this far
-            setStatus(tr("Starting a new letter: %s").arg(QString(*letter)));
+            setStatus("Starting a new letter: " + QString(*letter));
             addAndPlayIt(*letter);
+            qDebug() << "------- keying: " << *letter;
+            m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
+            qDebug() << "setting last time to " << m_lastTime;
+            m_lastKey = *letter;
             return;
-        } else if(msToWPM(thisTime) < m_currentWPMGoal) {
+        }
+
+        qDebug() << "adding " << *letter << " / " << thisTime << " / " << msToWPM(thisTime);
+        letters.append(QPair<QChar, float>(*letter, thisTime));
+
+        if(msToWPM(thisTime) < m_currentWPMGoal) {
             // we're not fast enough; break here
+            qDebug() << *letter << " too slow: " << letter << " / " << thisTime << " / " << msToWPM(thisTime);
             break;
         }
-        letters.append(QPair<QChar, float>(*letter, thisTime));
     }
 
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
-    float randTime = float(qrand())/float(RAND_MAX);
+    float randTime = totalTime*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
+    qDebug() << "letter set random: " << randTime;
     QList<QPair<QChar, float> >::iterator search;
     QList<QPair<QChar, float> >::iterator last = letters.end();
     for(search = letters.begin(); search != last; ++search) {
+        qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += (*search).second;
         if (newTotal > randTime) {
-            qDebug() << "keying: " << (*search).first;
+            qDebug() << "------- keying: " << (*search).first;
             addAndPlayIt((*search).first);
+            m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
+            m_lastKey = (*search).first;
+            return;
         }
     }
+    qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
 }
 
 MorseStat *Morse::getStat(const QChar &key) {
@@ -105,6 +130,7 @@ Morse::audioFinished(QAudio::State state)
         return;
     m_lastTime = QTime::currentTime();
     m_playingMode = STOPPED;
+    qDebug() << "time stopped at" << m_lastTime;
 }
 
 void

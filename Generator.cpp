@@ -56,7 +56,7 @@ void Generator::appendDataFrom(const Generator *copyFrom) {
     bytes_left += copyFrom->len;
     delete buffer;
     buffer = t = newbuf;
-    qDebug() << "new left: "<< bytes_left;
+    // qDebug() << "new left: "<< bytes_left;
 }
 
 void Generator::start()
