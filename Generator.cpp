@@ -100,10 +100,10 @@ void Generator::restartData()
 qint64 Generator::readData(char *data, qint64 maxlen)
 {
     int len = maxlen;
-    if (len > 16384)
-        len = 16384;
+    if (len > 65536)
+        len = 65536;
 
-    qDebug() << "left: " << bytes_left << " / wanted: " << len;
+    //qDebug() << "left: " << bytes_left << " / wanted: " << len;
 
     if (bytes_left <= 0)
         return -1;

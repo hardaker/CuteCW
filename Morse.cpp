@@ -37,9 +37,11 @@ void Morse::maybePlaySequence() {
 }
 
 void Morse::addAndPlayIt(QChar c) {
-    if (m_playingMode == STOPPED)
+    if (m_playingMode == STOPPED) {
         clearList();
-    add(c);
+        add(pause());
+    }
+    add(c, false);
     maybePlaySequence();
 }
 
@@ -157,22 +159,25 @@ Morse::add(QChar c, bool addpause)
 {
     QList<ditdah>::iterator iter;
     QList<ditdah>::iterator endat = code[c]->end();
+    qDebug() << "adding codes for: " << c;
 
     for(iter = code[c]->begin(); iter != endat; iter++)
     {
+        qDebug() << *iter;
         switch (*iter) {
         case DIT:
-            add(dit());
+            add(m_dit);
             break;
         case DAH:
-            add(dah());
+            add(m_dah);
             break;
         default:
             qWarning() << "error: illegal morse type added";
         }
+        add(m_pause);
     }
     if (addpause) {
-        add(letterPause());
+        add(m_letterPause);
     }
 }
 
