@@ -12,6 +12,7 @@ Morse::Morse(QAudioOutput *output, QLabel *statusBar)
 {
     createTones(float(.1));
     setStatus("ready: Play Mode");
+    qsrand(QTime::currentTime().msec());
 }
 
 void
@@ -39,18 +40,70 @@ void Morse::addAndPlayIt(QChar c) {
 }
 
 void Morse::keyPressed(QString newtext) {
+    QChar newletter = newtext.at(newtext.length()-1);
+
     if (m_gameMode == PLAY) {
-        QChar newletter = newtext.at(newtext.length()-1);
         addAndPlayIt(newletter);
+    } else if (m_gameMode == TRAIN) {
+        getStat(newletter)->addTime(m_lastTime.elapsed());
     }
 }
 
+int Morse::msToWPM(float ms) {
+    return (60*1000)/ms; // XXX: fix me; doesn't include keying times
+}
+
+void Morse::startNextTrainingKey() {
+    int letterCount = 0;
+    QList<QPair<QChar, float> > letters;
+    float totalTime = 0.0, thisTime;
+
+    QString::iterator letter;
+    QString::iterator lastLetter = m_trainingSequence.end();
+    for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
+        letterCount++;
+        MorseStat *stat = getStat(*letter);
+        thisTime = stat->getAverageTime();
+        totalTime += thisTime;
+        if (thisTime == 0) {
+            // never keyed yet; do it immediately if we got this far
+            setStatus(tr("Starting a new letter: %s").arg(QString(*letter)));
+            addAndPlayIt(*letter);
+            return;
+        } else if(msToWPM(thisTime) < m_currentWPMGoal) {
+            // we're not fast enough; break here
+            break;
+        }
+        letters.append(QPair<QChar, float>(*letter, thisTime));
+    }
+
+    // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
+    // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
+    float randTime = float(qrand())/float(RAND_MAX);
+    float newTotal = 0;
+    QList<QPair<QChar, float> >::iterator search;
+    QList<QPair<QChar, float> >::iterator last = letters.end();
+    for(search = letters.begin(); search != last; ++search) {
+        newTotal += (*search).second;
+        if (newTotal > randTime) {
+            qDebug() << "keying: " << (*search).first;
+            addAndPlayIt((*search).first);
+        }
+    }
+}
+
+MorseStat *Morse::getStat(const QChar &key) {
+    if (! m_stats.contains(key))
+        m_stats[key] = new MorseStat(0);
+    return m_stats[key];
+}
+
 void
-Morse::nextSequence(QAudio::State state)
+Morse::audioFinished(QAudio::State state)
 {
-    qDebug() << "got here: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
+    m_lastTime = QTime::currentTime();
     m_playingMode = STOPPED;
 }
 
@@ -97,7 +150,7 @@ Morse::add(QChar c, bool addpause)
         }
     }
     if (addpause) {
-        add(pause());
+        add(letterPause());
     }
 }
 
@@ -125,7 +178,7 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
     #include "morse_code.h"
 
     qDebug() << "created tones";
-    //connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(nextSequence(QAudio::State)));
+    connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
 }
 
 void Morse::setStatus(const QString &status) {

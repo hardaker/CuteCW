@@ -6,9 +6,12 @@
 #include <QtCore/QMap>
 #include <QtCore/QList>
 #include <QtGui/QLabel>
+#include <QtCore/QTime>
 
 #include "Generator.h"
 #include "MorseStat.h"
+
+#define KOCH_GROUP "kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x"
 
 class Morse : public QObject
 {
@@ -30,6 +33,9 @@ public:
     void add(QChar c, bool addpause = true);
     void addAndPlayIt(QChar c);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 6);
+    MorseStat *getStat(const QChar &key);
+    void startNextTrainingKey();
+    int  msToWPM(float ms);
 
     void setStatus(const QString &status);
 
@@ -42,7 +48,7 @@ public:
 public slots:
     void playSequence();
     void maybePlaySequence();
-    void nextSequence(QAudio::State state);
+    void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
     void switchMode(int newMode);
 
@@ -56,6 +62,9 @@ private:
     int                             m_currentWPMGoal;
     QMap<QChar, MorseStat *>        m_stats;
     QLabel                          *m_statusBar;
+    QChar                           m_lastKey;
+    QTime                           m_lastTime;
+    QString                         m_trainingSequence;
 };
 
 #endif // MORSE_H
