@@ -3,12 +3,12 @@
 #include <qdebug.h>
 
 Morse::Morse()
-    : QObject(), m_audioOutput(), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED), m_gameMode(PLAY)
+    : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(0)
 {
 }
 
-Morse::Morse(QAudioOutput *output)
-    : QObject(), m_audioOutput(output), m_dit(), m_dah(0), m_space(0), m_pause(0), m_playingMode(STOPPED), m_gameMode(PLAY)
+Morse::Morse(QAudioOutput *output, QLabel *statusBar)
+    : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar)
 {
     createTones(float(.1));
 }
@@ -101,7 +101,7 @@ Morse::add(QChar c, bool addpause)
 }
 
 void
-Morse::createTones(float ditSecs, int dahMult, int pauseMult, int spaceMult)
+Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMult, int spaceMult)
 {
     m_dit = new Generator(ditSecs);
     m_dit->start();
@@ -111,6 +111,9 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int spaceMult)
 
     m_pause = new Generator(ditSecs * pauseMult, 10);
     m_pause->start();
+
+    m_letterPause = new Generator(ditSecs * letterPauseMult, 10);
+    m_letterPause->start();
 
     m_space = new Generator(ditSecs * spaceMult, 10);
     m_space->start();
@@ -141,6 +144,12 @@ Generator *
 Morse::pause()
 {
     return m_pause;
+}
+
+Generator *
+Morse::letterPause()
+{
+    return m_letterPause;
 }
 
 Generator *
