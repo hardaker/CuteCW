@@ -11,6 +11,7 @@ Morse::Morse(QAudioOutput *output, QLabel *statusBar)
     : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar)
 {
     createTones(float(.1));
+    setStatus("ready: Play Mode");
 }
 
 void
@@ -125,6 +126,11 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 
     qDebug() << "created tones";
     //connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(nextSequence(QAudio::State)));
+}
+
+void Morse::setStatus(const QString &status) {
+    if (m_statusBar)
+        m_statusBar->setText(status);
 }
 
 

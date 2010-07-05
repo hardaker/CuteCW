@@ -31,6 +31,8 @@ public:
     void addAndPlayIt(QChar c);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 6);
 
+    void setStatus(const QString &status);
+
     Generator *dit();
     Generator *dah();
     Generator *pause();
