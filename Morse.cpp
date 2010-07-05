@@ -6,13 +6,13 @@
 
 Morse::Morse()
     : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(0),
-    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP)
+    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_sequenceLabel(0)
 {
 }
 
-Morse::Morse(QAudioOutput *output, QLabel *statusBar)
+Morse::Morse(QAudioOutput *output, QLabel *statusBar, QLabel *sequence)
     : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar),
-    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP)
+    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_sequenceLabel(sequence)
 {
     createTones(float(.1));
     setStatus("ready: Play Mode");
@@ -83,6 +83,7 @@ void Morse::startNextTrainingKey() {
             m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
             qDebug() << "setting last time to " << m_lastTime;
             m_lastKey = *letter;
+            setSequence(m_trainingSequence, letterCount);
             return;
         }
 
@@ -103,6 +104,7 @@ void Morse::startNextTrainingKey() {
     qDebug() << "letter set random: " << randTime;
     QList<QPair<QChar, float> >::iterator search;
     QList<QPair<QChar, float> >::iterator last = letters.end();
+    setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
         qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += (*search).second;
@@ -131,12 +133,6 @@ Morse::audioFinished(QAudio::State state)
     m_lastTime = QTime::currentTime();
     m_playingMode = STOPPED;
     qDebug() << "time stopped at" << m_lastTime;
-}
-
-void
-Morse::setSequence(const QString &sequence)
-{
-   // m_sequence = sequence;
 }
 
 void
@@ -212,6 +208,13 @@ void Morse::setStatus(const QString &status) {
         m_statusBar->setText(status);
 }
 
+void Morse::setSequence(const QString &sequence, int currentlyAt) {
+    if (m_sequenceLabel) {
+        QString left = sequence.left(currentlyAt);
+        QString right = sequence.right(sequence.length() - currentlyAt);
+        m_sequenceLabel->setText("<font color=\"red\">" + left + "</font> " + right);
+    }
+}
 
 Generator *
 Morse::dit()

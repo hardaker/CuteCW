@@ -20,14 +20,13 @@ public:
 
 public:
     Morse();
-    Morse(QAudioOutput *output, QLabel *statusBar);
+    Morse(QAudioOutput *output, QLabel *statusBar, QLabel *sequence);
 
     enum ditdah{ DIT, DAH };
 
     enum mode { PLAY, TRAIN, TEST };
     enum playingmode { STOPPED, PLAYING };
 
-    void setSequence(const QString &sequence);
     void clearList();
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
@@ -38,6 +37,7 @@ public:
     int  msToWPM(float ms);
 
     void setStatus(const QString &status);
+    void setSequence(const QString &sequence, int currentlyAt);
 
     Generator *dit();
     Generator *dah();
@@ -65,6 +65,8 @@ private:
     QChar                           m_lastKey;
     QTime                           m_lastTime;
     QString                         m_trainingSequence;
+    QLabel                          *m_sequenceLabel;
+
 };
 
 #endif // MORSE_H

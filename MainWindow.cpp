@@ -67,7 +67,7 @@ MainWindow::createAudioOutput()
     m_audioOutput = new QAudioOutput(settings);
     qDebug() << "here";
 
-    m_morse = new Morse(m_audioOutput, ui->status);
+    m_morse = new Morse(m_audioOutput, ui->status, ui->sequence);
     connect(ui->input, SIGNAL(textChanged(QString)), m_morse, SLOT(keyPressed(QString)));
     connect(m_signalMapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
 }
