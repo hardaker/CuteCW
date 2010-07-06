@@ -86,6 +86,12 @@ int Generator::fillData(char *start, int frequency, float seconds)
         start += 4;
         len+=2;
     }
+    // ramp down or up to 0 for a better drop off in sound
+    while(value > 100 || value < -100) {
+        value = value/2;
+        putShort(start, value);
+        len += 2;
+    }
     bytes_left = len;
     pos = 0;
     return len;
