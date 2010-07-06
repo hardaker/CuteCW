@@ -33,6 +33,7 @@ void Morse::prefsButton() {
     if (dialog->exec() == QDialog::Accepted) {
         m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
+        saveSettings();
     }
 }
 
