@@ -244,7 +244,7 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
     if (m_sequenceLabel) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
-        m_sequenceLabel->setText("<font color=\"red\">" + left + "</font> " + right);
+        m_sequenceLabel->setText("<font color=\"red\">" + left + "</font>" + right);
     }
 }
 
