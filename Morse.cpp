@@ -55,7 +55,6 @@ Morse::playSequence()
 {
     m_playBuffer->restartData();
     m_playBuffer->start();
-    qDebug() << "left: " << m_playBuffer->bytes_left;
     m_playingMode = PLAYING;
     m_audioOutput->start(m_playBuffer);
     return;
@@ -89,9 +88,11 @@ void Morse::keyPressed(QString newtext) {
         m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
         getStat(m_lastKey)->addTime(msElapsed);
         // if the keyed incorrectly, penalize them 3 times their average
-        if (newletter != m_lastKey)
-            getStat(newletter)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
-        startNextTrainingKey();
+        if (newletter != m_lastKey) {
+            getStat(newletter)->addTime(3.0 * getStat(newkey)->getAverageTime());
+            getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
+        }
+	startNextTrainingKey();
     }
 }
 
