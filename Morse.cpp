@@ -2,22 +2,36 @@
 
 #include <qdebug.h>
 
+#include "MainWindow.h"
+
 #define WPMGOAL   20
 #define WPMACCEPT 15
 
 Morse::Morse()
-    : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+    : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_trainingSequence(KOCH_GROUP),  m_statusBar(0), m_sequenceLabel(0), m_ui(0)
 {
 }
 
-Morse::Morse(QAudioOutput *output, Ui::MainWindow *ui)
-    : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
+    : QObject(parent), m_parent(parent), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_trainingSequence(KOCH_GROUP), m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
 {
     createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
+}
+
+void Morse::prefsButton() {
+    Ui::Prefs prefsDialog;
+    QDialog *dialog = new QDialog(m_parent);
+    prefsDialog.setupUi(dialog);
+    prefsDialog.WPMAccepted->setText(QString().setNum(m_currentWPMAccept));
+    prefsDialog.WPMGoal->setText(QString().setNum(m_currentWPMGoal));
+    if (dialog->exec() == QDialog::Accepted) {
+        m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
+        m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
+    }
 }
 
 void

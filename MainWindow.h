@@ -9,6 +9,7 @@
 
 namespace Ui {
     class MainWindow;
+    class Prefs;
 }
 
 class MainWindow : public QMainWindow
@@ -26,6 +27,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    Ui::Prefs      *prefs;
     QAudioOutput   *m_audioOutput;
     Morse          *m_morse;
     QSignalMapper  *m_signalMapper;

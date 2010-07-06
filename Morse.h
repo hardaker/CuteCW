@@ -14,6 +14,9 @@
 #define KOCH_GROUP "kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x"
 
 #include "ui_MainWindow.h"
+#include "ui_Prefs.h"
+
+class MainWindow;
 
 class Morse : public QObject
 {
@@ -22,7 +25,7 @@ public:
 
 public:
     Morse();
-    Morse(QAudioOutput *output, Ui::MainWindow *ui);
+    Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui);
 
     enum ditdah{ DIT, DAH };
 
@@ -54,8 +57,10 @@ public slots:
     void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
     void switchMode(int newMode);
+    void prefsButton();
 
 private:
+    MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
     float                           m_ditSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
