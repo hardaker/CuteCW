@@ -55,6 +55,7 @@ void Morse::keyPressed(QString newtext) {
     } else if (m_gameMode == TRAIN) {
         int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
         qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
+        m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
         getStat(m_lastKey)->addTime(msElapsed);
         // if the keyed incorrectly, penalize them 3 times their average
         if (newletter != m_lastKey)
@@ -110,6 +111,7 @@ void Morse::startNextTrainingKey() {
         }
     }
 
+    m_ui->avewpm->setText(QString().setNum(msToPauseWPM(totalTime/letterCount)));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
     float randTime = totalTime*float(qrand())/float(RAND_MAX);
@@ -165,7 +167,7 @@ void Morse::switchMode(int newmode) {
     qDebug() << "switch to:" << m_gameMode;
     switch (m_gameMode) {
     case TRAIN:
-        m_ui->input->activateWindow();
+        m_ui->input->setFocus();
         startNextTrainingKey();
         m_ui->modeMenu->setText("Train");
         break;
