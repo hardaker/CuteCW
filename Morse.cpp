@@ -2,17 +2,18 @@
 
 #include <qdebug.h>
 
-#define WPMGOAL 20
+#define WPMGOAL   20
+#define WPMACCEPT 15
 
 Morse::Morse()
     : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP),  m_statusBar(0), m_sequenceLabel(0), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_trainingSequence(KOCH_GROUP),  m_statusBar(0), m_sequenceLabel(0), m_ui(0)
 {
 }
 
 Morse::Morse(QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_trainingSequence(KOCH_GROUP), m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
 {
     createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
@@ -104,7 +105,7 @@ void Morse::startNextTrainingKey() {
         qDebug() << "adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
-        if(msToPauseWPM(thisTime) < m_currentWPMGoal) {
+        if(msToPauseWPM(thisTime) < m_currentWPMAccept) {
             // we're not fast enough; break here
             qDebug() << " too slow: " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
             break;

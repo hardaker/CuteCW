@@ -64,6 +64,7 @@ private:
     playingmode                     m_playingMode;
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
+    int                             m_currentWPMAccept;
     QMap<QChar, MorseStat *>        m_stats;
     QChar                           m_lastKey;
     QTime                           m_lastTime;
