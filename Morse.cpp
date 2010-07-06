@@ -14,7 +14,7 @@ Morse::Morse(QAudioOutput *output, QLabel *statusBar, QLabel *sequence)
     : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar),
     m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_sequenceLabel(sequence)
 {
-    createTones(float(.1));
+    createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
 }
@@ -42,6 +42,7 @@ void Morse::addAndPlayIt(QChar c) {
         add(pause());
     }
     add(c, false);
+    add(m_pause);
     maybePlaySequence();
 }
 
@@ -55,7 +56,7 @@ void Morse::keyPressed(QString newtext) {
         qDebug() << "training... " << m_lastTime;
         getStat(m_lastKey)->addTime(m_lastTime.elapsed());
         if (newletter != m_lastKey)
-            getStat(newletter)->addTime(2.0 * getStat(m_lastKey)->getAverageTime());
+            getStat(newletter)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
         startNextTrainingKey();
     }
 }
