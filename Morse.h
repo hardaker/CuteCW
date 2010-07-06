@@ -13,6 +13,8 @@
 
 #define KOCH_GROUP "kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x"
 
+#include "ui_MainWindow.h"
+
 class Morse : public QObject
 {
 public:
@@ -20,7 +22,7 @@ public:
 
 public:
     Morse();
-    Morse(QAudioOutput *output, QLabel *statusBar, QLabel *sequence);
+    Morse(QAudioOutput *output, Ui::MainWindow *ui);
 
     enum ditdah{ DIT, DAH };
 
@@ -63,11 +65,12 @@ private:
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
     QMap<QChar, MorseStat *>        m_stats;
-    QLabel                          *m_statusBar;
     QChar                           m_lastKey;
     QTime                           m_lastTime;
     QString                         m_trainingSequence;
+    QLabel                          *m_statusBar;
     QLabel                          *m_sequenceLabel;
+    Ui::MainWindow                  *m_ui;
 
 };
 

@@ -5,14 +5,14 @@
 #define WPMGOAL 20
 
 Morse::Morse()
-    : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(0),
-    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_sequenceLabel(0)
+    : QObject(), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP),  m_statusBar(0), m_sequenceLabel(0), m_ui(0)
 {
 }
 
-Morse::Morse(QAudioOutput *output, QLabel *statusBar, QLabel *sequence)
-    : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY), m_statusBar(statusBar),
-    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_sequenceLabel(sequence)
+Morse::Morse(QAudioOutput *output, Ui::MainWindow *ui)
+    : QObject(), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+    m_currentWPMGoal(WPMGOAL), m_trainingSequence(KOCH_GROUP), m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
 {
     createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
@@ -47,14 +47,16 @@ void Morse::addAndPlayIt(QChar c) {
 }
 
 void Morse::keyPressed(QString newtext) {
-    QChar newletter = newtext.at(newtext.length()-1);
+    QChar newletter = newtext.at(newtext.length()-1).toLower();
     qDebug() << "user pressed: " << newletter << "and last key was: " << m_lastKey;
 
     if (m_gameMode == PLAY) {
         addAndPlayIt(newletter);
     } else if (m_gameMode == TRAIN) {
-        qDebug() << "training... " << m_lastTime;
-        getStat(m_lastKey)->addTime(m_lastTime.elapsed() - m_ditSecs);  // subtract off blank-after time
+        int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
+        qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
+        getStat(m_lastKey)->addTime(msElapsed);
+        // if the keyed incorrectly, penalize them 3 times their average
         if (newletter != m_lastKey)
             getStat(newletter)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
         startNextTrainingKey();
@@ -67,9 +69,10 @@ int Morse::msToWPM(float ms) {
 
 int Morse::msToPauseWPM(float ms) {
     // 3 dits in length is the pause between letter spacing
-    float pauseLength = 3.0 * 60.0 / (float(m_currentWPMGoal) * 50.0);
+    float pauseLength = 3.0 * m_ditSecs;
     // calculate the WPM based on the space it took for the letter to be identified during the pause
-    return int(float(m_currentWPMGoal) * ms / pauseLength);
+    qDebug() << "pause length: " << pauseLength << ", recorded time: " << ms << ", % = " << (pauseLength * 1000.0 * 100.0 / ms );
+    return int(float(m_currentWPMGoal) * pauseLength * 1000.0 / ms);
 }
 
 void Morse::startNextTrainingKey() {
@@ -102,7 +105,7 @@ void Morse::startNextTrainingKey() {
 
         if(msToPauseWPM(thisTime) < m_currentWPMGoal) {
             // we're not fast enough; break here
-            qDebug() << *letter << " too slow: " << letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
+            qDebug() << " too slow: " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
             break;
         }
     }
@@ -160,6 +163,18 @@ Morse::add(Generator *nextSound)
 void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
+    switch (m_gameMode) {
+    case TRAIN:
+        m_ui->input->activateWindow();
+        startNextTrainingKey();
+        m_ui->modeMenu->setText("Train");
+        break;
+    case PLAY:
+        m_ui->modeMenu->setText("Play Morse Code");
+        break;
+    default:
+        break;
+    }
 }
 
 void
@@ -167,11 +182,9 @@ Morse::add(QChar c, bool addpause)
 {
     QList<ditdah>::iterator iter;
     QList<ditdah>::iterator endat = code[c]->end();
-    qDebug() << "adding codes for: " << c;
 
     for(iter = code[c]->begin(); iter != endat; iter++)
     {
-        qDebug() << *iter;
         switch (*iter) {
         case DIT:
             add(m_dit);

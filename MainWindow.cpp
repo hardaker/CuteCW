@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_signalMapper->setMapping(action, (int) Morse::TRAIN);
 
     createAudioOutput();
-
+    ui->modeMenu->setText("Play Morse Code");
 }
 
 MainWindow::~MainWindow()
@@ -67,7 +67,7 @@ MainWindow::createAudioOutput()
     m_audioOutput = new QAudioOutput(settings);
     qDebug() << "here";
 
-    m_morse = new Morse(m_audioOutput, ui->status, ui->sequence);
+    m_morse = new Morse(m_audioOutput, ui);
     connect(ui->input, SIGNAL(textChanged(QString)), m_morse, SLOT(keyPressed(QString)));
     connect(m_signalMapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
 }
