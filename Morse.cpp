@@ -1,5 +1,6 @@
 #include "Morse.h"
 
+#include <QtCore/QSettings>
 #include <qdebug.h>
 
 #include "MainWindow.h"
@@ -20,6 +21,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
+    loadSettings();
 }
 
 void Morse::prefsButton() {
@@ -32,6 +34,20 @@ void Morse::prefsButton() {
         m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
     }
+}
+
+void Morse::saveSettings() {
+    QSettings settings("WS6Z", "qtcw");
+    settings.setValue("WPM/Goal", m_currentWPMGoal);
+    settings.setValue("WPM/Accept", m_currentWPMAccept);
+
+}
+
+void Morse::loadSettings() {
+    QSettings settings("WS6Z", "qtcw");
+    m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
+    m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
+
 }
 
 void

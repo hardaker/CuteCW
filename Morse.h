@@ -59,6 +59,9 @@ public slots:
     void switchMode(int newMode);
     void prefsButton();
 
+    void saveSettings();
+    void loadSettings();
+
 private:
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
