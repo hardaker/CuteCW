@@ -65,6 +65,13 @@ int Morse::msToWPM(float ms) {
     return (60*1000)/ms; // XXX: fix me; doesn't include keying times
 }
 
+int Morse::msToPauseWPM(float ms) {
+    // 3 dits in length is the pause between letter spacing
+    float pauseLength = 3.0 * 60.0 / (float(m_currentWPMGoal) * 50.0);
+    // calculate the WPM based on the space it took for the letter to be identified during the pause
+    return int(float(m_currentWPMGoal) * ms / pauseLength);
+}
+
 void Morse::startNextTrainingKey() {
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
@@ -90,12 +97,12 @@ void Morse::startNextTrainingKey() {
             return;
         }
 
-        qDebug() << "adding " << *letter << " / " << thisTime << " / " << msToWPM(thisTime);
+        qDebug() << "adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
-        if(msToWPM(thisTime) < m_currentWPMGoal) {
+        if(msToPauseWPM(thisTime) < m_currentWPMGoal) {
             // we're not fast enough; break here
-            qDebug() << *letter << " too slow: " << letter << " / " << thisTime << " / " << msToWPM(thisTime);
+            qDebug() << *letter << " too slow: " << letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
             break;
         }
     }

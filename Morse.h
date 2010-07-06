@@ -35,6 +35,7 @@ public:
     MorseStat *getStat(const QChar &key);
     void startNextTrainingKey();
     int  msToWPM(float ms);
+    int  msToPauseWPM(float ms);
 
     void setStatus(const QString &status);
     void setSequence(const QString &sequence, int currentlyAt);
