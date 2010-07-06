@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 {
     ui->setupUi(this);
-    connect(ui->start, SIGNAL(clicked()), this, SLOT(startIt()));
 
     // setup mode menu
     m_signalMapper = new QSignalMapper(this);
@@ -20,16 +19,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu *modeMenu = new QMenu(ui->modeMenu);
     ui->modeMenu->setMenu(modeMenu);
 
-    QAction *action = modeMenu->addAction("play");
+    QAction *action = modeMenu->addAction("Play Morse Code");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::PLAY);
 
-    action = modeMenu->addAction("train");
+    action = modeMenu->addAction("Recognition Train");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::TRAIN);
 
     createAudioOutput();
     ui->modeMenu->setText("Play Morse Code");
+    startIt();
 }
 
 MainWindow::~MainWindow()
@@ -40,14 +40,12 @@ MainWindow::~MainWindow()
 void
 MainWindow::startIt()
 {
-    if (! m_audioOutput)
-        createAudioOutput();
-    else {
-        qDebug() << "restarting";
-    }
+
     m_morse->clearList();
-    //m_morse->add('w');
-    //m_morse->add('s');
+    m_morse->add('w');
+    m_morse->add('s');
+    m_morse->add('6');
+    m_morse->add('z');
 
     m_morse->playSequence();
 }
@@ -65,7 +63,6 @@ MainWindow::createAudioOutput()
     settings.setSampleType(QAudioFormat::SignedInt);
 
     m_audioOutput = new QAudioOutput(settings);
-    qDebug() << "here";
 
     m_morse = new Morse(m_audioOutput, ui);
     connect(ui->input, SIGNAL(textChanged(QString)), m_morse, SLOT(keyPressed(QString)));

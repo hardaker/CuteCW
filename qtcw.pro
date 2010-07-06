@@ -14,15 +14,18 @@ SOURCES += main.cpp\
         MainWindow.cpp \
         Morse.cpp \
     Generator.cpp \
-    MorseStat.cpp
+    MorseStat.cpp \
+    Prefs.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
     morse_code.h \
     Generator.h \
-    MorseStat.h
+    MorseStat.h \
+    Prefs.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    Prefs.ui
 
 CONFIG += mobility
 MOBILITY = 

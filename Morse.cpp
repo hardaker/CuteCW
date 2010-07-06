@@ -165,11 +165,12 @@ Morse::add(Generator *nextSound)
 void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
+    m_ui->input->setText("");
     switch (m_gameMode) {
     case TRAIN:
         m_ui->input->setFocus();
         startNextTrainingKey();
-        m_ui->modeMenu->setText("Train");
+        m_ui->modeMenu->setText("Recognition Train");
         break;
     case PLAY:
         m_ui->modeMenu->setText("Play Morse Code");
