@@ -31,7 +31,7 @@ public:
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
     void addAndPlayIt(QChar c);
-    void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 6);
+    void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
     MorseStat *getStat(const QChar &key);
     void startNextTrainingKey();
     int  msToWPM(float ms);
@@ -54,6 +54,7 @@ public slots:
 
 private:
     QAudioOutput                    *m_audioOutput;
+    float                           m_ditSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
     QMap<QChar, QList<ditdah> *>    code;

@@ -54,7 +54,7 @@ void Morse::keyPressed(QString newtext) {
         addAndPlayIt(newletter);
     } else if (m_gameMode == TRAIN) {
         qDebug() << "training... " << m_lastTime;
-        getStat(m_lastKey)->addTime(m_lastTime.elapsed());
+        getStat(m_lastKey)->addTime(m_lastTime.elapsed() - m_ditSecs);  // subtract off blank-after time
         if (newletter != m_lastKey)
             getStat(newletter)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
         startNextTrainingKey();
@@ -185,6 +185,8 @@ Morse::add(QChar c, bool addpause)
 void
 Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMult, int spaceMult)
 {
+    m_ditSecs = ditSecs;
+
     m_dit = new Generator(ditSecs);
     m_dit->start();
 
