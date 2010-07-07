@@ -90,7 +90,7 @@ void Morse::keyPressed(QString newtext) {
         getStat(m_lastKey)->addTime(msElapsed);
         // if the keyed incorrectly, penalize them 3 times their average
         if (newletter != m_lastKey) {
-            getStat(newletter)->addTime(3.0 * getStat(newkey)->getAverageTime());
+            getStat(newletter)->addTime(3.0 * getStat(newletter)->getAverageTime());
             getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
         }
 	startNextTrainingKey();
@@ -122,8 +122,8 @@ void Morse::startNextTrainingKey() {
         MorseStat *stat = getStat(*letter);
         thisTime = stat->getAverageTime();
         totalTime += thisTime;
-        if (minTime < thisTime)
-            minTime , thisTime;
+        if (minTime > thisTime)
+            minTime = thisTime;
         if (thisTime < 0) {
             // never keyed yet; do it immediately if we got this far
             setStatus("Starting a new letter: " + QString(*letter));
@@ -139,7 +139,7 @@ void Morse::startNextTrainingKey() {
         qDebug() << "adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
-        if(msToPauseWPM(thisTime) < m_currentWPMAccept) {
+        if(msToPauseWPM(thisTime) <= m_currentWPMAccept) {
             // we're not fast enough; break here
             qDebug() << " too slow: " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
             break;
@@ -152,20 +152,20 @@ void Morse::startNextTrainingKey() {
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
     
-    float randTime, subtime = 0.0;
+    float randTime, subTime = 0.0;
     if (heavyWeight) {
-        randTime = (totalTime-minTime*letters.count()$+)*float(qrand())/float(RAND_MAX);
-        subtime = minTime;
+        randTime = (totalTime - minTime * letters.count())*float(qrand())/float(RAND_MAX);
+        subTime = minTime;
     } else
         randTime = totalTime*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
-    qDebug() << "letter set random: " << randTime;
+    qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime << ", count: " << letters.count();
     QList<QPair<QChar, float> >::iterator search;
     QList<QPair<QChar, float> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
         qDebug() << "  -> " << (*search).first << "/" << (*search).second;
-        newTotal += (*search).second - subTime;
+        newTotal += ((*search).second - subTime);
         if (newTotal > randTime) {
             qDebug() << "------- keying: " << (*search).first;
             addAndPlayIt((*search).first);
