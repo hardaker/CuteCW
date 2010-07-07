@@ -232,6 +232,9 @@ void Morse::switchMode(int newmode) {
 void
 Morse::add(QChar c, bool addpause)
 {
+    if (! code.contains(c))
+        return;
+
     QList<ditdah>::iterator iter;
     QList<ditdah>::iterator endat = code[c]->end();
 

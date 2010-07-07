@@ -31,19 +31,26 @@ MainWindow::MainWindow(QWidget *parent) :
     createAudioOutput();
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
     ui->modeMenu->setText("Play Morse Code");
+    this->setFocus();
     startIt();
 }
 
 bool MainWindow::event(QEvent *event) {
+    qDebug() << "events happen: " << event->type();
     if (event->type() == QEvent::KeyPress) {
         keyPressEvent(static_cast<QKeyEvent *>(event));
+        event->accept();
         return true;
     } else
         return QMainWindow::event(event);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    qDebug() << "key pressed: " << event->text();
+    qDebug() << "key pressed: " << event->text() << " " << event->text().size() << " " << event->text().length();
+    if (event->text().size() != 1 || event->text().length() != 1) {
+        QMainWindow::keyPressEvent(event);
+        return;
+    }
     m_morse->keyPressed(event->text().at(event->text().length()-1).toLower());
 }
 
