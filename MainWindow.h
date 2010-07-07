@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtMultimedia/QAudioOutput>
 #include <QtCore/QSignalMapper>
+#include <QtGui/QKeyEvent>
 #include "Generator.h"
 #include "Morse.h"
 
@@ -21,6 +22,7 @@ public:
     ~MainWindow();
 
     void createAudioOutput();
+    void keyPressEvent(QKeyEvent *);
 
 public slots:
     void startIt();

@@ -34,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     startIt();
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    qDebug() << "key pressed: " << event->text();
+    m_morse->keyPressed(event->text().at(event->text().length()-1).toLower());
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -67,7 +72,6 @@ MainWindow::createAudioOutput()
     m_audioOutput = new QAudioOutput(settings);
 
     m_morse = new Morse(this, m_audioOutput, ui);
-    connect(ui->input, SIGNAL(textChanged(QString)), m_morse, SLOT(keyPressed(QString)));
     connect(m_signalMapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
 }
 

@@ -62,9 +62,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="input"/>
-     </item>
-     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QLabel" name="label">

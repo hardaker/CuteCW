@@ -87,7 +87,10 @@ void Morse::addAndPlayIt(QChar c) {
 void Morse::keyPressed(QString newtext) {
     QChar newletter = newtext.at(newtext.length()-1).toLower();
     qDebug() << "user pressed: " << newletter << "and last key was: " << m_lastKey;
+    keyPressed(newletter);
+}
 
+void Morse::keyPressed(QChar newletter) {
     if (m_gameMode == PLAY) {
         addAndPlayIt(newletter);
     } else if (m_gameMode == TRAIN) {
@@ -213,10 +216,8 @@ Morse::add(Generator *nextSound)
 void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
-    m_ui->input->setText("");
     switch (m_gameMode) {
     case TRAIN:
-        m_ui->input->setFocus();
         startNextTrainingKey();
         m_ui->modeMenu->setText("Recognition Train");
         break;

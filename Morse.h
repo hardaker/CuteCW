@@ -57,6 +57,7 @@ public slots:
     void maybePlaySequence();
     void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
+    void keyPressed(QChar key);
     void switchMode(int newMode);
     void prefsButton();
 
