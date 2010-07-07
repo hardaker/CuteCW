@@ -34,6 +34,14 @@ MainWindow::MainWindow(QWidget *parent) :
     startIt();
 }
 
+bool MainWindow::event(QEvent *event) {
+    if (event->type() == QEvent::KeyPress) {
+        keyPressEvent(static_cast<QKeyEvent *>(event));
+        return true;
+    } else
+        return QMainWindow::event(event);
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     qDebug() << "key pressed: " << event->text();
     m_morse->keyPressed(event->text().at(event->text().length()-1).toLower());
