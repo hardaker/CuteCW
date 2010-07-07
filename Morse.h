@@ -31,6 +31,7 @@ public:
 
     enum mode { PLAY, TRAIN, TEST };
     enum playingmode { STOPPED, PLAYING };
+    enum badLetterWeighting { LOW = 1, HIGH = 2 };
 
     void clearList();
     void add(Generator *nextsound);
@@ -80,6 +81,7 @@ private:
     QLabel                          *m_statusBar;
     QLabel                          *m_sequenceLabel;
     Ui::MainWindow                  *m_ui;
+    badLetterWeighting               m_badLetterWeighting;
 
 };
 

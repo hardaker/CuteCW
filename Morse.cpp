@@ -30,9 +30,15 @@ void Morse::prefsButton() {
     prefsDialog.setupUi(dialog);
     prefsDialog.WPMAccepted->setText(QString().setNum(m_currentWPMAccept));
     prefsDialog.WPMGoal->setText(QString().setNum(m_currentWPMGoal));
+
+    prefsDialog.weighting->insertItem(LOW, "Low");
+    prefsDialog.weighting->insertItem(HIGH, "High");
+    prefsDialog.weighting->setCurrentIndex(m_badLetterWeighting);
+
     if (dialog->exec() == QDialog::Accepted) {
         m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
+        m_badLetterWeighting = (badLetterWeighting) prefsDialog.weighting->currentIndex();
         saveSettings();
     }
 }
@@ -41,14 +47,15 @@ void Morse::saveSettings() {
     QSettings settings("WS6Z", "qtcw");
     settings.setValue("WPM/Goal", m_currentWPMGoal);
     settings.setValue("WPM/Accept", m_currentWPMAccept);
-
+    settings.setValue("LetterWeighting", int(m_badLetterWeighting));
+    qDebug() << "saving: " << m_badLetterWeighting;
 }
 
 void Morse::loadSettings() {
     QSettings settings("WS6Z", "qtcw");
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
-
+    m_badLetterWeighting = (badLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
 }
 
 void
@@ -146,14 +153,12 @@ void Morse::startNextTrainingKey() {
         }
     }
 
-    bool heavyWeight = true;
-
     m_ui->avewpm->setText(QString().setNum(msToPauseWPM(totalTime/letterCount)));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
     
     float randTime, subTime = 0.0;
-    if (heavyWeight) {
+    if (m_badLetterWeighting == HIGH) {
         randTime = (totalTime - minTime * letters.count())*float(qrand())/float(RAND_MAX);
         subTime = minTime;
     } else
