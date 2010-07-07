@@ -56,7 +56,6 @@ Morse::playSequence()
 {
     m_playBuffer->restartData();
     m_playBuffer->start();
-    qDebug() << "left: " << m_playBuffer->bytes_left;
     m_playingMode = PLAYING;
     m_audioOutput->start(m_playBuffer);
     return;
@@ -90,9 +89,11 @@ void Morse::keyPressed(QString newtext) {
         m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
         getStat(m_lastKey)->addTime(msElapsed);
         // if the keyed incorrectly, penalize them 3 times their average
-        if (newletter != m_lastKey)
-            getStat(newletter)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
-        startNextTrainingKey();
+        if (newletter != m_lastKey) {
+            getStat(newletter)->addTime(3.0 * getStat(newkey)->getAverageTime());
+            getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
+        }
+	startNextTrainingKey();
     }
 }
 
@@ -111,7 +112,7 @@ int Morse::msToPauseWPM(float ms) {
 void Morse::startNextTrainingKey() {
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
-    float totalTime = 0.0, thisTime;
+    float totalTime = 0.0, thisTime, minTime = 0.0;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
@@ -121,6 +122,8 @@ void Morse::startNextTrainingKey() {
         MorseStat *stat = getStat(*letter);
         thisTime = stat->getAverageTime();
         totalTime += thisTime;
+        if (minTime < thisTime)
+            minTime , thisTime;
         if (thisTime < 0) {
             // never keyed yet; do it immediately if we got this far
             setStatus("Starting a new letter: " + QString(*letter));
@@ -143,10 +146,18 @@ void Morse::startNextTrainingKey() {
         }
     }
 
+    bool heavyWeight = true;
+
     m_ui->avewpm->setText(QString().setNum(msToPauseWPM(totalTime/letterCount)));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
-    float randTime = totalTime*float(qrand())/float(RAND_MAX);
+    
+    float randTime, subtime = 0.0;
+    if (heavyWeight) {
+        randTime = (totalTime-minTime*letters.count()$+)*float(qrand())/float(RAND_MAX);
+        subtime = minTime;
+    } else
+        randTime = totalTime*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
     qDebug() << "letter set random: " << randTime;
     QList<QPair<QChar, float> >::iterator search;
@@ -154,7 +165,7 @@ void Morse::startNextTrainingKey() {
     setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
         qDebug() << "  -> " << (*search).first << "/" << (*search).second;
-        newTotal += (*search).second;
+        newTotal += (*search).second - subTime;
         if (newTotal > randTime) {
             qDebug() << "------- keying: " << (*search).first;
             addAndPlayIt((*search).first);
