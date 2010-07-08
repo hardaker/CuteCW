@@ -14,7 +14,7 @@ Generator::Generator(float secs, int freq)
     :QIODevice( )
 {
     finished = false;
-    buffer = new char[int(secs * SYSTEM_FREQ * 4) + 1000];
+    buffer = new char[int(secs * SYSTEM_FREQ * 4) + 3000];
     t=buffer;
     m_freq = freq;
     len=fillData(t, m_freq, secs); /* mono FREQHz sine */
@@ -122,11 +122,10 @@ qint64 Generator::readData(char *data, qint64 maxlen)
         return len;
     } else {
         // Whats left and reset to start
-        qint64 left = bytes_left - pos;
-        memcpy(data,t+pos,left);
+        memcpy(data,t+pos,bytes_left);
         bytes_left = 0;
         pos=0;
-        return left;
+        return bytes_left;
     }
 }
 
