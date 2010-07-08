@@ -247,6 +247,12 @@ Morse::add(QChar c, bool addpause)
         case DAH:
             add(m_dah);
             break;
+        case PAUSE:
+            add(m_pause);
+            break;
+        case SPACE:
+            add(m_space);
+            break;
         default:
             qWarning() << "error: illegal morse type added";
         }

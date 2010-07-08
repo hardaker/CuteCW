@@ -27,7 +27,7 @@ public:
     Morse();
     Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui);
 
-    enum ditdah{ DIT, DAH };
+    enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
     enum mode { PLAY, TRAIN, TEST };
     enum playingmode { STOPPED, PLAYING };
