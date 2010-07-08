@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 bool MainWindow::event(QEvent *event) {
-    qDebug() << "events happen: " << event->type();
     if (event->type() == QEvent::KeyPress) {
         keyPressEvent(static_cast<QKeyEvent *>(event));
         event->accept();
