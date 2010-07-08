@@ -94,6 +94,8 @@ void Morse::keyPressed(QChar newletter) {
     if (m_gameMode == PLAY) {
         addAndPlayIt(newletter);
     } else if (m_gameMode == TRAIN) {
+        if (m_playingMode == PLAYING)
+            return;
         int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
         qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
         m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
