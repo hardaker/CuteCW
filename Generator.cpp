@@ -83,14 +83,16 @@ int Generator::fillData(char *start, int frequency, float seconds)
     for(i=0; i<int(seconds*SYSTEM_FREQ); i++) {
         value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
         putShort(start, value);
-        start += 4;
+        start += 2;
         len+=2;
     }
     // ramp down or up to 0 for a better drop off in sound
     while(value > 8 || value < -8) {
-        value = value/2;
+        i++;
+        value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
         putShort(start, value);
         len += 2;
+        start += 2;
     }
     bytes_left = len;
     pos = 0;
