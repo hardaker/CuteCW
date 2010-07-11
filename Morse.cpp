@@ -72,6 +72,7 @@ Morse::playSequence()
 }
 
 void Morse::readIt() {
+    qDebug() << "starting to read";
     m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
     readNextLetter();
 }
@@ -87,8 +88,8 @@ void Morse::readNextLetter() {
     // selection letter we're going to play
     m_readSpot.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
     // play the selection
-    add(m_readSpot.selectedText());
-    playSequence();
+    qDebug() << "playing selected text: " << m_readSpot.selectedText();
+    addAndPlayIt(m_readSpot.selectedText()[0]);
 }
 
 void Morse::maybePlaySequence() {
@@ -142,6 +143,8 @@ void Morse::keyPressed(QChar newletter) {
     case SPEEDTRAIN:
         handleKeyResponse(newletter);
         break;
+    default:
+        qDebug() << "ignoring key: " << newletter;
     }
 }
 
@@ -236,6 +239,7 @@ Morse::audioFinished(QAudio::State state)
     switch (m_gameMode) {
     case READ:
         // add in next letter and display it
+        readNextLetter();
         break;
     default:
         m_lastTime = QTime::currentTime();
@@ -281,6 +285,7 @@ void Morse::switchMode(int newmode) {
         m_ui->clearTraining->hide();
         m_ui->readButton->show();
         m_ui->modeMenu->setText("Read to me!");
+        break;
     case SPEEDTRAIN:
         m_ui->wordbox->hide();
         m_ui->letter->show();
@@ -288,6 +293,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Speed Training");
         startNextTrainingKey();
+        break;
     default:
         break;
     }
@@ -296,6 +302,7 @@ void Morse::switchMode(int newmode) {
 void
 Morse::add(QChar c, bool addpause)
 {
+    c = c.toLower();
     if (! code.contains(c))
         return;
 
