@@ -28,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::TRAIN);
 
+    action = modeMenu->addAction("Read");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::READ);
+
     createAudioOutput();
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
     ui->modeMenu->setText("Play Morse Code");

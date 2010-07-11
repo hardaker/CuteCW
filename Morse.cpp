@@ -22,6 +22,9 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
+    switchMode(Morse::PLAY);
+
+    connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
 }
 
 void Morse::prefsButton() {
@@ -66,6 +69,10 @@ Morse::playSequence()
     m_playingMode = PLAYING;
     m_audioOutput->start(m_playBuffer);
     return;
+}
+
+void Morse::readIt() {
+    add("read this");
 }
 
 void Morse::maybePlaySequence() {
@@ -219,13 +226,25 @@ void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
     switch (m_gameMode) {
-    case TRAIN:
-        startNextTrainingKey();
-        m_ui->modeMenu->setText("Recognition Train");
-        break;
     case PLAY:
+        m_ui->wordbox->hide();
+        m_ui->letter->hide();
+        m_ui->clearTraining->hide();
         m_ui->modeMenu->setText("Play Morse Code");
         break;
+    case TRAIN:
+        m_ui->wordbox->hide();
+        m_ui->letter->show();
+        m_ui->clearTraining->show();
+        startNextTrainingKey();
+        m_ui->modeMenu->setText("Recognition Training");
+        break;
+    case READ:
+        m_ui->wordbox->show();
+        m_ui->letter->hide();
+        m_ui->clearTraining->hide();
+        m_ui->readButton->show();
+        m_ui->modeMenu->setText("Read to me!");
     default:
         break;
     }
@@ -262,6 +281,16 @@ Morse::add(QChar c, bool addpause)
     }
     if (addpause) {
         add(m_letterPause);
+    }
+}
+
+void Morse::add(const QString &textToAdd) {
+    QString::const_iterator letter;
+    QString::const_iterator lastLetter = textToAdd.end();
+
+    clearList();
+    for (letter = textToAdd.begin(); letter != lastLetter; ++letter) {
+        add(*letter);
     }
 }
 
@@ -304,6 +333,7 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
         m_sequenceLabel->setText("<font color=\"red\">" + left + "</font>" + right);
+        m_ui->letter->setText(sequence[currentlyAt-1]);
     }
 }
 

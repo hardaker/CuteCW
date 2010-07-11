@@ -40,18 +40,46 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="clearTraining">
+         <property name="text">
+          <string>Clear Training</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="readButton">
+         <property name="text">
+          <string>Read It</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="prefs">
          <property name="text">
           <string>Preferences</string>
          </property>
         </widget>
        </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QPushButton" name="clearTraining">
+        <widget class="QLabel" name="letter">
+         <property name="font">
+          <font>
+           <pointsize>32</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
-          <string>Clear Training</string>
+          <string>TextLabel</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="wordbox"/>
        </item>
       </layout>
      </item>
