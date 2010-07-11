@@ -113,22 +113,35 @@ void Morse::keyPressed(QString newtext) {
     keyPressed(newletter);
 }
 
+void Morse::handleKeyResponse(QChar letterPressed) {
+    int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
+    qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
+    m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
+    // if the keyed incorrectly, penalize them 3 times their average
+    if (letterPressed == m_lastKey) {
+        getStat(m_lastKey)->addTime(msElapsed);
+    } else {
+        getStat(letterPressed)->addTime(3.0 * getStat(letterPressed)->getAverageTime());
+        getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
+    }
+}
+
 void Morse::keyPressed(QChar newletter) {
-    if (m_gameMode == PLAY) {
+    switch (m_gameMode) {
+    case PLAY:
         addAndPlayIt(newletter);
-    } else if (m_gameMode == TRAIN) {
+        break;
+    case TRAIN:
+        // ensure we're not still playing a sound:
         if (m_playingMode == PLAYING)
             return;
-        int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
-        qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
-        m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
-        getStat(m_lastKey)->addTime(msElapsed);
-        // if the keyed incorrectly, penalize them 3 times their average
-        if (newletter != m_lastKey) {
-            getStat(newletter)->addTime(3.0 * getStat(newletter)->getAverageTime());
-            getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
-        }
+        // analyze they're keyed letter and immediately start playing a new one
+        handleKeyResponse(newletter);
 	startNextTrainingKey();
+        break;
+    case SPEEDTRAIN:
+        handleKeyResponse(newletter);
+        break;
     }
 }
 
@@ -151,7 +164,6 @@ void Morse::startNextTrainingKey() {
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
-    qDebug() << " in next";
     for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
         letterCount++;
         MorseStat *stat = getStat(*letter);
@@ -269,6 +281,13 @@ void Morse::switchMode(int newmode) {
         m_ui->clearTraining->hide();
         m_ui->readButton->show();
         m_ui->modeMenu->setText("Read to me!");
+    case SPEEDTRAIN:
+        m_ui->wordbox->hide();
+        m_ui->letter->show();
+        m_ui->clearTraining->show();
+        m_ui->readButton->hide();
+        m_ui->modeMenu->setText("Speed Training");
+        startNextTrainingKey();
     default:
         break;
     }

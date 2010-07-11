@@ -30,7 +30,7 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum mode { PLAY, TRAIN, READ, TEST };
+    enum mode { PLAY, TRAIN, SPEEDTRAIN, READ, TEST };
     enum playingmode { STOPPED, PLAYING };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
 
@@ -47,6 +47,8 @@ public:
 
     void setStatus(const QString &status);
     void setSequence(const QString &sequence, int currentlyAt);
+
+    void handleKeyResponse(QChar letterPressed);
 
     Generator *dit();
     Generator *dah();
