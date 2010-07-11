@@ -7,6 +7,7 @@
 #include <QtCore/QList>
 #include <QtGui/QLabel>
 #include <QtCore/QTime>
+#include <QtGui/QTextCursor>
 
 #include "Generator.h"
 #include "MorseStat.h"
@@ -62,6 +63,7 @@ public slots:
     void switchMode(int newMode);
     void prefsButton();
     void readIt();
+    void readNextLetter();
 
     void saveSettings();
     void loadSettings();
@@ -77,6 +79,7 @@ private:
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
     int                             m_currentWPMAccept;
+    QTextCursor                     m_readSpot;
     QMap<QChar, MorseStat *>        m_stats;
     QChar                           m_lastKey;
     QTime                           m_lastTime;

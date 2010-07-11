@@ -72,7 +72,23 @@ Morse::playSequence()
 }
 
 void Morse::readIt() {
-    add("read this");
+    m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
+    readNextLetter();
+}
+
+void Morse::readNextLetter() {
+    if (m_readSpot.atEnd()) {
+        qDebug() << "reached the end; stopping playing";
+        return;
+    }
+    // move the anchor to where the cursor is
+    m_readSpot.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 0);
+    // move the selection pointer to the right one, highlighting the current
+    // selection letter we're going to play
+    m_readSpot.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
+    // play the selection
+    add(m_readSpot.selectedText());
+    playSequence();
 }
 
 void Morse::maybePlaySequence() {
@@ -205,9 +221,15 @@ Morse::audioFinished(QAudio::State state)
 {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
-    m_lastTime = QTime::currentTime();
-    m_playingMode = STOPPED;
-    qDebug() << "time stopped at" << m_lastTime;
+    switch (m_gameMode) {
+    case READ:
+        // add in next letter and display it
+        break;
+    default:
+        m_lastTime = QTime::currentTime();
+        m_playingMode = STOPPED;
+        qDebug() << "time stopped at" << m_lastTime;
+    }
 }
 
 void
@@ -230,14 +252,16 @@ void Morse::switchMode(int newmode) {
         m_ui->wordbox->hide();
         m_ui->letter->hide();
         m_ui->clearTraining->hide();
+        m_ui->readButton->hide();
         m_ui->modeMenu->setText("Play Morse Code");
         break;
     case TRAIN:
         m_ui->wordbox->hide();
         m_ui->letter->show();
         m_ui->clearTraining->show();
-        startNextTrainingKey();
+        m_ui->readButton->hide();
         m_ui->modeMenu->setText("Recognition Training");
+        startNextTrainingKey();
         break;
     case READ:
         m_ui->wordbox->show();
@@ -259,8 +283,10 @@ Morse::add(QChar c, bool addpause)
     QList<ditdah>::iterator iter;
     QList<ditdah>::iterator endat = code[c]->end();
 
+    bool lastWasPause;
     for(iter = code[c]->begin(); iter != endat; iter++)
     {
+        lastWasPause = false;
         switch (*iter) {
         case DIT:
             add(m_dit);
@@ -270,9 +296,11 @@ Morse::add(QChar c, bool addpause)
             break;
         case PAUSE:
             add(m_pause);
+            lastWasPause = true;
             break;
         case SPACE:
             add(m_space);
+            lastWasPause = true;
             break;
         default:
             qWarning() << "error: illegal morse type added";
