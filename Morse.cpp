@@ -83,7 +83,7 @@ void Morse::readNextLetter() {
         return;
     }
     // move the anchor to where the cursor is
-    m_readSpot.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 0);
+    m_readSpot.movePosition(QTextCursor::NoMove, QTextCursor::MoveAnchor, 0);
     // move the selection pointer to the right one, highlighting the current
     // selection letter we're going to play
     m_readSpot.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
