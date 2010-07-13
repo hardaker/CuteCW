@@ -7,6 +7,7 @@
 #include <QtCore/QList>
 #include <QtGui/QLabel>
 #include <QtCore/QTime>
+#include <QtGui/QTextCursor>
 
 #include "Generator.h"
 #include "MorseStat.h"
@@ -27,7 +28,7 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum mode { PLAY, TRAIN, TEST };
+    enum mode { PLAY, TRAIN, SPEEDTRAIN, READ, TEST };
     enum playingmode { STOPPED, PLAYING };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
     enum sequences { KOCH, KOCH2, KOCH3, KOCH4, KOCH4 }; 
@@ -35,6 +36,7 @@ public:
     void clearList();
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
+    void add(const QString &textToAdd);
     void addAndPlayIt(QChar c);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
     MorseStat *getStat(const QChar &key);
@@ -44,6 +46,8 @@ public:
 
     void setStatus(const QString &status);
     void setSequence(const QString &sequence, int currentlyAt);
+
+    void handleKeyResponse(QChar letterPressed);
 
     Generator *dit();
     Generator *dah();
@@ -59,6 +63,8 @@ public slots:
     void keyPressed(QChar key);
     void switchMode(int newMode);
     void prefsButton();
+    void readIt();
+    void readNextLetter();
     void switchSequence(int sequence);
     void clearStats();
 
@@ -76,6 +82,7 @@ private:
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
     int                             m_currentWPMAccept;
+    QTextCursor                     m_readSpot;
     QMap<QChar, MorseStat *>        m_stats;
     QChar                           m_lastKey;
     QTime                           m_lastTime;

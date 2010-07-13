@@ -30,6 +30,9 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
+    switchMode(Morse::PLAY);
+
+    connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
 }
 
 void Morse::prefsButton() {
@@ -80,6 +83,27 @@ Morse::playSequence()
     return;
 }
 
+void Morse::readIt() {
+    qDebug() << "starting to read";
+    m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
+    readNextLetter();
+}
+
+void Morse::readNextLetter() {
+    if (m_readSpot.atEnd()) {
+        qDebug() << "reached the end; stopping playing";
+        return;
+    }
+    // move the anchor to where the cursor is
+    m_readSpot.movePosition(QTextCursor::NoMove, QTextCursor::MoveAnchor, 0);
+    // move the selection pointer to the right one, highlighting the current
+    // selection letter we're going to play
+    m_readSpot.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
+    // play the selection
+    qDebug() << "playing selected text: " << m_readSpot.selectedText();
+    addAndPlayIt(m_readSpot.selectedText()[0]);
+}
+
 void Morse::maybePlaySequence() {
     if (m_playingMode == STOPPED) {
         playSequence();
@@ -102,22 +126,37 @@ void Morse::keyPressed(QString newtext) {
     keyPressed(newletter);
 }
 
+void Morse::handleKeyResponse(QChar letterPressed) {
+    int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
+    qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
+    m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
+    // if the keyed incorrectly, penalize them 3 times their average
+    if (letterPressed == m_lastKey) {
+        getStat(m_lastKey)->addTime(msElapsed);
+    } else {
+        getStat(letterPressed)->addTime(3.0 * getStat(letterPressed)->getAverageTime());
+        getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
+    }
+}
+
 void Morse::keyPressed(QChar newletter) {
-    if (m_gameMode == PLAY) {
+    switch (m_gameMode) {
+    case PLAY:
         addAndPlayIt(newletter);
-    } else if (m_gameMode == TRAIN) {
+        break;
+    case TRAIN:
+        // ensure we're not still playing a sound:
         if (m_playingMode == PLAYING)
             return;
-        int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
-        qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
-        m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
-        getStat(m_lastKey)->addTime(msElapsed);
-        // if the keyed incorrectly, penalize them 3 times their average
-        if (newletter != m_lastKey) {
-            getStat(newletter)->addTime(3.0 * getStat(newletter)->getAverageTime());
-            getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
-        }
+        // analyze they're keyed letter and immediately start playing a new one
+        handleKeyResponse(newletter);
 	startNextTrainingKey();
+        break;
+    case SPEEDTRAIN:
+        handleKeyResponse(newletter);
+        break;
+    default:
+        qDebug() << "ignoring key: " << newletter;
     }
 }
 
@@ -140,7 +179,6 @@ void Morse::startNextTrainingKey() {
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
-    qDebug() << " in next";
     for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
         letterCount++;
         MorseStat *stat = getStat(*letter);
@@ -210,9 +248,16 @@ Morse::audioFinished(QAudio::State state)
 {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
-    m_lastTime = QTime::currentTime();
-    m_playingMode = STOPPED;
-    qDebug() << "time stopped at" << m_lastTime;
+    switch (m_gameMode) {
+    case READ:
+        // add in next letter and display it
+        readNextLetter();
+        break;
+    default:
+        m_lastTime = QTime::currentTime();
+        m_playingMode = STOPPED;
+        qDebug() << "time stopped at" << m_lastTime;
+    }
 }
 
 void
@@ -231,12 +276,35 @@ void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
     switch (m_gameMode) {
-    case TRAIN:
-        startNextTrainingKey();
-        m_ui->modeMenu->setText("Recognition Train");
-        break;
     case PLAY:
+        m_ui->wordbox->hide();
+        m_ui->letter->hide();
+        m_ui->clearTraining->hide();
+        m_ui->readButton->hide();
         m_ui->modeMenu->setText("Play Morse Code");
+        break;
+    case TRAIN:
+        m_ui->wordbox->hide();
+        m_ui->letter->show();
+        m_ui->clearTraining->show();
+        m_ui->readButton->hide();
+        m_ui->modeMenu->setText("Recognition Training");
+        startNextTrainingKey();
+        break;
+    case READ:
+        m_ui->wordbox->show();
+        m_ui->letter->hide();
+        m_ui->clearTraining->hide();
+        m_ui->readButton->show();
+        m_ui->modeMenu->setText("Read to me!");
+        break;
+    case SPEEDTRAIN:
+        m_ui->wordbox->hide();
+        m_ui->letter->show();
+        m_ui->clearTraining->show();
+        m_ui->readButton->hide();
+        m_ui->modeMenu->setText("Speed Training");
+        startNextTrainingKey();
         break;
     default:
         break;
@@ -250,14 +318,17 @@ void Morse::switchSequence(int sequence) {
 void
 Morse::add(QChar c, bool addpause)
 {
+    c = c.toLower();
     if (! code.contains(c))
         return;
 
     QList<ditdah>::iterator iter;
     QList<ditdah>::iterator endat = code[c]->end();
 
+    bool lastWasPause;
     for(iter = code[c]->begin(); iter != endat; iter++)
     {
+        lastWasPause = false;
         switch (*iter) {
         case DIT:
             add(m_dit);
@@ -267,9 +338,11 @@ Morse::add(QChar c, bool addpause)
             break;
         case PAUSE:
             add(m_pause);
+            lastWasPause = true;
             break;
         case SPACE:
             add(m_space);
+            lastWasPause = true;
             break;
         default:
             qWarning() << "error: illegal morse type added";
@@ -278,6 +351,16 @@ Morse::add(QChar c, bool addpause)
     }
     if (addpause) {
         add(m_letterPause);
+    }
+}
+
+void Morse::add(const QString &textToAdd) {
+    QString::const_iterator letter;
+    QString::const_iterator lastLetter = textToAdd.end();
+
+    clearList();
+    for (letter = textToAdd.begin(); letter != lastLetter; ++letter) {
+        add(*letter);
     }
 }
 
@@ -320,6 +403,7 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
         m_sequenceLabel->setText("<font color=\"red\">" + left + "</font>" + right);
+        m_ui->letter->setText(sequence[currentlyAt-1]);
     }
 }
 
