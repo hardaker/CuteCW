@@ -16,8 +16,16 @@ Morse::Morse()
 
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_parent(parent), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_trainingSequence(KOCH_GROUP), m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), 
+    m_trainingSequence("kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x"), 
+    m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
 {
+    m_sequences.append("kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x");
+    m_sequences.append("kmuresnaptl");
+    m_sequences.append("wi.jz=foy,");
+    m_sequences.append("vg5/q92h38");
+    m_sequences.append("b?47c1d60x");
+
     createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
@@ -297,6 +305,10 @@ void Morse::switchMode(int newmode) {
     default:
         break;
     }
+}
+
+void Morse::switchSequence(int sequence) {
+    m_trainingSequence = m_sequences.at(sequence);
 }
 
 void
