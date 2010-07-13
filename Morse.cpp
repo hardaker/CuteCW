@@ -66,6 +66,10 @@ void Morse::loadSettings() {
     m_badLetterWeighting = (badLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
 }
 
+void Morse::clearStats()  {
+
+}
+
 void
 Morse::playSequence()
 {

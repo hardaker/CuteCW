@@ -60,6 +60,7 @@ public slots:
     void switchMode(int newMode);
     void prefsButton();
     void switchSequence(int sequence);
+    void clearStats();
 
     void saveSettings();
     void loadSettings();
