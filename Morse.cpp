@@ -239,6 +239,10 @@ void Morse::switchMode(int newmode) {
     }
 }
 
+void Morse::switchSequence(int sequence) {
+    m_trainingSequence = m_sequences.at(sequence);
+}
+
 void
 Morse::add(QChar c, bool addpause)
 {

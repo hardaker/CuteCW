@@ -59,6 +59,7 @@ public slots:
     void keyPressed(QChar key);
     void switchMode(int newMode);
     void prefsButton();
+    void switchSequence(int sequence);
 
     void saveSettings();
     void loadSettings();
