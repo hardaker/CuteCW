@@ -11,8 +11,6 @@
 #include "Generator.h"
 #include "MorseStat.h"
 
-#define KOCH_GROUP "kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x"
-
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
 
@@ -32,6 +30,7 @@ public:
     enum mode { PLAY, TRAIN, TEST };
     enum playingmode { STOPPED, PLAYING };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
+    enum sequences { KOCH, KOCH2, KOCH3, KOCH4, KOCH4 }; 
 
     void clearList();
     void add(Generator *nextsound);
@@ -79,6 +78,7 @@ private:
     QChar                           m_lastKey;
     QTime                           m_lastTime;
     QString                         m_trainingSequence;
+    QStringList                     m_sequence;
     QLabel                          *m_statusBar;
     QLabel                          *m_sequenceLabel;
     Ui::MainWindow                  *m_ui;
