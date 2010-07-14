@@ -81,3 +81,5 @@ code['?'] = new QList<ditdah>();
 *(code['?']) << DIT << DIT << DAH << DAH << DIT << DIT;
 code[' '] = new QList<ditdah>();
 *(code[' ']) << SPACE;
+code['='] = new QList<ditdah>();
+*(code['=']) << DAH << DIT << DIT << DIT << DAH;
