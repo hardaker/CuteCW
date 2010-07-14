@@ -356,6 +356,7 @@ void Morse::switchMode(int newmode) {
 void Morse::switchSequence(int sequence) {
     m_trainingSequence = m_sequences.at(sequence);
     setSequence(m_trainingSequence, 1);
+    clearStats();
     readNextLetter();
 }
 
