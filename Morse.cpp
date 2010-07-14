@@ -1,6 +1,7 @@
 #include "Morse.h"
 
 #include <QtCore/QSettings>
+#include <QtGui/QMenu>
 #include <qdebug.h>
 
 #include "MainWindow.h"
@@ -10,21 +11,17 @@
 
 Morse::Morse()
     : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_trainingSequence(KOCH_GROUP),  m_statusBar(0), m_sequenceLabel(0), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0)
 {
+    setupSequences();
 }
 
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_parent(parent), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), 
-    m_trainingSequence("kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x"), 
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
     m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
 {
-    m_sequences.append("kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x");
-    m_sequences.append("kmuresnaptl");
-    m_sequences.append("wi.jz=foy,");
-    m_sequences.append("vg5/q92h38");
-    m_sequences.append("b?47c1d60x");
+
 
     createTones(60.0/float(WPMGOAL * 50));
     setStatus("ready: Play Mode");
@@ -33,6 +30,42 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     switchMode(Morse::PLAY);
 
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
+    setupSequences();
+}
+
+void Morse::setupSequences() {
+    m_trainingSequence = "kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x";
+    m_sequences.append("kmuresnaptlwi.jz=foy,vg5/q92h38b?47c1d60x");
+    m_sequences.append("kmuresnaptl");
+    m_sequences.append("wi.jz=foy,");
+    m_sequences.append("vg5/q92h38");
+    m_sequences.append("b?47c1d60x");
+
+    m_signalMapper = new QSignalMapper();
+    QMenu *modeMenu = new QMenu(m_ui->changeSequence);
+    m_ui->changeSequence->setMenu(modeMenu);
+
+    QAction *action = modeMenu->addAction("Full Koch");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::KOCH);
+
+    action = modeMenu->addAction("Koch part 1");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::KOCH1);
+
+    action = modeMenu->addAction("Koch part 2");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::KOCH2);
+
+    action = modeMenu->addAction("Koch part 3");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::KOCH3);
+
+    action = modeMenu->addAction("Koch part 4");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::KOCH4);
+
+    connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
 void Morse::prefsButton() {
@@ -286,6 +319,7 @@ void Morse::switchMode(int newmode) {
         m_ui->letter->hide();
         m_ui->clearTraining->hide();
         m_ui->readButton->hide();
+        m_ui->changeSequence->hide();
         m_ui->modeMenu->setText("Play Morse Code");
         break;
     case TRAIN:
@@ -294,6 +328,7 @@ void Morse::switchMode(int newmode) {
         m_ui->clearTraining->show();
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Recognition Training");
+        m_ui->changeSequence->show();
         startNextTrainingKey();
         break;
     case READ:
@@ -302,6 +337,7 @@ void Morse::switchMode(int newmode) {
         m_ui->clearTraining->hide();
         m_ui->readButton->show();
         m_ui->modeMenu->setText("Read to me!");
+        m_ui->changeSequence->hide();
         break;
     case SPEEDTRAIN:
         m_ui->wordbox->hide();
@@ -309,6 +345,7 @@ void Morse::switchMode(int newmode) {
         m_ui->clearTraining->show();
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Speed Training");
+        m_ui->changeSequence->show();
         startNextTrainingKey();
         break;
     default:
@@ -318,6 +355,8 @@ void Morse::switchMode(int newmode) {
 
 void Morse::switchSequence(int sequence) {
     m_trainingSequence = m_sequences.at(sequence);
+    setSequence(m_trainingSequence, 1);
+    readNextLetter();
 }
 
 void
@@ -407,8 +446,8 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
     if (m_sequenceLabel) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
-        m_sequenceLabel->setText("<font color=\"red\">" + left + "</font>" + right);
-        m_ui->letter->setText(sequence[currentlyAt-1]);
+        m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
+        m_ui->letter->setText("<font color=\"red\">" + QString(sequence[currentlyAt-1].toUpper()) + "</font>");
     }
 }
 

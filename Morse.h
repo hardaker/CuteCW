@@ -8,6 +8,7 @@
 #include <QtGui/QLabel>
 #include <QtCore/QTime>
 #include <QtGui/QTextCursor>
+#include <QtCore/QSignalMapper>
 
 #include "Generator.h"
 #include "MorseStat.h"
@@ -31,8 +32,9 @@ public:
     enum mode { PLAY, TRAIN, SPEEDTRAIN, READ, TEST };
     enum playingmode { STOPPED, PLAYING };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
-    enum sequences { KOCH, KOCH2, KOCH3, KOCH4, KOCH4 }; 
+    enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4 };
 
+    void setupSequences();
     void clearList();
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
@@ -87,12 +89,12 @@ private:
     QChar                           m_lastKey;
     QTime                           m_lastTime;
     QString                         m_trainingSequence;
-    QStringList                     m_sequence;
+    QStringList                     m_sequences;
     QLabel                          *m_statusBar;
     QLabel                          *m_sequenceLabel;
     Ui::MainWindow                  *m_ui;
     badLetterWeighting               m_badLetterWeighting;
-
+    QSignalMapper                   *m_signalMapper;
 };
 
 #endif // MORSE_H
