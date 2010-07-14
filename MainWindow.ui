@@ -40,6 +40,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="changeSequence">
+         <property name="text">
+          <string>Change Sequence</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="clearTraining">
          <property name="text">
           <string>Clear Training</string>
