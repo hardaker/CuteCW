@@ -70,7 +70,12 @@ void Morse::loadSettings() {
 }
 
 void Morse::clearStats()  {
-
+    QMap<QChar, MorseStat *>::iterator item;
+    QMap<QChar, MorseStat *>::iterator end = m_stats.end();
+    for(item = m_stats.begin(); item != end; item) {
+        delete *iter;
+    }
+    m_stats.clear();
 }
 
 void
