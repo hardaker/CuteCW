@@ -69,6 +69,7 @@ public slots:
     void readNextLetter();
     void switchSequence(int sequence);
     void clearStats();
+    void clearStatsButton();
 
     void saveSettings();
     void loadSettings();
