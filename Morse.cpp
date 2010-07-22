@@ -431,13 +431,13 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
     m_dah = new Generator(ditSecs * dahMult);
     m_dah->start();
 
-    m_pause = new Generator(ditSecs * pauseMult, 10);
+    m_pause = new Generator(ditSecs * pauseMult, 0);
     m_pause->start();
 
-    m_letterPause = new Generator(ditSecs * letterPauseMult, 10);
+    m_letterPause = new Generator(ditSecs * letterPauseMult, 0);
     m_letterPause->start();
 
-    m_space = new Generator(ditSecs * spaceMult, 10);
+    m_space = new Generator(ditSecs * spaceMult, 0);
     m_space->start();
 
     m_playBuffer = new Generator(m_pause);
