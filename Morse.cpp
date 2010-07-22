@@ -173,12 +173,17 @@ void Morse::keyPressed(QString newtext) {
 void Morse::handleKeyResponse(QChar letterPressed) {
     int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
+    MorseStat *pressedStat = getStat(letterPressed);
+    if (pressedStat->getTryCount() > 0 && msElapsed > 5 * pressedStat->getAverageTime()) {
+        qDebug() << "ignoring key press; too long and probably an interruption";
+        return;
+    }
     m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
     // if the keyed incorrectly, penalize them 3 times their average
     if (letterPressed == m_lastKey) {
-        getStat(m_lastKey)->addTime(msElapsed);
+        pressedStat->addTime(msElapsed);
     } else {
-        getStat(letterPressed)->addTime(3.0 * getStat(letterPressed)->getAverageTime());
+        pressedStat->addTime(3.0 * pressedStat->getAverageTime());
         getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
     }
 }
