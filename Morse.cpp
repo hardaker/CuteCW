@@ -23,7 +23,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 {
 
 
-createTones(WPMGOAL);
+    createTones(WPMGOAL);
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
@@ -31,6 +31,8 @@ createTones(WPMGOAL);
 
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
+
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(startNextTrainingKey()));
     setupSequences();
 }
 
@@ -313,8 +315,7 @@ Morse::audioFinished(QAudio::State state)
 
     case SPEEDTRAIN:
         m_timer.stop();
-        connect(&m_timer, SIGNAL(timeout()), this, SLOT(checkMail()));
-        m_timer.start(m_checkinterval * 1000);
+        m_timer.start(getStat(m_lastKey)->getAverageTime());
         break;
 
     default:
