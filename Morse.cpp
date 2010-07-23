@@ -67,6 +67,10 @@ void Morse::setupSequences() {
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::KOCH4);
 
+    action = modeMenu->addAction("Alphabet");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::ALPHABET);
+
     connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 

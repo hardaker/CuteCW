@@ -32,7 +32,7 @@ public:
     enum mode { PLAY, TRAIN, SPEEDTRAIN, READ, TEST };
     enum playingmode { STOPPED, PLAYING };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
-    enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4 };
+    enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4, ALPHABET = 5 };
 
     void setupSequences();
     void clearList();
