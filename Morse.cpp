@@ -41,6 +41,7 @@ void Morse::setupSequences() {
     m_sequences.append("wi.jz=foy,");
     m_sequences.append("vg5/q92h38");
     m_sequences.append("b?47c1d60x");
+    m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
 
     m_signalMapper = new QSignalMapper();
     QMenu *modeMenu = new QMenu(m_ui->changeSequence);
