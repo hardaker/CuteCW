@@ -23,7 +23,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 {
 
 
-    createTones(60.0/float(WPMGOAL * 50));
+createTones(WPMGOAL);
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
@@ -85,6 +85,7 @@ void Morse::prefsButton() {
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
         m_badLetterWeighting = (badLetterWeighting) prefsDialog.weighting->currentIndex();
         saveSettings();
+        loadSettings();
     }
 }
 
@@ -101,6 +102,7 @@ void Morse::loadSettings() {
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
     m_badLetterWeighting = (badLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
+    createTones(m_currentWPMGoal);  
 }
 
 void Morse::clearStats()  {
@@ -405,7 +407,7 @@ Morse::add(QChar c, bool addpause)
         }
         add(m_pause);
     }
-    if (addpause) {
+    if (addpause && !lastWasPause) {
         add(m_letterPause);
     }
 }
@@ -418,6 +420,12 @@ void Morse::add(const QString &textToAdd) {
     for (letter = textToAdd.begin(); letter != lastLetter; ++letter) {
         add(*letter);
     }
+}
+
+voidd
+Morse::createTones(int wpm)
+{
+    createTones(float(60.0/float(wpm*50.0)));
 }
 
 void
