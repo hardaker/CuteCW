@@ -159,7 +159,7 @@ void Morse::maybePlaySequence() {
 void Morse::addAndPlayIt(QChar c) {
     if (m_playingMode == STOPPED) {
         clearList();
-        add(pause());
+        add(letterPause());
     }
     add(c, false);
     add(m_letterPause);
