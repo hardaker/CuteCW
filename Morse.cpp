@@ -287,6 +287,7 @@ void Morse::startNextTrainingKey() {
             addAndPlayIt((*search).first);
             m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
             m_lastKey = (*search).first;
+            m_lastKeys.append((*search).first);
             return;
         }
     }
@@ -309,6 +310,13 @@ Morse::audioFinished(QAudio::State state)
         // add in next letter and display it
         readNextLetter();
         break;
+
+    case SPEEDTRAIN:
+        m_timer.stop();
+        connect(&m_timer, SIGNAL(timeout()), this, SLOT(checkMail()));
+        m_timer.start(m_checkinterval * 1000);
+        break;
+
     default:
         m_lastTime = QTime::currentTime();
         m_playingMode = STOPPED;

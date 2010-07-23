@@ -89,6 +89,7 @@ private:
     QTextCursor                     m_readSpot;
     QMap<QChar, MorseStat *>        m_stats;
     QChar                           m_lastKey;
+    QList<QChar>                    m_lastKeys;
     QTime                           m_lastTime;
     QString                         m_trainingSequence;
     QStringList                     m_sequences;
@@ -97,6 +98,7 @@ private:
     Ui::MainWindow                  *m_ui;
     badLetterWeighting               m_badLetterWeighting;
     QSignalMapper                   *m_signalMapper;
+    QTimer                           m_timer;
 };
 
 #endif // MORSE_H
