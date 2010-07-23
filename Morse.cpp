@@ -11,7 +11,7 @@
 
 Morse::Morse()
     : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(100)
 {
     setupSequences();
 }
@@ -19,7 +19,7 @@ Morse::Morse()
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_parent(parent), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-    m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui)
+    m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui), m_countWeight(100)
 {
 
 
@@ -189,11 +189,14 @@ void Morse::handleKeyResponse(QChar letterPressed) {
     }
     m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
     // if the keyed incorrectly, penalize them 3 times their average
-    if (letterPressed == m_lastKey) {
+    QChar lastKey = m_lastKeys.shift();
+    if (letterPressed == lastKey) {
         pressedStat->addTime(msElapsed);
+        m_goodCount++;
     } else {
         pressedStat->addTime(3.0 * pressedStat->getAverageTime());
-        getStat(m_lastKey)->addTime(3.0 * getStat(m_lastKey)->getAverageTime());
+        getStat(lastKey)->addTime(3.0 * getStat(lastKey)->getAverageTime());
+        m_badCount++;
     }
 }
 
@@ -315,7 +318,7 @@ Morse::audioFinished(QAudio::State state)
 
     case SPEEDTRAIN:
         m_timer.stop();
-        m_timer.start(getStat(m_lastKey)->getAverageTime());
+        m_timer.start((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * getStat(m_lastKey)->getAverageTime());
         break;
 
     default:
@@ -359,6 +362,8 @@ void Morse::switchMode(int newmode) {
         startNextTrainingKey();
         break;
     case READ:
+        m_goodCount = 0;
+        m_badCount = 0;
         m_ui->wordbox->show();
         m_ui->letter->hide();
         m_ui->clearTraining->hide();
