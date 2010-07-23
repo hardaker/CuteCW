@@ -162,7 +162,7 @@ void Morse::addAndPlayIt(QChar c) {
         add(pause());
     }
     add(c, false);
-    add(m_pause);
+    add(m_letterPause);
     maybePlaySequence();
 }
 
