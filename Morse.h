@@ -7,6 +7,7 @@
 #include <QtCore/QList>
 #include <QtGui/QLabel>
 #include <QtCore/QTime>
+#include <QtCore/QTimer>
 #include <QtGui/QTextCursor>
 #include <QtCore/QSignalMapper>
 
@@ -100,7 +101,7 @@ private:
     badLetterWeighting               m_badLetterWeighting;
     QSignalMapper                   *m_signalMapper;
     QTimer                           m_timer;
-    int                              m_countWight;
+    int                              m_countWeight;
 };
 
 #endif // MORSE_H

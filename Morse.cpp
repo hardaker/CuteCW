@@ -189,7 +189,7 @@ void Morse::handleKeyResponse(QChar letterPressed) {
     }
     m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
     // if the keyed incorrectly, penalize them 3 times their average
-    QChar lastKey = m_lastKeys.shift();
+    QChar lastKey = m_lastKeys.takeFirst();
     if (letterPressed == lastKey) {
         pressedStat->addTime(msElapsed);
         m_goodCount++;
@@ -441,7 +441,7 @@ void Morse::add(const QString &textToAdd) {
     }
 }
 
-voidd
+void
 Morse::createTones(int wpm)
 {
     createTones(float(60.0/float(wpm*50.0)));
