@@ -138,6 +138,11 @@ Morse::playSequence()
 }
 
 void Morse::readIt() {
+    QTextCursor readSpot = m_ui->wordbox->textCursor();
+    readSpot.select(QTextCursor::Document);
+    add(readSpot.selectedText());
+    playSequence();
+    return;
     qDebug() << "starting to read";
     m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
     readNextLetter();
