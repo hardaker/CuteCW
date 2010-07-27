@@ -523,7 +523,19 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
         m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
-        m_ui->letter->setText("<font color=\"red\">" + QString(sequence[currentlyAt-1].toUpper()) + "</font>");
+
+        QChar theLetter = sequence[currentlyAt-1].toLower();
+        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper());
+        QList<ditdah>::iterator it;
+        QList<ditdah>::iterator end = code[theLetter]->end();
+        for(it = code[theLetter]->begin(); it != end; ++it) {
+            if (*it == DIT)
+                newLetter = newLetter + " " + ".";
+            else if (*it == DAH)
+                newLetter = newLetter + " " + "-";
+        }
+        newLetter += "</font>";
+        m_ui->letter->setText( newLetter );
     }
 }
 
