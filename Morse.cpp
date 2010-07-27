@@ -181,16 +181,31 @@ void Morse::keyPressed(QString newtext) {
 }
 
 void Morse::handleKeyResponse(QChar letterPressed) {
+
+    // ensure we actually have a stored key in memory
+    if (m_lastKeys.count() == 0)
+        return;
+
+    // pull off the last key from the "keyed" output
+    QChar lastKey = m_lastKeys.takeFirst();
+
+    // calculate the time since the keying ended to the time the user hit a key
+    // XXX: we need to store a list of times, not just a single time
+
     int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
     MorseStat *pressedStat = getStat(letterPressed);
+
+    // if the user took a *really* long time, ignore the key press and assume they got distracted from training
     if (pressedStat->getTryCount() > 0 && msElapsed > 5 * pressedStat->getAverageTime()) {
         qDebug() << "ignoring key press; too long and probably an interruption";
         return;
     }
+
+    // set the last WPM record on the display
     m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
-    // if the keyed incorrectly, penalize them 3 times their average
-    QChar lastKey = m_lastKeys.takeFirst();
+
+    // if the keyed incorrectly, penalize them 3 times their average else add in the results
     if (letterPressed == lastKey) {
         pressedStat->addTime(msElapsed);
         m_goodCount++;
