@@ -32,7 +32,6 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
 
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(startNextTrainingKey()));
     setupSequences();
 }
 
@@ -333,11 +332,13 @@ void Morse::startTimerToNextKey() {
     avetime = getStat(m_lastKey)->getAverageTime();
     qDebug() << "avetime: " << avetime;
     if (avetime == -1) {
-        avetime = m_currentWPMAccept*50/60;
+        avetime = float(m_currentWPMAccept)*50.0/60.0;
         qDebug() << "setting avetime to: " << avetime;
     }
-    delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
+    delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime * 1000;
+    qDebug() << "delaying for: " << delay << " ms";
     m_timer.start(delay);
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(startNextTrainingKey()));
 }
 
 void
