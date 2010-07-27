@@ -47,6 +47,7 @@ public:
     void startNextTrainingKey();
     int  msToWPM(float ms);
     int  msToPauseWPM(float ms);
+    void startTimerToNextKey();
 
     void setStatus(const QString &status);
     void setSequence(const QString &sequence, int currentlyAt);

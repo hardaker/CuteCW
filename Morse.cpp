@@ -119,6 +119,7 @@ void Morse::clearStats()  {
         delete *item;
     }
     m_stats.clear();
+    m_lastKeys.clear();
 }
 
 void Morse::clearStatsButton() {
@@ -255,6 +256,7 @@ void Morse::startNextTrainingKey() {
             m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
             qDebug() << "setting last time to " << m_lastTime;
             m_lastKey = *letter;
+            m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
             return;
         }
@@ -305,6 +307,19 @@ MorseStat *Morse::getStat(const QChar &key) {
     return m_stats[key];
 }
 
+void Morse::startTimerToNextKey() {
+    float avetime, delay;
+    m_timer.stop();
+    avetime = getStat(m_lastKey)->getAverageTime();
+    qDebug() << "avetime: " << avetime;
+    if (avetime == -1) {
+        avetime = m_currentWPMAccept*50/60;
+        qDebug() << "setting avetime to: " << avetime;
+    }
+    delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
+    m_timer.start(delay);
+}
+
 void
 Morse::audioFinished(QAudio::State state)
 {
@@ -317,8 +332,7 @@ Morse::audioFinished(QAudio::State state)
         break;
 
     case SPEEDTRAIN:
-        m_timer.stop();
-        m_timer.start((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * getStat(m_lastKey)->getAverageTime());
+        startTimerToNextKey();
         break;
 
     default:
@@ -343,6 +357,8 @@ Morse::add(Generator *nextSound)
 void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
+    m_lastKeys.clear();
+    m_timer.stop();
     switch (m_gameMode) {
     case PLAY:
         m_ui->wordbox->hide();
@@ -379,6 +395,7 @@ void Morse::switchMode(int newmode) {
         m_ui->modeMenu->setText("Speed Training");
         m_ui->changeSequence->show();
         startNextTrainingKey();
+        startTimerToNextKey();
         break;
     default:
         break;
