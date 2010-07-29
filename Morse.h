@@ -44,7 +44,6 @@ public:
     void createTones(int wpm);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
     MorseStat *getStat(const QChar &key);
-    void startNextTrainingKey();
     int  msToWPM(float ms);
     int  msToPauseWPM(float ms);
     void startTimerToNextKey();
@@ -61,6 +60,7 @@ public:
     Generator *space();
 
 public slots:
+    void startNextTrainingKey();
     void playSequence();
     void maybePlaySequence();
     void audioFinished(QAudio::State state);

@@ -171,7 +171,7 @@ void Morse::maybePlaySequence() {
 void Morse::addAndPlayIt(QChar c) {
     if (m_playingMode == STOPPED) {
         clearList();
-        add(letterPause());
+        add(pause());
     }
     add(c, false);
     add(m_letterPause);
@@ -257,12 +257,13 @@ void Morse::startNextTrainingKey() {
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
     float totalTime = 0.0, thisTime, minTime = 0.0;
+    MorseStat *stat;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
     for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
         letterCount++;
-        MorseStat *stat = getStat(*letter);
+        stat = getStat(*letter);
         thisTime = stat->getAverageTime();
         totalTime += thisTime;
         if (minTime > thisTime)
@@ -290,7 +291,7 @@ void Morse::startNextTrainingKey() {
         }
     }
 
-    m_ui->avewpm->setText(QString().setNum(msToPauseWPM(totalTime/letterCount)));
+    m_ui->avewpm->setText("last: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", total: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
     
@@ -328,17 +329,15 @@ MorseStat *Morse::getStat(const QChar &key) {
 
 void Morse::startTimerToNextKey() {
     float avetime, delay;
-    m_timer.stop();
     avetime = getStat(m_lastKey)->getAverageTime();
     qDebug() << "avetime: " << avetime;
     if (avetime == -1) {
         avetime = float(m_currentWPMAccept)*50.0/60.0;
         qDebug() << "setting avetime to: " << avetime;
     }
-    delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime * 1000;
+    delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
     qDebug() << "delaying for: " << delay << " ms";
-    m_timer.start(delay);
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(startNextTrainingKey()));
+    QTimer::singleShot(delay, this, SLOT(startNextTrainingKey()));
 }
 
 void
@@ -347,12 +346,13 @@ Morse::audioFinished(QAudio::State state)
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
     switch (m_gameMode) {
-    case READ:
+    // case READ:
         // add in next letter and display it
-        readNextLetter();
-        break;
+        // readNextLetter();
+        // break;
 
     case SPEEDTRAIN:
+        m_playingMode = STOPPED;
         startTimerToNextKey();
         break;
 
@@ -379,7 +379,6 @@ void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
     m_lastKeys.clear();
-    m_timer.stop();
     switch (m_gameMode) {
     case PLAY:
         m_ui->wordbox->hide();
@@ -388,6 +387,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->changeSequence->hide();
         m_ui->modeMenu->setText("Play Morse Code");
+        m_ui->helpBar->setText("<font color=\"green\">Type letters to hear the keys in morse code</font>");
         break;
     case TRAIN:
         m_ui->wordbox->hide();
@@ -396,6 +396,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Recognition Training");
         m_ui->changeSequence->show();
+        m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
         startNextTrainingKey();
         break;
     case READ:
@@ -407,6 +408,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->show();
         m_ui->modeMenu->setText("Read to me!");
         m_ui->changeSequence->hide();
+        m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
         break;
     case SPEEDTRAIN:
         m_ui->wordbox->hide();
@@ -415,8 +417,8 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Speed Training");
         m_ui->changeSequence->show();
+        m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
         startNextTrainingKey();
-        startTimerToNextKey();
         break;
     default:
         break;
