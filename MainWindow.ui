@@ -70,6 +70,22 @@
       </layout>
      </item>
      <item>
+      <widget class="QLabel" name="helpBar">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <italic>false</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QLabel" name="letter">
