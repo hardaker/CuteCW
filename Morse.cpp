@@ -367,7 +367,9 @@ Morse::audioFinished(QAudio::State state)
         break;
 
     default:
-        m_lastTimes.push_back(QTime::currentTime());
+        if (m_playingMode != STOPPED) {
+            m_lastTimes.push_back(QTime::currentTime());
+        }
         m_playingMode = STOPPED;
     }
 }
