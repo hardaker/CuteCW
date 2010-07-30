@@ -11,7 +11,7 @@
 
 Morse::Morse()
     : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(100)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(20)
 {
     qDebug() << "new morse";
     setupSequences();
@@ -389,6 +389,7 @@ void Morse::switchMode(int newmode) {
     qDebug() << "switch to:" << m_gameMode;
     m_lastKeys.clear();
     m_lastTimes.clear();
+    m_playBuffer->stop();
     switch (m_gameMode) {
     case PLAY:
         m_ui->wordbox->hide();
