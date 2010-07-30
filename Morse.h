@@ -37,16 +37,19 @@ public:
 
     void setupSequences();
     void clearList();
+
+    void createTones(int wpm);
+    void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
+
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
     void add(const QString &textToAdd);
     void addAndPlayIt(QChar c);
-    void createTones(int wpm);
-    void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
+
     MorseStat *getStat(const QChar &key);
+
     int  msToWPM(float ms);
     int  msToPauseWPM(float ms);
-    void startTimerToNextKey();
 
     void setStatus(const QString &status);
     void setSequence(const QString &sequence, int currentlyAt);
@@ -61,16 +64,22 @@ public:
 
 public slots:
     void startNextTrainingKey();
+    void startTimerToNextKey();
+
     void playSequence();
     void maybePlaySequence();
+
     void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
     void keyPressed(QChar key);
-    void switchMode(int newMode);
-    void prefsButton();
+
     void readIt();
     void readNextLetter();
+
+    void prefsButton();
     void switchSequence(int sequence);
+    void switchMode(int newMode);
+
     void clearStats();
     void clearStatsButton();
 
