@@ -11,7 +11,7 @@
 
 Morse::Morse()
     : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(20)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(20), m_badCount(0), m_goodCount(0)
 {
     qDebug() << "new morse";
     setupSequences();
@@ -20,7 +20,7 @@ Morse::Morse()
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_parent(parent), m_audioOutput(output), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-    m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui), m_countWeight(100)
+    m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui), m_countWeight(100), m_badCount(0), m_goodCount(0)
 {
 
     qDebug() << "new morse2";
@@ -191,7 +191,7 @@ void Morse::handleKeyResponse(QChar letterPressed) {
     qDebug() << "Key pressed = " << letterPressed << ", Queue of stored keys: keys=" << m_lastKeys.count() << ", times=" << m_lastTimes.count();
 
     // ensure we actually have a stored key in memory
-    if (m_lastKeys.count() == 0) {
+    if (m_lastTimes.count() == 0) {
         qDebug() << "KEY PRESSED EARLY";
         return;
     }
@@ -342,7 +342,7 @@ void Morse::startTimerToNextKey() {
         qDebug() << "setting avetime to: " << avetime;
     }
     delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
-    qDebug() << "delaying for: " << delay << " ms (good=" << m_goodCount << ", bad=" << ")";
+    qDebug() << "delaying for: " << delay << " ms (good=" << m_goodCount << ", bad=" << m_badCount << ")";
     QTimer::singleShot(delay, this, SLOT(startNextTrainingKey()));
 }
 

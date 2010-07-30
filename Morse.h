@@ -97,7 +97,6 @@ private:
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
     int                             m_currentWPMAccept;
-    int                             m_badCount, m_goodCount;
     QTextCursor                     m_readSpot;
     QMap<QChar, MorseStat *>        m_stats;
     QChar                           m_lastKey;
@@ -112,6 +111,7 @@ private:
     QSignalMapper                   *m_signalMapper;
     QTimer                           m_timer;
     int                              m_countWeight;
+    int                             m_badCount, m_goodCount;
 };
 
 #endif // MORSE_H
