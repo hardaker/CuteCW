@@ -93,7 +93,7 @@ private:
     QMap<QChar, MorseStat *>        m_stats;
     QChar                           m_lastKey;
     QList<QChar>                    m_lastKeys;
-    QTime                           m_lastTime;
+    QList<QTime>                    m_lastTimes;
     QString                         m_trainingSequence;
     QStringList                     m_sequences;
     QLabel                          *m_statusBar;

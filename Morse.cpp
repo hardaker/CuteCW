@@ -120,6 +120,7 @@ void Morse::clearStats()  {
     }
     m_stats.clear();
     m_lastKeys.clear();
+    m_lastTimes.clear();
 }
 
 void Morse::clearStatsButton() {
@@ -187,17 +188,22 @@ void Morse::keyPressed(QString newtext) {
 
 void Morse::handleKeyResponse(QChar letterPressed) {
 
+    qDebug() << "Key pressed = " << letterPressed << ", Queue of stored keys: keys=" << m_lastKeys.count() << ", times=" << m_lastTimes.count();
+
     // ensure we actually have a stored key in memory
-    if (m_lastKeys.count() == 0)
+    if (m_lastKeys.count() == 0) {
+        qDebug() << "KEY PRESSED EARLY";
         return;
+    }
 
     // pull off the last key from the "keyed" output
     QChar lastKey = m_lastKeys.takeFirst();
+    QTime lastTime = m_lastTimes.takeFirst();
 
     // calculate the time since the keying ended to the time the user hit a key
     // XXX: we need to store a list of times, not just a single time
 
-    int msElapsed = m_lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
+    int msElapsed = lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
     MorseStat *pressedStat = getStat(letterPressed);
 
@@ -251,7 +257,7 @@ int Morse::msToPauseWPM(float ms) {
     // 3 dits in length is the pause between letter spacing
     float pauseLength = 3.0 * m_ditSecs;
     // calculate the WPM based on the space it took for the letter to be identified during the pause
-    qDebug() << "pause length: " << pauseLength << ", recorded time: " << ms << ", % = " << (pauseLength * 1000.0 * 100.0 / ms );
+    // qDebug() << "pause length: " << pauseLength << ", recorded time: " << ms << ", % = " << (pauseLength * 1000.0 * 100.0 / ms );
     return int(float(m_currentWPMGoal) * pauseLength * 1000.0 / ms);
 }
 
@@ -275,8 +281,6 @@ void Morse::startNextTrainingKey() {
             // never keyed yet; do it immediately if we got this far
             setStatus("Starting a new letter: " + QString(*letter));
             qDebug() << "|------ keying: " << *letter;
-            m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
-            qDebug() << "setting last time to " << m_lastTime;
             m_lastKey = *letter;
             m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
@@ -310,14 +314,13 @@ void Morse::startNextTrainingKey() {
     QList<QPair<QChar, float> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
-        qDebug() << "  -> " << (*search).first << "/" << (*search).second;
+        //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += ((*search).second - subTime);
         if (newTotal > randTime) {
             qDebug() << "------- keying: " << (*search).first;
-            addAndPlayIt((*search).first);
-            m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
+            addAndPlayIt((*search).first);
             return;
         }
     }
@@ -356,15 +359,16 @@ Morse::audioFinished(QAudio::State state)
 
     case SPEEDTRAIN:
         qDebug() << "speed train stop";
-        if (m_playingMode != STOPPED)
+        if (m_playingMode != STOPPED) {
             startTimerToNextKey();
+            m_lastTimes.push_back(QTime::currentTime());
+        }
         m_playingMode = STOPPED;
         break;
 
     default:
-        m_lastTime = QTime::currentTime();
+        m_lastTimes.push_back(QTime::currentTime());
         m_playingMode = STOPPED;
-        qDebug() << "time stopped at" << m_lastTime;
     }
 }
 
@@ -384,6 +388,7 @@ void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
     m_lastKeys.clear();
+    m_lastTimes.clear();
     switch (m_gameMode) {
     case PLAY:
         m_ui->wordbox->hide();
