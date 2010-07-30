@@ -13,6 +13,7 @@ Morse::Morse()
     : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(100)
 {
+    qDebug() << "new morse";
     setupSequences();
 }
 
@@ -22,7 +23,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_statusBar(ui->status), m_sequenceLabel(ui->sequence), m_ui(ui), m_countWeight(100)
 {
 
-
+    qDebug() << "new morse2";
     createTones(WPMGOAL);
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
@@ -174,7 +175,7 @@ void Morse::addAndPlayIt(QChar c) {
         add(pause());
     }
     add(c, false);
-    add(m_letterPause);
+    add(m_pause);
     maybePlaySequence();
 }
 
@@ -201,7 +202,8 @@ void Morse::handleKeyResponse(QChar letterPressed) {
     MorseStat *pressedStat = getStat(letterPressed);
 
     // if the user took a *really* long time, ignore the key press and assume they got distracted from training
-    if (pressedStat->getTryCount() > 0 && msElapsed > 5 * pressedStat->getAverageTime()) {
+    if ((pressedStat->getTryCount() > 0 && msElapsed > 5 * pressedStat->getAverageTime()) ||
+        (pressedStat->getTryCount() == 0 && msElapsed > 5 * msToPauseWPM(m_currentWPMAccept))) {
         qDebug() << "ignoring key press; too long and probably an interruption";
         return;
     }
@@ -254,6 +256,7 @@ int Morse::msToPauseWPM(float ms) {
 }
 
 void Morse::startNextTrainingKey() {
+    qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
     float totalTime = 0.0, thisTime, minTime = 0.0;
@@ -271,17 +274,17 @@ void Morse::startNextTrainingKey() {
         if (thisTime < 0) {
             // never keyed yet; do it immediately if we got this far
             setStatus("Starting a new letter: " + QString(*letter));
-            addAndPlayIt(*letter);
-            qDebug() << "------- keying: " << *letter;
+            qDebug() << "|------ keying: " << *letter;
             m_lastTime = QTime::currentTime(); // XXX: only added to test on broken linux audio
             qDebug() << "setting last time to " << m_lastTime;
             m_lastKey = *letter;
             m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
+            addAndPlayIt(*letter);
             return;
         }
 
-        qDebug() << "adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
+        qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
         if(msToPauseWPM(thisTime) <= m_currentWPMAccept) {
@@ -297,12 +300,12 @@ void Morse::startNextTrainingKey() {
     
     float randTime, subTime = 0.0;
     if (m_badLetterWeighting == HIGH) {
-        randTime = (totalTime - minTime * letters.count())*float(qrand())/float(RAND_MAX);
-        subTime = minTime;
+        subTime = minTime/2;
+        randTime = (totalTime - subTime * letters.count())*float(qrand())/float(RAND_MAX);
     } else
         randTime = totalTime*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
-    qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime << ", count: " << letters.count();
+    qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
     QList<QPair<QChar, float> >::iterator search;
     QList<QPair<QChar, float> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
@@ -332,7 +335,7 @@ void Morse::startTimerToNextKey() {
     avetime = getStat(m_lastKey)->getAverageTime();
     qDebug() << "avetime: " << avetime;
     if (avetime == -1) {
-        avetime = float(m_currentWPMAccept)*50.0/60.0;
+        avetime = 1000*60.0/(50.0*float(m_currentWPMAccept));
         qDebug() << "setting avetime to: " << avetime;
     }
     delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
@@ -352,8 +355,10 @@ Morse::audioFinished(QAudio::State state)
         // break;
 
     case SPEEDTRAIN:
+        qDebug() << "speed train stop";
+        if (m_playingMode != STOPPED)
+            startTimerToNextKey();
         m_playingMode = STOPPED;
-        startTimerToNextKey();
         break;
 
     default:
@@ -528,7 +533,7 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
         m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
 
         QChar theLetter = sequence[currentlyAt-1].toLower();
-        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper());
+        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "  ";
         QList<ditdah>::iterator it;
         QList<ditdah>::iterator end = code[theLetter]->end();
         for(it = code[theLetter]->begin(); it != end; ++it) {
