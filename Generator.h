@@ -4,6 +4,9 @@
 #include <QtCore/QIODevice>
 
 #define FREQ        1200
+// 1764 = 20wpm dit in length; three of these seems to be a safe buffer length to extend
+#define ZEROLENGTH  1764
+#define ZEROCOUNTS     3
 
 class Generator : public QIODevice
 {
@@ -18,14 +21,18 @@ public:
     void stop();
 
     void clearBuffer();
+    void restartPauses();
+    void setupPauses();
 
     char *t;
     int  len;
     int  pos;
     char *buffer;
+    char zerobuffer[ZEROLENGTH];
     bool finished;
     int  chunk_size;
     int  m_freq;
+    int  m_zerocount;
     qint64 bytes_left;
 
 public slots:
