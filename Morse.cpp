@@ -176,7 +176,7 @@ void Morse::addAndPlayIt(QChar c) {
         add(pause());
     }
     add(c, false);
-    add(m_pause);
+    add(m_letterPause);
     maybePlaySequence();
 }
 
@@ -342,7 +342,7 @@ void Morse::startTimerToNextKey() {
         qDebug() << "setting avetime to: " << avetime;
     }
     delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
-    qDebug() << "delaying for: " << delay << " ms";
+    qDebug() << "delaying for: " << delay << " ms (good=" << m_goodCount << ", bad=" << ")";
     QTimer::singleShot(delay, this, SLOT(startNextTrainingKey()));
 }
 
