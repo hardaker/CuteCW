@@ -337,6 +337,13 @@ MorseStat *Morse::getStat(const QChar &key) {
 
 void Morse::startTimerToNextKey() {
     float avetime, delay;
+
+    if (m_lastTimes.count() > 3) {
+        // don't let them get *too* far behind
+        m_badCount++;
+        QTimer::singleShot(1000, this, SLOT(startNextTrainingKey()));  // Try again in a second
+        return;
+    }
     avetime = getStat(m_lastKey)->getAverageTime();
     qDebug() << "avetime: " << avetime;
     if (avetime == -1) {
