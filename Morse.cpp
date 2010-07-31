@@ -421,18 +421,9 @@ void Morse::switchMode(int newmode) {
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
         startNextTrainingKey();
         break;
-    case READ:
+    case SPEEDTRAIN:
         m_goodCount = 0;
         m_badCount = 0;
-        m_ui->wordbox->show();
-        m_ui->letter->hide();
-        m_ui->clearTraining->hide();
-        m_ui->readButton->show();
-        m_ui->modeMenu->setText("Read to me!");
-        m_ui->changeSequence->hide();
-        m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
-        break;
-    case SPEEDTRAIN:
         m_ui->wordbox->hide();
         m_ui->letter->show();
         m_ui->clearTraining->show();
@@ -441,6 +432,15 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->show();
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
         startNextTrainingKey();
+        break;
+    case READ:
+        m_ui->wordbox->show();
+        m_ui->letter->hide();
+        m_ui->clearTraining->hide();
+        m_ui->readButton->show();
+        m_ui->modeMenu->setText("Read to me!");
+        m_ui->changeSequence->hide();
+        m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
         break;
     default:
         break;
