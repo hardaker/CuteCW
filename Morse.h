@@ -57,6 +57,7 @@ public:
     void setSequence(const QString &sequence, int currentlyAt);
 
     void handleKeyResponse(QChar letterPressed);
+    bool enterPressed();
 
     Generator *dit();
     Generator *dah();

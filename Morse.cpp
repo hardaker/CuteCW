@@ -87,7 +87,7 @@ void Morse::startNextWord() {
 }
 
 void Morse::handleWordResponse(QChar letter) {
-    if (letter == '\m') {
+    if (letter == '\r') {
         startNextWord();
         return;
     }
@@ -249,6 +249,13 @@ void Morse::keyPressed(QString newtext) {
     QChar newletter = newtext.at(newtext.length()-1).toLower();
     qDebug() << "user pressed: " << newletter << "and last key was: " << m_lastKey;
     keyPressed(newletter);
+}
+
+bool Morse::enterPressed() {
+    if (m_gameMode != WORDS)
+        return false;
+    startNextWord();
+    return true;
 }
 
 void Morse::handleKeyResponse(QChar letterPressed) {

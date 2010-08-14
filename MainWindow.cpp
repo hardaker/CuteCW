@@ -58,6 +58,9 @@ bool MainWindow::event(QEvent *event) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     qDebug() << "key pressed: " << event->text() << " " << event->text().size() << " " << event->text().length();
+    if (event->key() == Qt::Key_Enter) {
+        m_morse->enterPressed();
+    }
     if (event->text().size() != 1 || event->text().length() != 1) {
         QMainWindow::keyPressEvent(event);
         return;
