@@ -33,6 +33,12 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
 
+#include "words/100words.h"
+#include "words/200words.h"
+#include "words/300words.h"
+#include "words/400words.h"
+#include "words/500words.h"
+
     setupSequences();
 }
 
@@ -206,6 +212,8 @@ void Morse::handleKeyResponse(QChar letterPressed) {
     // XXX: we need to store a list of times, not just a single time
 
     int msElapsed = lastTime.elapsed() - m_ditSecs; // subtract off blank-after time
+    if (msElapsed <= 0)
+        msElapsed = 1;
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
     MorseStat *pressedStat = getStat(letterPressed);
 

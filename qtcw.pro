@@ -22,7 +22,12 @@ HEADERS  += MainWindow.h \
     morse_code.h \
     Generator.h \
     MorseStat.h \
-    Prefs.h
+    Prefs.h \
+    words/100words.h \
+    words/500words.h \
+    words/400words.h \
+    words/300words.h \
+    words/200words.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui

@@ -93,6 +93,7 @@ private:
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
     QMap<QChar, QList<ditdah> *>    code;
+    QMap<int, QList<QString> *>     words;
     playingmode                     m_playingMode;
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
