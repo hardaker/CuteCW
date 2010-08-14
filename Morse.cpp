@@ -96,6 +96,7 @@ void Morse::handleWordResponse(QChar letter) {
     } else {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"red\">" + letter + "<font>");
     }
+    m_enteredWord.append(letter);
 }
 
 void Morse::setupSequences() {
