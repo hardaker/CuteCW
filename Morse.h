@@ -101,6 +101,7 @@ private:
     Generator                       *m_playBuffer;
     QMap<QChar, QList<ditdah> *>    code;
     QMap<wordNums, QList<QString> *>     words;
+    bool                            m_wordWasGood;
     playingmode                     m_playingMode;
     mode                            m_gameMode;
     int                             m_currentWPMGoal;

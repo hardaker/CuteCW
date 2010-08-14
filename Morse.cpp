@@ -84,6 +84,7 @@ void Morse::startNextWord() {
     maybePlaySequence();
     m_enteredWord = "";
     m_ui->letter->setText("");
+    m_wordWasGood = true;
 }
 
 void Morse::handleWordResponse(QChar letter) {
@@ -95,8 +96,15 @@ void Morse::handleWordResponse(QChar letter) {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
     } else {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"red\">" + letter + "<font>");
+        m_wordWasGood = false;
     }
     m_enteredWord.append(letter);
+    if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) {
+        if (m_wordWasGood)
+            m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
+        else
+            m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL</font>");
+    }
 }
 
 void Morse::setupSequences() {
