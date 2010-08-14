@@ -79,13 +79,23 @@ void Morse::switchWords(int sequence) {
 }
 
 void Morse::startNextWord() {
-    int wordnum = qrand()%(words[m_wordsNumber]->count());
-    add((*(words[m_wordsNumber]))[wordnum]);
+    m_wordnumber = qrand()%(words[m_wordsNumber]->count());
+    add((*(words[m_wordsNumber]))[m_wordnumber]);
     maybePlaySequence();
+    m_enteredWord = "";
+    m_ui->letter->setText("");
 }
 
 void Morse::handleWordResponse(QChar letter) {
-
+    if (letter == '\m') {
+        startNextWord();
+        return;
+    }
+    if ((*(words[m_wordsNumber]))[m_wordnumber][m_enteredWord.length()] == letter) {
+        m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
+    } else {
+        m_ui->letter->setText(m_ui->letter->text() + "<font color=\"red\">" + letter + "<font>");
+    }
 }
 
 void Morse::setupSequences() {
@@ -502,7 +512,7 @@ void Morse::switchMode(int newmode) {
     case WORDS:
         m_goodCount = 0;
         m_badCount = 0;
-        m_ui->wordbox->show();
+        m_ui->wordbox->hide();
         m_ui->wordbox->clear();
         m_ui->letter->show();
         m_ui->clearTraining->hide();

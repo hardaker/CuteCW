@@ -121,6 +121,8 @@ private:
     QTimer                           m_timer;
     int                              m_countWeight;
     int                             m_badCount, m_goodCount;
+    int                              m_wordnumber;
+    QString                          m_enteredWord;
 };
 
 #endif // MORSE_H
