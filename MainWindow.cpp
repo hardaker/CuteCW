@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::SPEEDTRAIN);
 
+    action = modeMenu->addAction("Word Training");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::WORDS);
+
     action = modeMenu->addAction("Read");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);

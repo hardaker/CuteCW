@@ -30,11 +30,13 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum mode { PLAY, TRAIN, SPEEDTRAIN, READ, TEST };
+    enum mode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
     enum playingmode { STOPPED, PLAYING };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
     enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4, ALPHABET = 5 };
+    enum wordNums { N100 = 0, N200 = 1, N300 = 2, N400 = 3, N500 = 4 };
 
+    void setupWords();
     void setupSequences();
     void clearList();
 
@@ -69,6 +71,9 @@ public slots:
     void playSequence();
     void maybePlaySequence();
 
+    void startNextWord();
+    void handleWordResponse(QChar letter);
+
     void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
     void keyPressed(QChar key);
@@ -79,6 +84,7 @@ public slots:
     void prefsButton();
     void switchSequence(int sequence);
     void switchMode(int newMode);
+    void switchWords(int sequence);
 
     void clearStats();
     void clearStatsButton();
@@ -93,7 +99,7 @@ private:
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
     QMap<QChar, QList<ditdah> *>    code;
-    QMap<int, QList<QString> *>     words;
+    QMap<wordNums, QList<QString> *>     words;
     playingmode                     m_playingMode;
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
@@ -104,12 +110,14 @@ private:
     QList<QChar>                    m_lastKeys;
     QList<QTime>                    m_lastTimes;
     QString                         m_trainingSequence;
+    wordNums                        m_wordsNumber;
     QStringList                     m_sequences;
     QLabel                          *m_statusBar;
     QLabel                          *m_sequenceLabel;
     Ui::MainWindow                  *m_ui;
     badLetterWeighting               m_badLetterWeighting;
-    QSignalMapper                   *m_signalMapper;
+    QSignalMapper                   *m_sequenceSignalMapper;
+    QSignalMapper                   *m_wordSignalMapper;
     QTimer                           m_timer;
     int                              m_countWeight;
     int                             m_badCount, m_goodCount;

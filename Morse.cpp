@@ -33,13 +33,59 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
 
+    setupSequences();
+    setupWords();
+}
+
+void Morse::setupWords() {
+
+    m_wordsNumber = Morse::N100;
+
 #include "words/100words.h"
 #include "words/200words.h"
 #include "words/300words.h"
 #include "words/400words.h"
 #include "words/500words.h"
 
-    setupSequences();
+    m_wordSignalMapper = new QSignalMapper();
+    QMenu *modeMenu = new QMenu(m_ui->changeSequence);
+    m_ui->changeSequence->setMenu(modeMenu);
+
+    QAction *action = modeMenu->addAction("Words 1-100");
+    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
+    m_wordSignalMapper->setMapping(action, (int) Morse::N100);
+
+    action = modeMenu->addAction("Words 101-200");
+    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
+    m_wordSignalMapper->setMapping(action, (int) Morse::N200);
+
+    action = modeMenu->addAction("Words 201-300");
+    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
+    m_wordSignalMapper->setMapping(action, (int) Morse::N300);
+
+    action = modeMenu->addAction("Words 301-400");
+    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
+    m_wordSignalMapper->setMapping(action, (int) Morse::N400);
+
+    action = modeMenu->addAction("Words 401-500");
+    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
+    m_wordSignalMapper->setMapping(action, (int) Morse::N500);
+
+    connect(m_wordSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchWords(int)));
+}
+
+void Morse::switchWords(int sequence) {
+    m_wordsNumber = (wordNums) sequence;
+}
+
+void Morse::startNextWord() {
+    int wordnum = qrand()%(words[m_wordsNumber]->count());
+    add((*(words[m_wordsNumber]))[wordnum]);
+    maybePlaySequence();
+}
+
+void Morse::handleWordResponse(QChar letter) {
+
 }
 
 void Morse::setupSequences() {
@@ -51,35 +97,36 @@ void Morse::setupSequences() {
     m_sequences.append("b?47c1d60x");
     m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
 
-    m_signalMapper = new QSignalMapper();
+
+    m_sequenceSignalMapper = new QSignalMapper();
     QMenu *modeMenu = new QMenu(m_ui->changeSequence);
     m_ui->changeSequence->setMenu(modeMenu);
 
     QAction *action = modeMenu->addAction("Full Koch");
-    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
-    m_signalMapper->setMapping(action, (int) Morse::KOCH);
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) Morse::KOCH);
 
     action = modeMenu->addAction("Koch part 1");
-    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
-    m_signalMapper->setMapping(action, (int) Morse::KOCH1);
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) Morse::KOCH1);
 
     action = modeMenu->addAction("Koch part 2");
-    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
-    m_signalMapper->setMapping(action, (int) Morse::KOCH2);
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) Morse::KOCH2);
 
     action = modeMenu->addAction("Koch part 3");
-    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
-    m_signalMapper->setMapping(action, (int) Morse::KOCH3);
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) Morse::KOCH3);
 
     action = modeMenu->addAction("Koch part 4");
-    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
-    m_signalMapper->setMapping(action, (int) Morse::KOCH4);
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) Morse::KOCH4);
 
     action = modeMenu->addAction("Alphabet");
-    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
-    m_signalMapper->setMapping(action, (int) Morse::ALPHABET);
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) Morse::ALPHABET);
 
-    connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
+    connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
 void Morse::prefsButton() {
@@ -254,6 +301,9 @@ void Morse::keyPressed(QChar newletter) {
     case SPEEDTRAIN:
         handleKeyResponse(newletter);
         break;
+    case WORDS:
+        handleWordResponse(newletter);
+        break;
     default:
         qDebug() << "ignoring key: " << newletter;
     }
@@ -383,6 +433,14 @@ Morse::audioFinished(QAudio::State state)
         m_playingMode = STOPPED;
         break;
 
+    case WORDS:
+        qDebug() << "words train stop";
+        if (m_playingMode != STOPPED) {
+            m_lastTimes.push_back(QTime::currentTime());
+        }
+        m_playingMode = STOPPED;
+        break;
+
     default:
         if (m_playingMode != STOPPED) {
             m_lastTimes.push_back(QTime::currentTime());
@@ -440,6 +498,19 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->show();
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
         startNextTrainingKey();
+        break;
+    case WORDS:
+        m_goodCount = 0;
+        m_badCount = 0;
+        m_ui->wordbox->show();
+        m_ui->wordbox->clear();
+        m_ui->letter->show();
+        m_ui->clearTraining->hide();
+        m_ui->readButton->hide();
+        m_ui->modeMenu->setText("Word Training");
+        m_ui->changeSequence->hide();
+        m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
+        startNextWord();
         break;
     case READ:
         m_ui->wordbox->show();
