@@ -103,7 +103,7 @@ void Morse::handleWordResponse(QChar letter) {
         if (m_wordWasGood)
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
         else
-            m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + (*(words[m_wordsNumber]))[m_wordnumber] + " </font>");
+            m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + (*(words[m_wordsNumber]))[m_wordnumber] + ")</font>");
     }
 }
 
