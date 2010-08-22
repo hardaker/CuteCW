@@ -48,8 +48,8 @@ void Morse::setupWords() {
 #include "words/500words.h"
 
     m_wordSignalMapper = new QSignalMapper();
-    QMenu *modeMenu = new QMenu(m_ui->changeSequence);
-    m_ui->changeSequence->setMenu(modeMenu);
+    QMenu *modeMenu = new QMenu(m_ui->changeWords);
+    m_ui->changewWords->setMenu(modeMenu);
 
     QAction *action = modeMenu->addAction("Words 1-100");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
@@ -500,6 +500,7 @@ void Morse::switchMode(int newmode) {
         m_ui->clearTraining->hide();
         m_ui->readButton->hide();
         m_ui->changeSequence->hide();
+        m_ui->changeWords->hide();
         m_ui->modeMenu->setText("Play Morse Code");
         m_ui->helpBar->setText("<font color=\"green\">Type letters to hear the keys in morse code</font>");
         break;
@@ -510,6 +511,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Recognition Training");
         m_ui->changeSequence->show();
+        m_ui->changeWords->hide();
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
         startNextTrainingKey();
         break;
@@ -522,6 +524,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Speed Training");
         m_ui->changeSequence->show();
+        m_ui->changeWords->hide();
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
         startNextTrainingKey();
         break;
@@ -535,6 +538,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->hide();
         m_ui->modeMenu->setText("Word Training");
         m_ui->changeSequence->hide();
+        m_ui->changeWords->show();
         m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
         startNextWord();
         break;
@@ -545,6 +549,7 @@ void Morse::switchMode(int newmode) {
         m_ui->readButton->show();
         m_ui->modeMenu->setText("Read to me!");
         m_ui->changeSequence->hide();
+        m_ui->changeWords->hide();
         m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
         break;
     default:
