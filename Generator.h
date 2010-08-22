@@ -12,7 +12,7 @@ class Generator : public QIODevice
 {
     Q_OBJECT
 public:
-    Generator(float secs = .5, int freq=1200);
+    Generator(float secs = .5, int freq=800);
     Generator(Generator *copyFrom);
     ~Generator();
 
