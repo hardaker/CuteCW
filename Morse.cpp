@@ -49,7 +49,7 @@ void Morse::setupWords() {
 
     m_wordSignalMapper = new QSignalMapper();
     QMenu *modeMenu = new QMenu(m_ui->changeWords);
-    m_ui->changewWords->setMenu(modeMenu);
+    m_ui->changeWords->setMenu(modeMenu);
 
     QAction *action = modeMenu->addAction("Words 1-100");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
@@ -79,7 +79,7 @@ void Morse::switchWords(int sequence) {
 }
 
 void Morse::startNextWord() {
-    m_wordnumber = qrand()%(words[m_wordsNumber]->count());
+    m_wordnumber = qrand()%(m_maxWord);
     add((*(words[m_wordsNumber]))[m_wordnumber]);
     maybePlaySequence();
     m_enteredWord = "";
@@ -100,10 +100,16 @@ void Morse::handleWordResponse(QChar letter) {
     }
     m_enteredWord.append(letter);
     if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) {
-        if (m_wordWasGood)
+        if (m_wordWasGood) {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
-        else
+            m_maxWord += 2;
+            if (m_maxWord > (*(words[m_wordsNumber])).count())
+                m_maxWord = (*(words[m_wordsNumber])).count();
+        } else {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + (*(words[m_wordsNumber]))[m_wordnumber] + ")</font>");
+            if (m_maxWord > 1)
+                m_maxWord--;
+        }
     }
 }
 
@@ -540,6 +546,7 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->hide();
         m_ui->changeWords->show();
         m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
+        m_maxWord = 2;
         startNextWord();
         break;
     case READ:

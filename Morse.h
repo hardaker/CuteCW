@@ -113,6 +113,7 @@ private:
     QList<QTime>                    m_lastTimes;
     QString                         m_trainingSequence;
     wordNums                        m_wordsNumber;
+    int                             m_maxWord;
     QStringList                     m_sequences;
     QLabel                          *m_statusBar;
     QLabel                          *m_sequenceLabel;
