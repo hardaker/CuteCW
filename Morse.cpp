@@ -311,7 +311,8 @@ void Morse::handleKeyResponse(QChar letterPressed) {
         pressedStat->addTime(msElapsed);
         m_goodCount++;
     } else {
-        pressedStat->addTime(3.0 * pressedStat->getAverageTime());
+        if (pressedStat->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
+            pressedStat->addTime(3.0 * pressedStat->getAverageTime());
         getStat(lastKey)->addTime(3.0 * getStat(lastKey)->getAverageTime());
         m_badCount++;
     }
