@@ -313,7 +313,8 @@ void Morse::handleKeyResponse(QChar letterPressed) {
     } else {
         if (pressedStat->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
             pressedStat->addTime(3.0 * pressedStat->getAverageTime());
-        getStat(lastKey)->addTime(3.0 * getStat(lastKey)->getAverageTime());
+        if (getStat(lastKey)->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
+            getStat(lastKey)->addTime(3.0 * getStat(lastKey)->getAverageTime());
         m_badCount++;
     }
 }
@@ -358,8 +359,8 @@ void Morse::startNextTrainingKey() {
     qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
-    float totalTime = 0.0, thisTime, minTime = 0.0;
-    MorseStat *stat;
+    float totalTime = 0.0, thisTime = 0.0, minTime = 0.0;
+    MorseStat *stat = 0;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
@@ -446,9 +447,15 @@ void Morse::startTimerToNextKey() {
     QTimer::singleShot(delay, this, SLOT(startNextTrainingKey()));
 }
 
+void Morse::generatorDone() {
+    //qDebug() << "generator says done";
+    audioFinished(QAudio::StoppedState); // fixes windows issues
+}
+
 void
 Morse::audioFinished(QAudio::State state)
 {
+    //qDebug() << "audio state changed: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
     switch (m_gameMode) {
@@ -582,7 +589,7 @@ Morse::add(QChar c, bool addpause)
     QList<ditdah>::iterator iter;
     QList<ditdah>::iterator endat = code[c]->end();
 
-    bool lastWasPause;
+    bool lastWasPause = false;
     for(iter = code[c]->begin(); iter != endat; iter++)
     {
         lastWasPause = false;
@@ -649,6 +656,7 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 
     m_playBuffer = new Generator(m_pause);
     m_playBuffer->start();
+    connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()));
 
     #include "morse_code.h"
 

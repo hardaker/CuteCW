@@ -34,11 +34,14 @@ public:
     int  m_zerocount;
     qint64 bytes_left;
 
+signals:
+    void generatorDone();
+
 public slots:
     void restartData();
 
     qint64 readData(char *data, qint64 maxlen);
-    qint64 writeData(const char *data, qint64 len);
+    qint64 writeData(const char *data, qint64 len);            
 
 private:
     int putShort(char *t, unsigned int value);

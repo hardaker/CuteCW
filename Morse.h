@@ -75,6 +75,7 @@ public slots:
     void startNextWord();
     void handleWordResponse(QChar letter);
 
+    void generatorDone();
     void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
     void keyPressed(QChar key);
