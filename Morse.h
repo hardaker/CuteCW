@@ -52,6 +52,7 @@ public:
 
     int  msToWPM(float ms);
     int  msToPauseWPM(float ms);
+    float msToPauseWPMF(float ms);
 
     void setStatus(const QString &status);
     void setSequence(const QString &sequence, int currentlyAt);
