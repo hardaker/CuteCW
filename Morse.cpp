@@ -371,7 +371,7 @@ void Morse::startNextTrainingKey() {
     QString::iterator lastLetter = m_trainingSequence.end();
     for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
         letterCount++;
-        currentLetterGoal = *letter;
+        currentLetterGoal = (*letter).toUpper();
         stat = getStat(*letter);
         thisTime = stat->getAverageTime();
         totalTime += thisTime;
