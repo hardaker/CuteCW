@@ -365,11 +365,13 @@ void Morse::startNextTrainingKey() {
     QList<QPair<QChar, float> > letters;
     float totalTime = 0.0, thisTime = 0.0, minTime = 0.0;
     MorseStat *stat = 0;
+    QString currentLetterGoal;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
     for(letter = m_trainingSequence.begin(); letter != lastLetter; ++letter) {
         letterCount++;
+        currentLetterGoal = *letter;
         stat = getStat(*letter);
         thisTime = stat->getAverageTime();
         totalTime += thisTime;
@@ -382,6 +384,7 @@ void Morse::startNextTrainingKey() {
             m_lastKey = *letter;
             m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
+            m_ui->avewpm->setText("total: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " + *letter + ": " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
             addAndPlayIt(*letter);
             return;
         }
@@ -396,7 +399,8 @@ void Morse::startNextTrainingKey() {
         }
     }
 
-    m_ui->avewpm->setText("last: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", total: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
+    m_ui->avewpm->setText("ave WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+                          currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
     
