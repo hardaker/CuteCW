@@ -40,6 +40,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="play">
+         <property name="text">
+          <string>Play</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="changeSequence">
          <property name="text">
           <string>Change Sequence</string>
@@ -96,6 +103,20 @@
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QLabel" name="letter">
+         <property name="font">
+          <font>
+           <pointsize>32</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="WPM">
          <property name="font">
           <font>
            <pointsize>32</pointsize>

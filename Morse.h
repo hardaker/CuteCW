@@ -31,7 +31,7 @@ public:
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
     enum mode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
-    enum playingmode { STOPPED, PLAYING };
+    enum playingmode { STOPPED, PLAYING, PAUSED };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
     enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4, ALPHABET = 5 };
     enum wordNums { N100 = 0, N200 = 1, N300 = 2, N400 = 3, N500 = 4 };
@@ -91,6 +91,8 @@ public slots:
 
     void clearStats();
     void clearStatsButton();
+
+    void playButton();
 
     void saveSettings();
     void loadSettings();

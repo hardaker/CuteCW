@@ -32,6 +32,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
+    connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 
     setupSequences();
     setupWords();
@@ -211,6 +212,7 @@ void Morse::clearStatsButton() {
 void
 Morse::playSequence()
 {
+    qDebug() << "Playing!";
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
@@ -245,13 +247,15 @@ void Morse::readNextLetter() {
 }
 
 void Morse::maybePlaySequence() {
-    if (m_playingMode == STOPPED) {
+    qDebug() << "gmaybe oing to key: " << " / " << m_playingMode;
+    if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
+        qDebug() << "going to key: ";
         playSequence();
     }
 }
 
 void Morse::addAndPlayIt(QChar c) {
-    if (m_playingMode == STOPPED) {
+    if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         clearList();
         add(pause());
     }
@@ -271,6 +275,53 @@ bool Morse::enterPressed() {
         return false;
     startNextWord();
     return true;
+}
+
+void Morse::playButton() {
+    if (m_playingMode == PAUSED) {
+        m_playingMode = STOPPED;
+        m_lastKeys.clear();
+        m_lastTimes.clear();
+        m_ui->play->setText("Pause");
+
+        switch (m_gameMode) {
+        case PLAY:
+            break;
+        case TRAIN:
+        case SPEEDTRAIN:
+            startNextTrainingKey();
+            break;
+        case WORDS:
+            startNextWord();
+            break;
+        case READ:
+            // XXX
+            break;
+        case TEST:
+            break;
+        }
+
+        // XXX: then do something based on the mode
+    } else { // PLAYING or PAUSED
+        m_playingMode = PAUSED;
+        m_ui->play->setText("Go");
+
+        switch (m_gameMode) {
+        case PLAY:
+            break;
+        case TRAIN:
+        case SPEEDTRAIN:
+            break;
+        case WORDS:
+            break;
+        case READ:
+            // XXX
+            break;
+        case TEST:
+            break;
+        }
+
+    }
 }
 
 void Morse::handleKeyResponse(QChar letterPressed) {
@@ -366,6 +417,9 @@ void Morse::startNextTrainingKey() {
     float totalTime = 0.0, thisTime = 0.0, minTime = 0.0;
     MorseStat *stat = 0;
     QString currentLetterGoal;
+
+    if (m_playingMode == PAUSED)
+        return;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
@@ -515,6 +569,8 @@ void Morse::switchMode(int newmode) {
     m_lastKeys.clear();
     m_lastTimes.clear();
     m_playBuffer->stop();
+    m_ui->letter->setText("");
+    m_ui->WPM->setText("");
     switch (m_gameMode) {
     case PLAY:
         m_ui->wordbox->hide();
@@ -525,6 +581,8 @@ void Morse::switchMode(int newmode) {
         m_ui->changeWords->hide();
         m_ui->modeMenu->setText("Play Morse Code");
         m_ui->helpBar->setText("<font color=\"green\">Type letters to hear the keys in morse code</font>");
+        m_ui->play->hide();
+        m_ui->WPM->hide();
         break;
     case TRAIN:
         m_ui->wordbox->hide();
@@ -535,6 +593,10 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->show();
         m_ui->changeWords->hide();
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
+        m_ui->play->show();
+        m_ui->WPM->show();
+        m_playingMode = PLAYING;
+        playButton(); // will change to "paused"
         startNextTrainingKey();
         break;
     case SPEEDTRAIN:
@@ -548,6 +610,10 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->show();
         m_ui->changeWords->hide();
         m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
+        m_ui->play->show();
+        m_ui->WPM->show();
+        m_playingMode = PLAYING;
+        playButton(); // will change to "paused"
         startNextTrainingKey();
         break;
     case WORDS:
@@ -562,6 +628,10 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->hide();
         m_ui->changeWords->show();
         m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
+        m_ui->play->show();
+        m_ui->WPM->show();
+        m_playingMode = PLAYING;
+        playButton(); // will change to "paused"
         m_maxWord = 2;
         startNextWord();
         break;
@@ -574,6 +644,10 @@ void Morse::switchMode(int newmode) {
         m_ui->changeSequence->hide();
         m_ui->changeWords->hide();
         m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
+        m_ui->play->hide();
+        m_ui->WPM->hide();
+        m_playingMode = PLAYING;
+        playButton(); // will change to "paused"
         break;
     default:
         break;
