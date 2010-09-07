@@ -438,7 +438,13 @@ void Morse::startNextTrainingKey() {
             m_lastKey = *letter;
             m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
-            m_ui->avewpm->setText("total: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " + *letter + ": " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
+            m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+                                  *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
+            if (m_gameMode == SPEEDTRAIN)
+                m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
+                                                                  totalTime/float(letterCount)), 'g', 2));
+            else
+                m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
             addAndPlayIt(*letter);
             return;
         }
@@ -453,8 +459,14 @@ void Morse::startNextTrainingKey() {
         }
     }
 
-    m_ui->avewpm->setText("ave WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+    // They have the whole sequence active at this point
+
+    m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                           currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
+    if (m_gameMode == SPEEDTRAIN)
+        m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount))));
+    else
+        m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount))));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
     
