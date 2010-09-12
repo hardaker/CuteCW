@@ -11,7 +11,8 @@
 
 Morse::Morse()
     : QObject(), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(50), m_badCount(0), m_goodCount(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_sequenceLabel(0), m_ui(0), m_countWeight(50), m_badCount(0), m_goodCount(0),
+    m_doEntireSequence(false)
 {
     qDebug() << "new morse";
     setupSequences();
@@ -432,21 +433,25 @@ void Morse::startNextTrainingKey() {
         if (minTime > thisTime)
             minTime = thisTime;
         if (thisTime < 0) {
-            // never keyed yet; do it immediately if we got this far
-            setStatus("Starting a new letter: " + QString(*letter));
-            qDebug() << "|------ keying: " << *letter;
-            m_lastKey = *letter;
-            m_lastKeys.append(*letter);
-            setSequence(m_trainingSequence, letterCount);
-            m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
-                                  *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
-            if (m_gameMode == SPEEDTRAIN)
-                m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
-                                                                  totalTime/float(letterCount)), 'g', 2));
-            else
-                m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
-            addAndPlayIt(*letter);
-            return;
+            if (m_doEntireSequence) {
+                thisTime = 1000*60.0/(50.0*float(m_currentWPMAccept));
+            } else {
+                // never keyed yet; do it immediately if we got this far
+                setStatus("Starting a new letter: " + QString(*letter));
+                qDebug() << "|------ keying: " << *letter;
+                m_lastKey = *letter;
+                m_lastKeys.append(*letter);
+                setSequence(m_trainingSequence, letterCount);
+                m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+                                      *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
+                if (m_gameMode == SPEEDTRAIN)
+                    m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
+                                                                      totalTime/float(letterCount)), 'g', 2));
+                else
+                    m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
+                addAndPlayIt(*letter);
+                return;
+            }
         }
 
         qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
@@ -782,6 +787,10 @@ void Morse::setSequence(const QString &sequence, int currentlyAt) {
         newLetter += "</font>";
         m_ui->letter->setText( newLetter );
     }
+}
+
+void Morse::setDoEntireSequence(bool value) {
+    m_doEntireSequence = value;
 }
 
 Generator *

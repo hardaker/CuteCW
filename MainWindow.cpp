@@ -3,6 +3,7 @@
 #include "ui_Prefs.h"
 #include <QtMultimedia/QAudioFormat>
 #include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
 #include <qdebug.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // setup mode menu
     m_signalMapper = new QSignalMapper(this);
 
+    // Create the "mode" menu
     QMenu *modeMenu = new QMenu(ui->modeMenu);
     ui->modeMenu->setMenu(modeMenu);
 
@@ -39,6 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     action = modeMenu->addAction("Read");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
+
+    // Create the preference items in the quick menu
+    action = menuBar()->addAction("Use Entire Sequence");
+    action->setCheckable(true);
+    action->setChecked(false);
+    connect(action, SIGNAL(toggled(bool)), m_morse, SLOT(setDoEntireSequence(bool)));
+
 
     createAudioOutput();
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));

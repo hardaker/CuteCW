@@ -97,6 +97,8 @@ public slots:
     void saveSettings();
     void loadSettings();
 
+    void setDoEntireSequence(bool value);
+
 private:
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
@@ -127,9 +129,10 @@ private:
     QSignalMapper                   *m_wordSignalMapper;
     QTimer                           m_timer;
     int                              m_countWeight;
-    int                             m_badCount, m_goodCount;
+    int                              m_badCount, m_goodCount;
     int                              m_wordnumber;
     QString                          m_enteredWord;
+    bool                             m_doEntireSequence;
 };
 
 #endif // MORSE_H
