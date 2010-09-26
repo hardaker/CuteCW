@@ -11,6 +11,9 @@ class PlayMode : public MorseMode
 public:
     PlayMode(Morse *parent);
 
+public slots:
+    virtual void handleKeyPress(QChar letterPressed);
+
 private:
     Morse   *m_morse;
 
