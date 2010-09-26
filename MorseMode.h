@@ -14,6 +14,7 @@ public:
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed) = 0;
+    virtual void switchToMode() = 0;
 };
 
 #endif // MORSEMODE_H

@@ -9,3 +9,8 @@ void PlayMode::handleKeyPress(QChar letterPressed)
 {
 
 }
+
+void PlayMode::switchToMode()
+{
+
+}

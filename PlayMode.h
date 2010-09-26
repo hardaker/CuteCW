@@ -13,6 +13,7 @@ public:
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
+    virtual void switchToMode();
 
 private:
     Morse   *m_morse;
