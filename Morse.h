@@ -14,10 +14,13 @@
 #include "Generator.h"
 #include "MorseStat.h"
 
+#include "PlayMode.h"
+
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
 
 class MainWindow;
+class PlayMode;
 
 class Morse : public QObject
 {
@@ -100,6 +103,9 @@ public slots:
     void setDoEntireSequence(bool value);
 
 private:
+
+    PlayMode                        *m_playMode;
+
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
     float                           m_ditSecs;

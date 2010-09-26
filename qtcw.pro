@@ -15,7 +15,10 @@ SOURCES += main.cpp\
         Morse.cpp \
     Generator.cpp \
     MorseStat.cpp \
-    Prefs.cpp
+    Prefs.cpp \
+    MorseMode.cpp \
+    TrainingMode.cpp \
+    PlayMode.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -27,7 +30,10 @@ HEADERS  += MainWindow.h \
     words/500words.h \
     words/400words.h \
     words/300words.h \
-    words/200words.h
+    words/200words.h \
+    MorseMode.h \
+    TrainingMode.h \
+    PlayMode.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui
