@@ -1,8 +1,8 @@
 #include "PlayMode.h"
 
 PlayMode::PlayMode(Morse *parent)
+    : MorseMode(parent)
 {
-    m_morse = parent;
 }
 
 void PlayMode::handleKeyPress(QChar letterPressed)

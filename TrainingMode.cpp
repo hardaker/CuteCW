@@ -1,5 +1,6 @@
 #include "TrainingMode.h"
 
-TrainingMode::TrainingMode()
+TrainingMode::TrainingMode(Morse *parent)
+    : MorseMode(parent)
 {
 }

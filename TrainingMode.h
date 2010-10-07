@@ -6,7 +6,7 @@
 class TrainingMode : public MorseMode
 {
 public:
-    TrainingMode();
+    TrainingMode(Morse *parent);
 };
 
 #endif // TRAININGMODE_H
