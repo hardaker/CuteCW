@@ -21,6 +21,7 @@
 
 class MainWindow;
 class PlayMode;
+class MorseMode;
 
 class Morse : public QObject
 {
@@ -105,6 +106,8 @@ public slots:
 private:
 
     PlayMode                        *m_playMode;
+
+    QMap<mode, MorseMode *>          m_modes;
 
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;

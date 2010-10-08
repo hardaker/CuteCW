@@ -15,7 +15,7 @@ Morse::Morse()
     m_doEntireSequence(false)
 {
     qDebug() << "new morse";
-    m_playMode = new PlayMode(this);
+    m_modes.insert(PLAY, new PlayMode(this));
     setupSequences();
 }
 

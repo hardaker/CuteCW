@@ -21,6 +21,8 @@ public slots:
     virtual void handleKeyPress(QChar letterPressed) = 0;
     virtual void switchToMode() = 0;
 
+    virtual void pauseButton();
+
 protected:
     Morse   *m_morse;
 };

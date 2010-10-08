@@ -9,3 +9,6 @@ MorseMode::MorseMode(Morse *morse)
 Morse *MorseMode::morseParent() {
     return m_morse;
 }
+
+void MorseMode::pauseButton() {
+}
