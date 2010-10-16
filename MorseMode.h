@@ -22,7 +22,7 @@ public slots:
     virtual void handleKeyPress(QChar letterPressed) = 0;
     virtual void switchToMode(Ui::MainWindow *m_ui) = 0;
 
-    virtual void pauseButton();
+    virtual void playButton();
 
 protected:
     Morse   *m_morse;

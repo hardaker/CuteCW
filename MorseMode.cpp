@@ -10,5 +10,5 @@ Morse *MorseMode::morseParent() {
     return m_morse;
 }
 
-void MorseMode::pauseButton() {
+void MorseMode::playButton() {
 }
