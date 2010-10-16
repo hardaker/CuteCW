@@ -47,3 +47,31 @@ symbian {
     TARGET.EPOCSTACKSIZE = 0x14000
     TARGET.EPOCHEAPSIZE = 0x020000 0x800000
 }
+
+OTHER_FILES += \
+    debian/changelog \
+    debian/compat \
+    debian/control \
+    debian/copyright \
+    debian/README \
+    debian/rules \
+    qtcw.desktop
+
+unix:!symbian {
+    maemo5 {
+        target.path = /opt/usr/bin
+    } else {
+        target.path = /usr/local/bin
+    }
+    INSTALLS += target
+}
+
+unix:!symbian {
+    desktopfile.files = $${TARGET}.desktop
+    maemo5 {
+        desktopfile.path = /usr/share/applications/hildon
+    } else {
+        desktopfile.path = /usr/share/applications
+    }
+    INSTALLS += desktopfile
+}

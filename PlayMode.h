@@ -4,6 +4,8 @@
 #include "Morse.h"
 #include "MorseMode.h"
 
+#include "ui_MainWindow.h"
+
 class Morse;
 
 class PlayMode : public MorseMode
@@ -13,10 +15,9 @@ public:
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
-    virtual void switchToMode();
+    virtual void switchToMode(Ui::MainWindow *m_ui);
 
 private:
-    Morse   *m_morse;
 
 };
 

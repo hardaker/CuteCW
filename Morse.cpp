@@ -30,6 +30,9 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
+
+    m_modes.insert(PLAY, new PlayMode(this));
+
     switchMode(Morse::PLAY);
 
     connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
@@ -375,7 +378,7 @@ void Morse::handleKeyResponse(QChar letterPressed) {
 void Morse::keyPressed(QChar newletter) {
     switch (m_gameMode) {
     case PLAY:
-        addAndPlayIt(newletter);
+        m_modes[m_gameMode]->handleKeyPress(newletter);
         break;
     case TRAIN:
         // ensure we're not still playing a sound:
@@ -591,16 +594,7 @@ void Morse::switchMode(int newmode) {
     m_ui->WPM->setText("");
     switch (m_gameMode) {
     case PLAY:
-        m_ui->wordbox->hide();
-        m_ui->letter->hide();
-        m_ui->clearTraining->hide();
-        m_ui->readButton->hide();
-        m_ui->changeSequence->hide();
-        m_ui->changeWords->hide();
-        m_ui->modeMenu->setText("Play Morse Code");
-        m_ui->helpBar->setText("<font color=\"green\">Type letters to hear the keys in morse code</font>");
-        m_ui->play->hide();
-        m_ui->WPM->hide();
+        m_modes[(mode) newmode]->switchToMode(m_ui);
         break;
     case TRAIN:
         m_ui->wordbox->hide();

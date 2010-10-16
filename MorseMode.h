@@ -5,6 +5,7 @@
 #include <QtCore/QString>
 
 // #include "Morse.h"
+#include "ui_MainWindow.h"
 
 class Morse;
 
@@ -19,7 +20,7 @@ public:
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed) = 0;
-    virtual void switchToMode() = 0;
+    virtual void switchToMode(Ui::MainWindow *m_ui) = 0;
 
     virtual void pauseButton();
 
