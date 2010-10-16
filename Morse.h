@@ -70,6 +70,11 @@ public:
     Generator *letterPause();
     Generator *space();
 
+    float ditSecs();
+
+    int currentWPMGoal();
+    int currentWPMAccept();
+
 public slots:
     void startNextTrainingKey();
     void startTimerToNextKey();

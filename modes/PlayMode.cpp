@@ -1,7 +1,7 @@
 #include "PlayMode.h"
 
-PlayMode::PlayMode(Morse *parent)
-    : MorseMode(parent)
+PlayMode::PlayMode(Morse *parent, Ui::MainWindow *ui)
+    : MorseMode(parent, ui)
 {
 }
 
@@ -10,7 +10,7 @@ void PlayMode::handleKeyPress(QChar letterPressed)
     m_morse->addAndPlayIt(letterPressed);
 }
 
-void PlayMode::switchToMode(Ui::MainWindow *m_ui)
+void PlayMode::switchToMode()
 {
     m_ui->wordbox->hide();
     m_ui->letter->hide();

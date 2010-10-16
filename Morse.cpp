@@ -15,7 +15,7 @@ Morse::Morse()
     m_doEntireSequence(false)
 {
     qDebug() << "new morse";
-    m_modes.insert(PLAY, new PlayMode(this));
+    m_modes.insert(PLAY, new PlayMode(this, m_ui));
     setupSequences();
 }
 
@@ -31,7 +31,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     qsrand(QTime::currentTime().msec());
     loadSettings();
 
-    m_modes.insert(PLAY, new PlayMode(this));
+    m_modes.insert(PLAY, new PlayMode(this, m_ui));
 
     switchMode(Morse::PLAY);
 
@@ -594,7 +594,7 @@ void Morse::switchMode(int newmode) {
     m_ui->WPM->setText("");
     switch (m_gameMode) {
     case PLAY:
-        m_modes[(mode) newmode]->switchToMode(m_ui);
+        m_modes[(mode) newmode]->switchToMode();
         break;
     case TRAIN:
         m_ui->wordbox->hide();
@@ -788,6 +788,14 @@ void Morse::setDoEntireSequence(bool value) {
     m_doEntireSequence = value;
 }
 
+int Morse::currentWPMAccept() {
+    return m_currentWPMAccept;
+}
+
+int Morse::currentWPMGoal() {
+    return m_currentWPMGoal;
+}
+
 Generator *
 Morse::dit()
 {
@@ -816,4 +824,10 @@ Generator *
 Morse::space()
 {
     return m_space;
+}
+
+float
+Morse::ditSecs()
+{
+    return m_ditSecs;
 }

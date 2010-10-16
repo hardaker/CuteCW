@@ -11,11 +11,11 @@ class Morse;
 class PlayMode : public MorseMode
 {
 public:
-    PlayMode(Morse *parent);
+    PlayMode(Morse *parent, Ui::MainWindow *ui);
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
-    virtual void switchToMode(Ui::MainWindow *m_ui);
+    virtual void switchToMode();
 
 private:
 
