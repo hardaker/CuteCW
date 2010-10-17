@@ -14,7 +14,9 @@
 #include "Generator.h"
 #include "MorseStat.h"
 
-#include "PlayMode.h"
+#include "modes/PlayMode.h"
+#include "modes/LetterTrainingMode.h"
+#include "modes/SpeedTrainingMode.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"

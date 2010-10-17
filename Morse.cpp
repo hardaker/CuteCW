@@ -32,6 +32,8 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     loadSettings();
 
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
+    m_modes.insert(TRAIN, new LetterTrainingMode(this, m_ui));
+    m_modes.insert(SPEEDTRAIN, new SpeedTrainingMode(this, m_ui));
 
     switchMode(Morse::PLAY);
 
@@ -592,41 +594,21 @@ void Morse::switchMode(int newmode) {
     m_playBuffer->stop();
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
+    m_goodCount = 0;
+    m_badCount = 0;
+
     switch (m_gameMode) {
     case PLAY:
         m_modes[(mode) newmode]->switchToMode();
         break;
     case TRAIN:
-        m_ui->wordbox->hide();
-        m_ui->letter->show();
-        m_ui->clearTraining->show();
-        m_ui->readButton->hide();
-        m_ui->modeMenu->setText("Recognition Training");
-        m_ui->changeSequence->show();
-        m_ui->changeWords->hide();
-        m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
-        m_ui->play->show();
-        m_ui->WPM->show();
-        m_playingMode = PLAYING;
-        playButton(); // will change to "paused"
-        startNextTrainingKey();
-        break;
     case SPEEDTRAIN:
-        m_goodCount = 0;
-        m_badCount = 0;
-        m_ui->wordbox->hide();
-        m_ui->letter->show();
-        m_ui->clearTraining->show();
-        m_ui->readButton->hide();
-        m_ui->modeMenu->setText("Speed Training");
-        m_ui->changeSequence->show();
-        m_ui->changeWords->hide();
-        m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
-        m_ui->play->show();
-        m_ui->WPM->show();
+        m_modes[(mode) newmode]->switchToMode();
+
         m_playingMode = PLAYING;
         playButton(); // will change to "paused"
         startNextTrainingKey();
+
         break;
     case WORDS:
         m_goodCount = 0;
