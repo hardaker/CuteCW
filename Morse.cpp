@@ -42,83 +42,6 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 
     setupSequences();
-    setupWords();
-}
-
-void Morse::setupWords() {
-
-    m_wordsNumber = Morse::N100;
-
-#include "words/100words.h"
-#include "words/200words.h"
-#include "words/300words.h"
-#include "words/400words.h"
-#include "words/500words.h"
-
-    m_wordSignalMapper = new QSignalMapper();
-    QMenu *modeMenu = new QMenu(m_ui->changeWords);
-    m_ui->changeWords->setMenu(modeMenu);
-
-    QAction *action = modeMenu->addAction("Words 1-100");
-    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
-    m_wordSignalMapper->setMapping(action, (int) Morse::N100);
-
-    action = modeMenu->addAction("Words 101-200");
-    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
-    m_wordSignalMapper->setMapping(action, (int) Morse::N200);
-
-    action = modeMenu->addAction("Words 201-300");
-    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
-    m_wordSignalMapper->setMapping(action, (int) Morse::N300);
-
-    action = modeMenu->addAction("Words 301-400");
-    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
-    m_wordSignalMapper->setMapping(action, (int) Morse::N400);
-
-    action = modeMenu->addAction("Words 401-500");
-    connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
-    m_wordSignalMapper->setMapping(action, (int) Morse::N500);
-
-    connect(m_wordSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchWords(int)));
-}
-
-void Morse::switchWords(int sequence) {
-    m_wordsNumber = (wordNums) sequence;
-}
-
-void Morse::startNextWord() {
-    m_wordnumber = qrand()%(m_maxWord);
-    add((*(words[m_wordsNumber]))[m_wordnumber]);
-    maybePlaySequence();
-    m_enteredWord = "";
-    m_ui->letter->setText("");
-    m_wordWasGood = true;
-}
-
-void Morse::handleWordResponse(QChar letter) {
-    if (letter == '\r') {
-        startNextWord();
-        return;
-    }
-    if ((*(words[m_wordsNumber]))[m_wordnumber][m_enteredWord.length()] == letter) {
-        m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
-    } else {
-        m_ui->letter->setText(m_ui->letter->text() + "<font color=\"red\">" + letter + "<font>");
-        m_wordWasGood = false;
-    }
-    m_enteredWord.append(letter);
-    if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) {
-        if (m_wordWasGood) {
-            m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
-            m_maxWord += 2;
-            if (m_maxWord > (*(words[m_wordsNumber])).count())
-                m_maxWord = (*(words[m_wordsNumber])).count();
-        } else {
-            m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + (*(words[m_wordsNumber]))[m_wordnumber] + ")</font>");
-            if (m_maxWord > 1)
-                m_maxWord--;
-        }
-    }
 }
 
 void Morse::setupSequences() {
@@ -261,15 +184,6 @@ void Morse::maybePlaySequence() {
     }
 }
 
-void Morse::addAndPlayIt(QChar c) {
-    if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
-        clearList();
-        add(pause());
-    }
-    add(c, false);
-    add(m_letterPause);
-    maybePlaySequence();
-}
 
 void Morse::keyPressed(QString newtext) {
     QChar newletter = newtext.at(newtext.length()-1).toLower();
@@ -278,10 +192,7 @@ void Morse::keyPressed(QString newtext) {
 }
 
 bool Morse::enterPressed() {
-    if (m_gameMode != WORDS)
-        return false;
-    startNextWord();
-    return true;
+    return m_modes[m_gameMode]->enterPressed();
 }
 
 void Morse::playButton() {
@@ -299,7 +210,7 @@ void Morse::playButton() {
             startNextTrainingKey();
             break;
         case WORDS:
-            startNextWord();
+            m_modes[WORDS]->enterPressed();
             break;
         case READ:
             // XXX
@@ -380,6 +291,7 @@ void Morse::handleKeyResponse(QChar letterPressed) {
 void Morse::keyPressed(QChar newletter) {
     switch (m_gameMode) {
     case PLAY:
+    case WORDS:
         m_modes[m_gameMode]->handleKeyPress(newletter);
         break;
     case TRAIN:
@@ -392,9 +304,6 @@ void Morse::keyPressed(QChar newletter) {
         break;
     case SPEEDTRAIN:
         handleKeyResponse(newletter);
-        break;
-    case WORDS:
-        handleWordResponse(newletter);
         break;
     default:
         qDebug() << "ignoring key: " << newletter;
@@ -574,18 +483,6 @@ Morse::audioFinished(QAudio::State state)
     }
 }
 
-void
-Morse::clearList()
-{
-    m_playBuffer->clearBuffer();
-}
-
-void
-Morse::add(Generator *nextSound)
-{
-    m_playBuffer->appendDataFrom(nextSound);
-}
-
 void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::mode) newmode;
     qDebug() << "switch to:" << m_gameMode;
@@ -611,23 +508,7 @@ void Morse::switchMode(int newmode) {
 
         break;
     case WORDS:
-        m_goodCount = 0;
-        m_badCount = 0;
-        m_ui->wordbox->hide();
-        m_ui->wordbox->clear();
-        m_ui->letter->show();
-        m_ui->clearTraining->hide();
-        m_ui->readButton->hide();
-        m_ui->modeMenu->setText("Word Training");
-        m_ui->changeSequence->hide();
-        m_ui->changeWords->show();
-        m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
-        m_ui->play->show();
-        m_ui->WPM->show();
-        m_playingMode = PLAYING;
-        playButton(); // will change to "paused"
-        m_maxWord = 2;
-        startNextWord();
+        m_modes[WORDS]->switchToMode();
         break;
     case READ:
         m_ui->wordbox->show();
@@ -653,6 +534,54 @@ void Morse::switchSequence(int sequence) {
     setSequence(m_trainingSequence, 1);
     clearStats();
     startNextTrainingKey();
+}
+
+
+void Morse::setSequence(const QString &sequence, int currentlyAt) {
+    if (m_sequenceLabel) {
+        QString left = sequence.left(currentlyAt);
+        QString right = sequence.right(sequence.length() - currentlyAt);
+        m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
+
+        QChar theLetter = sequence[currentlyAt-1].toLower();
+        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "  ";
+        QList<ditdah>::iterator it;
+        QList<ditdah>::iterator end = code[theLetter]->end();
+        for(it = code[theLetter]->begin(); it != end; ++it) {
+            if (*it == DIT)
+                newLetter = newLetter + " " + ".";
+            else if (*it == DAH)
+                newLetter = newLetter + " " + "-";
+        }
+        newLetter += "</font>";
+        m_ui->letter->setText( newLetter );
+    }
+}
+
+//
+// HERE and below is tone generation and sequence playing
+//
+
+void Morse::addAndPlayIt(QChar c) {
+    if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
+        clearList();
+        add(pause());
+    }
+    add(c, false);
+    add(m_letterPause);
+    maybePlaySequence();
+}
+
+void
+Morse::clearList()
+{
+    m_playBuffer->clearBuffer();
+}
+
+void
+Morse::add(Generator *nextSound)
+{
+    m_playBuffer->appendDataFrom(nextSound);
 }
 
 void
@@ -743,27 +672,6 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 void Morse::setStatus(const QString &status) {
     if (m_statusBar)
         m_statusBar->setText(status);
-}
-
-void Morse::setSequence(const QString &sequence, int currentlyAt) {
-    if (m_sequenceLabel) {
-        QString left = sequence.left(currentlyAt);
-        QString right = sequence.right(sequence.length() - currentlyAt);
-        m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
-
-        QChar theLetter = sequence[currentlyAt-1].toLower();
-        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "  ";
-        QList<ditdah>::iterator it;
-        QList<ditdah>::iterator end = code[theLetter]->end();
-        for(it = code[theLetter]->begin(); it != end; ++it) {
-            if (*it == DIT)
-                newLetter = newLetter + " " + ".";
-            else if (*it == DAH)
-                newLetter = newLetter + " " + "-";
-        }
-        newLetter += "</font>";
-        m_ui->letter->setText( newLetter );
-    }
 }
 
 void Morse::setDoEntireSequence(bool value) {

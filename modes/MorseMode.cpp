@@ -16,6 +16,10 @@ Morse *MorseMode::morseParent() {
 void MorseMode::playButton() {
 }
 
+bool MorseMode::enterPressed() {
+    return false;
+}
+
 void MorseMode::handleKeyResponse(QChar letterPressed) {
 
     qDebug() << "Key pressed = " << letterPressed << ", Queue of stored keys: keys=" << m_lastKeys.count() << ", times=" << m_lastTimes.count();

@@ -26,6 +26,7 @@ public slots:
     virtual void switchToMode() = 0;
 
     virtual void playButton();
+    virtual bool enterPressed();
 
     void handleKeyResponse(QChar letterPressed);
 
