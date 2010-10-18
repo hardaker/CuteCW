@@ -23,6 +23,8 @@ public:
 public slots:
     virtual void handleKeyPress(QChar letterPressed) = 0;
 
+    virtual void play();
+
 private:
     QMap<wordNums, QList<QString> *>     words;
     bool                            m_wordWasGood;

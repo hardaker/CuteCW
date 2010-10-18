@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     modes/MorseMode.cpp \
     modes/PlayMode.cpp \
     modes/LetterTrainingMode.cpp \
-    modes/WordTrainingMode.cpp
+    modes/WordTrainingMode.cpp \
+    modes/ReadMode.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -39,7 +40,8 @@ HEADERS  += MainWindow.h \
     modes/MorseMode.h \
     modes/PlayMode.h \
     modes/LetterTrainingMode.h \
-    modes/WordTrainingMode.h
+    modes/WordTrainingMode.h \
+    modes/ReadMode.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui

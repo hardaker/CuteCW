@@ -60,6 +60,7 @@ void WordTrainingMode::switchToMode() {
     m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
     m_ui->play->show();
     m_ui->WPM->show();
+    clear();
 
     m_maxWord = 2;
 
@@ -68,6 +69,10 @@ void WordTrainingMode::switchToMode() {
 
 void WordTrainingMode::switchWords(int sequence) {
     m_wordsNumber = (wordNums) sequence;
+}
+
+void WordTrainingMode::play() {
+    enterPressed();
 }
 
 bool WordTrainingMode::enterPressed() {
@@ -105,3 +110,4 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
         }
     }
 }
+

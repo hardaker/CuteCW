@@ -39,7 +39,6 @@ public:
     enum mode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
     enum playingmode { STOPPED, PLAYING, PAUSED };
     enum badLetterWeighting { LOW = 1, HIGH = 2 };
-    enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4, ALPHABET = 5 };
 
     void setupWords();
     void setupSequences();
@@ -55,12 +54,7 @@ public:
 
     MorseStat *getStat(const QChar &key);
 
-    int  msToWPM(float ms);
-    int  msToPauseWPM(float ms);
-    float msToPauseWPMF(float ms);
-
     void setStatus(const QString &status);
-    void setSequence(const QString &sequence, int currentlyAt);
 
     void handleKeyResponse(QChar letterPressed);
     bool enterPressed();
@@ -75,6 +69,10 @@ public:
 
     int currentWPMGoal();
     int currentWPMAccept();
+    playingmode playingMode();
+    void setPlayingMode(playingmode newmode);
+    mode gameMode();
+    badLetterWeighting get_badLetterWeighting();
 
 public slots:
     void startNextTrainingKey();
@@ -105,6 +103,10 @@ public slots:
 
     void setDoEntireSequence(bool value);
 
+public:
+    QLabel                          *m_sequenceLabel;
+    QMap<QChar, QList<ditdah> *>    code;
+
 private:
 
     PlayMode                        *m_playMode;
@@ -116,27 +118,15 @@ private:
     float                           m_ditSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
-    QMap<QChar, QList<ditdah> *>    code;
     playingmode                     m_playingMode;
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
     int                             m_currentWPMAccept;
-    QTextCursor                     m_readSpot;
     QMap<QChar, MorseStat *>        m_stats;
-    QChar                           m_lastKey;
-    QList<QChar>                    m_lastKeys;
-    QList<QTime>                    m_lastTimes;
-    QString                         m_trainingSequence;
-    QStringList                     m_sequences;
     QLabel                          *m_statusBar;
-    QLabel                          *m_sequenceLabel;
     Ui::MainWindow                  *m_ui;
     badLetterWeighting               m_badLetterWeighting;
-    QSignalMapper                   *m_sequenceSignalMapper;
     QTimer                           m_timer;
-    int                              m_countWeight;
-    int                              m_badCount, m_goodCount;
-    bool                             m_doEntireSequence;
 };
 
 #endif // MORSE_H

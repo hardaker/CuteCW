@@ -22,4 +22,5 @@ void PlayMode::switchToMode()
     m_ui->helpBar->setText("<font color=\"green\">Type letters to hear the keys in morse code</font>");
     m_ui->play->hide();
     m_ui->WPM->hide();
+    clear();
 }
