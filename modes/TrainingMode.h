@@ -16,13 +16,11 @@ public:
     void setupSequences();
     void startNextTrainingKey();
     void setDoEntireSequence(bool value);
-    void clearStats();
+
+    virtual void clear();
 
 public slots:
-    virtual void playButton();
-
     virtual void play();
-    virtual void pause();
 
     virtual void handleKeyPress(QChar letterPressed);
     void setSequence(const QString &sequence, int currentlyAt);

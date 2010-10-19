@@ -78,7 +78,6 @@ void Morse::loadSettings() {
 }
 
 void Morse::clearStatsButton() {
-    m_modes[m_gameMode]->clearStats();
     m_modes[m_gameMode]->clear();
 }
 

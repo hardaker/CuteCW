@@ -75,8 +75,6 @@ public:
     badLetterWeighting get_badLetterWeighting();
 
 public slots:
-    void startNextTrainingKey();
-    void startTimerToNextKey();
 
     void playSequence();
     void maybePlaySequence();
@@ -86,22 +84,15 @@ public slots:
     void keyPressed(QString newtext);
     void keyPressed(QChar key);
 
-    void readIt();
-    void readNextLetter();
-
     void prefsButton();
-    void switchSequence(int sequence);
     void switchMode(int newMode);
 
-    void clearStats();
     void clearStatsButton();
 
     void playButton();
 
     void saveSettings();
     void loadSettings();
-
-    void setDoEntireSequence(bool value);
 
 public:
     QLabel                          *m_sequenceLabel;
