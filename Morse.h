@@ -17,6 +17,8 @@
 #include "modes/PlayMode.h"
 #include "modes/LetterTrainingMode.h"
 #include "modes/SpeedTrainingMode.h"
+#include "modes/WordTrainingMode.h"
+#include "modes/ReadMode.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"

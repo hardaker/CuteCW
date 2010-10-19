@@ -21,7 +21,7 @@ public:
     void handleWordResponse(QChar letter);
 
 public slots:
-    virtual void handleKeyPress(QChar letterPressed) = 0;
+    virtual void handleKeyPress(QChar letterPressed);
 
     virtual void play();
 

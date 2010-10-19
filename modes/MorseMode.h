@@ -25,10 +25,9 @@ public:
     int msToWPM(float ms);
     int msToPauseWPM(float ms);
     float msToPauseWPMF(float ms);
-    void handleKeyResponse(QChar letterPressed);
 
 public slots:
-    virtual void handleKeyPress(QChar letterPressed) = 0;
+    virtual void handleKeyPress(QChar letterPressed);
     virtual void switchToMode() = 0;
 
     virtual void playButton();

@@ -33,6 +33,8 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
     m_modes.insert(TRAIN, new LetterTrainingMode(this, m_ui));
     m_modes.insert(SPEEDTRAIN, new SpeedTrainingMode(this, m_ui));
+    m_modes.insert(WORDS, new WordTrainingMode(this, m_ui));
+    m_modes.insert(READ, new ReadMode(this, m_ui));
 
     switchMode(Morse::PLAY);
 
