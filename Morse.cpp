@@ -95,7 +95,7 @@ Morse::playSequence()
 }
 
 void Morse::maybePlaySequence() {
-    qDebug() << "gmaybe oing to key: " << " / " << m_playingMode;
+    qDebug() << "maybe going to key: " << " / " << m_playingMode;
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         qDebug() << "going to key: ";
         playSequence();

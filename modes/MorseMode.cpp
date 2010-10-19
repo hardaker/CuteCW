@@ -52,11 +52,11 @@ MorseStat *MorseMode::getStat(const QChar &key) {
 }
 
 void MorseMode::audioFinished(QAudio::State state) {
-    playButton();
-
     //qDebug() << "audio state changed: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
+
+    playButton();
 
     if (m_morse->playingMode() != Morse::STOPPED) {
         m_lastTimes.push_back(QTime::currentTime());

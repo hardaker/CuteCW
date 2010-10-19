@@ -45,11 +45,11 @@ void SpeedTrainingMode::startTimerToNextKey() {
 }
 
 void SpeedTrainingMode::audioFinished(QAudio::State state) {
-    playButton();
-
     //qDebug() << "audio state changed: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
+
+    playButton();
 
     qDebug() << "speed train stop";
     if (m_morse->playingMode() != Morse::STOPPED) {
