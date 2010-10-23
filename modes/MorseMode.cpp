@@ -41,6 +41,7 @@ bool MorseMode::enterPressed() {
 }
 
 void MorseMode::handleKeyPress(QChar letterPressed) {
+    Q_UNUSED(letterPressed);
 }
 
 void MorseMode::audioFinished(QAudio::State state) {

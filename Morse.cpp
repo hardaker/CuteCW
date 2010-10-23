@@ -125,13 +125,6 @@ void Morse::keyPressed(QChar newletter) {
     m_modes[m_gameMode]->handleKeyPress(newletter);
 }
 
-MorseStat *Morse::getStat(const QChar &key) {
-    if (! m_stats.contains(key))
-        m_stats[key] = new MorseStat(0);
-    return m_stats[key];
-}
-
-
 void Morse::generatorDone() {
     //qDebug() << "generator says done";
     audioFinished(QAudio::StoppedState); // fixes windows issues
