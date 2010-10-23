@@ -16,8 +16,6 @@ Morse *MorseMode::morseParent() {
 void MorseMode::playButton() {
     if (m_morse->playingMode() == Morse::PAUSED) {
         m_morse->setPlayingMode(Morse::STOPPED);
-        m_lastKeys.clear();
-        m_lastTimes.clear();
         m_ui->play->setText("Pause");
 
         play();
@@ -45,12 +43,6 @@ bool MorseMode::enterPressed() {
 void MorseMode::handleKeyPress(QChar letterPressed) {
 }
 
-MorseStat *MorseMode::getStat(const QChar &key) {
-    if (! m_stats.contains(key))
-        m_stats[key] = new MorseStat(0);
-    return m_stats[key];
-}
-
 void MorseMode::audioFinished(QAudio::State state) {
     //qDebug() << "audio state changed: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
@@ -59,14 +51,15 @@ void MorseMode::audioFinished(QAudio::State state) {
     playButton();
 
     if (m_morse->playingMode() != Morse::STOPPED) {
-        m_lastTimes.push_back(QTime::currentTime());
+        audioStopped();
     }
     m_morse->setPlayingMode(Morse::STOPPED);
 }
 
+void MorseMode::audioStopped() {
+}
+
 void MorseMode::clear() {
-    m_lastKeys.clear();
-    m_lastTimes.clear();
 }
 
 

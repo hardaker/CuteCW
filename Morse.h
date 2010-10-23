@@ -115,7 +115,6 @@ private:
     mode                            m_gameMode;
     int                             m_currentWPMGoal;
     int                             m_currentWPMAccept;
-    QMap<QChar, MorseStat *>        m_stats;
     QLabel                          *m_statusBar;
     Ui::MainWindow                  *m_ui;
     badLetterWeighting               m_badLetterWeighting;

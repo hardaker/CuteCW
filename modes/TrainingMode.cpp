@@ -51,6 +51,12 @@ void TrainingMode::setupSequences() {
     connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
+MorseStat *TrainingMode::getStat(const QChar &key) {
+    if (! m_stats.contains(key))
+        m_stats[key] = new MorseStat(0);
+    return m_stats[key];
+}
+
 void TrainingMode::clear()  {
     QMap<QChar, MorseStat *>::iterator item;
     QMap<QChar, MorseStat *>::iterator end = m_stats.end();
@@ -65,6 +71,10 @@ void TrainingMode::clear()  {
 
 void TrainingMode::play() {
     startNextTrainingKey();
+}
+
+void TrainingMode::audioStopped() {
+    m_lastTimes.push_back(QTime::currentTime());
 }
 
 void TrainingMode::handleKeyPress(QChar letterPressed) {

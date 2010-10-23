@@ -4,7 +4,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QTime>
-#include <QAudio>
+#include <qaudio.h>
 
 // #include "Morse.h"
 #include "ui_MainWindow.h"
@@ -39,14 +39,12 @@ public slots:
     virtual void clear();
 
     virtual void audioFinished(QAudio::State state);
+    virtual void audioStopped();
 
 protected:
     Morse                          *m_morse;
     Ui::MainWindow                 *m_ui;
     int                             m_badCount, m_goodCount;
-    QList<QChar>                    m_lastKeys;
-    QList<QTime>                    m_lastTimes;
-    QMap<QChar, MorseStat *>        m_stats;
     int                             m_countWeight;
 };
 
