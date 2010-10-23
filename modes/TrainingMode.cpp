@@ -74,6 +74,7 @@ void TrainingMode::play() {
 }
 
 void TrainingMode::audioStopped() {
+    qDebug() << "audio stopped";
     m_lastTimes.push_back(QTime::currentTime());
 }
 

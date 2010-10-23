@@ -90,12 +90,14 @@ Morse::playSequence()
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
+    qDebug() << "starting";
     m_audioOutput->start(m_playBuffer);
+    qDebug() << "done starting";
     return;
 }
 
 void Morse::maybePlaySequence() {
-    qDebug() << "maybe going to key: " << " / " << m_playingMode;
+    qDebug() << "maybe going to key: mode == " << m_playingMode;
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         qDebug() << "going to key: ";
         playSequence();
@@ -126,7 +128,6 @@ void Morse::keyPressed(QChar newletter) {
 }
 
 void Morse::generatorDone() {
-    //qDebug() << "generator says done";
     audioFinished(QAudio::StoppedState); // fixes windows issues
 }
 

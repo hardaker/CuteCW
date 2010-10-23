@@ -35,6 +35,7 @@ public slots:
 
     virtual void play();
     virtual void pause();
+    virtual void stop();
 
     virtual void clear();
 

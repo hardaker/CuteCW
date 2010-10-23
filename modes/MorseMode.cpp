@@ -14,17 +14,21 @@ Morse *MorseMode::morseParent() {
 }
 
 void MorseMode::playButton() {
-    if (m_morse->playingMode() == Morse::PAUSED) {
+    qDebug() << "playButton()";
+
+    // if the current mode is stopped, switcth to play
+    if (m_morse->playingMode() == Morse::STOPPED) {
         m_morse->setPlayingMode(Morse::STOPPED);
         m_ui->play->setText("Pause");
 
         play();
 
-    } else { // PLAYING or PAUSED
-        m_morse->setPlayingMode(Morse::PAUSED);
+    // if the current mode is playing, stop it
+    } else { // PLAYING or STOPPED
+        m_morse->setPlayingMode(Morse::STOPPED);
         m_ui->play->setText("Go");
 
-        pause();
+        stop();
     }
 }
 
@@ -33,6 +37,10 @@ void MorseMode::play()
 }
 
 void MorseMode::pause()
+{
+}
+
+void MorseMode::stop()
 {
 }
 
@@ -45,11 +53,10 @@ void MorseMode::handleKeyPress(QChar letterPressed) {
 }
 
 void MorseMode::audioFinished(QAudio::State state) {
-    //qDebug() << "audio state changed: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
 
-    playButton();
+    qDebug() << "audio state changed: " << state << ", old state = " << m_morse->playingMode();
 
     if (m_morse->playingMode() != Morse::STOPPED) {
         audioStopped();
