@@ -102,8 +102,6 @@ public:
 
 private:
 
-    PlayMode                        *m_playMode;
-
     QMap<mode, MorseMode *>          m_modes;
 
     MainWindow                      *m_parent;
