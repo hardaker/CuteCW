@@ -20,7 +20,7 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
-    m_morse->setPlayingMode(Morse::PLAYING);
+    m_morse->setAudioMode(Morse::PLAYING);
     playButton(); // will change to "paused"
 }
 
@@ -52,9 +52,9 @@ void SpeedTrainingMode::audioFinished(QAudio::State state) {
     playButton();
 
     qDebug() << "speed train stop";
-    if (m_morse->playingMode() != Morse::STOPPED) {
+    if (m_morse->audioMode() != Morse::STOPPED) {
         startTimerToNextKey();
         m_lastTimes.push_back(QTime::currentTime());
     }
-    m_morse->setPlayingMode(Morse::STOPPED);
+    m_morse->setAudioMode(Morse::STOPPED);
 }

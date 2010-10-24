@@ -17,15 +17,15 @@ void MorseMode::playButton() {
     qDebug() << "playButton()";
 
     // if the current mode is stopped, switcth to play
-    if (m_morse->playingMode() == Morse::STOPPED) {
-        m_morse->setPlayingMode(Morse::STOPPED);
+    if (m_morse->audioMode() == Morse::STOPPED) {
+        m_morse->setAudioMode(Morse::STOPPED);
         m_ui->play->setText("Pause");
 
         play();
 
     // if the current mode is playing, stop it
     } else { // PLAYING or STOPPED
-        m_morse->setPlayingMode(Morse::STOPPED);
+        m_morse->setAudioMode(Morse::STOPPED);
         m_ui->play->setText("Go");
 
         stop();
@@ -56,12 +56,12 @@ void MorseMode::audioFinished(QAudio::State state) {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
 
-    qDebug() << "audio state changed: " << state << ", old state = " << m_morse->playingMode();
+    qDebug() << "audio state changed: " << state << ", old state = " << m_morse->audioMode();
 
-    if (m_morse->playingMode() != Morse::STOPPED) {
+    if (m_morse->audioMode() != Morse::STOPPED) {
         audioStopped();
     }
-    m_morse->setPlayingMode(Morse::STOPPED);
+    m_morse->setAudioMode(Morse::STOPPED);
 }
 
 void MorseMode::audioStopped() {

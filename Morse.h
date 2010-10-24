@@ -38,9 +38,9 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum mode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
-    enum playingmode { STOPPED, PLAYING, PAUSED };
-    enum badLetterWeighting { LOW = 1, HIGH = 2 };
+    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
+    enum AudioMode { STOPPED, PLAYING, PAUSED };
+    enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 
     void setupWords();
     void setupSequences();
@@ -71,10 +71,10 @@ public:
 
     int currentWPMGoal();
     int currentWPMAccept();
-    playingmode playingMode();
-    void setPlayingMode(playingmode newmode);
-    mode gameMode();
-    badLetterWeighting get_badLetterWeighting();
+    AudioMode audioMode();
+    void setAudioMode(AudioMode newmode);
+    TrainingMode trainingMode();
+    BadLetterWeighting badLetterWeighting();
 
 public slots:
 
@@ -102,20 +102,20 @@ public:
 
 private:
 
-    QMap<mode, MorseMode *>          m_modes;
+    QMap<TrainingMode, MorseMode *>          m_modes;
 
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
     float                           m_ditSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
-    playingmode                     m_playingMode;
-    mode                            m_gameMode;
+    AudioMode                     m_playingMode;
+    TrainingMode                            m_gameMode;
     int                             m_currentWPMGoal;
     int                             m_currentWPMAccept;
     QLabel                          *m_statusBar;
     Ui::MainWindow                  *m_ui;
-    badLetterWeighting               m_badLetterWeighting;
+    BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
 };
 

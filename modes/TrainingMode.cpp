@@ -132,7 +132,7 @@ void TrainingMode::startNextTrainingKey() {
     MorseStat *stat = 0;
     QString currentLetterGoal;
 
-    if (m_morse->playingMode() == Morse::PAUSED)
+    if (m_morse->audioMode() == Morse::PAUSED)
         return;
 
     QString::iterator letter;
@@ -157,7 +157,7 @@ void TrainingMode::startNextTrainingKey() {
                 setSequence(m_trainingSequence, letterCount);
                 m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                                       *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
-                if (m_morse->gameMode() == Morse::SPEEDTRAIN)
+                if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
                                                                       totalTime/float(letterCount)), 'g', 2));
                 else
@@ -181,7 +181,7 @@ void TrainingMode::startNextTrainingKey() {
 
     m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                           currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
-    if (m_morse->gameMode() == Morse::SPEEDTRAIN)
+    if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
         m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount))));
     else
         m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount))));
@@ -189,7 +189,7 @@ void TrainingMode::startNextTrainingKey() {
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
     float randTime, subTime = 0.0;
-    if (m_morse->get_badLetterWeighting() == Morse::HIGH) {
+    if (m_morse->badLetterWeighting() == Morse::HIGH) {
         subTime = minTime/2;
         randTime = (totalTime - subTime * letters.count())*float(qrand())/float(RAND_MAX);
     } else

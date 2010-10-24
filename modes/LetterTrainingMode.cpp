@@ -19,13 +19,13 @@ void LetterTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
-    m_morse->setPlayingMode(Morse::PLAYING);
+    m_morse->setAudioMode(Morse::PLAYING);
     playButton(); // will change to "paused"
 }
 
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
     // ensure we're not still playing a sound:
-    if (m_morse->playingMode() == Morse::PLAYING)
+    if (m_morse->audioMode() == Morse::PLAYING)
         return;
     // analyze they're keyed letter and immediately start playing a new one
     TrainingMode::handleKeyPress(letterPressed);

@@ -22,7 +22,7 @@ ReadMode::switchToMode() {
     m_ui->WPM->hide();
     clear();
 
-    m_morse->setPlayingMode(Morse::PLAYING);
+    m_morse->setAudioMode(Morse::PLAYING);
     playButton(); // will change to "paused"
 }
 

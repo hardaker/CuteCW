@@ -57,7 +57,7 @@ void Morse::prefsButton() {
     if (dialog->exec() == QDialog::Accepted) {
         m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
-        m_badLetterWeighting = (badLetterWeighting) prefsDialog.weighting->currentIndex();
+        m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
         saveSettings();
         loadSettings();
     }
@@ -75,7 +75,7 @@ void Morse::loadSettings() {
     QSettings settings("WS6Z", "qtcw");
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
-    m_badLetterWeighting = (badLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
+    m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
     createTones(m_currentWPMGoal);  
 }
 
@@ -115,7 +115,7 @@ bool Morse::enterPressed() {
     return m_modes[m_gameMode]->enterPressed();
 }
 
-Morse::playingmode Morse::playingMode() {
+Morse::AudioMode Morse::audioMode() {
     return m_playingMode;
 }
 
@@ -131,15 +131,15 @@ void Morse::generatorDone() {
     audioFinished(QAudio::StoppedState); // fixes windows issues
 }
 
-void Morse::setPlayingMode(playingmode newmode) {
+void Morse::setAudioMode(AudioMode newmode) {
     m_playingMode = newmode;
 }
 
-Morse::mode Morse::gameMode() {
+Morse::TrainingMode Morse::trainingMode() {
     return m_gameMode;
 }
 
-Morse::badLetterWeighting Morse::get_badLetterWeighting() {
+Morse::BadLetterWeighting Morse::badLetterWeighting() {
     return m_badLetterWeighting;
 }
 
@@ -150,13 +150,13 @@ Morse::audioFinished(QAudio::State state)
 }
 
 void Morse::switchMode(int newmode) {
-    m_gameMode = (Morse::mode) newmode;
+    m_gameMode = (Morse::TrainingMode) newmode;
     qDebug() << "switch to:" << m_gameMode;
     m_playBuffer->stop();
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
 
-    m_modes[(mode) newmode]->switchToMode();
+    m_modes[(TrainingMode) newmode]->switchToMode();
 }
 
 //
