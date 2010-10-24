@@ -5,7 +5,7 @@
 #include <QtGui/QMenu>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui)
+    : MorseMode(parent, ui), m_doEntireSequence(false)
 {
     setupSequences();
 }
