@@ -10,6 +10,9 @@
 class TrainingMode : public MorseMode
 {
 public:
+    Q_OBJECT
+
+public:
     enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4, ALPHABET = 5 };
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);

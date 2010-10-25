@@ -6,6 +6,9 @@
 class LetterTrainingMode : public TrainingMode
 {
 public:
+    Q_OBJECT
+
+public:
     LetterTrainingMode(Morse *parent, Ui::MainWindow *ui);
 
     virtual void switchToMode();

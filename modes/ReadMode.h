@@ -8,6 +8,9 @@
 class ReadMode : public MorseMode
 {
 public:
+    Q_OBJECT
+
+public:
     ReadMode(Morse *parent, Ui::MainWindow *ui);
 
 public slots:

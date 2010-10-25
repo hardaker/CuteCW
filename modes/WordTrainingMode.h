@@ -9,6 +9,9 @@
 class WordTrainingMode : public MorseMode
 {
 public:
+    Q_OBJECT
+
+public:
     enum wordNums { N100 = 0, N200 = 1, N300 = 2, N400 = 3, N500 = 4 };
 
     WordTrainingMode(Morse *parent, Ui::MainWindow *ui);
