@@ -16,15 +16,16 @@ public:
 
     WordTrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupWords();
+    void setupWordsMenu();
 
     virtual void switchToMode();
     virtual bool enterPressed();
 
-    void switchWords(int sequence);
     void handleWordResponse(QChar letter);
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
+    void switchWords(int sequence);
 
     virtual void play();
 

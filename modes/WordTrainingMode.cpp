@@ -1,3 +1,4 @@
+#include <qdebug.h>
 #include <QtGui/QMenu>
 
 #include "WordTrainingMode.h"
@@ -10,14 +11,16 @@ WordTrainingMode::WordTrainingMode(Morse *parent, Ui::MainWindow *ui)
 
 
 void WordTrainingMode::setupWords() {
-
-    m_wordsNumber = N100;
-
 #include "words/100words.h"
 #include "words/200words.h"
 #include "words/300words.h"
 #include "words/400words.h"
 #include "words/500words.h"
+}
+
+void WordTrainingMode::setupWordsMenu() {
+
+    m_wordsNumber = N100;
 
     m_wordSignalMapper = new QSignalMapper();
     QMenu *modeMenu = new QMenu(m_ui->changeWords);
@@ -61,7 +64,7 @@ void WordTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
-    setupWords();
+    setupWordsMenu();
 
     m_maxWord = 2;
 
@@ -70,6 +73,7 @@ void WordTrainingMode::switchToMode() {
 
 void WordTrainingMode::switchWords(int sequence) {
     m_wordsNumber = (wordNums) sequence;
+    qDebug() << "switching to: " << m_wordsNumber;
 }
 
 void WordTrainingMode::play() {
