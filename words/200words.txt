@@ -17,7 +17,7 @@ very
 after
 thing
 our
-just 
+just
 name
 good
 sentence
@@ -37,7 +37,7 @@ mean
 old
 any
 same
-tell 
+tell
 boy
 follow
 came
@@ -57,7 +57,7 @@ well
 large
 must
 big
-even 
+even
 such
 because
 turn
@@ -77,7 +77,7 @@ try
 kind
 hand
 picture
-again 
+again
 change
 off
 play
@@ -97,5 +97,5 @@ still
 learn
 should
 America
-world 
+world
 

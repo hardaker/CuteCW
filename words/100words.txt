@@ -17,7 +17,7 @@ as
 with
 his
 they
-I 
+i
 at
 be
 this
@@ -37,7 +37,7 @@ we
 when
 your
 can
-said 
+said
 there
 use
 an
@@ -57,7 +57,7 @@ many
 then
 them
 these
-so 
+so
 some
 her
 would
@@ -77,7 +77,7 @@ number
 no
 way
 could
-people 
+people
 my
 than
 first
@@ -97,4 +97,4 @@ get
 come
 made
 may
-part 
+part
