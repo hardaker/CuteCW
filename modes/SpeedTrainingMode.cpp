@@ -19,6 +19,8 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
+    setupSequences();
+
     m_morse->setAudioMode(Morse::PLAYING);
     playButton(); // will change to "paused"
 }

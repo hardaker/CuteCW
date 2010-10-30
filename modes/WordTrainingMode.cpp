@@ -61,6 +61,8 @@ void WordTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
+    setupWords();
+
     m_maxWord = 2;
 
     enterPressed();
