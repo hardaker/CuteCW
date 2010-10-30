@@ -18,7 +18,7 @@ words[N100]->push_back("as");
 words[N100]->push_back("with");
 words[N100]->push_back("his");
 words[N100]->push_back("they");
-words[N100]->push_back("I");
+words[N100]->push_back("i");
 words[N100]->push_back("at");
 words[N100]->push_back("be");
 words[N100]->push_back("this");
