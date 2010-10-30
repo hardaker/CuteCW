@@ -48,8 +48,7 @@ void TrainingMode::setupSequences() {
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) ALPHABET);
 
-    TrainingMode *obj = dynamic_cast<TrainingMode *>(this);
-    connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), obj, SLOT(switchSequence(int)));
+    connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
 MorseStat *TrainingMode::getStat(const QChar &key) {
