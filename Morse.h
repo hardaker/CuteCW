@@ -102,17 +102,17 @@ public:
 
 private:
 
-    QMap<TrainingMode, MorseMode *>          m_modes;
+    QMap<TrainingMode, MorseMode *>  m_modes;
 
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
-    float                           m_ditSecs;
+    float                            m_ditSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
-    AudioMode                     m_playingMode;
-    TrainingMode                            m_gameMode;
-    int                             m_currentWPMGoal;
-    int                             m_currentWPMAccept;
+    AudioMode                        m_playingMode;
+    TrainingMode                     m_gameMode;
+    int                              m_currentWPMGoal;
+    int                              m_currentWPMAccept;
     QLabel                          *m_statusBar;
     Ui::MainWindow                  *m_ui;
     BadLetterWeighting               m_badLetterWeighting;
