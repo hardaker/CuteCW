@@ -15,7 +15,7 @@ public:
 
 public slots:
     virtual void switchToMode();
-    virtual void readIt();
+    virtual void play();
     virtual void readNextLetter();
 
 private:
