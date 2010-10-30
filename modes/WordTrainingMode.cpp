@@ -106,7 +106,10 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
     if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) {
         if (m_wordWasGood) {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
-            m_maxWord += 2;
+            if (m_maxWord < 10)
+                m_maxWord += 2;
+            else
+                m_maxWord += 1;
             if (m_maxWord > (*(words[m_wordsNumber])).count())
                 m_maxWord = (*(words[m_wordsNumber])).count();
         } else {
