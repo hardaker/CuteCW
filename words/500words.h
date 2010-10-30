@@ -1,4 +1,4 @@
-words[N500]=newQList<QString>;
+words[N500]=new QList<QString>;
 words[N500]->push_back("done");
 words[N500]->push_back("English");
 words[N500]->push_back("road");

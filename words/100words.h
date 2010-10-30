@@ -1,4 +1,4 @@
-words[N100]=newQList<QString>;
+words[N100]=new QList<QString>;
 words[N100]->push_back("the");
 words[N100]->push_back("of");
 words[N100]->push_back("and");

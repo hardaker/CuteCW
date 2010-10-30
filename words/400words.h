@@ -1,4 +1,4 @@
-words[N400]=newQList<QString>;
+words[N400]=new QList<QString>;
 words[N400]->push_back("body");
 words[N400]->push_back("music");
 words[N400]->push_back("color");

@@ -1,4 +1,4 @@
-words[N300]=newQList<QString>;
+words[N300]=new QList<QString>;
 words[N300]->push_back("high");
 words[N300]->push_back("every");
 words[N300]->push_back("near");
