@@ -68,13 +68,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="readButton">
-         <property name="text">
-          <string>Read It</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="prefs">
          <property name="text">
           <string>Preferences</string>

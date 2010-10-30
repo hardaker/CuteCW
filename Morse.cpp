@@ -38,7 +38,6 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 
     switchMode(Morse::PLAY);
 
-    connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
     connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }

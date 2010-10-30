@@ -11,7 +11,6 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->wordbox->hide();
     m_ui->letter->show();
     m_ui->clearTraining->show();
-    m_ui->readButton->hide();
     m_ui->modeMenu->setText("Speed Training");
     m_ui->changeSequence->show();
     m_ui->changeWords->hide();

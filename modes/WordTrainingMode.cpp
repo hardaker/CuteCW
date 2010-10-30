@@ -53,7 +53,6 @@ void WordTrainingMode::switchToMode() {
     m_ui->wordbox->clear();
     m_ui->letter->show();
     m_ui->clearTraining->hide();
-    m_ui->readButton->hide();
     m_ui->modeMenu->setText("Word Training");
     m_ui->changeSequence->hide();
     m_ui->changeWords->show();

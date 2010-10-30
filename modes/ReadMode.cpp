@@ -13,7 +13,6 @@ ReadMode::switchToMode() {
     m_ui->wordbox->show();
     m_ui->letter->hide();
     m_ui->clearTraining->hide();
-    m_ui->readButton->show();
     m_ui->modeMenu->setText("Read to me!");
     m_ui->changeSequence->hide();
     m_ui->changeWords->hide();

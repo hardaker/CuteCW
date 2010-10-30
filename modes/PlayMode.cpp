@@ -15,7 +15,6 @@ void PlayMode::switchToMode()
     m_ui->wordbox->hide();
     m_ui->letter->hide();
     m_ui->clearTraining->hide();
-    m_ui->readButton->hide();
     m_ui->changeSequence->hide();
     m_ui->changeWords->hide();
     m_ui->modeMenu->setText("Play Morse Code");
