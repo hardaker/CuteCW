@@ -17,6 +17,8 @@
 #include "modes/PlayMode.h"
 #include "modes/LetterTrainingMode.h"
 #include "modes/SpeedTrainingMode.h"
+#include "modes/WordTrainingMode.h"
+#include "modes/ReadMode.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
@@ -36,9 +38,9 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum mode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
-    enum playingmode { STOPPED, PLAYING, PAUSED };
-    enum badLetterWeighting { LOW = 1, HIGH = 2 };
+    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
+    enum AudioMode { STOPPED, PLAYING, PAUSED };
+    enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 
     void setupWords();
     void setupSequences();
@@ -69,14 +71,12 @@ public:
 
     int currentWPMGoal();
     int currentWPMAccept();
-    playingmode playingMode();
-    void setPlayingMode(playingmode newmode);
-    mode gameMode();
-    badLetterWeighting get_badLetterWeighting();
+    AudioMode audioMode();
+    void setAudioMode(AudioMode newmode);
+    TrainingMode trainingMode();
+    BadLetterWeighting badLetterWeighting();
 
 public slots:
-    void startNextTrainingKey();
-    void startTimerToNextKey();
 
     void playSequence();
     void maybePlaySequence();
@@ -86,14 +86,9 @@ public slots:
     void keyPressed(QString newtext);
     void keyPressed(QChar key);
 
-    void readIt();
-    void readNextLetter();
-
     void prefsButton();
-    void switchSequence(int sequence);
     void switchMode(int newMode);
 
-    void clearStats();
     void clearStatsButton();
 
     void playButton();
@@ -101,31 +96,26 @@ public slots:
     void saveSettings();
     void loadSettings();
 
-    void setDoEntireSequence(bool value);
-
 public:
     QLabel                          *m_sequenceLabel;
     QMap<QChar, QList<ditdah> *>    code;
 
 private:
 
-    PlayMode                        *m_playMode;
-
-    QMap<mode, MorseMode *>          m_modes;
+    QMap<TrainingMode, MorseMode *>  m_modes;
 
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
-    float                           m_ditSecs;
+    float                            m_ditSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
-    playingmode                     m_playingMode;
-    mode                            m_gameMode;
-    int                             m_currentWPMGoal;
-    int                             m_currentWPMAccept;
-    QMap<QChar, MorseStat *>        m_stats;
+    AudioMode                        m_playingMode;
+    TrainingMode                     m_gameMode;
+    int                              m_currentWPMGoal;
+    int                              m_currentWPMAccept;
     QLabel                          *m_statusBar;
     Ui::MainWindow                  *m_ui;
-    badLetterWeighting               m_badLetterWeighting;
+    BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
 };
 

@@ -11,6 +11,9 @@ class Morse;
 class PlayMode : public MorseMode
 {
 public:
+    Q_OBJECT
+
+public:
     PlayMode(Morse *parent, Ui::MainWindow *ui);
 
 public slots:

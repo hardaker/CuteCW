@@ -1,3 +1,4 @@
+#include <qdebug.h>
 #include <QtGui/QMenu>
 
 #include "WordTrainingMode.h"
@@ -10,14 +11,16 @@ WordTrainingMode::WordTrainingMode(Morse *parent, Ui::MainWindow *ui)
 
 
 void WordTrainingMode::setupWords() {
-
-    m_wordsNumber = N100;
-
 #include "words/100words.h"
 #include "words/200words.h"
 #include "words/300words.h"
 #include "words/400words.h"
 #include "words/500words.h"
+}
+
+void WordTrainingMode::setupWordsMenu() {
+
+    m_wordsNumber = N100;
 
     m_wordSignalMapper = new QSignalMapper();
     QMenu *modeMenu = new QMenu(m_ui->changeWords);
@@ -53,7 +56,6 @@ void WordTrainingMode::switchToMode() {
     m_ui->wordbox->clear();
     m_ui->letter->show();
     m_ui->clearTraining->hide();
-    m_ui->readButton->hide();
     m_ui->modeMenu->setText("Word Training");
     m_ui->changeSequence->hide();
     m_ui->changeWords->show();
@@ -62,6 +64,8 @@ void WordTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
+    setupWordsMenu();
+
     m_maxWord = 2;
 
     enterPressed();
@@ -69,6 +73,7 @@ void WordTrainingMode::switchToMode() {
 
 void WordTrainingMode::switchWords(int sequence) {
     m_wordsNumber = (wordNums) sequence;
+    qDebug() << "switching to: " << m_wordsNumber;
 }
 
 void WordTrainingMode::play() {
@@ -81,6 +86,7 @@ bool WordTrainingMode::enterPressed() {
     m_morse->maybePlaySequence();
     m_enteredWord = "";
     m_ui->letter->setText("");
+    m_morse->m_sequenceLabel->setText(QString("%1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
     m_wordWasGood = true;
     return true;
 }
@@ -100,7 +106,10 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
     if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) {
         if (m_wordWasGood) {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
-            m_maxWord += 2;
+            if (m_maxWord < 10)
+                m_maxWord += 2;
+            else
+                m_maxWord += 1;
             if (m_maxWord > (*(words[m_wordsNumber])).count())
                 m_maxWord = (*(words[m_wordsNumber])).count();
         } else {

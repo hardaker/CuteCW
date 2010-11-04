@@ -33,10 +33,11 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
     m_modes.insert(TRAIN, new LetterTrainingMode(this, m_ui));
     m_modes.insert(SPEEDTRAIN, new SpeedTrainingMode(this, m_ui));
+    m_modes.insert(WORDS, new WordTrainingMode(this, m_ui));
+    m_modes.insert(READ, new ReadMode(this, m_ui));
 
     switchMode(Morse::PLAY);
 
-    connect(m_ui->readButton, SIGNAL(clicked()), this, SLOT(readIt()));
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
     connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }
@@ -55,7 +56,7 @@ void Morse::prefsButton() {
     if (dialog->exec() == QDialog::Accepted) {
         m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
-        m_badLetterWeighting = (badLetterWeighting) prefsDialog.weighting->currentIndex();
+        m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
         saveSettings();
         loadSettings();
     }
@@ -73,12 +74,11 @@ void Morse::loadSettings() {
     QSettings settings("WS6Z", "qtcw");
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
-    m_badLetterWeighting = (badLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
+    m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
     createTones(m_currentWPMGoal);  
 }
 
 void Morse::clearStatsButton() {
-    m_modes[m_gameMode]->clearStats();
     m_modes[m_gameMode]->clear();
 }
 
@@ -89,12 +89,14 @@ Morse::playSequence()
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
+    qDebug() << "starting";
     m_audioOutput->start(m_playBuffer);
+    qDebug() << "done starting";
     return;
 }
 
 void Morse::maybePlaySequence() {
-    qDebug() << "gmaybe oing to key: " << " / " << m_playingMode;
+    qDebug() << "maybe going to key: mode == " << m_playingMode;
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         qDebug() << "going to key: ";
         playSequence();
@@ -112,7 +114,7 @@ bool Morse::enterPressed() {
     return m_modes[m_gameMode]->enterPressed();
 }
 
-Morse::playingmode Morse::playingMode() {
+Morse::AudioMode Morse::audioMode() {
     return m_playingMode;
 }
 
@@ -124,27 +126,19 @@ void Morse::keyPressed(QChar newletter) {
     m_modes[m_gameMode]->handleKeyPress(newletter);
 }
 
-MorseStat *Morse::getStat(const QChar &key) {
-    if (! m_stats.contains(key))
-        m_stats[key] = new MorseStat(0);
-    return m_stats[key];
-}
-
-
 void Morse::generatorDone() {
-    //qDebug() << "generator says done";
     audioFinished(QAudio::StoppedState); // fixes windows issues
 }
 
-void Morse::setPlayingMode(playingmode newmode) {
+void Morse::setAudioMode(AudioMode newmode) {
     m_playingMode = newmode;
 }
 
-Morse::mode Morse::gameMode() {
+Morse::TrainingMode Morse::trainingMode() {
     return m_gameMode;
 }
 
-Morse::badLetterWeighting Morse::get_badLetterWeighting() {
+Morse::BadLetterWeighting Morse::badLetterWeighting() {
     return m_badLetterWeighting;
 }
 
@@ -155,13 +149,13 @@ Morse::audioFinished(QAudio::State state)
 }
 
 void Morse::switchMode(int newmode) {
-    m_gameMode = (Morse::mode) newmode;
+    m_gameMode = (Morse::TrainingMode) newmode;
     qDebug() << "switch to:" << m_gameMode;
     m_playBuffer->stop();
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
 
-    m_modes[(mode) newmode]->switchToMode();
+    m_modes[(TrainingMode) newmode]->switchToMode();
 }
 
 //

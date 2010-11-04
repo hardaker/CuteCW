@@ -17,7 +17,7 @@ never
 start
 city
 earth
-eye 
+eye
 light
 thought
 head
@@ -37,7 +37,7 @@ next
 hard
 open
 example
-begin 
+begin
 life
 always
 those
@@ -57,7 +57,7 @@ car
 mile
 night
 walk
-white 
+white
 sea
 began
 grow
@@ -77,7 +77,7 @@ miss
 idea
 enough
 eat
-face 
+face
 watch
 far
 Indian
@@ -97,4 +97,4 @@ song
 being
 leave
 family
-it's 
+it's

@@ -5,7 +5,7 @@
 #include <QtGui/QMenu>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui)
+    : MorseMode(parent, ui), m_doEntireSequence(false)
 {
     setupSequences();
 }
@@ -51,7 +51,13 @@ void TrainingMode::setupSequences() {
     connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
-void TrainingMode::clearStats()  {
+MorseStat *TrainingMode::getStat(const QChar &key) {
+    if (! m_stats.contains(key))
+        m_stats[key] = new MorseStat(0);
+    return m_stats[key];
+}
+
+void TrainingMode::clear()  {
     QMap<QChar, MorseStat *>::iterator item;
     QMap<QChar, MorseStat *>::iterator end = m_stats.end();
     for(item = m_stats.begin(); item != end; ++item) {
@@ -60,10 +66,16 @@ void TrainingMode::clearStats()  {
     m_stats.clear();
     m_lastKeys.clear();
     m_lastTimes.clear();
+    MorseMode::clear();
 }
 
 void TrainingMode::play() {
     startNextTrainingKey();
+}
+
+void TrainingMode::audioStopped() {
+    qDebug() << "audio stopped";
+    m_lastTimes.push_back(QTime::currentTime());
 }
 
 void TrainingMode::handleKeyPress(QChar letterPressed) {
@@ -120,7 +132,7 @@ void TrainingMode::startNextTrainingKey() {
     MorseStat *stat = 0;
     QString currentLetterGoal;
 
-    if (m_morse->playingMode() == Morse::PAUSED)
+    if (m_morse->audioMode() == Morse::PAUSED)
         return;
 
     QString::iterator letter;
@@ -145,7 +157,7 @@ void TrainingMode::startNextTrainingKey() {
                 setSequence(m_trainingSequence, letterCount);
                 m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                                       *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
-                if (m_morse->gameMode() == Morse::SPEEDTRAIN)
+                if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
                                                                       totalTime/float(letterCount)), 'g', 2));
                 else
@@ -169,7 +181,7 @@ void TrainingMode::startNextTrainingKey() {
 
     m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                           currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
-    if (m_morse->gameMode() == Morse::SPEEDTRAIN)
+    if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
         m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount))));
     else
         m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount))));
@@ -177,7 +189,7 @@ void TrainingMode::startNextTrainingKey() {
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
     float randTime, subTime = 0.0;
-    if (m_morse->get_badLetterWeighting() == Morse::HIGH) {
+    if (m_morse->badLetterWeighting() == Morse::HIGH) {
         subTime = minTime/2;
         randTime = (totalTime - subTime * letters.count())*float(qrand())/float(RAND_MAX);
     } else
@@ -204,7 +216,7 @@ void TrainingMode::startNextTrainingKey() {
 void TrainingMode::switchSequence(int sequence) {
     m_trainingSequence = m_sequences.at(sequence);
     setSequence(m_trainingSequence, 1);
-    clearStats();
+    clear();
     startNextTrainingKey();
 }
 

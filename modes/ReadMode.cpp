@@ -13,21 +13,20 @@ ReadMode::switchToMode() {
     m_ui->wordbox->show();
     m_ui->letter->hide();
     m_ui->clearTraining->hide();
-    m_ui->readButton->show();
     m_ui->modeMenu->setText("Read to me!");
     m_ui->changeSequence->hide();
     m_ui->changeWords->hide();
     m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
-    m_ui->play->hide();
+    m_ui->play->show();
     m_ui->WPM->hide();
     clear();
 
-    m_morse->setPlayingMode(Morse::PLAYING);
+    m_morse->setAudioMode(Morse::PLAYING);
     playButton(); // will change to "paused"
 }
 
 
-void ReadMode::readIt() {
+void ReadMode::play() {
     QTextCursor readSpot = m_ui->wordbox->textCursor();
     readSpot.select(QTextCursor::Document);
     m_morse->add(readSpot.selectedText());

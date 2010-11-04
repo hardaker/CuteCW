@@ -10,23 +10,26 @@
 class TrainingMode : public MorseMode
 {
 public:
+    Q_OBJECT
+
+public:
     enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4, ALPHABET = 5 };
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
     void startNextTrainingKey();
     void setDoEntireSequence(bool value);
-    void clearStats();
+    MorseStat *getStat(const QChar &key);
+
+    virtual void clear();
 
 public slots:
-    virtual void playButton();
-
     virtual void play();
-    virtual void pause();
 
     virtual void handleKeyPress(QChar letterPressed);
     void setSequence(const QString &sequence, int currentlyAt);
     void switchSequence(int sequence);
+    virtual void audioStopped();
 
 private:
     QString                         m_trainingSequence;
@@ -38,6 +41,7 @@ protected:
     QChar                           m_lastKey;
     QList<QChar>                    m_lastKeys;
     QList<QTime>                    m_lastTimes;
+    QMap<QChar, MorseStat *>        m_stats;
 };
 
 #endif // TRAININGMODE_H

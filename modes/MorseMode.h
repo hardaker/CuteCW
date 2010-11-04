@@ -4,7 +4,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QTime>
-#include <QAudio>
+#include <qaudio.h>
 
 // #include "Morse.h"
 #include "ui_MainWindow.h"
@@ -25,10 +25,9 @@ public:
     int msToWPM(float ms);
     int msToPauseWPM(float ms);
     float msToPauseWPMF(float ms);
-    void handleKeyResponse(QChar letterPressed);
 
 public slots:
-    virtual void handleKeyPress(QChar letterPressed) = 0;
+    virtual void handleKeyPress(QChar letterPressed);
     virtual void switchToMode() = 0;
 
     virtual void playButton();
@@ -36,18 +35,17 @@ public slots:
 
     virtual void play();
     virtual void pause();
+    virtual void stop();
 
     virtual void clear();
 
     virtual void audioFinished(QAudio::State state);
+    virtual void audioStopped();
 
 protected:
     Morse                          *m_morse;
     Ui::MainWindow                 *m_ui;
     int                             m_badCount, m_goodCount;
-    QList<QChar>                    m_lastKeys;
-    QList<QTime>                    m_lastTimes;
-    QMap<QChar, MorseStat *>        m_stats;
     int                             m_countWeight;
 };
 

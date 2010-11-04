@@ -17,7 +17,7 @@ shown
 minutes
 strong
 verb
-stars 
+stars
 front
 feel
 fact
@@ -37,7 +37,7 @@ rest
 carefully
 scientists
 inside
-wheels 
+wheels
 stay
 green
 known
@@ -57,7 +57,7 @@ boat
 game
 force
 brought
-understand 
+understand
 warm
 common
 bring
@@ -77,7 +77,7 @@ filled
 heat
 full
 hot
-check 
+check
 object
 am
 rule
@@ -97,4 +97,4 @@ fine
 pair
 circle
 include
-built 
+built

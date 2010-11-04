@@ -11,7 +11,6 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->wordbox->hide();
     m_ui->letter->show();
     m_ui->clearTraining->show();
-    m_ui->readButton->hide();
     m_ui->modeMenu->setText("Speed Training");
     m_ui->changeSequence->show();
     m_ui->changeWords->hide();
@@ -20,7 +19,9 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->WPM->show();
     clear();
 
-    m_morse->setPlayingMode(Morse::PLAYING);
+    setupSequences();
+
+    m_morse->setAudioMode(Morse::PLAYING);
     playButton(); // will change to "paused"
 }
 
@@ -45,16 +46,16 @@ void SpeedTrainingMode::startTimerToNextKey() {
 }
 
 void SpeedTrainingMode::audioFinished(QAudio::State state) {
-    playButton();
-
     //qDebug() << "audio state changed: " << state;
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
 
+    playButton();
+
     qDebug() << "speed train stop";
-    if (m_morse->playingMode() != Morse::STOPPED) {
+    if (m_morse->audioMode() != Morse::STOPPED) {
         startTimerToNextKey();
         m_lastTimes.push_back(QTime::currentTime());
     }
-    m_morse->setPlayingMode(Morse::STOPPED);
+    m_morse->setAudioMode(Morse::STOPPED);
 }

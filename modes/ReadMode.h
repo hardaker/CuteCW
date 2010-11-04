@@ -8,11 +8,14 @@
 class ReadMode : public MorseMode
 {
 public:
+    Q_OBJECT
+
+public:
     ReadMode(Morse *parent, Ui::MainWindow *ui);
 
 public slots:
     virtual void switchToMode();
-    virtual void readIt();
+    virtual void play();
     virtual void readNextLetter();
 
 private:
