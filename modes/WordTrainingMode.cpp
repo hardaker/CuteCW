@@ -50,7 +50,6 @@ void WordTrainingMode::setupWordsMenu() {
 }
 
 void WordTrainingMode::switchToMode() {
-    hideWidgets();
     m_goodCount = 0;
     m_badCount = 0;
     m_ui->wordbox->clear();

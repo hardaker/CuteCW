@@ -10,7 +10,6 @@ ReadMode::ReadMode(Morse *parent, Ui::MainWindow *ui)
 
 void
 ReadMode::switchToMode() {
-    hideWidgets();
     m_ui->wordbox->show();
     m_ui->modeMenu->setText("Read to me!");
     m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");

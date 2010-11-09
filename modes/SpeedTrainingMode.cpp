@@ -8,7 +8,6 @@ SpeedTrainingMode::SpeedTrainingMode(Morse *parent, Ui::MainWindow *ui)
 }
 
 void SpeedTrainingMode::switchToMode() {
-    hideWidgets();
     m_ui->letter->show();
     m_ui->clearTraining->show();
     m_ui->modeMenu->setText("Speed Training");

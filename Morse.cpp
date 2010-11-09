@@ -155,7 +155,7 @@ void Morse::switchMode(int newmode) {
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
 
-    m_modes[(TrainingMode) newmode]->switchToMode();
+    m_modes[(TrainingMode) newmode]->switchToYou();
 }
 
 //

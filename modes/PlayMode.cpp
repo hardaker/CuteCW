@@ -12,7 +12,6 @@ void PlayMode::handleKeyPress(QChar letterPressed)
 
 void PlayMode::switchToMode()
 {
-    hideWidgets();
     m_ui->modeMenu->setText("Play Morse Code");
     m_ui->helpBar->setText("<font color=\"green\">Type letters to hear the keys in morse code</font>");
     clear();

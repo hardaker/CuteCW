@@ -101,3 +101,9 @@ void MorseMode::hideWidgets()
     m_ui->play->hide();
     m_ui->WPM->hide();
 }
+
+void MorseMode::switchToYou()
+{
+    hideWidgets();
+    switchToMode();
+}
