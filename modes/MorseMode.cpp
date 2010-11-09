@@ -88,3 +88,16 @@ float MorseMode::msToPauseWPMF(float ms) {
     // qDebug() << "pause length: " << pauseLength << ", recorded time: " << ms << ", % = " << (pauseLength * 1000.0 * 100.0 / ms );
     return float(m_morse->currentWPMGoal()) * pauseLength * 1000.0 / ms;
 }
+
+void MorseMode::hideWidgets()
+{
+    m_ui->wordbox->hide();
+    m_ui->letter->hide();
+    m_ui->clearTraining->hide();
+    m_ui->modeMenu->setText("Recognition Training");
+    m_ui->changeSequence->hide();
+    m_ui->changeWords->hide();
+    m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
+    m_ui->play->hide();
+    m_ui->WPM->hide();
+}

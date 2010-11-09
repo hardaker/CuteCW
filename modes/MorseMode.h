@@ -26,6 +26,8 @@ public:
     int msToPauseWPM(float ms);
     float msToPauseWPMF(float ms);
 
+    void hideWidgets();
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
     virtual void switchToMode() = 0;

@@ -7,15 +7,12 @@ LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
 }
 
 void LetterTrainingMode::switchToMode() {
-    m_ui->wordbox->hide();
+    hideWidgets();
     m_ui->letter->show();
     m_ui->clearTraining->show();
     m_ui->modeMenu->setText("Recognition Training");
     m_ui->changeSequence->show();
-    m_ui->changeWords->hide();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
-    m_ui->play->show();
-    m_ui->WPM->show();
     clear();
 
     setupSequences();
