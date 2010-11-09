@@ -132,6 +132,18 @@ void Morse::generatorDone() {
 
 void Morse::setAudioMode(AudioMode newmode) {
     m_playingMode = newmode;
+    if (m_playingMode == PLAYING)
+        m_ui->play->setText("Pause");
+    else
+        m_ui->play->setText("Play");
+}
+
+void Morse::pauseAudio() {
+    setAudioMode(PAUSED);
+}
+
+void Morse::playAudio() {
+    setAudioMode(PLAYING);
 }
 
 Morse::TrainingMode Morse::trainingMode() {
@@ -317,3 +329,4 @@ Morse::ditSecs()
 {
     return m_ditSecs;
 }
+

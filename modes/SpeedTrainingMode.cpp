@@ -18,9 +18,6 @@ void SpeedTrainingMode::switchToMode() {
     clear();
 
     setupSequences();
-
-    m_morse->setAudioMode(Morse::PLAYING);
-    playButton(); // will change to "paused"
 }
 
 void SpeedTrainingMode::startTimerToNextKey() {

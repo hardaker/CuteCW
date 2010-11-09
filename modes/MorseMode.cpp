@@ -18,16 +18,13 @@ void MorseMode::playButton() {
 
     // if the current mode is stopped, switcth to play
     if (m_morse->audioMode() == Morse::STOPPED) {
-        m_morse->setAudioMode(Morse::STOPPED);
-        m_ui->play->setText("Pause");
-
+        // this fundamentially stops it first just to be sure state is right
+        m_morse->pauseAudio();
         play();
 
     // if the current mode is playing, stop it
     } else { // PLAYING or STOPPED
-        m_morse->setAudioMode(Morse::STOPPED);
-        m_ui->play->setText("Go");
-
+        m_morse->pauseAudio();
         stop();
     }
 }
@@ -105,5 +102,6 @@ void MorseMode::hideWidgets()
 void MorseMode::switchToYou()
 {
     hideWidgets();
+    m_morse->pauseAudio();
     switchToMode();
 }

@@ -15,9 +15,6 @@ ReadMode::switchToMode() {
     m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
     m_ui->play->show();
     clear();
-
-    m_morse->setAudioMode(Morse::PLAYING);
-    playButton(); // will change to "paused"
 }
 
 

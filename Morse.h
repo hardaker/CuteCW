@@ -96,6 +96,9 @@ public slots:
     void saveSettings();
     void loadSettings();
 
+    void pauseAudio();
+    void playAudio();
+
 public:
     QLabel                          *m_sequenceLabel;
     QMap<QChar, QList<ditdah> *>    code;
