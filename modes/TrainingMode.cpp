@@ -132,7 +132,7 @@ void TrainingMode::startNextTrainingKey() {
     MorseStat *stat = 0;
     QString currentLetterGoal;
 
-    if (m_morse->audioMode() == Morse::PAUSED)
+    if (m_morse->audioMode() == Morse::PLAYING)
         return;
 
     QString::iterator letter;
