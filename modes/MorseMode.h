@@ -18,6 +18,8 @@ public:
     Q_OBJECT
 
 public:
+    enum RunningMode { RUNNING = 0, PAUSED = 1 };
+
     MorseMode(Morse *morse, Ui::MainWindow *ui);
     Morse *morseParent();
     MorseStat *getStat(const QChar &key);
@@ -27,6 +29,9 @@ public:
     float msToPauseWPMF(float ms);
 
     void hideWidgets();
+
+    RunningMode runningMode();
+    void setRunningMode(RunningMode newMode);
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
@@ -50,6 +55,8 @@ protected:
     Ui::MainWindow                 *m_ui;
     int                             m_badCount, m_goodCount;
     int                             m_countWeight;
+    QIcon                           m_playIcon, m_pauseIcon;
+    RunningMode                     m_runningMode;
 };
 
 #endif // MORSEMODE_H

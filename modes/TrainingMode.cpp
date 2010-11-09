@@ -79,6 +79,8 @@ void TrainingMode::audioStopped() {
 }
 
 void TrainingMode::handleKeyPress(QChar letterPressed) {
+    if (runningMode() != RUNNING)
+        return;
 
     qDebug() << "Key pressed = " << letterPressed << ", Queue of stored keys: keys=" << m_lastKeys.count() << ", times=" << m_lastTimes.count();
 
@@ -125,6 +127,8 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
 }
 
 void TrainingMode::startNextTrainingKey() {
+    if (runningMode() != RUNNING)
+        return;
     qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;

@@ -9,6 +9,7 @@
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
 #include <QtGui/QTextCursor>
+#include <QtGui/QIcon>
 #include <QtCore/QSignalMapper>
 
 #include "Generator.h"

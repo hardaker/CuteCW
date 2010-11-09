@@ -89,6 +89,8 @@ bool WordTrainingMode::enterPressed() {
 }
 
 void WordTrainingMode::handleKeyPress(QChar letter) {
+    if (runningMode() != RUNNING)
+        return;
     if (letter == '\r') {
         enterPressed();
         return;

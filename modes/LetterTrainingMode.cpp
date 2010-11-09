@@ -16,12 +16,11 @@ void LetterTrainingMode::switchToMode() {
     clear();
 
     setupSequences();
-
-    m_morse->setAudioMode(Morse::PLAYING);
-    playButton(); // will change to "paused"
 }
 
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
+    if (runningMode() != RUNNING)
+        return;
     // ensure we're not still playing a sound:
     if (m_morse->audioMode() == Morse::PLAYING)
         return;

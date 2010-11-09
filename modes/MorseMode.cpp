@@ -4,9 +4,9 @@
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
     : m_morse(morse), m_ui(ui),
-      m_badCount(0), m_goodCount(0), m_countWeight(100)
+      m_badCount(0), m_goodCount(0), m_countWeight(100), m_playIcon(":/icons/play.png"), m_pauseIcon(":/icons/pause.png"), m_runningMode(PAUSED)
 {
-    m_morse = morse;
+    setRunningMode(PAUSED);
 }
 
 Morse *MorseMode::morseParent() {
@@ -16,16 +16,12 @@ Morse *MorseMode::morseParent() {
 void MorseMode::playButton() {
     qDebug() << "playButton()";
 
-    // if the current mode is stopped, switcth to play
-    if (m_morse->audioMode() == Morse::STOPPED) {
-        // this fundamentially stops it first just to be sure state is right
-        m_morse->pauseAudio();
-        play();
-
-    // if the current mode is playing, stop it
-    } else { // PLAYING or STOPPED
-        m_morse->pauseAudio();
-        stop();
+    if (m_runningMode == RUNNING) {
+        // stop! (pause, whatever...)
+        setRunningMode(PAUSED);
+        m_morse->setAudioMode(Morse::STOPPED);
+    } else {
+        setRunningMode(RUNNING);
     }
 }
 
@@ -103,5 +99,30 @@ void MorseMode::switchToYou()
 {
     hideWidgets();
     m_morse->pauseAudio();
+    setRunningMode(PAUSED);
+    m_morse->pauseAudio();
     switchToMode();
 }
+
+MorseMode::RunningMode MorseMode::runningMode()
+{
+    return m_runningMode;
+}
+
+void MorseMode::setRunningMode(RunningMode newMode)
+{
+    m_runningMode = newMode;
+    if (m_runningMode == RUNNING) {
+        m_ui->play->setIcon(m_pauseIcon);
+        m_ui->play->setText("Pause");
+        play();
+    } else {
+        if (m_morse->audioMode() != Morse::STOPPED) {
+            m_morse->pauseAudio();
+        }
+        m_ui->play->setIcon(m_playIcon);
+        m_ui->play->setText("Play");
+        stop();
+    }
+}
+

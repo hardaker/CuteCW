@@ -22,6 +22,8 @@ void SpeedTrainingMode::switchToMode() {
 
 void SpeedTrainingMode::startTimerToNextKey() {
     float avetime, delay;
+    if (runningMode() != RUNNING)
+        return;
 
     if (m_lastTimes.count() > 3) {
         // don't let them get *too* far behind

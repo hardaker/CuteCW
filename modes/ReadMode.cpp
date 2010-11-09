@@ -21,12 +21,13 @@ ReadMode::switchToMode() {
 void ReadMode::play() {
     QTextCursor readSpot = m_ui->wordbox->textCursor();
     readSpot.select(QTextCursor::Document);
+
     m_morse->add(readSpot.selectedText());
     m_morse->playSequence();
     return;
-    qDebug() << "starting to read";
-    m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
-    readNextLetter();
+    //qDebug() << "starting to read";
+    //m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
+    //readNextLetter();
 }
 
 void ReadMode::readNextLetter() {
@@ -43,3 +44,10 @@ void ReadMode::readNextLetter() {
     qDebug() << "playing selected text: " << m_readSpot.selectedText();
     m_morse->addAndPlayIt(m_readSpot.selectedText()[0]);
 }
+
+void ReadMode::audioStopped()
+{
+    qDebug() << "audio stopped method";
+    setRunningMode(PAUSED);
+}
+

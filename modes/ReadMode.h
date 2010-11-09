@@ -17,6 +17,7 @@ public slots:
     virtual void switchToMode();
     virtual void play();
     virtual void readNextLetter();
+    virtual void audioStopped();
 
 private:
     QTextCursor                     m_readSpot;

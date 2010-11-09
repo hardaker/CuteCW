@@ -9,6 +9,7 @@ QT       += core gui multimedia
 TARGET = qtcw
 TEMPLATE = app
 
+RESOURCES = qtcw.qrc
 
 SOURCES += main.cpp\
         MainWindow.cpp \
