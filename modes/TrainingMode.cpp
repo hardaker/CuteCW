@@ -257,16 +257,12 @@ void TrainingMode::setupSequenceButtons(const QString &sequence) {
 
     // if we don't have a grid yet, create it
     if (m_buttons) {
-        m_buttons = new QGridLayout();
-        m_ui->forModes->addLayout(m_buttons);
-    } else {
-        // remove the older buttons (if any)
-        QLayoutItem *child;
-        while ((child = m_buttons->takeAt(0)) != 0) {
-            qDebug() << "Removing Buttons";
-            delete child;
-        }
+        clearLayout(m_buttons);
+        delete m_buttons;
     }
+
+    m_buttons = new QGridLayout();
+    m_ui->forModes->addLayout(m_buttons);
 
     int column = 0;
     foreach (QChar letter, sequence) {

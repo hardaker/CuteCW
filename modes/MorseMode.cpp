@@ -134,3 +134,18 @@ void MorseMode::setRunningMode(RunningMode newMode)
     }
 }
 
+void MorseMode::clearLayout(QLayout *layout)
+{
+    QLayoutItem *item;
+    while(item = layout->takeAt(0)) {
+        if (item->layout()) {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        if (item->widget()) {
+            delete item->widget();
+        }
+        delete item;
+    }
+}
+

@@ -33,6 +33,8 @@ public:
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
 
+    void clearLayout(QLayout *layout);
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
     virtual void switchToMode() = 0;
