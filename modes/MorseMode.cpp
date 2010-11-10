@@ -98,6 +98,13 @@ void MorseMode::hideWidgets()
 void MorseMode::switchToYou()
 {
     hideWidgets();
+
+    // remove the mode specific layout objects
+    QLayoutItem *child;
+    while ((child = m_ui->forModes->takeAt(0)) != 0) {
+        delete child;
+    }
+
     m_morse->pauseAudio();
     setRunningMode(PAUSED);
     m_morse->pauseAudio();

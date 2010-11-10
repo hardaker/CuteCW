@@ -141,6 +141,9 @@
       </spacer>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="forModes"/>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QLabel" name="label">
