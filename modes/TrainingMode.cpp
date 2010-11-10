@@ -1,11 +1,13 @@
 #include "TrainingMode.h"
 #include "Morse.h"
+#include <QtGui/QGridLayout>
+#include <QtGui/QPushButton>
 
 #include <qdebug.h>
 #include <QtGui/QMenu>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_doEntireSequence(false)
+    : MorseMode(parent, ui), m_doEntireSequence(false), m_mapper(new QSignalMapper())
 {
     setupSequences();
 }
@@ -76,6 +78,10 @@ void TrainingMode::play() {
 void TrainingMode::audioStopped() {
     qDebug() << "audio stopped";
     m_lastTimes.push_back(QTime::currentTime());
+}
+
+void TrainingMode::handleKeyPress(const QString &letterPressed) {
+    handleKeyPress(letterPressed[0]);
 }
 
 void TrainingMode::handleKeyPress(QChar letterPressed) {
@@ -244,6 +250,20 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
         newLetter += "</font>";
         m_ui->letter->setText( newLetter );
     }
+}
+
+void TrainingMode::setupSequenceButtons(const QString &sequence) {
+    QGridLayout *grid = new QGridLayout();
+    int column = 0;
+    foreach (QChar letter, sequence) {
+        QPushButton *button = new QPushButton(QString(letter));
+        grid->addWidget(button, 0, column++);
+        connect(button, SIGNAL(clicked()), m_mapper, SLOT(map()));
+        m_mapper->setMapping(button, letter);
+    }
+    connect(m_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(handleKeyPress(const QString &)));
+
 }
 
 void TrainingMode::setDoEntireSequence(bool value) {
