@@ -16,6 +16,7 @@ void LetterTrainingMode::switchToMode() {
     clear();
 
     setupSequences();
+    setupSequenceButtons(m_trainingSequence);
 }
 
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {

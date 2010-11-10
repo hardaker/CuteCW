@@ -7,7 +7,7 @@
 #include <QtGui/QMenu>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_doEntireSequence(false), m_mapper(new QSignalMapper())
+    : MorseMode(parent, ui), m_doEntireSequence(false), m_mapper(new QSignalMapper()), m_buttons(0)
 {
     setupSequences();
 }
@@ -227,9 +227,9 @@ void TrainingMode::switchSequence(int sequence) {
     m_trainingSequence = m_sequences.at(sequence);
     setSequence(m_trainingSequence, 1);
     clear();
+    setupSequenceButtons(m_trainingSequence);
     startNextTrainingKey();
 }
-
 
 void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
     if (m_morse->m_sequenceLabel) {
@@ -253,17 +253,30 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
 }
 
 void TrainingMode::setupSequenceButtons(const QString &sequence) {
-    QGridLayout *grid = new QGridLayout();
+    qDebug() << "setting up sequence buttons";
+
+    // if we don't have a grid yet, create it
+    if (m_buttons) {
+        m_buttons = new QGridLayout();
+        m_ui->forModes->addLayout(m_buttons);
+    } else {
+        // remove the older buttons (if any)
+        QLayoutItem *child;
+        while ((child = m_buttons->takeAt(0)) != 0) {
+            qDebug() << "Removing Buttons";
+            delete child;
+        }
+    }
+
     int column = 0;
     foreach (QChar letter, sequence) {
         QPushButton *button = new QPushButton(QString(letter));
-        grid->addWidget(button, 0, column++);
+        m_buttons->addWidget(button, 0, column++);
         connect(button, SIGNAL(clicked()), m_mapper, SLOT(map()));
         m_mapper->setMapping(button, letter);
     }
     connect(m_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(handleKeyPress(const QString &)));
-
 }
 
 void TrainingMode::setDoEntireSequence(bool value) {

@@ -93,6 +93,7 @@ void MorseMode::hideWidgets()
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
     m_ui->play->hide();
     m_ui->WPM->hide();
+    //m_ui->forModes->hide();
 }
 
 void MorseMode::switchToYou()
