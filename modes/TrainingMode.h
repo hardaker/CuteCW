@@ -4,6 +4,7 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTime>
 #include <QtGui/QGridLayout>
+#include <QtGui/QAction>
 
 #include "MorseMode.h"
 #include "ui_MainWindow.h"
@@ -20,9 +21,8 @@ public:
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
-    void setupSequenceButtons(const QString &sequence);
+    void setupWidgets(const QString &sequence);
     void startNextTrainingKey();
-    void setDoEntireSequence(bool value);
     MorseStat *getStat(const QChar &key);
 
     virtual void clear();
@@ -35,6 +35,7 @@ public slots:
     void setSequence(const QString &sequence, int currentlyAt);
     void switchSequence(int sequence);
     virtual void audioStopped();
+    virtual void setDoEntireSequence(bool value);
 
 private:
     QStringList                     m_sequences;
@@ -49,6 +50,7 @@ protected:
     QMap<QChar, MorseStat *>        m_stats;
     QSignalMapper                  *m_mapper;
     QGridLayout                    *m_buttons;
+    QAction                        *m_doEntireSequenceButton;
 };
 
 #endif // TRAININGMODE_H

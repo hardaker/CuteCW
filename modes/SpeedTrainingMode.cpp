@@ -19,7 +19,7 @@ void SpeedTrainingMode::switchToMode() {
     clear();
 
     setupSequences();
-    setupSequenceButtons(m_trainingSequence);
+    setupWidgets(m_trainingSequence);
 }
 
 void SpeedTrainingMode::startTimerToNextKey() {

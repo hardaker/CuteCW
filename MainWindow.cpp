@@ -42,13 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
-    // Create the preference items in the quick menu
-    action = menuBar()->addAction("Use Entire Sequence");
-    action->setCheckable(true);
-    action->setChecked(false);
-    connect(action, SIGNAL(toggled(bool)), m_morse, SLOT(setDoEntireSequence(bool)));
-
-
     createAudioOutput();
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
     ui->modeMenu->setText("Play Morse Code");

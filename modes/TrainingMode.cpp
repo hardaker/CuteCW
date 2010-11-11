@@ -5,6 +5,7 @@
 
 #include <qdebug.h>
 #include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
     : MorseMode(parent, ui), m_doEntireSequence(false), m_mapper(new QSignalMapper()), m_buttons(0)
@@ -267,7 +268,7 @@ void TrainingMode::switchSequence(int sequence) {
     m_trainingSequence = m_sequences.at(sequence);
     setSequence(m_trainingSequence, 1);
     clear();
-    setupSequenceButtons(m_trainingSequence);
+    setupWidgets(m_trainingSequence);
     startNextTrainingKey();
 }
 
@@ -292,7 +293,7 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
     }
 }
 
-void TrainingMode::setupSequenceButtons(const QString &sequence) {
+void TrainingMode::setupWidgets(const QString &sequence) {
     qDebug() << "setting up sequence buttons";
 
     // if we don't have a grid yet, create it
@@ -321,8 +322,16 @@ void TrainingMode::setupSequenceButtons(const QString &sequence) {
     }
     connect(m_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(handleKeyPress(const QString &)));
+
+    // Create the preference items in the quick menu
+    m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
+    m_doEntireSequenceButton->setCheckable(true);
+    m_doEntireSequenceButton->setChecked(false);
+    connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
 }
 
 void TrainingMode::setDoEntireSequence(bool value) {
     m_doEntireSequence = value;
+    m_doEntireSequenceButton->setChecked(value);
+    qDebug() << "Switching to " << value;
 }
