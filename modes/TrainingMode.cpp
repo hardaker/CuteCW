@@ -1,7 +1,6 @@
 #include "TrainingMode.h"
 #include "Morse.h"
-#include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
+
 
 #include <qdebug.h>
 #include <QtGui/QMenu>
@@ -89,10 +88,19 @@ void TrainingMode::setupSequences() {
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) SYMBOLS);
 
-
+    action = modeMenu->addAction("Custom");
+    connect(action, SIGNAL(triggered()), this, SLOT(chooseCustomeSequence()));
 
     // Connect the mapper
     connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
+}
+
+void TrainingMode::chooseCustomeSequence() {
+    CustomSequenceDialog dialog(m_sequences[ALPHABET]);
+    if (dialog.exec() == QDialog::Accepted)
+        qDebug() << "accepted";
+    else
+        qDebug() << "maybe another time";
 }
 
 MorseStat *TrainingMode::getStat(const QChar &key) {
