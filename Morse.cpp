@@ -11,7 +11,7 @@
 
 Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0)
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));

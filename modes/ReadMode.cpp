@@ -1,5 +1,8 @@
 #include <qdebug.h>
 
+#include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
+
 #include "ReadMode.h"
 #include "Morse.h"
 
@@ -15,8 +18,30 @@ ReadMode::switchToMode() {
     m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
     m_ui->play->show();
     clear();
+    addButtons();
 }
 
+void
+ReadMode::addButtons() {
+    QPushButton *button = new QPushButton(tr("Load File"));
+    m_ui->forModes->addWidget(button);
+    connect(button, SIGNAL(clicked()), this, SLOT(openFile()));
+}
+
+void
+ReadMode::openFile() {
+    QString fileName = QFileDialog::getOpenFileName(0, tr("Load a file"));
+    if (fileName.isEmpty())
+        return;
+    QFile file(fileName);
+    file.open(QFile::ReadOnly);
+    QString contents = file.readAll();
+    if (contents.isEmpty()) {
+        QMessageBox::critical(0, tr("Failed to read file"), tr("Opening file %1 failed").arg(fileName));
+        return;
+    }
+    m_ui->wordbox->setText(contents);
+}
 
 void ReadMode::play() {
     QTextCursor readSpot = m_ui->wordbox->textCursor();
