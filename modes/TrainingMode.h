@@ -42,6 +42,7 @@ public slots:
     virtual void handleKeyPress(const QString &letterPressed);
     void setSequence(const QString &sequence, int currentlyAt);
     void switchSequence(int sequence);
+    void switchSequence(const QString &sequence);
     virtual void audioStopped();
     virtual void setDoEntireSequence(bool value);
     virtual void chooseCustomeSequence();

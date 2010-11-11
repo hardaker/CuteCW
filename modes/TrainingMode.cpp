@@ -97,9 +97,10 @@ void TrainingMode::setupSequences() {
 
 void TrainingMode::chooseCustomeSequence() {
     CustomSequenceDialog dialog(m_sequences[ALPHABET]);
-    if (dialog.exec() == QDialog::Accepted)
-        qDebug() << "accepted";
-    else
+    if (dialog.exec() == QDialog::Accepted) {
+        QString results = dialog.getResults();
+        switchSequence(results);
+    } else
         qDebug() << "maybe another time";
 }
 
@@ -273,7 +274,11 @@ void TrainingMode::startNextTrainingKey() {
 }
 
 void TrainingMode::switchSequence(int sequence) {
-    m_trainingSequence = m_sequences.at(sequence);
+    switchSequence(m_sequences.at(sequence));
+}
+
+void TrainingMode::switchSequence(const QString &sequence) {
+    m_trainingSequence = sequence;
     setSequence(m_trainingSequence, 1);
     clear();
     setupWidgets(m_trainingSequence);

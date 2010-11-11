@@ -1,5 +1,7 @@
 #include "modes/ChooseSequenceDialog.h"
 
+#include <qdebug.h>
+
 CustomSequenceDialog::CustomSequenceDialog(QString &sequenceSet, QWidget *parent)
     : QDialog(parent)
 {
@@ -37,18 +39,20 @@ CustomSequenceDialog::CustomSequenceDialog(QString &sequenceSet, QWidget *parent
 }
 
 void CustomSequenceDialog::toggle(const QString &item) {
+    qDebug() << "toggling: " << item;
     if (results.contains(item))
         results.remove(item);
     else
         results.insert(item);
+
 }
 
 QString CustomSequenceDialog::getResults() {
-    QString results;
+    QString str;
     foreach(QString item, results) {
-        results += item;
+        str += item;
     }
-    return results;
+    return str;
 }
 
 
