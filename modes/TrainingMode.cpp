@@ -160,7 +160,6 @@ void TrainingMode::startNextTrainingKey() {
                 thisTime = 1000*60.0/(50.0*float(m_morse->currentWPMAccept()));
             } else {
                 // never keyed yet; do it immediately if we got this far
-                m_morse->setStatus("Starting a new letter: " + QString(*letter));
                 qDebug() << "|------ keying: " << *letter;
                 m_lastKey = *letter;
                 m_lastKeys.append(*letter);
@@ -259,17 +258,25 @@ void TrainingMode::setupSequenceButtons(const QString &sequence) {
     if (m_buttons) {
         clearLayout(m_buttons);
         delete m_buttons;
+        m_buttons = 0;
     }
 
     m_buttons = new QGridLayout();
     m_ui->forModes->addLayout(m_buttons);
 
     int column = 0;
+    int row = 0;
+    const int buttonsPerRow = 21;
     foreach (QChar letter, sequence) {
         QPushButton *button = new QPushButton(QString(letter));
-        m_buttons->addWidget(button, 0, column++);
+        m_buttons->addWidget(button, row, column++);
         connect(button, SIGNAL(clicked()), m_mapper, SLOT(map()));
         m_mapper->setMapping(button, letter);
+        if (column == buttonsPerRow) {
+            column = 0;
+            row++;
+        }
+
     }
     connect(m_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(handleKeyPress(const QString &)));

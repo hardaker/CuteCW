@@ -21,12 +21,11 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_statusBar(ui->status), m_ui(ui)
+      m_ui(ui)
 {
 
     qDebug() << "new morse2";
     createTones(WPMGOAL);
-    setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
 
@@ -275,11 +274,6 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 
     qDebug() << "created tones";
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
-}
-
-void Morse::setStatus(const QString &status) {
-    if (m_statusBar)
-        m_statusBar->setText(status);
 }
 
 int Morse::currentWPMAccept() {

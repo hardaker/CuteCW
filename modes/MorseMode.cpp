@@ -93,6 +93,7 @@ void MorseMode::hideWidgets()
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
     m_ui->play->hide();
     m_ui->WPM->hide();
+    clearLayout(m_ui->forModes);
     //m_ui->forModes->hide();
 }
 
@@ -139,13 +140,15 @@ void MorseMode::clearLayout(QLayout *layout)
     QLayoutItem *item;
     while(item = layout->takeAt(0)) {
         if (item->layout()) {
+            qDebug() << "deleting a layout";
             clearLayout(item->layout());
             delete item->layout();
         }
         if (item->widget()) {
+            qDebug() << "deleting a widget";
             delete item->widget();
         }
-        delete item;
+        //delete item;
     }
 }
 

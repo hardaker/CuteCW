@@ -57,8 +57,6 @@ public:
 
     MorseStat *getStat(const QChar &key);
 
-    void setStatus(const QString &status);
-
     void handleKeyResponse(QChar letterPressed);
     bool enterPressed();
 
@@ -117,7 +115,6 @@ private:
     TrainingMode                     m_gameMode;
     int                              m_currentWPMGoal;
     int                              m_currentWPMAccept;
-    QLabel                          *m_statusBar;
     Ui::MainWindow                  *m_ui;
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
