@@ -20,36 +20,77 @@ void TrainingMode::setupSequences() {
     m_sequences.append("vg5/q92h38");
     m_sequences.append("b?47c1d60x");
     m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
+    m_sequences.append("abcdef");
+    m_sequences.append("ghijklm");
+    m_sequences.append("nopqrst");
+    m_sequences.append("tuvwxyz");
+    m_sequences.append("1234567890");
+    m_sequences.append(".,/=?");
 
-
+    // Koch sequences
     m_sequenceSignalMapper = new QSignalMapper();
     QMenu *modeMenu = new QMenu(m_ui->changeSequence);
     m_ui->changeSequence->setMenu(modeMenu);
 
-    QAction *action = modeMenu->addAction("Full Koch");
+    QMenu *subMenu = modeMenu->addMenu(tr("Koch"));
+
+    QAction *action = subMenu->addAction("Full Koch");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) KOCH);
 
-    action = modeMenu->addAction("Koch part 1");
+    action = subMenu->addAction("Koch part 1");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) KOCH1);
 
-    action = modeMenu->addAction("Koch part 2");
+    action = subMenu->addAction("Koch part 2");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) KOCH2);
 
-    action = modeMenu->addAction("Koch part 3");
+    action = subMenu->addAction("Koch part 3");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) KOCH3);
 
-    action = modeMenu->addAction("Koch part 4");
+    action = subMenu->addAction("Koch part 4");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) KOCH4);
 
-    action = modeMenu->addAction("Alphabet");
+
+    // Alphabet sequences
+    subMenu = modeMenu->addMenu(tr("Alphabet"));
+
+    action = subMenu->addAction("Full");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) ALPHABET);
 
+    action = subMenu->addAction("A-F");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) AF);
+
+    action = subMenu->addAction("G-M");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) GM);
+
+    action = subMenu->addAction("N-T");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) NT);
+
+    action = subMenu->addAction("U-Z");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) UZ);
+
+    // numbers and symbols
+
+    action = modeMenu->addAction("Numbers");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) NUMBERS);
+
+    action = modeMenu->addAction("Symbols");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) SYMBOLS);
+
+
+
+    // Connect the mapper
     connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
