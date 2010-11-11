@@ -1,5 +1,7 @@
 #include "MorseMode.h"
 #include "Morse.h"
+
+#include <QtGui/QMenuBar>
 #include <qdebug.h>
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
@@ -107,9 +109,12 @@ void MorseMode::switchToYou()
         delete child;
     }
 
+    m_morse->menuBar()->clear();
+
     m_morse->pauseAudio();
     setRunningMode(PAUSED);
-    m_morse->pauseAudio();
+
+
     switchToMode();
 }
 

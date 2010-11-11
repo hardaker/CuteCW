@@ -102,6 +102,7 @@ public:
     QLabel                          *m_sequenceLabel;
     QMap<QChar, QList<ditdah> *>    code;
 
+    QMenuBar * menuBar();
 private:
 
     QMap<TrainingMode, MorseMode *>  m_modes;

@@ -2,6 +2,7 @@
 
 #include <QtCore/QSettings>
 #include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
 #include <qdebug.h>
 
 #include "MainWindow.h"
@@ -59,6 +60,12 @@ void Morse::prefsButton() {
         saveSettings();
         loadSettings();
     }
+}
+
+QMenuBar *
+Morse::menuBar()
+{
+    return m_parent->menuBar();
 }
 
 void Morse::saveSettings() {
