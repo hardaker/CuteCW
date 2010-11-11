@@ -36,11 +36,19 @@ CustomSequenceDialog::CustomSequenceDialog(QString &sequenceSet, QWidget *parent
     setLayout(topLayout);
 }
 
-void CustomSequenceDialog::setOn(const QString &item)
-{
+void CustomSequenceDialog::toggle(const QString &item) {
+    if (results.contains(item))
+        results.remove(item);
+    else
+        results.insert(item);
 }
 
-void CustomSequenceDialog::setOff(const QString &item)
-{
+QString CustomSequenceDialog::getResults() {
+    QString results;
+    foreach(QString item, results) {
+        results += item;
+    }
+    return results;
 }
+
 

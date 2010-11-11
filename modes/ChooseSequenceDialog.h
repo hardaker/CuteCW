@@ -20,9 +20,9 @@ class CustomSequenceDialog : public QDialog
 public:
     CustomSequenceDialog(QString &sequenceSet, QWidget *parent = 0);
 
+    QString getResults();
+
 public slots:
-    void setOn(const QString &item);
-    void setOff(const QString &item);
     void toggle(const QString &item);
 
 private:
