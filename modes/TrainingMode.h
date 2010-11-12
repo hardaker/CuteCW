@@ -29,7 +29,6 @@ public:
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
-    void setupWidgets(const QString &sequence);
     void startNextTrainingKey();
     MorseStat *getStat(const QChar &key);
 
@@ -46,6 +45,7 @@ public slots:
     virtual void audioStopped();
     virtual void setDoEntireSequence(bool value);
     virtual void chooseCustomeSequence();
+    virtual void setupWidgets(const QString &sequence);
 
 private:
     QStringList                     m_sequences;
@@ -58,8 +58,6 @@ protected:
     QList<QChar>                    m_lastKeys;
     QList<QTime>                    m_lastTimes;
     QMap<QChar, MorseStat *>        m_stats;
-    QSignalMapper                  *m_mapper;
-    QGridLayout                    *m_buttons;
     QAction                        *m_doEntireSequenceButton;
 };
 

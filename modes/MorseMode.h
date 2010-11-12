@@ -4,6 +4,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QTime>
+#include <QtCore/QSignalMapper>
 #include <qaudio.h>
 
 // #include "Morse.h"
@@ -29,6 +30,7 @@ public:
     float msToPauseWPMF(float ms);
 
     void hideWidgets();
+    void setupKeyWidgets(const QString &sequence);
 
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
@@ -59,6 +61,8 @@ protected:
     int                             m_countWeight;
     QIcon                           m_playIcon, m_pauseIcon;
     RunningMode                     m_runningMode;
+    QSignalMapper                  *m_mapper;
+    QGridLayout                    *m_buttons;
 };
 
 #endif // MORSEMODE_H

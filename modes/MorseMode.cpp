@@ -6,7 +6,9 @@
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
     : m_morse(morse), m_ui(ui),
-      m_badCount(0), m_goodCount(0), m_countWeight(100), m_playIcon(":/icons/play.png"), m_pauseIcon(":/icons/pause.png"), m_runningMode(PAUSED)
+      m_badCount(0), m_goodCount(0), m_countWeight(100),
+      m_playIcon(":/icons/play.png"), m_pauseIcon(":/icons/pause.png"), m_runningMode(PAUSED),
+      m_mapper(new QSignalMapper()), m_buttons(0)
 {
     setRunningMode(PAUSED);
 }
@@ -157,3 +159,33 @@ void MorseMode::clearLayout(QLayout *layout)
     }
 }
 
+void MorseMode::setupKeyWidgets(const QString &sequence) {
+    qDebug() << "setting up sequence buttons";
+
+    // if we don't have a grid yet, create it
+    if (m_buttons) {
+        clearLayout(m_buttons);
+        delete m_buttons;
+        m_buttons = 0;
+    }
+
+    m_buttons = new QGridLayout();
+    m_ui->forModes->addLayout(m_buttons);
+
+    int column = 0;
+    int row = 0;
+    const int buttonsPerRow = 21;
+    foreach (QChar letter, sequence) {
+        QPushButton *button = new QPushButton(QString(letter));
+        m_buttons->addWidget(button, row, column++);
+        connect(button, SIGNAL(clicked()), m_mapper, SLOT(map()));
+        m_mapper->setMapping(button, letter);
+        if (column == buttonsPerRow) {
+            column = 0;
+            row++;
+        }
+
+    }
+    connect(m_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(handleKeyPress(const QString &)));
+}

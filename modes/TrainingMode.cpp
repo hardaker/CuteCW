@@ -7,7 +7,7 @@
 #include <QtGui/QMenuBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_doEntireSequence(false), m_mapper(new QSignalMapper()), m_buttons(0)
+    : MorseMode(parent, ui), m_doEntireSequence(false)
 {
     setupSequences();
 }
@@ -281,7 +281,7 @@ void TrainingMode::switchSequence(const QString &sequence) {
     m_trainingSequence = sequence;
     setSequence(m_trainingSequence, 1);
     clear();
-    setupWidgets(m_trainingSequence);
+    setupKeyWidgets(m_trainingSequence);
     startNextTrainingKey();
 }
 
@@ -306,45 +306,19 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
     }
 }
 
-void TrainingMode::setupWidgets(const QString &sequence) {
-    qDebug() << "setting up sequence buttons";
+void TrainingMode::setDoEntireSequence(bool value) {
+    m_doEntireSequence = value;
+    m_doEntireSequenceButton->setChecked(value);
+    qDebug() << "Switching to " << value;
+}
 
-    // if we don't have a grid yet, create it
-    if (m_buttons) {
-        clearLayout(m_buttons);
-        delete m_buttons;
-        m_buttons = 0;
-    }
-
-    m_buttons = new QGridLayout();
-    m_ui->forModes->addLayout(m_buttons);
-
-    int column = 0;
-    int row = 0;
-    const int buttonsPerRow = 21;
-    foreach (QChar letter, sequence) {
-        QPushButton *button = new QPushButton(QString(letter));
-        m_buttons->addWidget(button, row, column++);
-        connect(button, SIGNAL(clicked()), m_mapper, SLOT(map()));
-        m_mapper->setMapping(button, letter);
-        if (column == buttonsPerRow) {
-            column = 0;
-            row++;
-        }
-
-    }
-    connect(m_mapper, SIGNAL(mapped(const QString &)),
-            this, SLOT(handleKeyPress(const QString &)));
+void TrainingMode::setupWidgets(const QString &sequence)
+{
+    setupKeyWidgets(sequence);
 
     // Create the preference items in the quick menu
     m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
     m_doEntireSequenceButton->setCheckable(true);
     m_doEntireSequenceButton->setChecked(false);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
-}
-
-void TrainingMode::setDoEntireSequence(bool value) {
-    m_doEntireSequence = value;
-    m_doEntireSequenceButton->setChecked(value);
-    qDebug() << "Switching to " << value;
 }
