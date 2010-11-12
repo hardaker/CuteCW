@@ -49,6 +49,12 @@ void MorseMode::handleKeyPress(QChar letterPressed) {
     Q_UNUSED(letterPressed);
 }
 
+void MorseMode::handleKeyPress(const QString &letterPressed) {
+    handleKeyPress(letterPressed[0]);
+}
+
+
+
 void MorseMode::audioFinished(QAudio::State state) {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;

@@ -62,7 +62,7 @@ void WordTrainingMode::switchToMode() {
     clear();
 
     setupWordsMenu();
-
+    setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
     m_maxWord = 2;
 
     enterPressed();

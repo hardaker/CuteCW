@@ -38,7 +38,6 @@ public slots:
     virtual void play();
 
     virtual void handleKeyPress(QChar letterPressed);
-    virtual void handleKeyPress(const QString &letterPressed);
     void setSequence(const QString &sequence, int currentlyAt);
     void switchSequence(int sequence);
     void switchSequence(const QString &sequence);

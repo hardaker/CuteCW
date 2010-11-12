@@ -131,10 +131,6 @@ void TrainingMode::audioStopped() {
     m_lastTimes.push_back(QTime::currentTime());
 }
 
-void TrainingMode::handleKeyPress(const QString &letterPressed) {
-    handleKeyPress(letterPressed[0]);
-}
-
 void TrainingMode::handleKeyPress(QChar letterPressed) {
     if (runningMode() != RUNNING)
         return;
