@@ -20,6 +20,7 @@
 #include "modes/SpeedTrainingMode.h"
 #include "modes/WordTrainingMode.h"
 #include "modes/ReadMode.h"
+#include "modes/GroupingMode.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"

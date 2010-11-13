@@ -1,15 +1,23 @@
 #ifndef GROUPINGMODE_H
 #define GROUPINGMODE_H
 
-class GroupingMode : public MorseMode
+#include "TrainingMode.h"
+#include "Morse.h"
+
+const int DEFAULT_GROUPLENGTH = 3;
+
+class GroupingMode : public TrainingMode
 {
     Q_OBJECT
 public:
-    explicit GroupingMode(QObject *parent = 0);
+    explicit GroupingMode(Morse *parent, Ui::MainWindow *ui);
 
-signals:
+    virtual void switchToMode();
+    virtual void handleKeyPress(QChar letterPressed);
 
-public slots:
+private:
+    int groupLength;
+    QString currentSequence;
 
 };
 
