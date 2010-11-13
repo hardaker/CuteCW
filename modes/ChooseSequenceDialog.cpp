@@ -2,7 +2,7 @@
 
 #include <qdebug.h>
 
-CustomSequenceDialog::CustomSequenceDialog(QString &sequenceSet, QWidget *parent)
+CustomSequenceDialog::CustomSequenceDialog(QString &sequenceSet, const QString preSelected, QWidget *parent)
     : QDialog(parent)
 {
     topLayout = new QVBoxLayout(this);
@@ -16,6 +16,10 @@ CustomSequenceDialog::CustomSequenceDialog(QString &sequenceSet, QWidget *parent
     const int maxColumn = 5;
     foreach(QChar item, sequenceSet) {
         QCheckBox *box = new QCheckBox(QString(item), this);
+        if (preSelected.contains(item)) {
+            box->setChecked(true);
+            results.insert(item);
+        }
         grid->addWidget(box, row, column++);
 
         connect(box, SIGNAL(toggled(bool)), mapper, SLOT(map()));

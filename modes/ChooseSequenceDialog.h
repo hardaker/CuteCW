@@ -18,7 +18,7 @@ class CustomSequenceDialog : public QDialog
 {
     Q_OBJECT
 public:
-    CustomSequenceDialog(QString &sequenceSet, QWidget *parent = 0);
+    CustomSequenceDialog(QString &sequenceSet, const QString preSelected = "", QWidget *parent = 0);
 
     QString getResults();
 
