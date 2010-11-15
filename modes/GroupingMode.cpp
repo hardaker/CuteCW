@@ -25,8 +25,10 @@ void GroupingMode::handleKeyPress(QChar letter) {
     if (runningMode() != RUNNING)
         return;
 
-    if (letter == '\r')
+    if (letter == '\r') {
         enterPressed();
+        return;
+    }
 
     // Copied from WordTraining (ish)
     if (m_currentSequence[m_enteredWord.length()] == letter) {
