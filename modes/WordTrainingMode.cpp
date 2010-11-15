@@ -58,7 +58,6 @@ void WordTrainingMode::switchToMode() {
     m_ui->changeWords->show();
     m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
     m_ui->play->show();
-    m_ui->WPM->show();
     clear();
 
     setupWordsMenu();

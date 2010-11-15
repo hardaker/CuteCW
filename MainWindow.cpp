@@ -38,6 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDS);
 
+    action = modeMenu->addAction("Grouping Training");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPS);
+
     action = modeMenu->addAction("Read");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);

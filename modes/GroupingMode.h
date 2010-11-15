@@ -13,12 +13,20 @@ public:
     explicit GroupingMode(Morse *parent, Ui::MainWindow *ui);
 
     virtual void switchToMode();
-    virtual void handleKeyPress(QChar letterPressed);
+    virtual void handleKeyPress(QChar letter);
+
+    void createNextSequence();
+
+public slots:
+    void startNextGroup();
+    virtual bool enterPressed();
+    virtual void play();
 
 private:
-    int groupLength;
-    QString currentSequence;
-
+    int     m_groupLength;
+    QString m_currentSequence;
+    QString m_enteredWord;
+    bool    m_wordWasGood;
 };
 
 #endif // GROUPINGMODE_H
