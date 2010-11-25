@@ -38,16 +38,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDS);
 
+    action = modeMenu->addAction("Grouping Training");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPS);
+
     action = modeMenu->addAction("Read");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
-
-    // Create the preference items in the quick menu
-    action = menuBar()->addAction("Use Entire Sequence");
-    action->setCheckable(true);
-    action->setChecked(false);
-    connect(action, SIGNAL(toggled(bool)), m_morse, SLOT(setDoEntireSequence(bool)));
-
 
     createAudioOutput();
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
@@ -68,6 +65,7 @@ bool MainWindow::event(QEvent *event) {
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     qDebug() << "key pressed: " << event->text() << " " << event->text().size() << " " << event->text().length();
     if (event->key() == Qt::Key_Enter) {
+        qDebug() << " was enter";
         m_morse->enterPressed();
         return;
     }

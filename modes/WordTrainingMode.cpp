@@ -52,20 +52,16 @@ void WordTrainingMode::setupWordsMenu() {
 void WordTrainingMode::switchToMode() {
     m_goodCount = 0;
     m_badCount = 0;
-    m_ui->wordbox->hide();
     m_ui->wordbox->clear();
     m_ui->letter->show();
-    m_ui->clearTraining->hide();
     m_ui->modeMenu->setText("Word Training");
-    m_ui->changeSequence->hide();
     m_ui->changeWords->show();
     m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
     m_ui->play->show();
-    m_ui->WPM->show();
     clear();
 
     setupWordsMenu();
-
+    setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
     m_maxWord = 2;
 
     enterPressed();
@@ -92,6 +88,8 @@ bool WordTrainingMode::enterPressed() {
 }
 
 void WordTrainingMode::handleKeyPress(QChar letter) {
+    if (runningMode() != RUNNING)
+        return;
     if (letter == '\r') {
         enterPressed();
         return;

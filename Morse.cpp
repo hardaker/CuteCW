@@ -2,6 +2,7 @@
 
 #include <QtCore/QSettings>
 #include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
 #include <qdebug.h>
 
 #include "MainWindow.h"
@@ -11,7 +12,7 @@
 
 Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_statusBar(0), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0)
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
@@ -21,12 +22,11 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_statusBar(ui->status), m_ui(ui)
+      m_ui(ui)
 {
 
     qDebug() << "new morse2";
     createTones(WPMGOAL);
-    setStatus("ready: Play Mode");
     qsrand(QTime::currentTime().msec());
     loadSettings();
 
@@ -34,6 +34,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(TRAIN, new LetterTrainingMode(this, m_ui));
     m_modes.insert(SPEEDTRAIN, new SpeedTrainingMode(this, m_ui));
     m_modes.insert(WORDS, new WordTrainingMode(this, m_ui));
+    m_modes.insert(GROUPS, new GroupingMode(this, m_ui));
     m_modes.insert(READ, new ReadMode(this, m_ui));
 
     switchMode(Morse::PLAY);
@@ -60,6 +61,12 @@ void Morse::prefsButton() {
         saveSettings();
         loadSettings();
     }
+}
+
+QMenuBar *
+Morse::menuBar()
+{
+    return m_parent->menuBar();
 }
 
 void Morse::saveSettings() {
@@ -134,6 +141,14 @@ void Morse::setAudioMode(AudioMode newmode) {
     m_playingMode = newmode;
 }
 
+void Morse::pauseAudio() {
+    setAudioMode(PAUSED);
+}
+
+void Morse::playAudio() {
+    setAudioMode(PLAYING);
+}
+
 Morse::TrainingMode Morse::trainingMode() {
     return m_gameMode;
 }
@@ -155,7 +170,7 @@ void Morse::switchMode(int newmode) {
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
 
-    m_modes[(TrainingMode) newmode]->switchToMode();
+    m_modes[(TrainingMode) newmode]->switchToYou();
 }
 
 //
@@ -167,6 +182,14 @@ void Morse::addAndPlayIt(QChar c) {
         clearList();
         add(pause());
     }
+    add(c, false);
+    add(m_letterPause);
+    maybePlaySequence();
+}
+
+void Morse::playIt(QChar c) {
+    clearList();
+    add(pause());
     add(c, false);
     add(m_letterPause);
     maybePlaySequence();
@@ -261,17 +284,12 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 
     m_playBuffer = new Generator(m_pause);
     m_playBuffer->start();
-    connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()));
+    connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
 
     #include "morse_code.h"
 
     qDebug() << "created tones";
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
-}
-
-void Morse::setStatus(const QString &status) {
-    if (m_statusBar)
-        m_statusBar->setText(status);
 }
 
 int Morse::currentWPMAccept() {
@@ -317,3 +335,4 @@ Morse::ditSecs()
 {
     return m_ditSecs;
 }
+

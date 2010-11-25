@@ -9,6 +9,7 @@ QT       += core gui multimedia
 TARGET = qtcw
 TEMPLATE = app
 
+RESOURCES = qtcw.qrc
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -22,7 +23,9 @@ SOURCES += main.cpp\
     modes/PlayMode.cpp \
     modes/LetterTrainingMode.cpp \
     modes/WordTrainingMode.cpp \
-    modes/ReadMode.cpp
+    modes/ReadMode.cpp \
+    modes/ChooseSequenceDialog.cpp \
+    modes/GroupingMode.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -41,7 +44,9 @@ HEADERS  += MainWindow.h \
     modes/PlayMode.h \
     modes/LetterTrainingMode.h \
     modes/WordTrainingMode.h \
-    modes/ReadMode.h
+    modes/ReadMode.h \
+    modes/ChooseSequenceDialog.h \
+    modes/GroupingMode.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui

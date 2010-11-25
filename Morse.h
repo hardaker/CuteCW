@@ -9,6 +9,7 @@
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
 #include <QtGui/QTextCursor>
+#include <QtGui/QIcon>
 #include <QtCore/QSignalMapper>
 
 #include "Generator.h"
@@ -19,6 +20,7 @@
 #include "modes/SpeedTrainingMode.h"
 #include "modes/WordTrainingMode.h"
 #include "modes/ReadMode.h"
+#include "modes/GroupingMode.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
@@ -38,7 +40,7 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, READ, TEST };
+    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, READ, TEST };
     enum AudioMode { STOPPED, PLAYING, PAUSED };
     enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 
@@ -53,10 +55,9 @@ public:
     void add(QChar c, bool addpause = true);
     void add(const QString &textToAdd);
     void addAndPlayIt(QChar c);
+    void playIt(QChar c);
 
     MorseStat *getStat(const QChar &key);
-
-    void setStatus(const QString &status);
 
     void handleKeyResponse(QChar letterPressed);
     bool enterPressed();
@@ -96,10 +97,14 @@ public slots:
     void saveSettings();
     void loadSettings();
 
+    void pauseAudio();
+    void playAudio();
+
 public:
     QLabel                          *m_sequenceLabel;
     QMap<QChar, QList<ditdah> *>    code;
 
+    QMenuBar * menuBar();
 private:
 
     QMap<TrainingMode, MorseMode *>  m_modes;
@@ -113,7 +118,6 @@ private:
     TrainingMode                     m_gameMode;
     int                              m_currentWPMGoal;
     int                              m_currentWPMAccept;
-    QLabel                          *m_statusBar;
     Ui::MainWindow                  *m_ui;
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;

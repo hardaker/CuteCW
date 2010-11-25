@@ -7,24 +7,21 @@ LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
 }
 
 void LetterTrainingMode::switchToMode() {
-    m_ui->wordbox->hide();
     m_ui->letter->show();
+    m_ui->play->show();
     m_ui->clearTraining->show();
     m_ui->modeMenu->setText("Recognition Training");
     m_ui->changeSequence->show();
-    m_ui->changeWords->hide();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
-    m_ui->play->show();
-    m_ui->WPM->show();
     clear();
 
     setupSequences();
-
-    m_morse->setAudioMode(Morse::PLAYING);
-    playButton(); // will change to "paused"
+    setupWidgets(m_trainingSequence);
 }
 
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
+    if (runningMode() != RUNNING)
+        return;
     // ensure we're not still playing a sound:
     if (m_morse->audioMode() == Morse::PLAYING)
         return;
