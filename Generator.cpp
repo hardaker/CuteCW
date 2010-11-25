@@ -1,5 +1,6 @@
 #include "Generator.h"
 #include <qdebug.h>
+#include <QtGlobal>
 
 #include <math.h>
 
@@ -136,8 +137,19 @@ qint64 Generator::readData(char *data, qint64 maxlen)
         emit generatorDone();
     }
 
+#define FILL_WITH_SPACE 1
+
+#ifdef FILL_WITH_SPACE
+    if (bytes_left <= 0) {
+        // should really only be needed on linux with 4.7 I suspect
+        memcpy(data, zerobuffer, qMin(qint64(ZEROLENGTH), maxlen));
+        bytes_left = -1;
+        return qMin(qint64(ZEROLENGTH), maxlen);
+    }
+#else
     if (bytes_left <= 0)
         return -1;
+#endif
 
     if (len < bytes_left) {
         // Normal

@@ -4,8 +4,8 @@
 #include <QtCore/QIODevice>
 
 // 1764 = 20wpm dit in length; three of these seems to be a safe buffer length to extend
-#define ZEROLENGTH  1764
 #define ZEROCOUNTS     3
+#define ZEROLENGTH  1764*ZEROCOUNTS
 
 class Generator : public QIODevice
 {
