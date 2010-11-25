@@ -181,7 +181,7 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
 
     int column = 0;
     int row = 0;
-    const int buttonsPerRow = 7;
+    const int buttonsPerRow = 11;
     foreach (QChar letter, sequence) {
         QPushButton *button = new QPushButton(QString(letter));
         m_buttons->addWidget(button, row, column++);
