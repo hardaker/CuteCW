@@ -218,7 +218,7 @@ void TrainingMode::startNextTrainingKey() {
                                                                       totalTime/float(letterCount)), 'g', 2));
                 else
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
-                m_morse->addAndPlayIt(*letter);
+                m_morse->playIt(*letter);
                 return;
             }
         }
@@ -262,7 +262,7 @@ void TrainingMode::startNextTrainingKey() {
             qDebug() << "------- keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
-            m_morse->addAndPlayIt((*search).first);
+            m_morse->playIt((*search).first);
             return;
         }
     }
