@@ -187,6 +187,14 @@ void Morse::addAndPlayIt(QChar c) {
     maybePlaySequence();
 }
 
+void Morse::playIt(QChar c) {
+    clearList();
+    add(pause());
+    add(c, false);
+    add(m_letterPause);
+    maybePlaySequence();
+}
+
 void
 Morse::clearList()
 {
@@ -276,7 +284,7 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 
     m_playBuffer = new Generator(m_pause);
     m_playBuffer->start();
-    connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()));
+    connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
 
     #include "morse_code.h"
 
