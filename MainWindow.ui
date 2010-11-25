@@ -98,7 +98,7 @@
         <widget class="QLabel" name="letter">
          <property name="font">
           <font>
-           <pointsize>32</pointsize>
+           <pointsize>24</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -112,7 +112,7 @@
         <widget class="QLabel" name="WPM">
          <property name="font">
           <font>
-           <pointsize>32</pointsize>
+           <pointsize>24</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -141,7 +141,7 @@
       </spacer>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="forModes" stretch=""/>
+      <layout class="QHBoxLayout" name="forModes"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
