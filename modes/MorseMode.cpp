@@ -103,6 +103,7 @@ void MorseMode::hideWidgets()
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
     m_ui->play->hide();
     m_ui->WPM->hide();
+    m_ui->helpBar->hide();
     clearLayout(m_ui->forModes);
     //m_ui->forModes->hide();
 }
@@ -180,7 +181,7 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
 
     int column = 0;
     int row = 0;
-    const int buttonsPerRow = 21;
+    const int buttonsPerRow = 7;
     foreach (QChar letter, sequence) {
         QPushButton *button = new QPushButton(QString(letter));
         m_buttons->addWidget(button, row, column++);

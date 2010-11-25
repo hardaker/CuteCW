@@ -141,7 +141,7 @@
       </spacer>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="forModes"/>
+      <layout class="QHBoxLayout" name="forModes" stretch=""/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
