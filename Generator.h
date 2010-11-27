@@ -2,6 +2,7 @@
 #define GENERATOR_H
 
 #include <QtCore/QIODevice>
+#include <QtCore/QTime>
 
 // 1764 = 20wpm dit in length; three of these seems to be a safe buffer length to extend
 #define ZEROCOUNTS     3
@@ -18,6 +19,7 @@ public:
     void appendDataFrom(const Generator *copyFrom);
     void start();
     void stop();
+    QTime timeLeft();
 
     void clearBuffer();
     void restartPauses();

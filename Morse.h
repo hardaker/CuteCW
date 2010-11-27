@@ -80,7 +80,7 @@ public:
 public slots:
 
     void playSequence();
-    void maybePlaySequence();
+    QTime maybePlaySequence();
 
     void generatorDone();
     void audioFinished(QAudio::State state);

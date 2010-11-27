@@ -102,12 +102,16 @@ Morse::playSequence()
     return;
 }
 
-void Morse::maybePlaySequence() {
+QTime Morse::maybePlaySequence() {
     qDebug() << "maybe going to key: mode == " << m_playingMode;
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         qDebug() << "going to key: ";
+        QTime playTime = m_playBuffer->timeLeft();
+        QTime results = QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
         playSequence();
+        return results;
     }
+    return QTime(0,0,0);
 }
 
 
@@ -189,7 +193,7 @@ void Morse::addAndPlayIt(QChar c) {
 
 void Morse::playIt(QChar c) {
     clearList();
-    add(pause());
+    add(pause());  // allows audio device to kick in (otherwise distortion can occur)
     add(c, false);
     add(m_letterPause);
     maybePlaySequence();

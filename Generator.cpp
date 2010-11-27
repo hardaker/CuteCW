@@ -1,6 +1,7 @@
 #include "Generator.h"
 #include <qdebug.h>
 #include <QtGlobal>
+#include <QtCore/QTime>
 
 #include <math.h>
 
@@ -172,4 +173,11 @@ qint64 Generator::writeData(const char *data, qint64 len)
     Q_UNUSED(len);
 
     return 0;
+}
+
+QTime Generator::timeLeft()
+{
+    int secs = bytes_left/2/SYSTEM_FREQ;
+    int msec = ((bytes_left - 2*SYSTEM_FREQ*secs)*1000)/2/SYSTEM_FREQ;
+    return QTime(0, secs, msec);
 }
