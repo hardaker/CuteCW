@@ -117,7 +117,7 @@ QTime Morse::maybePlaySequence() {
 
 void Morse::keyPressed(QString newtext) {
     QChar newletter = newtext.at(newtext.length()-1).toLower();
-    // qDebug() << "user pressed: " << newletter << "and last key was: " << m_lastKey;
+    qDebug() << "*** user pressed: " << newletter;
     keyPressed(newletter);
 }
 
@@ -134,6 +134,7 @@ void Morse::playButton() {
 }
 
 void Morse::keyPressed(QChar newletter) {
+    qDebug() << "   pressed";
     m_modes[m_gameMode]->handleKeyPress(newletter);
 }
 

@@ -22,9 +22,7 @@ void LetterTrainingMode::switchToMode() {
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
     if (runningMode() != RUNNING)
         return;
-    // ensure we're not still playing a sound:
-    if (m_morse->audioMode() == Morse::PLAYING)
-        return;
+
     // analyze they're keyed letter and immediately start playing a new one
     TrainingMode::handleKeyPress(letterPressed);
     startNextTrainingKey();

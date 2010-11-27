@@ -73,6 +73,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         QMainWindow::keyPressEvent(event);
         return;
     }
+    qDebug() << "here";
     m_morse->keyPressed(event->text().at(event->text().length()-1).toLower());
 }
 

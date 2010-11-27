@@ -128,12 +128,15 @@ void TrainingMode::play() {
 
 void TrainingMode::audioStopped() {
     qDebug() << "audio stopped";
-    m_lastTimes.push_back(QTime::currentTime());
+    // now done based on predicted time
+    // m_lastTimes.push_back(QTime::currentTime());
 }
 
 void TrainingMode::handleKeyPress(QChar letterPressed) {
     if (runningMode() != RUNNING)
         return;
+
+    QTime now = QTime::currentTime();
 
     qDebug() << "Key pressed = " << letterPressed << ", Queue of stored keys: keys=" << m_lastKeys.count() << ", times=" << m_lastTimes.count();
 
@@ -150,10 +153,11 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     // calculate the time since the keying ended to the time the user hit a key
     // XXX: we need to store a list of times, not just a single time
 
-    int msElapsed = lastTime.elapsed() - m_morse->ditSecs(); // subtract off blank-after time
+    int msElapsed = lastTime.msecsTo(now) - m_morse->ditSecs(); // subtract off blank-after time
     if (msElapsed <= 0)
         msElapsed = 1;
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
+    qDebug() << "  Last Time: " << lastTime << ", hit key at: " << now;
     MorseStat *pressedStat = getStat(letterPressed);
 
     // if the user took a *really* long time, ignore the key press and assume they got distracted from training
@@ -189,8 +193,8 @@ void TrainingMode::startNextTrainingKey() {
     MorseStat *stat = 0;
     QString currentLetterGoal;
 
-    if (m_morse->audioMode() == Morse::PLAYING)
-        return;
+    //if (m_morse->audioMode() == Morse::PLAYING)
+    //    return;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
@@ -218,7 +222,7 @@ void TrainingMode::startNextTrainingKey() {
                                                                       totalTime/float(letterCount)), 'g', 2));
                 else
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
-                m_morse->playIt(*letter);
+                m_lastTimes.push_back(m_morse->playIt(*letter));
                 return;
             }
         }
@@ -262,7 +266,7 @@ void TrainingMode::startNextTrainingKey() {
             qDebug() << "------- keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
-            m_morse->playIt((*search).first);
+            m_lastTimes.push_back(m_morse->playIt((*search).first));
             return;
         }
     }
