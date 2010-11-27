@@ -94,7 +94,6 @@ float MorseMode::msToPauseWPMF(float ms) {
 
 void MorseMode::hideWidgets()
 {
-    m_ui->wordbox->hide();
     m_ui->letter->hide();
     m_ui->clearTraining->hide();
     m_ui->modeMenu->setText("Recognition Training");

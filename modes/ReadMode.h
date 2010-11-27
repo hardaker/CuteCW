@@ -2,6 +2,7 @@
 #define READMODE_H
 
 #include <QtGui/QTextCursor>
+#include <QtGui/QTextEdit>
 
 #include "MorseMode.h"
 
@@ -23,6 +24,7 @@ public slots:
 
 private:
     QTextCursor                     m_readSpot;
+    QTextEdit                      *m_textEdit;
 
 };
 

@@ -52,7 +52,6 @@ void WordTrainingMode::setupWordsMenu() {
 void WordTrainingMode::switchToMode() {
     m_goodCount = 0;
     m_badCount = 0;
-    m_ui->wordbox->clear();
     m_ui->letter->show();
     m_ui->modeMenu->setText("Word Training");
     m_ui->changeWords->show();
