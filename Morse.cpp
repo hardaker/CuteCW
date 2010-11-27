@@ -181,22 +181,22 @@ void Morse::switchMode(int newmode) {
 // HERE and below is tone generation and sequence playing
 //
 
-void Morse::addAndPlayIt(QChar c) {
+QTime Morse::addAndPlayIt(QChar c) {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         clearList();
         add(pause());
     }
     add(c, false);
     add(m_letterPause);
-    maybePlaySequence();
+    return maybePlaySequence();
 }
 
-void Morse::playIt(QChar c) {
+QTime Morse::playIt(QChar c) {
     clearList();
     add(pause());  // allows audio device to kick in (otherwise distortion can occur)
     add(c, false);
     add(m_letterPause);
-    maybePlaySequence();
+    return maybePlaySequence();
 }
 
 void

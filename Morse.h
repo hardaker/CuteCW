@@ -54,8 +54,8 @@ public:
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
     void add(const QString &textToAdd);
-    void addAndPlayIt(QChar c);
-    void playIt(QChar c);
+    QTime addAndPlayIt(QChar c);
+    QTime playIt(QChar c);
 
     MorseStat *getStat(const QChar &key);
 
