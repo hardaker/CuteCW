@@ -13,11 +13,12 @@ public:
     SpeedTrainingMode(Morse *parent, Ui::MainWindow *ui);
 
     virtual void switchToMode();
-    // virtual void handleKeyPress(QChar letterPressed);
+    virtual void play();
+    virtual void handleKeyPress(QChar letterPressed);
 
 public slots:
-    void startTimerToNextKey();
-    virtual void audioFinished(QAudio::State state);
+    void startTimerToNextKey(QTime afterThis = QTime(0,0,0));
+    void startNextSpeedKey();
 };
 
 #endif // SPEEDTRAININGMODE_H
