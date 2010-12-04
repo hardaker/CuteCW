@@ -110,20 +110,30 @@ void MorseMode::hideWidgets()
 void MorseMode::switchToYou()
 {
     hideWidgets();
+    switchToMode();
+}
 
+void MorseMode::clearModeLayout() {
     // remove the mode specific layout objects
-    QLayoutItem *child;
-    while ((child = m_ui->forModes->takeAt(0)) != 0) {
-        delete child;
-    }
+    clearLayout(m_ui->forModes);
+    m_buttons = 0;
+}
 
+void MorseMode::switchFromYou()
+{
+    // erase the menu and mode layout
     m_morse->menuBar()->clear();
+    clearModeLayout();
 
+    // stop the audio
     m_morse->pauseAudio();
     setRunningMode(PAUSED);
 
+    switchFromMode();
+}
 
-    switchToMode();
+void MorseMode::switchFromMode()
+{
 }
 
 MorseMode::RunningMode MorseMode::runningMode()

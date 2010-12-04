@@ -169,12 +169,13 @@ Morse::audioFinished(QAudio::State state)
 }
 
 void Morse::switchMode(int newmode) {
-    m_gameMode = (Morse::TrainingMode) newmode;
-    qDebug() << "switch to:" << m_gameMode;
+    qDebug() << "switch to:" << newmode;
     m_playBuffer->stop();
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
 
+    m_modes[m_gameMode]->switchFromYou();
+    m_gameMode = (Morse::TrainingMode) newmode;
     m_modes[(TrainingMode) newmode]->switchToYou();
 }
 

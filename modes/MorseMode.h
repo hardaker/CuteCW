@@ -41,7 +41,9 @@ public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
     virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version
     virtual void switchToMode() = 0;
+    virtual void switchFromMode();
     virtual void switchToYou();
+    virtual void switchFromYou();
 
     virtual void playButton();
     virtual bool enterPressed();
@@ -51,6 +53,7 @@ public slots:
     virtual void stop();
 
     virtual void clear();
+    virtual void clearModeLayout();
 
     virtual void audioFinished(QAudio::State state);
     virtual void audioStopped();
