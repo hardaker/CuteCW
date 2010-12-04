@@ -93,6 +93,10 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
         enterPressed();
         return;
     }
+
+    if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) // they already hit the length previously
+        return;
+
     if ((*(words[m_wordsNumber]))[m_wordnumber][m_enteredWord.length()] == letter) {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
     } else {
