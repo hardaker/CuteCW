@@ -125,7 +125,11 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="forModes"/>
+      <layout class="QHBoxLayout" name="forModes" stretch="">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
