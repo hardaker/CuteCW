@@ -77,7 +77,7 @@ void MorseMode::clear() {
 // Utilities
 
 int MorseMode::msToWPM(float ms) {
-    return (60*1000)/ms; // XXX: fix me; doesn't include keying times
+    return (60*1000)/ms;
 }
 
 int MorseMode::msToPauseWPM(float ms) {
