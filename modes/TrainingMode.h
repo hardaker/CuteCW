@@ -29,7 +29,7 @@ public:
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
-    void startNextTrainingKey();
+    QTime startNextTrainingKey();
     MorseStat *getStat(const QChar &key);
 
     virtual void clear();

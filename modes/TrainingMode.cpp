@@ -183,9 +183,9 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     }
 }
 
-void TrainingMode::startNextTrainingKey() {
+QTime TrainingMode::startNextTrainingKey() {
     if (runningMode() != RUNNING)
-        return;
+        return QTime();
     qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
@@ -223,7 +223,7 @@ void TrainingMode::startNextTrainingKey() {
                 else
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
                 m_lastTimes.push_back(m_morse->playIt(*letter));
-                return;
+                return m_lastTimes.last();
             }
         }
 
@@ -267,10 +267,11 @@ void TrainingMode::startNextTrainingKey() {
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
             m_lastTimes.push_back(m_morse->playIt((*search).first));
-            return;
+            return m_lastTimes.last();
         }
     }
     qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
+    return QTime();
 }
 
 void TrainingMode::switchSequence(int sequence) {
