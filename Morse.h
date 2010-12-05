@@ -107,11 +107,13 @@ public:
     QMenuBar * menuBar();
 private:
 
+    void _createTones();
+
     QMap<TrainingMode, MorseMode *>  m_modes;
 
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
-    float                            m_ditSecs;
+    float                            m_ditSecs, m_dahSecs, m_pauseSecs, m_letterPauseSecs, m_spaceSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
     AudioMode                        m_playingMode;

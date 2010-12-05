@@ -16,6 +16,7 @@ Morse::Morse()
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
+#include "morse_code.h"
 }
 
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
@@ -26,6 +27,9 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 {
 
     qDebug() << "new morse2";
+
+#include "morse_code.h"
+
     createTones(WPMGOAL);
     qsrand(QTime::currentTime().msec());
     loadSettings();
@@ -269,33 +273,40 @@ Morse::createTones(int wpm)
 }
 
 void
-Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMult, int spaceMult)
+Morse::_createTones()
 {
-    m_ditSecs = ditSecs;
-
-    m_dit = new Generator(ditSecs);
+    m_dit = new Generator(m_ditSecs);
     m_dit->start();
 
-    m_dah = new Generator(ditSecs * dahMult);
+    m_dah = new Generator(m_dahSecs);
     m_dah->start();
 
-    m_pause = new Generator(ditSecs * pauseMult, 0);
+    m_pause = new Generator(m_pauseSecs, 0);
     m_pause->start();
 
-    m_letterPause = new Generator(ditSecs * letterPauseMult, 0);
+    m_letterPause = new Generator(m_pauseSecs, 0);
     m_letterPause->start();
 
-    m_space = new Generator(ditSecs * spaceMult, 0);
+    m_space = new Generator(m_spaceSecs, 0);
     m_space->start();
 
     m_playBuffer = new Generator(m_pause);
     m_playBuffer->start();
     connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
 
-    #include "morse_code.h"
-
     qDebug() << "created tones";
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
+}
+
+void
+Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMult, int spaceMult)
+{
+    m_ditSecs = ditSecs;
+    m_dahSecs = ditSecs * dahMult;
+    m_pauseSecs = ditSecs * pauseMult;
+    m_letterPauseSecs = ditSecs * letterPauseMult;
+    m_spaceSecs = ditSecs * spaceMult;
+    _createTones();
 }
 
 int Morse::currentWPMAccept() {
