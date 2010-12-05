@@ -216,7 +216,7 @@ QTime TrainingMode::startNextTrainingKey() {
                 m_lastKeys.append(*letter);
                 setSequence(m_trainingSequence, letterCount);
                 m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
-                                      *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
+                                      *letter + ": NEW");
                 if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
                                                                       totalTime/float(letterCount)), 'g', 2));
@@ -240,7 +240,7 @@ QTime TrainingMode::startNextTrainingKey() {
     // They have the whole sequence active at this point
 
     m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
-                          currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
+                          currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime)));
     if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
         m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount))));
     else
