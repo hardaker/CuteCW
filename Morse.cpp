@@ -12,7 +12,7 @@
 
 Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE)
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
@@ -23,7 +23,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_ui(ui)
+      m_ui(ui), m_tone(DEFAULT_TONE)
 {
 
     qDebug() << "new morse2";
@@ -275,10 +275,10 @@ Morse::createTones(int wpm)
 void
 Morse::_createTones()
 {
-    m_dit = new Generator(m_ditSecs);
+    m_dit = new Generator(m_ditSecs, m_tone);
     m_dit->start();
 
-    m_dah = new Generator(m_dahSecs);
+    m_dah = new Generator(m_dahSecs, m_tone);
     m_dah->start();
 
     m_pause = new Generator(m_pauseSecs, 0);

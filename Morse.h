@@ -38,6 +38,8 @@ public:
     Morse();
     Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui);
 
+    static const int DEFAULT_TONE = 500;
+
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
     enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, READ, TEST };
@@ -123,6 +125,7 @@ private:
     Ui::MainWindow                  *m_ui;
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
+    int                              m_tone;
 };
 
 #endif // MORSE_H
