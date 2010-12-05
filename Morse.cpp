@@ -51,8 +51,8 @@ void Morse::prefsButton() {
     Ui::Prefs prefsDialog;
     QDialog *dialog = new QDialog(m_parent);
     prefsDialog.setupUi(dialog);
-    prefsDialog.WPMAccepted->setText(QString().setNum(m_currentWPMAccept));
-    prefsDialog.WPMGoal->setText(QString().setNum(m_currentWPMGoal));
+    prefsDialog.WPMAccepted->setValue(m_currentWPMAccept);
+    prefsDialog.WPMGoal->setValue(m_currentWPMGoal);
     prefsDialog.tone->setValue(m_tone);
 
     prefsDialog.weighting->insertItem(LOW, "Low");
@@ -60,8 +60,8 @@ void Morse::prefsButton() {
     prefsDialog.weighting->setCurrentIndex(m_badLetterWeighting);
 
     if (dialog->exec() == QDialog::Accepted) {
-        m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
-        m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
+        m_currentWPMAccept = prefsDialog.WPMAccepted->value();
+        m_currentWPMGoal = prefsDialog.WPMGoal->value();
         m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
         m_tone = prefsDialog.tone->value();
         saveSettings();
