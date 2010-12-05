@@ -127,6 +127,9 @@ void TrainingMode::clear()  {
     MorseMode::clear();
 
     m_ui->avewpm->setText("All WPM: [None], K WPM: NEW");
+
+    if (runningMode() == RUNNING)
+        playButton(); // pretend a pause was pressed too
 }
 
 void TrainingMode::play() {
