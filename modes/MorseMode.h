@@ -31,6 +31,7 @@ public:
 
     void hideWidgets();
     void setupKeyWidgets(const QString &sequence);
+    void createGlobalActions();
 
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
@@ -54,6 +55,8 @@ public slots:
 
     virtual void clear();
     virtual void clearModeLayout();
+
+    virtual void help();
 
     virtual void audioFinished(QAudio::State state);
     virtual void audioStopped();

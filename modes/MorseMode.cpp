@@ -2,6 +2,7 @@
 #include "Morse.h"
 
 #include <QtGui/QMenuBar>
+#include <QtGui/QMessageBox>
 #include <qdebug.h>
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
@@ -39,6 +40,10 @@ void MorseMode::pause()
 
 void MorseMode::stop()
 {
+}
+
+void MorseMode::help() {
+    QMessageBox::information(0, tr("Mode Help"), tr("This is a test of <b>text</b>."));
 }
 
 bool MorseMode::enterPressed() {
@@ -111,6 +116,14 @@ void MorseMode::switchToYou()
 {
     hideWidgets();
     switchToMode();
+    createGlobalActions();
+}
+
+void MorseMode::createGlobalActions()
+{
+    // Create the preference items in the quick menu
+    QAction *button = m_morse->menuBar()->addAction("Help");
+    connect(button, SIGNAL(triggered()), this, SLOT(help()));
 }
 
 void MorseMode::clearModeLayout() {
