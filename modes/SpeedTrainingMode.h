@@ -16,6 +16,8 @@ public:
     virtual void play();
     virtual void handleKeyPress(QChar letterPressed);
 
+    virtual QString helpText();
+
 public slots:
     void startTimerToNextKey(QTime afterThis = QTime(0,0,0));
     void startNextSpeedKey();

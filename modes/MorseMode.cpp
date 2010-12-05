@@ -43,7 +43,7 @@ void MorseMode::stop()
 }
 
 void MorseMode::help() {
-    QMessageBox::information(0, tr("Mode Help"), tr("This is a test of <b>text</b>."));
+    QMessageBox::information(0, tr("Mode Help"), helpText());
 }
 
 bool MorseMode::enterPressed() {

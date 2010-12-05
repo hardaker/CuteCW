@@ -27,3 +27,10 @@ void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
     TrainingMode::handleKeyPress(letterPressed);
     startNextTrainingKey();
 }
+
+QString LetterTrainingMode::helpText()
+{
+    return tr("In this mode characters will be sent and you need to press the appropriate key before a minimum time period, defined by the training speed preference.  "
+              "As you get fast enough for particular characters then the next character in the sequence will be added.  Characters that you need the most work on will be "
+              "sent more frequently than ones you're fast at responding to.");
+}

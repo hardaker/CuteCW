@@ -38,6 +38,8 @@ public:
 
     void clearLayout(QLayout *layout);
 
+    virtual QString helpText() = 0;
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
     virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version

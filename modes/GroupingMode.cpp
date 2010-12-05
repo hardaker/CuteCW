@@ -98,3 +98,10 @@ void GroupingMode::clear()
     m_goodGuesses = 0;
     m_badGuesses = 0;
 }
+
+QString GroupingMode::helpText()
+{
+    return tr("Characters in the chosen training sequence will be sent to you starting with small groups.  "
+              "As you guess more and more correctly the number of characters in the sequence will slowly go upward.");
+}
+

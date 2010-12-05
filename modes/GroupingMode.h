@@ -19,6 +19,8 @@ public:
     void createNextSequence();
     void setSequenceText();
 
+    virtual QString helpText();
+
 public slots:
     void startNextGroup();
     virtual bool enterPressed();

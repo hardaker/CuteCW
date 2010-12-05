@@ -15,6 +15,8 @@ public:
     ReadMode(Morse *parent, Ui::MainWindow *ui);
 
     void addButtons();
+    virtual QString helpText();
+
 public slots:
     virtual void switchToMode();
     virtual void play();
