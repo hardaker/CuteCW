@@ -27,11 +27,15 @@ void SpeedTrainingMode::play() {
 }
 
 void SpeedTrainingMode::startNextSpeedKey() {
-    startNextTrainingKey();
-    startTimerToNextKey();
+    QTime endAt = startNextTrainingKey();
+    startTimerToNextKey(QTime::currentTime().msecsTo(endAt));
 }
 
-void SpeedTrainingMode::startTimerToNextKey(QTime afterThis) {
+void SpeedTrainingMode::startTimerToNextKey(QTime plusTime) {
+    startTimerToNextKey(plusTime.second()*1000 + plusTime.msec());
+}
+
+void SpeedTrainingMode::startTimerToNextKey(int plusMSecs) {
     float avetime, delay;
     if (runningMode() != RUNNING)
         return;
@@ -48,7 +52,7 @@ void SpeedTrainingMode::startTimerToNextKey(QTime afterThis) {
         avetime = 1000.0;
         qDebug() << "setting avetime to: " << avetime;
     }
-    delay  = afterThis.second()*1000 + afterThis.msec() + (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
+    delay  = plusMSecs + (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
     qDebug() << "delaying for: " << delay << " ms (good=" << m_goodCount << ", bad=" << m_badCount << ")";
     QTimer::singleShot(delay, this, SLOT(startNextSpeedKey()));
 }

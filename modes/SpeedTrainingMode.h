@@ -18,8 +18,10 @@ public:
 
     virtual QString helpText();
 
+    void startTimerToNextKey(QTime plusTime);
+
 public slots:
-    void startTimerToNextKey(QTime afterThis = QTime(0,0,0));
+    void startTimerToNextKey(int plusMSecs = 0);
     void startNextSpeedKey();
 };
 
