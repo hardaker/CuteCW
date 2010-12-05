@@ -19,13 +19,14 @@ void TrainingMode::setupSequences() {
     m_sequences.append("wi.jz=foy,");
     m_sequences.append("vg5/q92h38");
     m_sequences.append("b?47c1d60x");
-    m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
+    m_sequences.append("abcdefghijklmnopqrstuvwxyz");
     m_sequences.append("abcdef");
     m_sequences.append("ghijklm");
     m_sequences.append("nopqrst");
     m_sequences.append("tuvwxyz");
     m_sequences.append("1234567890");
     m_sequences.append(".,/=?");
+    m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
 
     // Koch sequences
     m_sequenceSignalMapper = new QSignalMapper();
@@ -87,6 +88,10 @@ void TrainingMode::setupSequences() {
     action = modeMenu->addAction("Symbols");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) SYMBOLS);
+
+    action = modeMenu->addAction("Symbols");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) EVERYTHING);
 
     action = modeMenu->addAction("Custom");
     connect(action, SIGNAL(triggered()), this, SLOT(chooseCustomeSequence()));

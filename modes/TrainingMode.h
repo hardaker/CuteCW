@@ -25,7 +25,7 @@ public:
 public:
     enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4,
                      ALPHABET = 5, AF = 6, GM = 7, NT = 8, UZ = 9,
-                     NUMBERS = 10, SYMBOLS = 11};
+                     NUMBERS = 10, SYMBOLS = 11, EVERYTHING = 12};
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
