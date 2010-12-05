@@ -8,7 +8,7 @@
 #include "MainWindow.h"
 
 #define WPMGOAL   20
-#define WPMACCEPT 15
+#define WPMACCEPT 2
 
 Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
