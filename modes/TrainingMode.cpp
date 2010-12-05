@@ -298,7 +298,7 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
         m_morse->m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
 
         QChar theLetter = sequence[currentlyAt-1].toLower();
-        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "  ";
+        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "&nbsp;&nbsp;&nbsp;&nbsp;";
         QList<Morse::ditdah>::iterator it;
         QList<Morse::ditdah>::iterator end = m_morse->code[theLetter]->end();
         for(it = m_morse->code[theLetter]->begin(); it != end; ++it) {
