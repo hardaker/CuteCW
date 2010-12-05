@@ -53,6 +53,7 @@ void Morse::prefsButton() {
     prefsDialog.setupUi(dialog);
     prefsDialog.WPMAccepted->setText(QString().setNum(m_currentWPMAccept));
     prefsDialog.WPMGoal->setText(QString().setNum(m_currentWPMGoal));
+    prefsDialog.tone->setValue(m_tone);
 
     prefsDialog.weighting->insertItem(LOW, "Low");
     prefsDialog.weighting->insertItem(HIGH, "High");
@@ -62,6 +63,7 @@ void Morse::prefsButton() {
         m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
         m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
         m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
+        m_tone = prefsDialog.tone->value();
         saveSettings();
         loadSettings();
     }
@@ -77,6 +79,7 @@ void Morse::saveSettings() {
     QSettings settings("WS6Z", "qtcw");
     settings.setValue("WPM/Goal", m_currentWPMGoal);
     settings.setValue("WPM/Accept", m_currentWPMAccept);
+    settings.setValue("Tone", m_tone);
     settings.setValue("LetterWeighting", int(m_badLetterWeighting));
     qDebug() << "saving: " << m_badLetterWeighting;
 }
@@ -86,6 +89,7 @@ void Morse::loadSettings() {
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
     m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
+    m_tone = settings.value("Tone", DEFAULT_TONE).toInt();
     createTones(m_currentWPMGoal);  
 }
 
