@@ -73,7 +73,7 @@ void GroupingMode::createNextSequence() {
 void GroupingMode::startNextGroup()
 {
     createNextSequence();
-    m_morse->add(m_currentSequence);
+    m_morse->add(" " + m_currentSequence);
     m_morse->maybePlaySequence();
     m_wordWasGood = true;
     m_enteredWord = "";
