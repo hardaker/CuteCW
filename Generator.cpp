@@ -99,7 +99,10 @@ int Generator::fillData(char *start, int frequency, float seconds)
     int i, len=0;
     int value;
     for(i=0; i<int(seconds*SYSTEM_FREQ); i++) {
-        value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
+        if (frequency == 0.0)
+            value = 0;
+        else
+            value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
         putShort(start, value);
         start += 2;
         len+=2;
