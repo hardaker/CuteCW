@@ -266,7 +266,7 @@ void Morse::add(const QString &textToAdd) {
 
     clearList();
     for (letter = textToAdd.begin(); letter != lastLetter; ++letter) {
-        add(*letter);
+        add(*letter, true);
     }
 }
 
