@@ -182,5 +182,5 @@ QTime Generator::timeLeft()
 {
     int secs = bytes_left/2/SYSTEM_FREQ;
     int msec = ((bytes_left - 2*SYSTEM_FREQ*secs)*1000)/2/SYSTEM_FREQ;
-    return QTime(0, secs, msec);
+    return QTime(0, 0, secs, msec);
 }
