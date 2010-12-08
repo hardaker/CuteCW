@@ -125,6 +125,8 @@ void TrainingMode::clear()  {
     m_lastKeys.clear();
     m_lastTimes.clear();
     MorseMode::clear();
+    m_goodCount = 0;
+    m_badCount = 0;
 
     m_ui->avewpm->setText("All WPM: [None], K WPM: NEW");
 
