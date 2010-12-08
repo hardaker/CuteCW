@@ -100,21 +100,18 @@ void Morse::clearStatsButton() {
 void
 Morse::playSequence()
 {
-    qDebug() << "Playing!";
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
-    qDebug() << "starting";
     m_audioOutput->start(m_playBuffer);
-    qDebug() << "done starting";
     return;
 }
 
 QTime Morse::maybePlaySequence() {
-    qDebug() << "maybe going to key: mode == " << m_playingMode;
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
-        qDebug() << "going to key: ";
+        m_playBuffer->restartData();
         QTime playTime = m_playBuffer->timeLeft();
+        qDebug() << "going to key: " << playTime << ":" << playTime.msec();
         QTime results = QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
         playSequence();
         return results;
