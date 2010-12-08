@@ -25,7 +25,6 @@ float MorseStat::getAverageTime() {
 }
 
 void MorseStat::addTime(float newtime) {
-    qDebug() << "  adding time: " << newtime << " ms";
     m_timeList.append(newtime);
     if (m_tryCount >= maxTimeCount)
         m_timeList.pop_front();

@@ -29,7 +29,7 @@ void SpeedTrainingMode::play() {
 void SpeedTrainingMode::startNextSpeedKey() {
     QTime endAt = startNextTrainingKey();
     QTime currentTime = QTime::currentTime();
-    qDebug() << "end at: " << endAt << ":" << endAt.msec() << ", now=" << currentTime << ":" << currentTime.msec();
+    //qDebug() << "end at: " << endAt << ":" << endAt.msec() << ", now=" << currentTime << ":" << currentTime.msec();
     startTimerToNextKey(currentTime.msecsTo(endAt));
 }
 

@@ -111,7 +111,6 @@ QTime Morse::maybePlaySequence() {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         m_playBuffer->restartData();
         QTime playTime = m_playBuffer->timeLeft();
-        qDebug() << "going to key: " << playTime << ":" << playTime.msec();
         QTime results = QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
         playSequence();
         return results;
@@ -139,7 +138,6 @@ void Morse::playButton() {
 }
 
 void Morse::keyPressed(QChar newletter) {
-    qDebug() << "   pressed";
     m_modes[m_gameMode]->handleKeyPress(newletter);
 }
 

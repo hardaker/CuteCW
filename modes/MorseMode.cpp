@@ -43,7 +43,13 @@ void MorseMode::stop()
 }
 
 void MorseMode::help() {
-    QMessageBox::information(0, tr("Mode Help"), helpText());
+    //QMessageBox::information(0, tr("Mode Help"), helpText());
+    //QMessageBox::
+    QTextEdit *helptext = new QTextEdit();
+    //helptext->setWindowFlag(Qt::Window);
+    helptext->setReadOnly(true);
+    helptext->append(helpText());
+    helptext->show();
 }
 
 bool MorseMode::enterPressed() {
@@ -64,7 +70,7 @@ void MorseMode::audioFinished(QAudio::State state) {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
 
-    qDebug() << "audio state changed: " << state << ", old state = " << m_morse->audioMode();
+    // qDebug() << "audio state changed: " << state << ", old state = " << m_morse->audioMode();
 
     if (m_morse->audioMode() != Morse::STOPPED) {
         audioStopped();

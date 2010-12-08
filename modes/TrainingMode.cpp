@@ -169,7 +169,6 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     if (msElapsed <= 0)
         msElapsed = 1;
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
-    qDebug() << "  Last Time: " << lastTime << ", hit key at: " << now;
     MorseStat *pressedStat = getStat(letterPressed);
 
     // if the user took a *really* long time, ignore the key press and assume they got distracted from training
@@ -223,7 +222,7 @@ QTime TrainingMode::startNextTrainingKey() {
                 thisTime = 1000*60.0/(50.0*float(m_morse->currentWPMAccept()));
             } else {
                 // never keyed yet; do it immediately if we got this far
-                qDebug() << "|------ keying: " << *letter;
+                qDebug() << "|keying: " << *letter;
                 m_lastKey = *letter;
                 m_lastKeys.append(*letter);
                 setSequence(m_trainingSequence, letterCount);
@@ -239,7 +238,7 @@ QTime TrainingMode::startNextTrainingKey() {
             }
         }
 
-        qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
+        //qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
         if(msToPauseWPM(thisTime) <= m_morse->currentWPMAccept()) {
@@ -267,7 +266,7 @@ QTime TrainingMode::startNextTrainingKey() {
     } else
         randTime = totalTime*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
-    qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
+    // qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
     QList<QPair<QChar, float> >::iterator search;
     QList<QPair<QChar, float> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
@@ -275,7 +274,7 @@ QTime TrainingMode::startNextTrainingKey() {
         //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += ((*search).second - subTime);
         if (newTotal > randTime) {
-            qDebug() << "------- keying: " << (*search).first;
+            qDebug() << ">keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
             m_lastTimes.push_back(m_morse->playIt((*search).first));
@@ -333,5 +332,6 @@ void TrainingMode::setupWidgets(const QString &sequence)
     m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
     m_doEntireSequenceButton->setCheckable(true);
     m_doEntireSequenceButton->setChecked(false);
+    setSequence(m_trainingSequence, 1);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
 }
