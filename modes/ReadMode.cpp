@@ -83,6 +83,7 @@ void ReadMode::audioStopped()
 QString ReadMode::helpText()
 {
     return tr("Learning by hearing a stream of text can be difficult at first.  Start with simple books like children would start with, like 'Cat in the Hat', and "
-              "only after mastering listening to those simple books or text should you move to difficult texts like Shakespere or technical documents");
+              "only after mastering listening to those simple books or text should you move to difficult texts like Shakespere or technical documents."
+              "<p>WARNING: do not load big files...  A bug will end up using way too much memory.");
 }
 
