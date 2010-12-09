@@ -182,15 +182,13 @@ void MorseMode::clearLayout(QLayout *layout)
     QLayoutItem *item;
     while((item = layout->takeAt(0))) {
         if (item->layout()) {
-            qDebug() << "deleting a layout";
             clearLayout(item->layout());
             delete item->layout();
         }
         if (item->widget()) {
-            qDebug() << "deleting a widget";
             delete item->widget();
         }
-        //delete item;
+        // XXX delete item;
     }
 }
 
