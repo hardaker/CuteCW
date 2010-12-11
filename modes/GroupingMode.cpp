@@ -74,7 +74,7 @@ void GroupingMode::startNextGroup()
 {
     createNextSequence();
     m_morse->add(" " + m_currentSequence);
-    m_morse->maybePlaySequence();
+    m_morse->maybePlaySequence(true);
     m_wordWasGood = true;
     m_enteredWord = "";
     setSequenceText();

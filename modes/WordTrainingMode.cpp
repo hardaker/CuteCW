@@ -78,7 +78,7 @@ void WordTrainingMode::play() {
 bool WordTrainingMode::enterPressed() {
     m_wordnumber = qrand()%(m_maxWord);
     m_morse->add((*(words[m_wordsNumber]))[m_wordnumber]);
-    m_morse->maybePlaySequence();
+    m_morse->maybePlaySequence(true);
     m_enteredWord = "";
     m_ui->letter->setText("");
     m_morse->m_sequenceLabel->setText(QString("%1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));

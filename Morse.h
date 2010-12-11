@@ -58,6 +58,7 @@ public:
     void add(const QString &textToAdd);
     QTime addAndPlayIt(QChar c);
     QTime playIt(QChar c);
+    QTime sequenceTime();
 
     MorseStat *getStat(const QChar &key);
 
@@ -82,7 +83,7 @@ public:
 public slots:
 
     void playSequence();
-    QTime maybePlaySequence();
+    QTime maybePlaySequence(bool addPause = false);
 
     void generatorDone();
     void audioFinished(QAudio::State state);
