@@ -22,10 +22,15 @@ void LetterTrainingMode::switchToMode() {
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
     if (runningMode() != RUNNING)
         return;
-    // ensure we're not still playing a sound:
-    if (m_morse->audioMode() == Morse::PLAYING)
-        return;
+
     // analyze they're keyed letter and immediately start playing a new one
     TrainingMode::handleKeyPress(letterPressed);
     startNextTrainingKey();
+}
+
+QString LetterTrainingMode::helpText()
+{
+    return tr("In this mode characters will be sent and you need to press the appropriate key before a minimum time period, defined by the training speed preference.  "
+              "As you get fast enough for particular characters then the next character in the sequence will be added.  Characters that you need the most work on will be "
+              "sent more frequently than ones you're fast at responding to.");
 }

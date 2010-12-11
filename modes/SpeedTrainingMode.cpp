@@ -22,7 +22,25 @@ void SpeedTrainingMode::switchToMode() {
     setupWidgets(m_trainingSequence);
 }
 
-void SpeedTrainingMode::startTimerToNextKey() {
+void SpeedTrainingMode::play() {
+    startNextSpeedKey();
+}
+
+void SpeedTrainingMode::startNextSpeedKey() {
+    QTime endAt = startNextTrainingKey();
+    QTime currentTime = QTime::currentTime();
+    //qDebug() << "end at: " << endAt << ":" << endAt.msec() << ", now=" << currentTime << ":" << currentTime.msec();
+    startTimerToNextKey(currentTime.msecsTo(endAt));
+}
+
+void SpeedTrainingMode::startTimerToNextKey(QTime plusTime) {
+    startTimerToNextKey(plusTime.second()*1000 + plusTime.msec());
+}
+
+void SpeedTrainingMode::startTimerToNextKey(int plusMSecs) {
+    if (plusMSecs < 0)
+        plusMSecs = 0;
+
     float avetime, delay;
     if (runningMode() != RUNNING)
         return;
@@ -30,31 +48,30 @@ void SpeedTrainingMode::startTimerToNextKey() {
     if (m_lastTimes.count() > 3) {
         // don't let them get *too* far behind
         m_badCount++;
-        QTimer::singleShot(1000, this, SLOT(startNextTrainingKey()));  // Try again in a second
+        QTimer::singleShot(1000, this, SLOT(startNextSpeedKey()));  // Try again in a second
         return;
     }
     avetime = getStat(m_lastKey)->getAverageTime();
     qDebug() << "avetime: " << avetime;
     if (avetime == -1) {
-        avetime = 1000*60.0/(50.0*float(m_morse->currentWPMAccept()));
+        avetime = 1000.0;
         qDebug() << "setting avetime to: " << avetime;
     }
-    delay  = (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
+    delay  = plusMSecs + (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
     qDebug() << "delaying for: " << delay << " ms (good=" << m_goodCount << ", bad=" << m_badCount << ")";
-    QTimer::singleShot(delay, this, SLOT(startNextTrainingKey()));
+    QTimer::singleShot(delay, this, SLOT(startNextSpeedKey()));
 }
 
-void SpeedTrainingMode::audioFinished(QAudio::State state) {
-    //qDebug() << "audio state changed: " << state;
-    if (state != QAudio::IdleState && state != QAudio::StoppedState)
+void SpeedTrainingMode::handleKeyPress(QChar letterPressed) {
+    if (runningMode() != RUNNING)
         return;
 
-    playButton();
+    // analyze they're keyed letter and immediately start playing a new one
+    TrainingMode::handleKeyPress(letterPressed);
+}
 
-    qDebug() << "speed train stop";
-    if (m_morse->audioMode() != Morse::STOPPED) {
-        startTimerToNextKey();
-        m_lastTimes.push_back(QTime::currentTime());
-    }
-    m_morse->setAudioMode(Morse::STOPPED);
+QString SpeedTrainingMode::helpText()
+{
+    return tr("Characters in the sequence will play at you with short pauses between each character.  As you guess more and more correctly the speed will increase "
+              "and the spacing between the letters will decrease.");
 }

@@ -2,6 +2,7 @@
 #include "Morse.h"
 
 #include <QtGui/QMenuBar>
+#include <QtGui/QMessageBox>
 #include <qdebug.h>
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
@@ -41,6 +42,16 @@ void MorseMode::stop()
 {
 }
 
+void MorseMode::help() {
+    //QMessageBox::information(0, tr("Mode Help"), helpText());
+    //QMessageBox::
+    QTextEdit *helptext = new QTextEdit();
+    //helptext->setWindowFlag(Qt::Window);
+    helptext->setReadOnly(true);
+    helptext->append(helpText());
+    helptext->show();
+}
+
 bool MorseMode::enterPressed() {
     return false;
 }
@@ -59,7 +70,7 @@ void MorseMode::audioFinished(QAudio::State state) {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)
         return;
 
-    qDebug() << "audio state changed: " << state << ", old state = " << m_morse->audioMode();
+    // qDebug() << "audio state changed: " << state << ", old state = " << m_morse->audioMode();
 
     if (m_morse->audioMode() != Morse::STOPPED) {
         audioStopped();
@@ -77,7 +88,7 @@ void MorseMode::clear() {
 // Utilities
 
 int MorseMode::msToWPM(float ms) {
-    return (60*1000)/ms; // XXX: fix me; doesn't include keying times
+    return (60*1000)/ms;
 }
 
 int MorseMode::msToPauseWPM(float ms) {
@@ -94,7 +105,6 @@ float MorseMode::msToPauseWPMF(float ms) {
 
 void MorseMode::hideWidgets()
 {
-    m_ui->wordbox->hide();
     m_ui->letter->hide();
     m_ui->clearTraining->hide();
     m_ui->modeMenu->setText("Recognition Training");
@@ -111,20 +121,38 @@ void MorseMode::hideWidgets()
 void MorseMode::switchToYou()
 {
     hideWidgets();
+    switchToMode();
+    createGlobalActions();
+}
 
+void MorseMode::createGlobalActions()
+{
+    // Create the preference items in the quick menu
+    QAction *button = m_morse->menuBar()->addAction("Help");
+    connect(button, SIGNAL(triggered()), this, SLOT(help()));
+}
+
+void MorseMode::clearModeLayout() {
     // remove the mode specific layout objects
-    QLayoutItem *child;
-    while ((child = m_ui->forModes->takeAt(0)) != 0) {
-        delete child;
-    }
+    clearLayout(m_ui->forModes);
+    m_buttons = 0;
+}
 
+void MorseMode::switchFromYou()
+{
+    // erase the menu and mode layout
     m_morse->menuBar()->clear();
+    clearModeLayout();
 
+    // stop the audio
     m_morse->pauseAudio();
     setRunningMode(PAUSED);
 
+    switchFromMode();
+}
 
-    switchToMode();
+void MorseMode::switchFromMode()
+{
 }
 
 MorseMode::RunningMode MorseMode::runningMode()
@@ -154,15 +182,13 @@ void MorseMode::clearLayout(QLayout *layout)
     QLayoutItem *item;
     while((item = layout->takeAt(0))) {
         if (item->layout()) {
-            qDebug() << "deleting a layout";
             clearLayout(item->layout());
             delete item->layout();
         }
         if (item->widget()) {
-            qDebug() << "deleting a widget";
             delete item->widget();
         }
-        //delete item;
+        // XXX delete item;
     }
 }
 

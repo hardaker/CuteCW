@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Cute CW - Preferences</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -45,22 +45,16 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>WPM Goal</string>
+       <string>WPM Play Rate</string>
       </property>
      </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="WPMGoal"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>WPM Accepted Level:</string>
+       <string>Acceptance Rate</string>
       </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="WPMAccepted"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
@@ -71,6 +65,29 @@
     </item>
     <item row="2" column="1">
      <widget class="QComboBox" name="weighting"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Tone Frequency</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QSpinBox" name="tone">
+      <property name="minimum">
+       <number>50</number>
+      </property>
+      <property name="maximum">
+       <number>4000</number>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QSpinBox" name="WPMAccepted"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="WPMGoal"/>
     </item>
    </layout>
   </widget>

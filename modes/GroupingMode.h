@@ -4,7 +4,8 @@
 #include "TrainingMode.h"
 #include "Morse.h"
 
-const int DEFAULT_GROUPLENGTH = 3;
+const int DEFAULT_GROUPLENGTH =1;
+const int GROUPLENGTH_WEIGHT = 4;
 
 class GroupingMode : public TrainingMode
 {
@@ -16,14 +17,20 @@ public:
     virtual void handleKeyPress(QChar letter);
 
     void createNextSequence();
+    void setSequenceText();
+
+    virtual QString helpText();
 
 public slots:
     void startNextGroup();
     virtual bool enterPressed();
     virtual void play();
+    virtual void clear();
 
 private:
     int     m_groupLength;
+    int     m_goodGuesses;
+    int     m_badGuesses;
     QString m_currentSequence;
     QString m_enteredWord;
     bool    m_wordWasGood;

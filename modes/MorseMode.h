@@ -31,17 +31,22 @@ public:
 
     void hideWidgets();
     void setupKeyWidgets(const QString &sequence);
+    void createGlobalActions();
 
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
 
     void clearLayout(QLayout *layout);
 
+    virtual QString helpText() = 0;
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
     virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version
     virtual void switchToMode() = 0;
+    virtual void switchFromMode();
     virtual void switchToYou();
+    virtual void switchFromYou();
 
     virtual void playButton();
     virtual bool enterPressed();
@@ -51,6 +56,9 @@ public slots:
     virtual void stop();
 
     virtual void clear();
+    virtual void clearModeLayout();
+
+    virtual void help();
 
     virtual void audioFinished(QAudio::State state);
     virtual void audioStopped();

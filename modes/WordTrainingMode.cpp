@@ -52,7 +52,6 @@ void WordTrainingMode::setupWordsMenu() {
 void WordTrainingMode::switchToMode() {
     m_goodCount = 0;
     m_badCount = 0;
-    m_ui->wordbox->clear();
     m_ui->letter->show();
     m_ui->modeMenu->setText("Word Training");
     m_ui->changeWords->show();
@@ -94,6 +93,10 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
         enterPressed();
         return;
     }
+
+    if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) // they already hit the length previously
+        return;
+
     if ((*(words[m_wordsNumber]))[m_wordnumber][m_enteredWord.length()] == letter) {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
     } else {
@@ -116,5 +119,14 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
                 m_maxWord--;
         }
     }
+}
+
+QString WordTrainingMode::helpText()
+{
+    return
+            tr("Most words that you read or hear are from a very small set of words.  For example, 33% of the most common words fall into 100 simple words.  "
+              "If you memorize these words so you can regonize them not as individual letters but as entire words you'll greatly increase your listening rate.  "
+              "<p>As you hear words, type them in and hit enter when done.  After hitting enter the next word will be played.  "
+              "As you begin the number of words selected from will be small but will increase quickly for every right answer (and decrease for every wrong).");
 }
 

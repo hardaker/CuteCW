@@ -13,6 +13,8 @@ public:
 
     virtual void switchToMode();
     virtual void handleKeyPress(QChar letterPressed);
+
+    virtual QString helpText();
 };
 
 #endif // LETTERTRAININGMODE_H

@@ -8,24 +8,28 @@
 #include "MainWindow.h"
 
 #define WPMGOAL   20
-#define WPMACCEPT 15
+#define WPMACCEPT 2
 
 Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE)
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
+#include "morse_code.h"
 }
 
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_ui(ui)
+      m_ui(ui), m_tone(DEFAULT_TONE)
 {
 
     qDebug() << "new morse2";
+
+#include "morse_code.h"
+
     createTones(WPMGOAL);
     qsrand(QTime::currentTime().msec());
     loadSettings();
@@ -47,17 +51,19 @@ void Morse::prefsButton() {
     Ui::Prefs prefsDialog;
     QDialog *dialog = new QDialog(m_parent);
     prefsDialog.setupUi(dialog);
-    prefsDialog.WPMAccepted->setText(QString().setNum(m_currentWPMAccept));
-    prefsDialog.WPMGoal->setText(QString().setNum(m_currentWPMGoal));
+    prefsDialog.WPMAccepted->setValue(m_currentWPMAccept);
+    prefsDialog.WPMGoal->setValue(m_currentWPMGoal);
+    prefsDialog.tone->setValue(m_tone);
 
     prefsDialog.weighting->insertItem(LOW, "Low");
     prefsDialog.weighting->insertItem(HIGH, "High");
     prefsDialog.weighting->setCurrentIndex(m_badLetterWeighting);
 
     if (dialog->exec() == QDialog::Accepted) {
-        m_currentWPMAccept = prefsDialog.WPMAccepted->text().toInt();
-        m_currentWPMGoal = prefsDialog.WPMGoal->text().toInt();
+        m_currentWPMAccept = prefsDialog.WPMAccepted->value();
+        m_currentWPMGoal = prefsDialog.WPMGoal->value();
         m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
+        m_tone = prefsDialog.tone->value();
         saveSettings();
         loadSettings();
     }
@@ -73,6 +79,7 @@ void Morse::saveSettings() {
     QSettings settings("WS6Z", "qtcw");
     settings.setValue("WPM/Goal", m_currentWPMGoal);
     settings.setValue("WPM/Accept", m_currentWPMAccept);
+    settings.setValue("Tone", m_tone);
     settings.setValue("LetterWeighting", int(m_badLetterWeighting));
     qDebug() << "saving: " << m_badLetterWeighting;
 }
@@ -82,6 +89,7 @@ void Morse::loadSettings() {
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
     m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
+    m_tone = settings.value("Tone", DEFAULT_TONE).toInt();
     createTones(m_currentWPMGoal);  
 }
 
@@ -92,28 +100,28 @@ void Morse::clearStatsButton() {
 void
 Morse::playSequence()
 {
-    qDebug() << "Playing!";
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
-    qDebug() << "starting";
     m_audioOutput->start(m_playBuffer);
-    qDebug() << "done starting";
     return;
 }
 
-void Morse::maybePlaySequence() {
-    qDebug() << "maybe going to key: mode == " << m_playingMode;
+QTime Morse::maybePlaySequence() {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
-        qDebug() << "going to key: ";
+        m_playBuffer->restartData();
+        QTime playTime = m_playBuffer->timeLeft();
+        QTime results = QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
         playSequence();
+        return results;
     }
+    return QTime(0,0,0);
 }
 
 
 void Morse::keyPressed(QString newtext) {
     QChar newletter = newtext.at(newtext.length()-1).toLower();
-    // qDebug() << "user pressed: " << newletter << "and last key was: " << m_lastKey;
+    qDebug() << "*** user pressed: " << newletter;
     keyPressed(newletter);
 }
 
@@ -164,12 +172,13 @@ Morse::audioFinished(QAudio::State state)
 }
 
 void Morse::switchMode(int newmode) {
-    m_gameMode = (Morse::TrainingMode) newmode;
-    qDebug() << "switch to:" << m_gameMode;
+    qDebug() << "switch to:" << newmode;
     m_playBuffer->stop();
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
 
+    m_modes[m_gameMode]->switchFromYou();
+    m_gameMode = (Morse::TrainingMode) newmode;
     m_modes[(TrainingMode) newmode]->switchToYou();
 }
 
@@ -177,22 +186,22 @@ void Morse::switchMode(int newmode) {
 // HERE and below is tone generation and sequence playing
 //
 
-void Morse::addAndPlayIt(QChar c) {
+QTime Morse::addAndPlayIt(QChar c) {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         clearList();
         add(pause());
     }
     add(c, false);
     add(m_letterPause);
-    maybePlaySequence();
+    return maybePlaySequence();
 }
 
-void Morse::playIt(QChar c) {
+QTime Morse::playIt(QChar c) {
     clearList();
-    add(pause());
+    add(pause());  // allows audio device to kick in (otherwise distortion can occur)
     add(c, false);
     add(m_letterPause);
-    maybePlaySequence();
+    return maybePlaySequence();
 }
 
 void
@@ -252,7 +261,7 @@ void Morse::add(const QString &textToAdd) {
 
     clearList();
     for (letter = textToAdd.begin(); letter != lastLetter; ++letter) {
-        add(*letter);
+        add(*letter, true);
     }
 }
 
@@ -263,33 +272,40 @@ Morse::createTones(int wpm)
 }
 
 void
-Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMult, int spaceMult)
+Morse::_createTones()
 {
-    m_ditSecs = ditSecs;
-
-    m_dit = new Generator(ditSecs);
+    m_dit = new Generator(m_ditSecs, m_tone);
     m_dit->start();
 
-    m_dah = new Generator(ditSecs * dahMult);
+    m_dah = new Generator(m_dahSecs, m_tone);
     m_dah->start();
 
-    m_pause = new Generator(ditSecs * pauseMult, 0);
+    m_pause = new Generator(m_pauseSecs, 0);
     m_pause->start();
 
-    m_letterPause = new Generator(ditSecs * letterPauseMult, 0);
+    m_letterPause = new Generator(m_pauseSecs, 0);
     m_letterPause->start();
 
-    m_space = new Generator(ditSecs * spaceMult, 0);
+    m_space = new Generator(m_spaceSecs, 0);
     m_space->start();
 
     m_playBuffer = new Generator(m_pause);
     m_playBuffer->start();
     connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
 
-    #include "morse_code.h"
-
     qDebug() << "created tones";
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
+}
+
+void
+Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMult, int spaceMult)
+{
+    m_ditSecs = ditSecs;
+    m_dahSecs = ditSecs * dahMult;
+    m_pauseSecs = ditSecs * pauseMult;
+    m_letterPauseSecs = ditSecs * letterPauseMult;
+    m_spaceSecs = ditSecs * spaceMult;
+    _createTones();
 }
 
 int Morse::currentWPMAccept() {

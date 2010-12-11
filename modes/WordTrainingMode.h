@@ -23,6 +23,8 @@ public:
 
     void handleWordResponse(QChar letter);
 
+    virtual QString helpText();
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
     void switchWords(int sequence);

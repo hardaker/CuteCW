@@ -16,6 +16,8 @@ public:
 public:
     PlayMode(Morse *parent, Ui::MainWindow *ui);
 
+    virtual QString helpText();
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
     virtual void switchToMode();

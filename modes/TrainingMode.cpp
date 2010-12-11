@@ -19,13 +19,14 @@ void TrainingMode::setupSequences() {
     m_sequences.append("wi.jz=foy,");
     m_sequences.append("vg5/q92h38");
     m_sequences.append("b?47c1d60x");
-    m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
+    m_sequences.append("abcdefghijklmnopqrstuvwxyz");
     m_sequences.append("abcdef");
     m_sequences.append("ghijklm");
     m_sequences.append("nopqrst");
     m_sequences.append("tuvwxyz");
     m_sequences.append("1234567890");
     m_sequences.append(".,/=?");
+    m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
 
     // Koch sequences
     m_sequenceSignalMapper = new QSignalMapper();
@@ -88,6 +89,10 @@ void TrainingMode::setupSequences() {
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) SYMBOLS);
 
+    action = modeMenu->addAction("Symbols");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) EVERYTHING);
+
     action = modeMenu->addAction("Custom");
     connect(action, SIGNAL(triggered()), this, SLOT(chooseCustomeSequence()));
 
@@ -120,6 +125,13 @@ void TrainingMode::clear()  {
     m_lastKeys.clear();
     m_lastTimes.clear();
     MorseMode::clear();
+    m_goodCount = 0;
+    m_badCount = 0;
+
+    m_ui->avewpm->setText("All WPM: [None], K WPM: NEW");
+
+    if (runningMode() == RUNNING)
+        playButton(); // pretend a pause was pressed too
 }
 
 void TrainingMode::play() {
@@ -128,12 +140,15 @@ void TrainingMode::play() {
 
 void TrainingMode::audioStopped() {
     qDebug() << "audio stopped";
-    m_lastTimes.push_back(QTime::currentTime());
+    // now done based on predicted time
+    // m_lastTimes.push_back(QTime::currentTime());
 }
 
 void TrainingMode::handleKeyPress(QChar letterPressed) {
     if (runningMode() != RUNNING)
         return;
+
+    QTime now = QTime::currentTime();
 
     qDebug() << "Key pressed = " << letterPressed << ", Queue of stored keys: keys=" << m_lastKeys.count() << ", times=" << m_lastTimes.count();
 
@@ -150,7 +165,7 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     // calculate the time since the keying ended to the time the user hit a key
     // XXX: we need to store a list of times, not just a single time
 
-    int msElapsed = lastTime.elapsed() - m_morse->ditSecs(); // subtract off blank-after time
+    int msElapsed = lastTime.msecsTo(now) - m_morse->ditSecs(); // subtract off blank-after time
     if (msElapsed <= 0)
         msElapsed = 1;
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
@@ -179,9 +194,9 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     }
 }
 
-void TrainingMode::startNextTrainingKey() {
+QTime TrainingMode::startNextTrainingKey() {
     if (runningMode() != RUNNING)
-        return;
+        return QTime();
     qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, float> > letters;
@@ -189,8 +204,8 @@ void TrainingMode::startNextTrainingKey() {
     MorseStat *stat = 0;
     QString currentLetterGoal;
 
-    if (m_morse->audioMode() == Morse::PLAYING)
-        return;
+    //if (m_morse->audioMode() == Morse::PLAYING)
+    //    return;
 
     QString::iterator letter;
     QString::iterator lastLetter = m_trainingSequence.end();
@@ -207,23 +222,23 @@ void TrainingMode::startNextTrainingKey() {
                 thisTime = 1000*60.0/(50.0*float(m_morse->currentWPMAccept()));
             } else {
                 // never keyed yet; do it immediately if we got this far
-                qDebug() << "|------ keying: " << *letter;
+                qDebug() << "|keying: " << *letter;
                 m_lastKey = *letter;
                 m_lastKeys.append(*letter);
                 setSequence(m_trainingSequence, letterCount);
                 m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
-                                      *letter + ": " + QString().setNum(msToPauseWPM(thisTime)));
+                                      *letter + ": NEW");
                 if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
                                                                       totalTime/float(letterCount)), 'g', 2));
                 else
                     m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
-                m_morse->playIt(*letter);
-                return;
+                m_lastTimes.push_back(m_morse->playIt(*letter));
+                return m_lastTimes.last();
             }
         }
 
-        qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
+        //qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
         if(msToPauseWPM(thisTime) <= m_morse->currentWPMAccept()) {
@@ -236,7 +251,7 @@ void TrainingMode::startNextTrainingKey() {
     // They have the whole sequence active at this point
 
     m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
-                          currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime/stat->getTryCount())));
+                          currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime)));
     if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
         m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount))));
     else
@@ -251,7 +266,7 @@ void TrainingMode::startNextTrainingKey() {
     } else
         randTime = totalTime*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
-    qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
+    // qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
     QList<QPair<QChar, float> >::iterator search;
     QList<QPair<QChar, float> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
@@ -259,14 +274,15 @@ void TrainingMode::startNextTrainingKey() {
         //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += ((*search).second - subTime);
         if (newTotal > randTime) {
-            qDebug() << "------- keying: " << (*search).first;
+            qDebug() << ">keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
-            m_morse->playIt((*search).first);
-            return;
+            m_lastTimes.push_back(m_morse->playIt((*search).first));
+            return m_lastTimes.last();
         }
     }
     qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
+    return QTime();
 }
 
 void TrainingMode::switchSequence(int sequence) {
@@ -288,7 +304,7 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
         m_morse->m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
 
         QChar theLetter = sequence[currentlyAt-1].toLower();
-        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "  ";
+        QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "&nbsp;&nbsp;&nbsp;&nbsp;";
         QList<Morse::ditdah>::iterator it;
         QList<Morse::ditdah>::iterator end = m_morse->code[theLetter]->end();
         for(it = m_morse->code[theLetter]->begin(); it != end; ++it) {
@@ -316,5 +332,6 @@ void TrainingMode::setupWidgets(const QString &sequence)
     m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
     m_doEntireSequenceButton->setCheckable(true);
     m_doEntireSequenceButton->setChecked(false);
+    setSequence(m_trainingSequence, 1);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
 }

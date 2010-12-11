@@ -59,4 +59,3 @@ QString CustomSequenceDialog::getResults() {
     return str;
 }
 
-

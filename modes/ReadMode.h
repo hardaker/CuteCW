@@ -2,6 +2,7 @@
 #define READMODE_H
 
 #include <QtGui/QTextCursor>
+#include <QtGui/QTextEdit>
 
 #include "MorseMode.h"
 
@@ -14,6 +15,8 @@ public:
     ReadMode(Morse *parent, Ui::MainWindow *ui);
 
     void addButtons();
+    virtual QString helpText();
+
 public slots:
     virtual void switchToMode();
     virtual void play();
@@ -23,6 +26,7 @@ public slots:
 
 private:
     QTextCursor                     m_readSpot;
+    QTextEdit                      *m_textEdit;
 
 };
 

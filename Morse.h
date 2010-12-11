@@ -38,6 +38,8 @@ public:
     Morse();
     Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui);
 
+    static const int DEFAULT_TONE = 500;
+
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
     enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, READ, TEST };
@@ -54,8 +56,8 @@ public:
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
     void add(const QString &textToAdd);
-    void addAndPlayIt(QChar c);
-    void playIt(QChar c);
+    QTime addAndPlayIt(QChar c);
+    QTime playIt(QChar c);
 
     MorseStat *getStat(const QChar &key);
 
@@ -80,7 +82,7 @@ public:
 public slots:
 
     void playSequence();
-    void maybePlaySequence();
+    QTime maybePlaySequence();
 
     void generatorDone();
     void audioFinished(QAudio::State state);
@@ -107,11 +109,13 @@ public:
     QMenuBar * menuBar();
 private:
 
+    void _createTones();
+
     QMap<TrainingMode, MorseMode *>  m_modes;
 
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
-    float                            m_ditSecs;
+    float                            m_ditSecs, m_dahSecs, m_pauseSecs, m_letterPauseSecs, m_spaceSecs;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
     AudioMode                        m_playingMode;
@@ -121,6 +125,7 @@ private:
     Ui::MainWindow                  *m_ui;
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
+    int                              m_tone;
 };
 
 #endif // MORSE_H
