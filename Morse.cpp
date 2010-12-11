@@ -107,13 +107,18 @@ Morse::playSequence()
     return;
 }
 
-QTime Morse::maybePlaySequence() {
+QTime Morse::sequenceTime() {
+    return m_playBuffer->timeLeft();
+}
+
+QTime Morse::maybePlaySequence(bool addPause) {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         m_playBuffer->restartData();
-        QTime playTime = m_playBuffer->timeLeft();
-        QTime results = QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
+        QTime playTime = sequenceTime();
         playSequence();
-        return results;
+        if (addPause)
+            add(pause());
+        return QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
     }
     return QTime(0,0,0);
 }
