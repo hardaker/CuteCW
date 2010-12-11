@@ -205,8 +205,7 @@ QTime Morse::playIt(QChar c) {
     clearList();
     add(pause());  // allows audio device to kick in (otherwise distortion can occur)
     add(c, false);
-    add(m_letterPause);
-    return maybePlaySequence();
+    return maybePlaySequence(true);
 }
 
 void
