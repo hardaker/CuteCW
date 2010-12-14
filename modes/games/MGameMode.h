@@ -2,8 +2,9 @@
 #define GAMEMODE_H
 
 #include <QtCore/QObject>
+#include <QtGui/QLabel>
 
-class GameMode : public QObject
+class MGameMode : public QObject
 {
 public:
     Q_OBJECT
@@ -15,7 +16,7 @@ public:
 
   virtual int score();
   virtual void addToScore(int addition);
-  virtual void setScore();
+  virtual void setScore(int score);
   virtual void nextTurn(int scoreAddition);
 
   virtual void updateGUI();
