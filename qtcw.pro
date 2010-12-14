@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     modes/WordTrainingMode.cpp \
     modes/ReadMode.cpp \
     modes/ChooseSequenceDialog.cpp \
-    modes/GroupingMode.cpp
+    modes/GroupingMode.cpp \
+    modes/games/MGameMode.cpp \
+    modes/games/MCountGameMode.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
