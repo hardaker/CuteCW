@@ -1,22 +1,22 @@
 #include "MCountGameMode.h"
 
-class MGameCountMode(int maxTurns)
-  : m_score(0), m_scoreLabel(0)
+MCountGameMode::MCountGameMode(int maxTurns)
+  : MGameMode(), m_turnNumber(0), m_maxTurns(maxTurns)
 {
 }
 
-virtual void MCountGameMode::startGame() 
+void MCountGameMode::startGame() 
 {
   m_turnNumber = 0;
   MGameMode::startGame();
 }
 
-virtual void MCountGameMode::nextTurn(int scoreAddition) 
+void MCountGameMode::nextTurn(int scoreAddition) 
 {
   m_turnNumber++;
   MGameMode::nextTurn(scoreAddition);
 
-  if (m_turnNumber gte m_maxTurns) {
+  if (m_turnNumber >= m_maxTurns) {
     emit gameOver();
   }   
 }

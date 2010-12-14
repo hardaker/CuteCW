@@ -1,11 +1,11 @@
-#ifndef GAMEMODE_H
-#define GAMEMODE_H
+#ifndef GAMECOUNTMODE_H
+#define GAMECOUNTMODE_H
 
 #include <QtCore/QObject>
+#include "MGameMode.h"
 
-class GameMode : public QObject
+class MCountGameMode : public MGameMode
 {
-public:
     Q_OBJECT
   
 public:
@@ -16,8 +16,8 @@ public:
   virtual void nextTurn(int scoreAddition);
 
  protected:
-  int   m_maxTurns;
   int   m_turnNumber;
+  int   m_maxTurns;
 };
 
 #endif

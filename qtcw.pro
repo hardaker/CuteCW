@@ -48,7 +48,9 @@ HEADERS  += MainWindow.h \
     modes/WordTrainingMode.h \
     modes/ReadMode.h \
     modes/ChooseSequenceDialog.h \
-    modes/GroupingMode.h
+    modes/GroupingMode.h \
+    modes/games/MGameMode.cpp \
+    modes/games/MCountGameMode.cpp
 
 FORMS    += MainWindow.ui \
     Prefs.ui

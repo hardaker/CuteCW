@@ -6,7 +6,6 @@
 
 class MGameMode : public QObject
 {
-public:
     Q_OBJECT
 
 public:
