@@ -21,6 +21,9 @@ public:
 
     virtual QString helpText();
 
+ signals:
+    void groupEntered(int right, int total);
+
 public slots:
     void startNextGroup();
     virtual bool enterPressed();
@@ -34,6 +37,7 @@ private:
     QString m_currentSequence;
     QString m_enteredWord;
     bool    m_wordWasGood;
+    int     m_rightCount;
 };
 
 #endif // GROUPINGMODE_H

@@ -36,6 +36,7 @@ void GroupingMode::handleKeyPress(QChar letter) {
     // Copied from WordTraining (ish)
     if (m_currentSequence[m_enteredWord.length()] == letter) {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
+        m_rightCount++;
     } else {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"red\">" + letter + "<font>");
         m_wordWasGood = false;
@@ -49,6 +50,7 @@ void GroupingMode::handleKeyPress(QChar letter) {
             m_badGuesses++;
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + m_currentSequence + ")</font>");
         }
+        emit groupEntered(m_rightCount, m_currentSequence.length());
     }
     setSequenceText();
 }
@@ -77,6 +79,7 @@ void GroupingMode::startNextGroup()
     m_morse->maybePlaySequence(true);
     m_wordWasGood = true;
     m_enteredWord = "";
+    m_rightCount++;
     setSequenceText();
     m_ui->letter->setText(QString().number(m_groupLength) + ": ");
 }
