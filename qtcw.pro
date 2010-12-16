@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     modes/ChooseSequenceDialog.cpp \
     modes/GroupingMode.cpp \
     modes/games/MGameMode.cpp \
-    modes/games/MCountGameMode.cpp
+    modes/games/MCountGameMode.cpp \
+    modes/games/GroupGame.cpp \
+    modes/games/HighScores.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -49,8 +51,10 @@ HEADERS  += MainWindow.h \
     modes/ReadMode.h \
     modes/ChooseSequenceDialog.h \
     modes/GroupingMode.h \
-    modes/games/MGameMode.cpp \
-    modes/games/MCountGameMode.cpp
+    modes/games/MGameMode.h \
+    modes/games/MCountGameMode.h \
+    modes/games/GroupGame.h \
+    modes/games/HighScores.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui
