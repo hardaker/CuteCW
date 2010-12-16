@@ -15,6 +15,7 @@ public:
     virtual void handleKeyPress(QChar letter);
 
     virtual QString helpText();
+    virtual void setSeqenceText();
 
  signals:
 

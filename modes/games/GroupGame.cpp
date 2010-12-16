@@ -35,6 +35,10 @@ void GroupGame::groupGuessed(int right, int total)
     nextTurn(right*10*((total==right)?2:1));
 }
 
+void GroupGame::setSequenceText()
+{
+  m_morse->m_sequenceLabel->setText(tr("current length = %1, good = %2, bad = %3, score = %4").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses)).arg(score());
+}
 
 QString GroupMode::helpText()
 {
