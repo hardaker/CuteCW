@@ -3,7 +3,7 @@
 #include "modes/GroupGame.h"
 
 GroupGame::GroupGame(Morse *parent, Ui::MainWindow *ui) :
-    GroupingMode(parent, ui), MCountGameMode()
+  GroupingMode(parent, ui), MCountGameMode(), m_scores("Group Accuracy Game")
 {
     connect(this, SIGNAL(groupEntered(int, int)),
             this, SLOT(groupGuessed(int, int)));
@@ -27,7 +27,7 @@ void GroupGame::play()
 void GroupGame::gameOver()
 {
   pause();
-  // XXX: calculate high score
+  m_scores.addScore("unknown", score());
 }
 
 void GroupGame::groupGuessed(int right, int total)

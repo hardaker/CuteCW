@@ -5,7 +5,7 @@ class HighScores : public QObject
 {
     Q_OBJECT
 public:
-  explicit HighScores(const QString &tableName, int maxCount = 20);
+  HighScores(const QString &tableName, int maxCount = 20);
 
   virtual int addScore(const QString &name, int score);
 

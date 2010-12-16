@@ -25,6 +25,7 @@ public slots:
     virtual void play();
 
 private:
+    HighScores  m_scores;
 };
 
 #endif // GROUPGAMEMODE_H
