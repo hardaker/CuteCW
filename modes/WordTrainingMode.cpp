@@ -62,8 +62,6 @@ void WordTrainingMode::switchToMode() {
     setupWordsMenu();
     setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
     m_maxWord = 2;
-
-    enterPressed();
 }
 
 void WordTrainingMode::switchWords(int sequence) {
