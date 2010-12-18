@@ -10,16 +10,23 @@ HighScores::HighScores(const QString &tableName, int maxCount = 20)
 
 int HighScores::addScore(const QString &name, int score)
 {
+    int count = -1;
     end = m_scores.end();
     for(begin = m_scores.begin(),
 	  begin != end,
 	  begin++)
       {
+        count++;
 	if ((*begin).first < score) {
 	  m_scores.insert(QPair<int,QString>(score, name));
           if (m_scores.count() > m_maxScores)
 	    m_scores.pop_back();
           saveScores();
+          if (!name.isValid()) {
+              QHighScoreDialog hsdialog(m_tableName, &m_scores, count);
+              hsdialog.exec();
+          }
+          return count-1;
         }
       }
 }
