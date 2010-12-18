@@ -2,6 +2,8 @@
 
 #include <QtCore/QSettings>
 
+#include "HighScoresDialog.h"
+
 HighScores::HighScores(const QString &tableName, int maxCount = 20)
   : m_tableName(tableName), m_maxScores(maxCount), m_scores()
 {
@@ -21,11 +23,11 @@ int HighScores::addScore(const QString &name, int score)
 	  m_scores.insert(QPair<int,QString>(score, name));
           if (m_scores.count() > m_maxScores)
 	    m_scores.pop_back();
-          saveScores();
           if (!name.isValid()) {
               QHighScoreDialog hsdialog(m_tableName, &m_scores, count);
               hsdialog.exec();
           }
+          saveScores();
           return count-1;
         }
       }
