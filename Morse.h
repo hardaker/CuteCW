@@ -21,8 +21,8 @@
 #include "modes/WordTrainingMode.h"
 #include "modes/ReadMode.h"
 #include "modes/GroupingMode.h"
-#include "modes/WordGame.h"
-#include "modes/GroupGame.h"
+#include "modes/games/WordGame.h"
+#include "modes/games/GroupGame.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
