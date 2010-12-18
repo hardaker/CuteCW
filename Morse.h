@@ -21,6 +21,8 @@
 #include "modes/WordTrainingMode.h"
 #include "modes/ReadMode.h"
 #include "modes/GroupingMode.h"
+#include "modes/WordGame.h"
+#include "modes/GroupGame.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
@@ -42,7 +44,7 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, READ, TEST };
+    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, WORDGAME, GROUPGAME,WORDGAME, GROUPGAME, READ, TEST };
     enum AudioMode { STOPPED, PLAYING, PAUSED };
     enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 

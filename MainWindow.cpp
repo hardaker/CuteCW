@@ -42,6 +42,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPS);
 
+    QMenu *gamesMenu = modesMenu->addMenu("Games");
+
+    acion = gamesMenu->addAction("Word Accuracy");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::WORDGAME);
+
+    acion = gamesMenu->addAction("Grouping Accuracy");
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPGAME);
+
     action = modeMenu->addAction("Read");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
