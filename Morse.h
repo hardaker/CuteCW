@@ -15,14 +15,7 @@
 #include "Generator.h"
 #include "MorseStat.h"
 
-#include "modes/PlayMode.h"
-#include "modes/LetterTrainingMode.h"
-#include "modes/SpeedTrainingMode.h"
-#include "modes/WordTrainingMode.h"
-#include "modes/ReadMode.h"
-#include "modes/GroupingMode.h"
-#include "modes/games/WordGame.h"
-#include "modes/games/GroupGame.h"
+#include "modes/MorseMode.h"
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"

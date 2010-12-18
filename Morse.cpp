@@ -7,6 +7,15 @@
 
 #include "MainWindow.h"
 
+#include "modes/PlayMode.h"
+#include "modes/LetterTrainingMode.h"
+#include "modes/SpeedTrainingMode.h"
+#include "modes/WordTrainingMode.h"
+#include "modes/ReadMode.h"
+#include "modes/GroupingMode.h"
+#include "modes/games/WordGame.h"
+#include "modes/games/GroupGame.h"
+
 #define WPMGOAL   20
 #define WPMACCEPT 2
 
@@ -357,4 +366,3 @@ Morse::ditSecs()
 {
     return m_ditSecs;
 }
-
