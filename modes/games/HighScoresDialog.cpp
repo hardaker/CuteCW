@@ -2,6 +2,8 @@
 
 #include <QtCore/QSettings>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <qdebug.h>
 
@@ -16,11 +18,24 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
     setScoreTable();
     layout->addWidget(scoreTable);
 
+    QHBoxLayout *hbox = new QHBoxLayout();
+
     if (newSlot != -1) {
+        QLabel *scoreName = new QLabel(tr("Your Name: "));
+        hbox->addWidget(scoreName);
+
         nameEntry = new QLineEdit();
-        layout->addWidget(nameEntry);
+        hbox->addWidget(nameEntry);
         connect(nameEntry, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
+    } else {
+        QLabel *scoreName = new QLabel(tr("Your Score: "));
+        hbox->addWidget(scoreName);
     }
+
+    QLabel *score = new QLabel(QString::number(m_scores->at(newSlot).first));
+    hbox->addWidget(score);
+
+    layout->addLayout(hbox);
 
     QPushButton *ok = new QPushButton(tr("Ok"));
     layout->addWidget(ok);
