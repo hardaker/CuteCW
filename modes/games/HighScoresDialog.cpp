@@ -42,6 +42,9 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
     connect(ok, SIGNAL(clicked()), this, SLOT(close()));
 
     setLayout(layout);
+
+    if (nameEntry)
+        nameEntry->setFocus(Qt::OtherFocusReason);
 }
 
 void HighScoresDialog::setScoreTable() {
@@ -53,7 +56,7 @@ void HighScoresDialog::setScoreTable() {
         begin != end;
         begin++) {
         if (m_newSlot == count)
-            text = text + QString("<tr><td><font color=\"green\">%1</font></td><td><font color=\"green\">%2</font></td></tr>").arg((*begin).second).arg((*begin).first);
+            text = text + QString("<tr><td><font color=\"green\"><a anchor=\"newslot\">%1</font></td><td><font color=\"green\">%2</font></td></tr>").arg((*begin).second).arg((*begin).first);
         else
             text = text + QString("<tr><td>%1</td><td>%2</td></tr>").arg((*begin).second).arg((*begin).first);
         count++;
@@ -61,6 +64,7 @@ void HighScoresDialog::setScoreTable() {
     text = text + "</table>";
 
     scoreTable->setText(text);
+    scoreTable->scrollToAnchor("newslot");
 }
 
 void HighScoresDialog::textChanged(QString text) {
