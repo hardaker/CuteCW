@@ -17,6 +17,6 @@ void MCountGameMode::nextTurn(int scoreAddition)
   MGameMode::nextTurn(scoreAddition);
 
   if (m_turnNumber >= m_maxTurns) {
-    emit gameOver();
+    gameOver();
   }   
 }

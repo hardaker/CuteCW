@@ -6,7 +6,6 @@
 
 class MCountGameMode : public MGameMode
 {
-    Q_OBJECT
   
 public:
   MCountGameMode(int maxTurns = 25);

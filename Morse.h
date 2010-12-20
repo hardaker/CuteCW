@@ -37,7 +37,7 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, WORDGAME, GROUPGAME,WORDGAME, GROUPGAME, READ, TEST };
+    enum TrainingMode { PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, WORDGAME, GROUPGAME, READ, TEST };
     enum AudioMode { STOPPED, PLAYING, PAUSED };
     enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 

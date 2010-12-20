@@ -1,8 +1,9 @@
 #ifndef GROUPGAMEMODE_H
 #define GROUPGAMEMODE_H
 
-#include "GroupingMode.h"
-#include "McountGameMode.h"
+#include "modes/GroupingMode.h"
+#include "modes/games/MCountGameMode.h"
+#include "modes/games/HighScores.h"
 #include "Morse.h"
 
 class GroupGame : public GroupingMode, public MCountGameMode
@@ -12,17 +13,16 @@ public:
     explicit GroupGame(Morse *parent, Ui::MainWindow *ui);
 
     virtual void switchToMode();
-    virtual void handleKeyPress(QChar letter);
 
     virtual QString helpText();
-    virtual void setSeqenceText();
 
- signals:
+signals:
 
 public slots:
-    void gameOver();
+    virtual void gameOver();
     void groupGuessed(int right, int total);
     virtual void play();
+    virtual void setSequenceText();
 
 private:
     HighScores  m_scores;

@@ -30,7 +30,7 @@ public slots:
     virtual void play();
     virtual void clear();
 
-private:
+protected:
     int     m_groupLength;
     int     m_goodGuesses;
     int     m_badGuesses;

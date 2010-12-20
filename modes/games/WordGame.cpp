@@ -1,18 +1,16 @@
 #include <qdebug.h>
 
-#include "modes/GroupGame.h"
+#include "modes/games/WordGame.h"
 
 WordGame::WordGame(Morse *parent, Ui::MainWindow *ui) :
-  WordMode(parent, ui), MCountGameMode(), m_scores("Word Accuracy Game")
+  WordTrainingMode(parent, ui), MCountGameMode(), m_scores("Word Accuracy Game")
 {
     connect(this, SIGNAL(groupEntered(int, int)),
             this, SLOT(groupGuessed(int, int)));
-    connect(this, SIGNAL(gameOver()),
-            this, SLOT(gameOver()));
 }
 
 void WordGame::switchToMode() {
-    WordMode::switchToMode();
+    WordTrainingMode::switchToMode();
     m_ui->clearTraining->hide();
     m_ui->modeMenu->setText(tr("Word Game"));
     m_ui->helpBar->setText(tr("<font color=\"green\">Type the groups of characters you hear ASAP.</font>"));
@@ -37,7 +35,7 @@ void WordGame::groupGuessed(int right, int total)
 
 void WordGame::setSequenceText()
 {
-  m_morse->m_sequenceLabel->setText(tr("current length = %1, good = %2, bad = %3, score = %4").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses)).arg(score());
+  m_morse->m_sequenceLabel->setText(tr("score = %4").arg(score()));
 }
 
 QString WordGame::helpText()

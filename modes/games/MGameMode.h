@@ -4,10 +4,8 @@
 #include <QtCore/QObject>
 #include <QtGui/QLabel>
 
-class MGameMode : public QObject
+class MGameMode
 {
-    Q_OBJECT
-
 public:
   MGameMode();
 
@@ -20,8 +18,7 @@ public:
 
   virtual void updateGUI();
 
- signals:
-  void gameOver();
+  virtual void gameOver() = 0;
 
  protected:
   int       m_score;

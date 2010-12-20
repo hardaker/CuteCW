@@ -1,14 +1,12 @@
 #include <qdebug.h>
 
-#include "modes/GroupGame.h"
+#include "modes/games/GroupGame.h"
 
 GroupGame::GroupGame(Morse *parent, Ui::MainWindow *ui) :
   GroupingMode(parent, ui), MCountGameMode(), m_scores("Group Accuracy Game")
 {
     connect(this, SIGNAL(groupEntered(int, int)),
             this, SLOT(groupGuessed(int, int)));
-    connect(this, SIGNAL(gameOver()),
-            this, SLOT(gameOver()));
 }
 
 void GroupGame::switchToMode() {
@@ -37,10 +35,10 @@ void GroupGame::groupGuessed(int right, int total)
 
 void GroupGame::setSequenceText()
 {
-  m_morse->m_sequenceLabel->setText(tr("current length = %1, good = %2, bad = %3, score = %4").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses)).arg(score());
+  m_morse->m_sequenceLabel->setText(tr("current length = %1, good = %2, bad = %3, score = %4").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses).arg(score()));
 }
 
-QString GroupMode::helpText()
+QString GroupGame::helpText()
 {
     return tr("Characters in the chosen training sequence will be keyed starting with a single character.  "
               "Type in the characters you hear in the group.  Your results good or bad will be displayed "

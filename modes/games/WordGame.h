@@ -1,28 +1,28 @@
 #ifndef WORDGAMEMODE_H
 #define WORDGAMEMODE_H
 
-#include "WordMode.h"
-#include "McountGameMode.h"
+#include "modes/WordTrainingMode.h"
+#include "modes/games/MCountGameMode.h"
+#include "modes/games/HighScores.h"
 #include "Morse.h"
 
-class WordGame : public WordGame, public MCountGameMode
+class WordGame : public WordTrainingMode, public MCountGameMode
 {
     Q_OBJECT
 public:
     explicit WordGame(Morse *parent, Ui::MainWindow *ui);
 
     virtual void switchToMode();
-    virtual void handleKeyPress(QChar letter);
 
     virtual QString helpText();
-    virtual void setSeqenceText();
 
- signals:
+signals:
 
 public slots:
-    void gameOver();
+    virtual void gameOver();
     void groupGuessed(int right, int total);
     virtual void play();
+    virtual void setSequenceText();
 
 private:
     HighScores  m_scores;
