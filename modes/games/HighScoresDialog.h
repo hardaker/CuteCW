@@ -15,7 +15,7 @@ public:
   HighScoresDialog(const QString &tableName, QList<QPair<int,QString> >  *scores, int newSlot = -1);
 
 public slots:
-  void textChanged(QString &text);
+  void textChanged(QString text);
   void setScoreTable();
 
 

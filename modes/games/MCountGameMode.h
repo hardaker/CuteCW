@@ -8,7 +8,7 @@ class MCountGameMode : public MGameMode
 {
   
 public:
-  MCountGameMode(int maxTurns = 25);
+  MCountGameMode(int maxTurns = 3);
 
   virtual void startGame();
 
