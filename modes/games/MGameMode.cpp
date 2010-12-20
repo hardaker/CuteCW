@@ -34,6 +34,7 @@ void MGameMode::setScore(int score)
 
 void MGameMode::updateGUI()
 {
-  m_scoreLabel->setText(QString().number(m_score));
+  if (m_scoreLabel)
+      m_scoreLabel->setText(QString::number(m_score));
 }
 

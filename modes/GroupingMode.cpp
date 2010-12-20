@@ -79,7 +79,7 @@ void GroupingMode::startNextGroup()
     m_morse->maybePlaySequence(true);
     m_wordWasGood = true;
     m_enteredWord = "";
-    m_rightCount++;
+    m_rightCount = 0;
     setSequenceText();
     m_ui->letter->setText(QString().number(m_groupLength) + ": ");
 }
