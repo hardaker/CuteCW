@@ -25,7 +25,7 @@ void GroupGame::play()
 void GroupGame::gameOver()
 {
   pause();
-  m_scores.addScore("unknown", score());
+  m_scores.addScore("", score());
 }
 
 void GroupGame::groupGuessed(int right, int total)
