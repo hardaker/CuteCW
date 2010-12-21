@@ -24,7 +24,7 @@ int HighScores::addScore(const QString &name, int score)
           if (m_scores.count() > m_maxScores)
 	    m_scores.pop_back();
           if (name == "") {
-              HighScoresDialog hsdialog(m_tableName, &m_scores, count);
+              HighScoresDialog hsdialog(m_tableName, &m_scores, score, count);
               hsdialog.exec();
               hsdialog.saveDefaultName();
           }
@@ -35,12 +35,15 @@ int HighScores::addScore(const QString &name, int score)
     if (count < m_maxScores) {
         m_scores.append(QPair<int,QString>(score, name));
         if (name == "") {
-            HighScoresDialog hsdialog(m_tableName, &m_scores, count);
+            HighScoresDialog hsdialog(m_tableName, &m_scores, score, count);
             hsdialog.exec();
             hsdialog.saveDefaultName();
         }
         saveScores();
         return count-1;
+    } else {
+        HighScoresDialog hsdialog(m_tableName, &m_scores, score, -1);
+        hsdialog.exec();
     }
     return -1;
 }

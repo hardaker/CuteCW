@@ -7,8 +7,8 @@
 #include <QtGui/QPushButton>
 #include <qdebug.h>
 
-HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QString> >  *scores, int newSlot)
-  : m_tableName(tableName), m_scores(scores), m_newSlot(newSlot)
+HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QString> >  *scores, int score, int newSlot)
+  : m_tableName(tableName), m_scores(scores), m_newSlot(newSlot), nameEntry(0)
 {
     QVBoxLayout  *layout = new QVBoxLayout();
 
@@ -32,13 +32,18 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
         connect(nameEntry, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
 
         textChanged(m_savedName);
-    } else {
+    } else if (score > -1) {
         QLabel *scoreName = new QLabel(tr("Your Score: "));
         hbox->addWidget(scoreName);
     }
 
-    QLabel *score = new QLabel(QString::number(m_scores->at(newSlot).first));
-    hbox->addWidget(score);
+    if (newSlot > -1 && score == -1)
+        score = m_scores->at(newSlot).first;
+
+    if (score > -1) {
+        QLabel *scoreLabel = new QLabel(QString::number(score));
+        hbox->addWidget(scoreLabel);
+    }
 
     layout->addLayout(hbox);
 
