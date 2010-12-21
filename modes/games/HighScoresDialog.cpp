@@ -12,6 +12,9 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
 {
     QVBoxLayout  *layout = new QVBoxLayout();
 
+    QLabel *title = new QLabel(tr("<b>High Scores: %1</b>").arg(tableName));
+    layout->addWidget(title);
+
     scoreTable = new QTextEdit();
     scoreTable->setReadOnly(true);
     setScoreTable();
