@@ -75,7 +75,6 @@ void HighScores::loadScores()
     for(int i = 0; i < size; ++i) {
         settings.setArrayIndex(i);
         m_scores.push_back(QPair<int,QString>(settings.value("score").toInt(), settings.value("name").toString()));
-					      
     }
     settings.endArray();
 }

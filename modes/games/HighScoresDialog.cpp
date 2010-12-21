@@ -30,6 +30,8 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
         nameEntry->setText(m_savedName);
         hbox->addWidget(nameEntry);
         connect(nameEntry, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
+
+        textChanged(m_savedName);
     } else {
         QLabel *scoreName = new QLabel(tr("Your Score: "));
         hbox->addWidget(scoreName);
@@ -82,7 +84,6 @@ void HighScoresDialog::textChanged(QString text) {
 
 void HighScoresDialog::saveDefaultName() {
     QSettings settings("WS6Z", "qtcw");
-    qDebug() << "saving: " << m_savedName;
     settings.setValue("highscoresdialog/defaultName", m_savedName);
 }
 

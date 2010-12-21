@@ -24,7 +24,7 @@ void WordGame::play()
 
 void WordGame::gameOver()
 {
-  pause();
+  playButton();
   m_scores.addScore(QString(), score());
 }
 
