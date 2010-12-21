@@ -17,7 +17,7 @@ public:
 public slots:
   void textChanged(QString text);
   void setScoreTable();
-
+  void saveDefaultName();
 
 private:
   QString m_tableName;
@@ -26,7 +26,7 @@ private:
 
   QTextEdit *scoreTable;
   QLineEdit *nameEntry;
-
+  QString    m_savedName;
     
 };
 

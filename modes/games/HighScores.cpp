@@ -26,6 +26,7 @@ int HighScores::addScore(const QString &name, int score)
           if (name == "") {
               HighScoresDialog hsdialog(m_tableName, &m_scores, count);
               hsdialog.exec();
+              hsdialog.saveDefaultName();
           }
           saveScores();
           return count-1;
@@ -36,6 +37,7 @@ int HighScores::addScore(const QString &name, int score)
         if (name == "") {
             HighScoresDialog hsdialog(m_tableName, &m_scores, count);
             hsdialog.exec();
+            hsdialog.saveDefaultName();
         }
         saveScores();
         return count-1;

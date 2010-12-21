@@ -10,7 +10,6 @@
 HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QString> >  *scores, int newSlot)
   : m_tableName(tableName), m_scores(scores), m_newSlot(newSlot)
 {
-    qDebug() << "new slot: " << newSlot;
     QVBoxLayout  *layout = new QVBoxLayout();
 
     scoreTable = new QTextEdit();
@@ -21,10 +20,14 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
     QHBoxLayout *hbox = new QHBoxLayout();
 
     if (newSlot != -1) {
+        QSettings settings("WS6Z", "qtcw");
+        m_savedName = settings.value("highscoresdialog/defaultName").toString();
+
         QLabel *scoreName = new QLabel(tr("Your Name: "));
         hbox->addWidget(scoreName);
 
         nameEntry = new QLineEdit();
+        nameEntry->setText(m_savedName);
         hbox->addWidget(nameEntry);
         connect(nameEntry, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     } else {
@@ -40,6 +43,7 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
     QPushButton *ok = new QPushButton(tr("Ok"));
     layout->addWidget(ok);
     connect(ok, SIGNAL(clicked()), this, SLOT(close()));
+    connect(this, SIGNAL(destroyed()), this, SLOT(saveDefaultName()));
 
     setLayout(layout);
 
@@ -73,4 +77,12 @@ void HighScoresDialog::textChanged(QString text) {
 
     (*m_scores)[m_newSlot].second = text;
     setScoreTable();
+    m_savedName = text;
 }
+
+void HighScoresDialog::saveDefaultName() {
+    QSettings settings("WS6Z", "qtcw");
+    qDebug() << "saving: " << m_savedName;
+    settings.setValue("highscoresdialog/defaultName", m_savedName);
+}
+
