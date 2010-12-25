@@ -25,6 +25,9 @@ public:
 
     virtual QString helpText();
 
+signals:
+   void groupEntered(int right, int total);
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed);
     void switchWords(int sequence);
@@ -32,13 +35,14 @@ public slots:
     virtual void play();
 
 private:
-    QMap<wordNums, QList<QString> *>     words;
-    bool                            m_wordWasGood;
+    QMap<wordNums, QList<QString> *> words;
+    bool                             m_wordWasGood;
     QSignalMapper                   *m_wordSignalMapper;
-    wordNums                        m_wordsNumber;
-    int                             m_maxWord;
+    wordNums                         m_wordsNumber;
+    int                              m_maxWord;
     int                              m_wordnumber;
     QString                          m_enteredWord;
+    int                              m_rightCount;
 };
 
 #endif // WORDTRAININGMODE_H

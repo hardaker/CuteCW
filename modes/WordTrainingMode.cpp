@@ -81,6 +81,7 @@ bool WordTrainingMode::enterPressed() {
     m_ui->letter->setText("");
     m_morse->m_sequenceLabel->setText(QString("%1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
     m_wordWasGood = true;
+    m_rightCount = 0;
     return true;
 }
 
@@ -97,6 +98,7 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
 
     if ((*(words[m_wordsNumber]))[m_wordnumber][m_enteredWord.length()] == letter) {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"green\">" + letter + "<font>");
+        m_rightCount++;
     } else {
         m_ui->letter->setText(m_ui->letter->text() + "<font color=\"red\">" + letter + "<font>");
         m_wordWasGood = false;
@@ -111,6 +113,8 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
                 m_maxWord += 1;
             if (m_maxWord > (*(words[m_wordsNumber])).count())
                 m_maxWord = (*(words[m_wordsNumber])).count();
+
+            emit groupEntered(m_rightCount, m_enteredWord.length());
         } else {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + (*(words[m_wordsNumber]))[m_wordnumber] + ")</font>");
             if (m_maxWord > 1)
