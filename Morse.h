@@ -45,9 +45,9 @@ public:
     void setupSequences();
     void clearList();
 
-    void createTones(int wpm, int spacewpm = -1);
+    void createTones(int wpm, int spacewpm = -1, int letterspacewpm = -1);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
-    void createTones(float ditSecs, float spaceSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3);
+    void createTones(float ditSecs, float spaceSecs, float letterSpaceSecs, int dahMult, int pauseMult);
 
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);
@@ -113,6 +113,7 @@ private:
     MainWindow                      *m_parent;
     QAudioOutput                    *m_audioOutput;
     float                            m_ditSecs, m_dahSecs, m_pauseSecs, m_letterPauseSecs, m_spaceSecs;
+    int                              m_dahMult, m_pauseMult, m_letterPauseMult, m_spaceMult;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;
     Generator                       *m_playBuffer;
     AudioMode                        m_playingMode;

@@ -17,7 +17,8 @@ MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
     setRunningMode(PAUSED);
     m_WPM = m_morse->currentWPMGoal();
     m_spaceWPM = m_WPM;
-    m_morse->createTones(m_WPM, m_spaceWPM);
+    m_letterSpaceWPM = m_WPM;
+    m_morse->createTones(m_WPM, m_spaceWPM, m_letterSpaceWPM);
 }
 
 Morse *MorseMode::morseParent() {
@@ -247,7 +248,17 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     hbox->addWidget(spinbox);
     connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeWPM(int)));
 
-    label = new QLabel(tr("Spacing WPM:"));
+    label = new QLabel(tr("Letter Spacing WPM:"));
+    hbox->addWidget(label);
+
+    spinbox = new QSpinBox();
+    spinbox->setMaximum(100);
+    spinbox->setMinimum(1);
+    spinbox->setValue(m_letterSpaceWPM);
+    hbox->addWidget(spinbox);
+    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeLetterSpaceWPM(int)));
+
+    label = new QLabel(tr("Word Spacing WPM:"));
     hbox->addWidget(label);
 
     spinbox = new QSpinBox();
@@ -261,10 +272,16 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
 
 void MorseMode::changeWPM(int wpm) {
     m_WPM = wpm;
-    m_morse->createTones(m_WPM, m_spaceWPM);
+    m_morse->createTones(m_WPM, m_spaceWPM, m_letterSpaceWPM);
 }
 
 void MorseMode::changeSpaceWPM(int wpm) {
     m_spaceWPM = wpm;
-    m_morse->createTones(m_WPM, m_spaceWPM);
+    m_morse->createTones(m_WPM, m_spaceWPM, m_letterSpaceWPM);
+}
+
+
+void MorseMode::changeLetterSpaceWPM(int wpm) {
+    m_letterSpaceWPM = wpm;
+    m_morse->createTones(m_WPM, m_spaceWPM, m_letterSpaceWPM);
 }

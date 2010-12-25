@@ -20,7 +20,9 @@
 #define WPMACCEPT 2
 
 Morse::Morse()
-    : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(), m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+    : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(),
+      m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
+      m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE)
 {
     qDebug() << "new morse";
@@ -281,11 +283,13 @@ void Morse::add(const QString &textToAdd) {
 }
 
 void
-Morse::createTones(int wpm, int spacewpm)
+Morse::createTones(int wpm, int spacewpm, int letterspacewpm)
 {
     if (spacewpm == -1)
         spacewpm = wpm;
-    createTones(float(60.0/float(wpm*50.0)), float(60.0/float(spacewpm*50.0)));
+    if (letterspacewpm == -1)
+        letterspacewpm = spacewpm;
+    createTones(float(60.0/float(wpm*50.0)), m_spaceMult * float(60.0/float(spacewpm*50.0)), m_letterPauseMult * float(60.0/float(letterspacewpm*50.0)));
 }
 
 void
@@ -322,17 +326,23 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
     m_pauseSecs = ditSecs * pauseMult;
     m_letterPauseSecs = ditSecs * letterPauseMult;
     m_spaceSecs = ditSecs * spaceMult;
+
+    m_dahMult = dahMult;
+    m_pauseMult = pauseMult;
+    m_letterPauseMult = letterPauseMult;
+    m_spaceMult = spaceMult;
+
     _createTones();
 }
 
 void
-Morse::createTones(float ditSecs, float spaceSecs, int dahMult, int pauseMult, int letterPauseMult)
+Morse::createTones(float ditSecs, float spaceSecs, float letterSpaceSecs, int dahMult, int pauseMult)
 {
     m_ditSecs = ditSecs;
     m_spaceSecs = spaceSecs;
+    m_letterPauseSecs = letterSpaceSecs;
     m_dahSecs = ditSecs * dahMult;
     m_pauseSecs = ditSecs * pauseMult;
-    m_letterPauseSecs = ditSecs * letterPauseMult;
     _createTones();
 }
 

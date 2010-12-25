@@ -66,13 +66,14 @@ public slots:
 
     virtual void changeWPM(int wpm);
     virtual void changeSpaceWPM(int wpm);
+    virtual void changeLetterSpaceWPM(int wpm);
 
 protected:
     Morse                          *m_morse;
     Ui::MainWindow                 *m_ui;
     int                             m_badCount, m_goodCount;
     int                             m_countWeight;
-    int                             m_WPM, m_spaceWPM;
+    int                             m_WPM, m_spaceWPM, m_letterSpaceWPM;
     QIcon                           m_playIcon, m_pauseIcon;
     RunningMode                     m_runningMode;
     QSignalMapper                  *m_mapper;
