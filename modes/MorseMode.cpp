@@ -230,9 +230,12 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
             this, SLOT(handleKeyPress(const QString &)));
 }
 
-void MorseMode::setupWPMWidgets() {
+void MorseMode::setupWPMWidgets(QLayout *to) {
     QHBoxLayout *hbox = new QHBoxLayout();
-    m_ui->forModes->addLayout(hbox);
+    if (to)
+        to->addItem(hbox);
+    else
+        m_ui->forModes->addLayout(hbox);
 
     QLabel *label = new QLabel(tr("WPM: "));
     hbox->addWidget(label);

@@ -31,7 +31,7 @@ public:
 
     void hideWidgets();
     void setupKeyWidgets(const QString &sequence);
-    void setupWPMWidgets();
+    void setupWPMWidgets(QLayout *to = 0);
     void createGlobalActions();
 
     RunningMode runningMode();
