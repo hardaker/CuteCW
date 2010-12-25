@@ -4,6 +4,8 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
 #include <QtGui/QTextEdit>
+#include <QtGui/QSpinBox>
+#include <QtGui/QLabel>
 #include <qdebug.h>
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
@@ -13,6 +15,9 @@ MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
       m_mapper(new QSignalMapper()), m_buttons(0)
 {
     setRunningMode(PAUSED);
+    m_WPM = m_morse->currentWPMGoal();
+    m_spaceWPM = m_WPM;
+    m_morse->createTones(m_WPM, m_spaceWPM);
 }
 
 Morse *MorseMode::morseParent() {
@@ -121,6 +126,7 @@ void MorseMode::hideWidgets()
 
 void MorseMode::switchToYou()
 {
+    m_morse->createTones(m_morse->currentWPMGoal());
     hideWidgets();
     switchToMode();
     createGlobalActions();
@@ -222,4 +228,40 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
     }
     connect(m_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(handleKeyPress(const QString &)));
+}
+
+void MorseMode::setupWPMWidgets() {
+    QHBoxLayout *hbox = new QHBoxLayout();
+    m_ui->forModes->addLayout(hbox);
+
+    QLabel *label = new QLabel(tr("WPM: "));
+    hbox->addWidget(label);
+
+    QSpinBox *spinbox = new QSpinBox();
+    spinbox->setMaximum(100);
+    spinbox->setMinimum(1);
+    spinbox->setValue(m_WPM);
+    hbox->addWidget(spinbox);
+    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeWPM(int)));
+
+    label = new QLabel(tr("Spacing WPM:"));
+    hbox->addWidget(label);
+
+    spinbox = new QSpinBox();
+    spinbox->setMaximum(100);
+    spinbox->setMinimum(1);
+    spinbox->setValue(m_spaceWPM);
+    hbox->addWidget(spinbox);
+    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeSpaceWPM(int)));
+
+}
+
+void MorseMode::changeWPM(int wpm) {
+    m_WPM = wpm;
+    m_morse->createTones(m_WPM, m_spaceWPM);
+}
+
+void MorseMode::changeSpaceWPM(int wpm) {
+    m_spaceWPM = wpm;
+    m_morse->createTones(m_WPM, m_spaceWPM);
 }

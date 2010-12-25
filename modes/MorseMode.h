@@ -31,6 +31,7 @@ public:
 
     void hideWidgets();
     void setupKeyWidgets(const QString &sequence);
+    void setupWPMWidgets();
     void createGlobalActions();
 
     RunningMode runningMode();
@@ -63,11 +64,15 @@ public slots:
     virtual void audioFinished(QAudio::State state);
     virtual void audioStopped();
 
+    virtual void changeWPM(int wpm);
+    virtual void changeSpaceWPM(int wpm);
+
 protected:
     Morse                          *m_morse;
     Ui::MainWindow                 *m_ui;
     int                             m_badCount, m_goodCount;
     int                             m_countWeight;
+    int                             m_WPM, m_spaceWPM;
     QIcon                           m_playIcon, m_pauseIcon;
     RunningMode                     m_runningMode;
     QSignalMapper                  *m_mapper;
