@@ -316,7 +316,6 @@ Morse::_createTones()
     m_playBuffer->start();
     connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
 
-    qDebug() << "created tones";
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
 }
 
