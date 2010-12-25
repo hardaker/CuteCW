@@ -47,7 +47,7 @@ public:
 
     void createTones(int wpm, int spacewpm = -1, int letterspacewpm = -1);
     void createTones(float ditSecs, int dahMult = 3, int pauseMult = 1, int letterPauseMult = 3, int spaceMult = 7);
-    void createTones(float ditSecs, float spaceSecs, float letterSpaceSecs, int dahMult, int pauseMult);
+    void createSpacedTones(float ditSecs, float spaceSecs, float letterSpaceSecs);
 
     void add(Generator *nextsound);
     void add(QChar c, bool addpause = true);

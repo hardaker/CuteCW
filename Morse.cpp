@@ -32,6 +32,7 @@ Morse::Morse()
 
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
+      m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
       m_ui(ui), m_tone(DEFAULT_TONE)
@@ -289,7 +290,8 @@ Morse::createTones(int wpm, int spacewpm, int letterspacewpm)
         spacewpm = wpm;
     if (letterspacewpm == -1)
         letterspacewpm = spacewpm;
-    createTones(float(60.0/float(wpm*50.0)), m_spaceMult * float(60.0/float(spacewpm*50.0)), m_letterPauseMult * float(60.0/float(letterspacewpm*50.0)));
+    createSpacedTones(float(60.0/float(wpm*50.0)), float(float(m_spaceMult) * float(60.0/float(spacewpm*50.0))),
+                float(float(m_letterPauseMult) * float(60.0/float(letterspacewpm*50.0))));
 }
 
 void
@@ -304,7 +306,7 @@ Morse::_createTones()
     m_pause = new Generator(m_pauseSecs, 0);
     m_pause->start();
 
-    m_letterPause = new Generator(m_pauseSecs, 0);
+    m_letterPause = new Generator(m_letterPauseSecs, 0);
     m_letterPause->start();
 
     m_space = new Generator(m_spaceSecs, 0);
@@ -336,13 +338,13 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
 }
 
 void
-Morse::createTones(float ditSecs, float spaceSecs, float letterSpaceSecs, int dahMult, int pauseMult)
+Morse::createSpacedTones(float ditSecs, float spaceSecs, float letterSpaceSecs)
 {
     m_ditSecs = ditSecs;
     m_spaceSecs = spaceSecs;
     m_letterPauseSecs = letterSpaceSecs;
-    m_dahSecs = ditSecs * dahMult;
-    m_pauseSecs = ditSecs * pauseMult;
+    m_dahSecs = ditSecs * m_dahMult;
+    m_pauseSecs = ditSecs * m_pauseMult;
     _createTones();
 }
 
