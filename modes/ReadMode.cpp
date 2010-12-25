@@ -24,12 +24,17 @@ ReadMode::switchToMode() {
 void
 ReadMode::addButtons() {
     QPushButton *button = new QPushButton(tr("Load File"));
+    QVBoxLayout *vLayout = new QVBoxLayout();
+    m_ui->forModes->addLayout(vLayout);
+
     QHBoxLayout *hLayout = new QHBoxLayout();
-    m_ui->forModes->addLayout(hLayout);
+    vLayout->addLayout(hLayout);
     hLayout->addWidget(button);
     m_textEdit = new QTextEdit();
     hLayout->addWidget(m_textEdit);
     connect(button, SIGNAL(clicked()), this, SLOT(openFile()));
+
+    setupWPMWidgets(vLayout);
 }
 
 void

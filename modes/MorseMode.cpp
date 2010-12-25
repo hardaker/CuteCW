@@ -230,10 +230,10 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
             this, SLOT(handleKeyPress(const QString &)));
 }
 
-void MorseMode::setupWPMWidgets(QLayout *to) {
+void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     QHBoxLayout *hbox = new QHBoxLayout();
     if (to)
-        to->addItem(hbox);
+        to->addLayout(hbox);
     else
         m_ui->forModes->addLayout(hbox);
 
