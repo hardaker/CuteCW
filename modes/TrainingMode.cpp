@@ -101,7 +101,7 @@ void TrainingMode::setupSequences() {
 }
 
 void TrainingMode::chooseCustomeSequence() {
-    CustomSequenceDialog dialog(m_sequences[ALPHABET], m_trainingSequence);
+    CustomSequenceDialog dialog(m_sequences[EVERYTHING], m_trainingSequence);
     if (dialog.exec() == QDialog::Accepted) {
         QString results = dialog.getResults();
         switchSequence(results);
