@@ -281,9 +281,11 @@ void Morse::add(const QString &textToAdd) {
 }
 
 void
-Morse::createTones(int wpm)
+Morse::createTones(int wpm, int spacewpm)
 {
-    createTones(float(60.0/float(wpm*50.0)));
+    if (spacewpm == -1)
+        spacewpm = wpm;
+    createTones(float(60.0/float(wpm*50.0)), float(60.0/float(spacewpm*50.0)));
 }
 
 void
@@ -320,6 +322,17 @@ Morse::createTones(float ditSecs, int dahMult, int pauseMult, int letterPauseMul
     m_pauseSecs = ditSecs * pauseMult;
     m_letterPauseSecs = ditSecs * letterPauseMult;
     m_spaceSecs = ditSecs * spaceMult;
+    _createTones();
+}
+
+void
+Morse::createTones(float ditSecs, float spaceSecs, int dahMult, int pauseMult, int letterPauseMult)
+{
+    m_ditSecs = ditSecs;
+    m_spaceSecs = spaceSecs;
+    m_dahSecs = ditSecs * dahMult;
+    m_pauseSecs = ditSecs * pauseMult;
+    m_letterPauseSecs = ditSecs * letterPauseMult;
     _createTones();
 }
 
