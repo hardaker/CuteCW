@@ -28,6 +28,7 @@ SOURCES += main.cpp\
     modes/GroupingMode.cpp \
     modes/games/MGameMode.cpp \
     modes/games/MCountGameMode.cpp \
+    modes/games/MTimeGameMode.cpp \
     modes/games/GroupGame.cpp \
     modes/games/WordGame.cpp \
     modes/games/HighScoresDialog.cpp \
@@ -56,6 +57,7 @@ HEADERS  += MainWindow.h \
     modes/GroupingMode.h \
     modes/games/MGameMode.h \
     modes/games/MCountGameMode.h \
+    modes/games/MTimeGameMode.h \
     modes/games/GroupGame.h \
     modes/games/WordGame.h \
     modes/games/HighScoresDialog.h \
