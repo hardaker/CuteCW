@@ -26,3 +26,6 @@ QModeStart::QModeStart(QWidget *parent, QString modeTitle) :
     setLayout(layout);
 }
 
+QVBoxLayout *QModeStart::mainLayout() {
+    return m_main;
+}
