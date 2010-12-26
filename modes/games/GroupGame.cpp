@@ -34,7 +34,9 @@ void GroupGame::play()
     layout->addLayout(&form);
 
     QSpinBox groupLength;
-    groupLength.setValue(1);
+    groupLength.setValue(int(m_goodGuesses - m_badGuesses / GROUPLENGTH_WEIGHT));
+    if (groupLength.value() < 1)
+        groupLength.setValue(1);
     form.addRow(tr("Starting Group Length:"), &groupLength);
 
     QSpinBox WPM;
@@ -72,9 +74,7 @@ void GroupGame::setSequenceText()
 
 QString GroupGame::helpText()
 {
-    return tr("Characters in the chosen training sequence will be keyed starting with a single character.  "
-              "Type in the characters you hear in the group.  Your results good or bad will be displayed "
-              "on the screen in green/red colors indicating good/bad guesses."
-              "<p>As you guess more and more groups correctly the number of characters in the group will slowly go upward.");
+    return tr("<p>Characters in the chosen training sequence will be keyed starting at the length and speed you request.  If you correctly type each letter in the sequence then the WPM rate will go up by one, and the sequence length will slowly go up as well.  Guess incorrectly, and the rate will drop as well the sequence length."
+              "<p>Scoring is based on the following equation: <i>WPM * numberRight * 10 * (2 if all right)</i>");
 }
 
