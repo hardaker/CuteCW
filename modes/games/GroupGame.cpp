@@ -1,6 +1,10 @@
 #include <qdebug.h>
 
 #include "modes/games/GroupGame.h"
+#include "modes/QModeStart.h"
+
+#include <QtGui/QFormLayout>
+#include <QtGui/QSpinBox>
 
 GroupGame::GroupGame(Morse *parent, Ui::MainWindow *ui) :
   GroupingMode(parent, ui), MCountGameMode(), m_scores("Group Accuracy Game")
@@ -19,7 +23,22 @@ void GroupGame::switchToMode() {
 
 void GroupGame::play()
 {
+    clear();
     startGame();
+
+    QModeStart startInfo(0, tr("Grouping Game"));
+    QVBoxLayout *layout = startInfo.mainLayout();
+
+    QFormLayout form;
+    layout->addLayout(&form);
+
+    QSpinBox groupLength;
+    groupLength.setValue(1);
+    form.addRow(tr("Starting Group Length:"), &groupLength);
+
+    startInfo.exec();
+    m_goodGuesses = GROUPLENGTH_WEIGHT * (groupLength.value() - 1);
+
     startNextGroup();
 }
 
