@@ -179,7 +179,12 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     }
 
     // set the last WPM record on the display
-    m_ui->lastwpm->setText(QString().setNum(msToPauseWPM(msElapsed)));
+    QString WPM = QString().setNum(msToPauseWPM(msElapsed)) + " ";
+    foreach(QChar thechar, m_lastKeys) {
+        WPM = WPM + "-";
+    }
+    qDebug() << "WPM text: " << WPM;
+    m_ui->lastwpm->setText(WPM);
 
     // if the keyed incorrectly, penalize them 3 times their average else add in the results
     if (letterPressed == lastKey) {
@@ -229,10 +234,10 @@ QTime TrainingMode::startNextTrainingKey() {
                 m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                                       *letter + ": NEW");
                 if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
-                    m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
-                                                                      totalTime/float(letterCount)), 'g', 2));
+                    setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
+                                              totalTime/float(letterCount)));
                 else
-                    m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount)), 'g', 2));
+                    setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
                 m_lastTimes.push_back(m_morse->playIt(*letter));
                 return m_lastTimes.last();
             }
@@ -253,9 +258,9 @@ QTime TrainingMode::startNextTrainingKey() {
     m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                           currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime)));
     if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
-        m_ui->WPM->setText(QString().setNum(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount))));
+        setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount)));
     else
-        m_ui->WPM->setText(QString().setNum(msToPauseWPMF(totalTime/float(letterCount))));
+        setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
@@ -283,6 +288,15 @@ QTime TrainingMode::startNextTrainingKey() {
     }
     qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
     return QTime();
+}
+
+void TrainingMode::setWPMLabel(float wpm) {
+    // set the last WPM record on the display
+    QString WPM = "WPM: " + QString().setNum(wpm, 'g', 2) + " ";
+    foreach(QChar thechar, m_lastKeys) {
+        WPM = WPM + "-";
+    }
+    m_ui->WPM->setText(WPM);
 }
 
 void TrainingMode::switchSequence(int sequence) {

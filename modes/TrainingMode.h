@@ -31,6 +31,7 @@ public:
     void setupSequences();
     QTime startNextTrainingKey();
     MorseStat *getStat(const QChar &key);
+    void setWPMLabel(float wpm);
 
     virtual void clear();
 
