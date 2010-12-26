@@ -292,7 +292,7 @@ QTime TrainingMode::startNextTrainingKey() {
 
 void TrainingMode::setWPMLabel(float wpm) {
     // set the last WPM record on the display
-    QString WPM = "WPM: " + QString().setNum(wpm, 'g', 2) + " ";
+    QString WPM = "Speed Rating: " + QString().setNum(wpm, 'g', 2) + " ";
     foreach(QChar thechar, m_lastKeys) {
         WPM = WPM + "-";
     }
