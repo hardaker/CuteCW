@@ -18,10 +18,15 @@ QModeStart::QModeStart(QWidget *parent, QString modeTitle) :
     layout->addLayout(m_main);
 
     QHBoxLayout *hbox = new QHBoxLayout();
+    layout->addLayout(hbox);
 
     QPushButton *ok = new QPushButton(tr("Ok"));
     hbox->addWidget(ok);
-    connect(ok, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ok, SIGNAL(clicked()), this, SLOT(accept()));
+
+    QPushButton *noPlay = new QPushButton(tr("Don't Play"));
+    hbox->addWidget(noPlay);
+    connect(noPlay, SIGNAL(clicked()), this, SLOT(reject()));
 
     setLayout(layout);
 }
