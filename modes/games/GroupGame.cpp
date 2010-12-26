@@ -11,6 +11,7 @@ GroupGame::GroupGame(Morse *parent, Ui::MainWindow *ui) :
 {
     connect(this, SIGNAL(groupEntered(int, int)),
             this, SLOT(groupGuessed(int, int)));
+    m_WPM = m_morse->currentWPMGoal();
 }
 
 void GroupGame::switchToMode() {
@@ -36,8 +37,14 @@ void GroupGame::play()
     groupLength.setValue(1);
     form.addRow(tr("Starting Group Length:"), &groupLength);
 
+    QSpinBox WPM;
+    WPM.setValue(m_WPM);
+    form.addRow(tr("Starting WPM:"), &WPM);
+
     if (startInfo.exec() == QDialog::Accepted) {
         m_goodGuesses = GROUPLENGTH_WEIGHT * (groupLength.value() - 1);
+        m_WPM = WPM.value();
+        m_morse->createTones(m_WPM);
         startNextGroup();
     }
 }
@@ -50,12 +57,17 @@ void GroupGame::gameOver()
 
 void GroupGame::groupGuessed(int right, int total)
 {
-    nextTurn(right*10*((total==right)?2:1));
+    nextTurn(m_WPM * right * 10 * ((total==right)?2:1));
+    if (right == total)
+        m_WPM++;
+    else
+        m_WPM--;
+    m_morse->createTones(m_WPM);
 }
 
 void GroupGame::setSequenceText()
 {
-  m_morse->m_sequenceLabel->setText(tr("current length = %1, good = %2, bad = %3, score = %4").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses).arg(score()));
+  m_morse->m_sequenceLabel->setText(tr("current length = %1, WPM=%2, score = %3").arg(m_groupLength).arg(m_WPM).arg(score()));
 }
 
 QString GroupGame::helpText()

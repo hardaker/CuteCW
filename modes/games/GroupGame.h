@@ -26,6 +26,7 @@ public slots:
 
 private:
     HighScores  m_scores;
+    int         m_WPM;
 };
 
 #endif // GROUPGAMEMODE_H
