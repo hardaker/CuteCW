@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     modes/games/GroupGame.cpp \
     modes/games/WordGame.cpp \
     modes/games/HighScoresDialog.cpp \
-    modes/games/HighScores.cpp
+    modes/games/HighScores.cpp \
+    modes/QModeStart.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -58,7 +59,8 @@ HEADERS  += MainWindow.h \
     modes/games/GroupGame.h \
     modes/games/WordGame.h \
     modes/games/HighScoresDialog.h \
-    modes/games/HighScores.h
+    modes/games/HighScores.h \
+    modes/QModeStart.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui
