@@ -36,10 +36,10 @@ void GroupGame::play()
     groupLength.setValue(1);
     form.addRow(tr("Starting Group Length:"), &groupLength);
 
-    startInfo.exec();
-    m_goodGuesses = GROUPLENGTH_WEIGHT * (groupLength.value() - 1);
-
-    startNextGroup();
+    if (startInfo.exec() == QDialog::Accepted) {
+        m_goodGuesses = GROUPLENGTH_WEIGHT * (groupLength.value() - 1);
+        startNextGroup();
+    }
 }
 
 void GroupGame::gameOver()
