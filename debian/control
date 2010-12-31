@@ -3,7 +3,7 @@ Section: user/education
 Priority: extra
 Maintainer: Wes Hardaker <wjhns177@hardakers.net>
 Build-Depends: debhelper (>= 5), libqt4-dev
-Standards-Version: 3.7.3
+Standards-Version: 3.7.2
 Homepage: http://www.hamtools.org/qtcw/
 XB-Maemo-Icon-26: 
  iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGP
