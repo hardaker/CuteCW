@@ -9,36 +9,41 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+APPNAME := qtcw
+builddir:
+	mkdir -p builddir
 
+builddir/Makefile: builddir
+	cd builddir && qmake-qt4 PREFIX=/usr ../$(APPNAME).pro
 
+CFLAGS = -Wall -g
 
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	# Add here commands to configure the package.
-
-	touch configure-stamp
-
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
 
 build: build-stamp
 
-build-stamp: configure-stamp  
+build-stamp: builddir/Makefile
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE)
+	cd builddir && $(MAKE)
 	#docbook-to-man debian/qtcw.sgml > qtcw.1
 
 	touch $@
 
-clean: 
+clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
+	rm -f build-stamp
+	rm -rf builddir
+	rm -rf debian/qtcw-dbg
 
 	# Add here commands to clean up after the build process.
-	$(MAKE) clean
+	-$(MAKE) clean
 
 	dh_clean 
 
@@ -49,8 +54,10 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/qtcw.
-	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/qtcw install
+	cd builddir && $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/$(APPNAME) install
+	rm -rf $(CURDIR)/debian/qtcw-dbg
 
+build-indep: build install
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -76,13 +83,13 @@ binary-arch: build install
 #	dh_installinfo
 	dh_installman
 	dh_link
-	# dh_strip
+#	dh_strip --dbg-package=qtcw-dbg
 	dh_compress
 	dh_fixperms
 #	dh_perl
 #	dh_makeshlibs
 	dh_installdeb
-	# dh_shlibdeps
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	maemo-optify
