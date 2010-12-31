@@ -22,7 +22,7 @@
 Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
-      m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+      m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE)
 {
     qDebug() << "new morse";
@@ -33,7 +33,7 @@ Morse::Morse()
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
-      m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playingMode(STOPPED), m_gameMode(PLAY),
+      m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
       m_ui(ui), m_tone(DEFAULT_TONE)
 {
@@ -297,24 +297,36 @@ Morse::createTones(int wpm, int spacewpm, int letterspacewpm)
 void
 Morse::_createTones()
 {
+    if (m_dit)
+        delete m_dit;
     m_dit = new Generator(m_ditSecs, m_tone);
     m_dit->start();
 
+    if (m_dah)
+        delete m_dah;
     m_dah = new Generator(m_dahSecs, m_tone);
     m_dah->start();
 
+    if (m_pause)
+        delete m_pause;
     m_pause = new Generator(m_pauseSecs, 0);
     m_pause->start();
 
+    if (m_letterPause)
+        delete m_letterPause;
     m_letterPause = new Generator(m_letterPauseSecs, 0);
     m_letterPause->start();
 
+    if (m_space)
+        delete m_space;
     m_space = new Generator(m_spaceSecs, 0);
     m_space->start();
 
-    m_playBuffer = new Generator(m_pause);
-    m_playBuffer->start();
-    connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
+    if (!m_playBuffer) {
+        m_playBuffer = new Generator(m_pause);
+        m_playBuffer->start();
+        connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
+    }
 
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioFinished(QAudio::State)));
 }
