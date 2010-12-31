@@ -4,6 +4,7 @@
 #include <QtMultimedia/QAudioFormat>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#include <QtGui/QIcon>
 #include <qdebug.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 {
     ui->setupUi(this);
+
+    setWindowIcon(QIcon(":/icons/cutecw-64x64.png"));
 
     // setup mode menu
     m_signalMapper = new QSignalMapper(this);
