@@ -1,0 +1,13 @@
+Cute CW: train yourself
+
+* Introduction
+
+I've had thoughts for a long time about how we train ourselves in CW
+("Carrier Wave" otherwise known as Morse Code).  After preparing for a
+presentation about learning CW I realized software could really help
+us out in ways not yet seen.  This is my effort to help decrease the
+pain in training your brain to understand Morse Code.
+
+* The TODO list
+
+*** TODO More Fun Games!
