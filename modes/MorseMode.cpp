@@ -173,14 +173,14 @@ void MorseMode::setRunningMode(RunningMode newMode)
     m_runningMode = newMode;
     if (m_runningMode == RUNNING) {
         m_ui->play->setIcon(m_pauseIcon);
-        m_ui->play->setText("Pause");
+        m_ui->play->setText(tr("Pause"));
         play();
     } else {
         if (m_morse->audioMode() != Morse::STOPPED) {
             m_morse->pauseAudio();
         }
         m_ui->play->setIcon(m_playIcon);
-        m_ui->play->setText("Play");
+        m_ui->play->setText(tr("Play"));
         stop();
     }
 }
@@ -232,13 +232,16 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
 }
 
 void MorseMode::setupWPMWidgets(QBoxLayout *to) {
-    QHBoxLayout *hbox = new QHBoxLayout();
-    if (to)
-        to->addLayout(hbox);
-    else
-        m_ui->forModes->addLayout(hbox);
+    if (!to)
+        to = m_ui->forModes;
 
-    QLabel *label = new QLabel(tr("WPM: "));
+    QVBoxLayout *vbox = new QVBoxLayout();
+    to->addLayout(vbox);
+
+    QHBoxLayout *hbox = new QHBoxLayout();
+    vbox->addLayout(hbox);
+
+    QLabel *label = new QLabel(tr("WPM:"));
     hbox->addWidget(label);
 
     QSpinBox *spinbox = new QSpinBox();
@@ -247,6 +250,9 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     spinbox->setValue(m_WPM);
     hbox->addWidget(spinbox);
     connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeWPM(int)));
+
+    hbox = new QHBoxLayout();
+    vbox->addLayout(hbox);
 
     label = new QLabel(tr("Letter Spacing WPM:"));
     hbox->addWidget(label);
@@ -257,6 +263,9 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     spinbox->setValue(m_letterSpaceWPM);
     hbox->addWidget(spinbox);
     connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeLetterSpaceWPM(int)));
+
+    hbox = new QHBoxLayout();
+    vbox->addLayout(hbox);
 
     label = new QLabel(tr("Word Spacing WPM:"));
     hbox->addWidget(label);
