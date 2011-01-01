@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setWindowIcon(QIcon(":/icons/cutecw-64x64.png"));
+    setWindowIcon(QIcon(":/icons/64x64/cutecw.png"));
 
     // setup mode menu
     m_signalMapper = new QSignalMapper(this);

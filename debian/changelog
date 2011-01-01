@@ -1,3 +1,9 @@
+qtcw (0.2.1-1) unstable; urgency=low
+ 
+  * Fixed various packaging issues for maemo
+ 
+ -- Wes Hardaker <wjhns177@hardakers.net>  Sat, 01 Jan 2011 09:46:46 -0700
+	
 qtcw (0.2-1) unstable; urgency=low
 
   * Initial Release.
