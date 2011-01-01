@@ -109,4 +109,5 @@ unix:!symbian {
 
     INSTALLS += desktopfile
     INSTALLS += target
+    INSTALLS += icon26 icon48 icon64
 }
