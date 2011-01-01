@@ -3,6 +3,6 @@
 <qresource>
     <file>icons/play.png</file>
     <file>icons/pause.png</file>
-    <file>icons/cutecw-64x64.png</file>
+    <file>icons/64x64/cutecw.png</file>
 </qresource>
 </RCC>

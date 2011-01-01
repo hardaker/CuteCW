@@ -86,21 +86,27 @@ OTHER_FILES += \
     debian/rules \
     qtcw.desktop
 
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/bin
-    } else {
-        target.path = /usr/local/bin
-    }
-    INSTALLS += target
-}
+BINDIR = $$PREFIX/bin
+DATADIR =$$PREFIX/share
 
 unix:!symbian {
+    icon26.files = icons/26x26/qtcw.png
+    icon48.files = icons/48x48/qtcw.png
+    icon64.files = icons/64x64/qtcw.png
+
+    icon26.path = $$DATADIR/icons/hicolor/26x26/apps
+    icon48.path = $$DATADIR/icons/hicolor/48x48/apps
+    icon64.path = $$DATADIR/icons/hicolor/64x64/apps
+
     desktopfile.files = $${TARGET}.desktop
     maemo5 {
+        target.path = /opt/usr/bin
         desktopfile.path = /usr/share/applications/hildon
     } else {
+        target.path = /usr/local/bin
         desktopfile.path = /usr/share/applications
     }
+
     INSTALLS += desktopfile
+    INSTALLS += target
 }
