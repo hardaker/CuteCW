@@ -25,23 +25,25 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu *modeMenu = new QMenu(ui->modeMenu);
     ui->modeMenu->setMenu(modeMenu);
 
-    QAction *action = modeMenu->addAction("Play Morse Code");
+    QAction *action = modeMenu->addAction(tr("Type Morse Code"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::PLAY);
 
-    action = modeMenu->addAction("Recognition Train");
+    QMenu *trainingMenu = modeMenu->addMenu("Training");
+
+    action = trainingMenu->addAction("Recognition Train");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::TRAIN);
 
-    action = modeMenu->addAction("Speed Training");
+    action = trainingMenu->addAction("Speed Training");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::SPEEDTRAIN);
 
-    action = modeMenu->addAction("Word Training");
+    action = trainingMenu->addAction("Word Training");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDS);
 
-    action = modeMenu->addAction("Grouping Training");
+    action = trainingMenu->addAction("Grouping Training");
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPS);
 
