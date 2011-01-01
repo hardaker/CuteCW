@@ -21,3 +21,4 @@ Cute CW: train yourself
 * The TODO list
 
 *** TODO More Fun Games!
+*** TODO Add a "test" button next to the frequency set spinbox
