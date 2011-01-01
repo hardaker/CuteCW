@@ -34,6 +34,7 @@ int HighScores::addScore(const QString &name, int score)
       }
     if (count < m_maxScores) {
         m_scores.append(QPair<int,QString>(score, name));
+        count++;
         if (name == "") {
             HighScoresDialog hsdialog(m_tableName, &m_scores, score, count);
             hsdialog.exec();
