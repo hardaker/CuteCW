@@ -29,41 +29,41 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::PLAY);
 
-    QMenu *trainingMenu = modeMenu->addMenu("Training");
+    QMenu *trainingMenu = modeMenu->addMenu(tr("Training"));
 
-    action = trainingMenu->addAction("Recognition Train");
+    action = trainingMenu->addAction(tr("Recognition Train"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::TRAIN);
 
-    action = trainingMenu->addAction("Speed Training");
+    action = trainingMenu->addAction(tr("Speed Training"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::SPEEDTRAIN);
 
-    action = trainingMenu->addAction("Word Training");
+    action = trainingMenu->addAction(tr("Word Training"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDS);
 
-    action = trainingMenu->addAction("Grouping Training");
+    action = trainingMenu->addAction(tr("Grouping Training"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPS);
 
-    QMenu *gamesMenu = modeMenu->addMenu("Games");
+    QMenu *gamesMenu = modeMenu->addMenu(tr("Games"));
 
-    action = gamesMenu->addAction("Word Accuracy");
+    action = gamesMenu->addAction(tr("Word Accuracy"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDGAME);
 
-    action = gamesMenu->addAction("Grouping Accuracy");
+    action = gamesMenu->addAction(tr("Grouping Accuracy"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPGAME);
 
-    action = modeMenu->addAction("Read to me!");
+    action = modeMenu->addAction(tr("Read to me!"));
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
     createAudioOutput();
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
-    ui->modeMenu->setText("Play Morse Code");
+    ui->modeMenu->setText(tr("Play Morse Code"));
     this->setFocus();
     startIt();
 }
