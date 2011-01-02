@@ -1,4 +1,4 @@
-Source: qtcw
+Source: cutecw
 Section: user/education
 Priority: extra
 Maintainer: Wes Hardaker <wjhns177@hardakers.net>
@@ -69,7 +69,7 @@ XB-Maemo-Icon-26:
  LTMwVDIyOjUzOjQ4LTA4OjAw9ndsiAAAAABJRU5ErkJggg==
  ====
 
-Package: qtcw
+Package: cutecw
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Cute CW (Morse Code) Training Application

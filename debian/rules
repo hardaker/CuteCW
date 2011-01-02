@@ -9,7 +9,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-APPNAME := qtcw
+APPNAME := cutecw
 builddir:
 	mkdir -p builddir
 
@@ -31,7 +31,7 @@ build-stamp: builddir/Makefile
 
 	# Add here commands to compile the package.
 	cd builddir && $(MAKE)
-	#docbook-to-man debian/qtcw.sgml > qtcw.1
+	#docbook-to-man debian/cutecw.sgml > cutecw.1
 
 	touch $@
 
@@ -40,7 +40,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 	rm -rf builddir
-	rm -rf debian/qtcw-dbg
+	rm -rf debian/cutecw-dbg
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) clean
@@ -53,9 +53,9 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/qtcw.
+	# Add here commands to install the package into debian/cutecw.
 	cd builddir && $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/$(APPNAME) install
-	rm -rf $(CURDIR)/debian/qtcw-dbg
+	rm -rf $(CURDIR)/debian/cutecw-dbg
 
 build-indep: build install
 
@@ -83,7 +83,7 @@ binary-arch: build install
 #	dh_installinfo
 	dh_installman
 	dh_link
-#	dh_strip --dbg-package=qtcw-dbg
+#	dh_strip --dbg-package=cutecw-dbg
 	dh_compress
 	dh_fixperms
 #	dh_perl
