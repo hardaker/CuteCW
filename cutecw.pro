@@ -6,10 +6,10 @@
 
 QT       += core gui multimedia
 
-TARGET = qtcw
+TARGET = cutecw
 TEMPLATE = app
 
-RESOURCES = qtcw.qrc
+RESOURCES = cutecw.qrc
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -84,15 +84,15 @@ OTHER_FILES += \
     debian/copyright \
     debian/README \
     debian/rules \
-    qtcw.desktop
+    cutecw.desktop
 
 BINDIR = $$PREFIX/bin
 DATADIR =$$PREFIX/share
 
 unix:!symbian {
-    icon26.files = icons/26x26/qtcw.png
-    icon48.files = icons/48x48/qtcw.png
-    icon64.files = icons/64x64/qtcw.png
+    icon26.files = icons/26x26/cutecw.png
+    icon48.files = icons/48x48/cutecw.png
+    icon64.files = icons/64x64/cutecw.png
 
     icon26.path = $$DATADIR/icons/hicolor/26x26/apps
     icon48.path = $$DATADIR/icons/hicolor/48x48/apps
