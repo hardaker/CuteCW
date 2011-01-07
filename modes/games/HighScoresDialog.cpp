@@ -51,6 +51,7 @@ HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QSt
     layout->addLayout(hbox);
 
     QPushButton *ok = new QPushButton(tr("Ok"));
+    ok->setAutoDefault(false);
     layout->addWidget(ok);
     connect(ok, SIGNAL(clicked()), this, SLOT(close()));
     connect(this, SIGNAL(destroyed()), this, SLOT(saveDefaultName()));
