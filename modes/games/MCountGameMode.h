@@ -14,6 +14,9 @@ public:
 
   virtual void nextTurn(int scoreAddition);
 
+  virtual int turn() { return m_turnNumber; }
+  virtual int maxTurns() { return m_maxTurns; }
+
  protected:
   int   m_turnNumber;
   int   m_maxTurns;

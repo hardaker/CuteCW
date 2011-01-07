@@ -69,7 +69,7 @@ void GroupGame::groupGuessed(int right, int total)
 
 void GroupGame::setSequenceText()
 {
-  m_morse->m_sequenceLabel->setText(tr("current length = %1, WPM=%2, score = %3").arg(m_groupLength).arg(m_WPM).arg(score()));
+  m_morse->m_sequenceLabel->setText(tr("sequence length = %1, WPM=%2, score = %3, turn=%4/%5").arg(m_groupLength).arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
 }
 
 QString GroupGame::helpText()
