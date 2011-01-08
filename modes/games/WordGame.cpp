@@ -1,6 +1,7 @@
 #include <qdebug.h>
 
 #include "modes/games/WordGame.h"
+#include "modes/QModeStart.h"
 
 WordGame::WordGame(Morse *parent, Ui::MainWindow *ui) :
   WordTrainingMode(parent, ui), MCountGameMode(), m_scores("Word Accuracy Game")
@@ -20,23 +21,45 @@ void WordGame::switchToMode() {
 void WordGame::play()
 {
     startGame();
-    enterPressed();
+
+    QModeStart startInfo(0, tr("Word Training Game"));
+    QVBoxLayout *layout = startInfo.mainLayout();
+
+    QFormLayout form;
+    layout->addLayout(&form);
+
+    QSpinBox WPM;
+    WPM.setValue(m_WPM);
+    form.addRow(tr("Starting WPM:"), &WPM);
+
+    if (startInfo.exec() == QDialog::Accepted) {
+        m_WPM = WPM.value();
+        m_morse->createTones(m_WPM);
+        m_maxWord = (*(words[m_wordsNumber])).count();
+        enterPressed();
+    }
 }
 
 void WordGame::gameOver()
 {
   playButton();
-  m_scores.addScore(QString(), score());
+  m_scores.addScore("", score());
 }
 
 void WordGame::groupGuessed(int right, int total)
 {
     nextTurn(right*10*((total==right)?2:1));
+    m_maxWord = (*(words[m_wordsNumber])).count();
+    if (right == total)
+        m_WPM++;
+    else
+        m_WPM--;
+    m_morse->createTones(m_WPM);
 }
 
 void WordGame::setSequenceText()
 {
-  m_morse->m_sequenceLabel->setText(tr("score = %4").arg(score()));
+    m_morse->m_sequenceLabel->setText(tr("WPM=%1, score = %2, turn=%3/%4").arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
 }
 
 QString WordGame::helpText()

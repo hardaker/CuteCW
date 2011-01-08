@@ -34,12 +34,14 @@ public slots:
 
     virtual void play();
 
-private:
+protected:
+    int                              m_maxWord;
     QMap<wordNums, QList<QString> *> words;
+    wordNums                         m_wordsNumber;
+
+private:
     bool                             m_wordWasGood;
     QSignalMapper                   *m_wordSignalMapper;
-    wordNums                         m_wordsNumber;
-    int                              m_maxWord;
     int                              m_wordnumber;
     QString                          m_enteredWord;
     int                              m_rightCount;
