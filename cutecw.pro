@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     modes/games/WordGame.cpp \
     modes/games/HighScoresDialog.cpp \
     modes/games/HighScores.cpp \
-    modes/QModeStart.cpp
+    modes/QModeStart.cpp \
+    AboutDialog.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -62,10 +63,12 @@ HEADERS  += MainWindow.h \
     modes/games/WordGame.h \
     modes/games/HighScoresDialog.h \
     modes/games/HighScores.h \
-    modes/QModeStart.h
+    modes/QModeStart.h \
+    AboutDialog.h
 
 FORMS    += MainWindow.ui \
-    Prefs.ui
+    Prefs.ui \
+    AboutDialog.ui
 
 CONFIG += mobility
 MOBILITY = 

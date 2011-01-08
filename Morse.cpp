@@ -83,6 +83,14 @@ void Morse::prefsButton() {
     }
 }
 
+void Morse::aboutButton() {
+    Ui::AboutDialog about;
+    QDialog *dialog = new QDialog(m_parent);
+    about.setupUi(dialog);
+    about.helpicon->setPixmap(QPixmap(":/icons/64x64/cutecw.png"));
+    dialog->exec();
+}
+
 QMenuBar *
 Morse::menuBar()
 {
@@ -199,6 +207,8 @@ void Morse::switchMode(int newmode) {
     m_modes[m_gameMode]->switchFromYou();
     m_gameMode = (Morse::TrainingMode) newmode;
     m_modes[(TrainingMode) newmode]->switchToYou();
+
+    connect(menuBar()->addAction("About"), SIGNAL(triggered()), this, SLOT(aboutButton()));
 }
 
 //

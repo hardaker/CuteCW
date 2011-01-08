@@ -19,6 +19,7 @@
 
 #include "ui_MainWindow.h"
 #include "ui_Prefs.h"
+#include "ui_AboutDialog.h"
 
 class MainWindow;
 class PlayMode;
@@ -87,6 +88,7 @@ public slots:
     void keyPressed(QChar key);
 
     void prefsButton();
+    void aboutButton();
     void switchMode(int newMode);
 
     void clearStatsButton();
