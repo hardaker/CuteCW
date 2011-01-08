@@ -1,3 +1,9 @@
+cutecw (0.4-1) unstable; urgency=low
+ 
+  * Upgraded to upstream 0.4 providing better game support
+ 
+ -- Wes Hardaker <wjhns177@hardakers.net>  Sat, 08 Jan 2011 08:11:28 -0700
+
 cutecw (0.3-1) unstable; urgency=low
  
   * Binary rename and other features
