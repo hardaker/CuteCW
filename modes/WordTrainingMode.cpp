@@ -114,12 +114,12 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
             if (m_maxWord > (*(words[m_wordsNumber])).count())
                 m_maxWord = (*(words[m_wordsNumber])).count();
 
-            emit groupEntered(m_rightCount, m_enteredWord.length());
         } else {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"red\">FAIL (" + (*(words[m_wordsNumber]))[m_wordnumber] + ")</font>");
             if (m_maxWord > 1)
                 m_maxWord--;
         }
+        emit groupEntered(m_rightCount, m_enteredWord.length());
     }
 }
 

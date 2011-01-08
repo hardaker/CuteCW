@@ -60,6 +60,7 @@ void WordGame::groupGuessed(int right, int total)
 void WordGame::setSequenceText()
 {
     m_morse->m_sequenceLabel->setText(tr("WPM=%1, score = %2, turn=%3/%4").arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
+    qDebug() << tr("WPM=%1, score = %2, turn=%3/%4").arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns());
 }
 
 QString WordGame::helpText()
