@@ -3,6 +3,8 @@
 #include "modes/games/WordGame.h"
 #include "modes/QModeStart.h"
 
+#include <QtGui/QMenuBar>
+
 WordGame::WordGame(Morse *parent, Ui::MainWindow *ui) :
   WordTrainingMode(parent, ui), MCountGameMode(), m_scores("Word Accuracy Game")
 {
