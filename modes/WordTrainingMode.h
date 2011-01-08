@@ -20,6 +20,7 @@ public:
 
     virtual void switchToMode();
     virtual bool enterPressed();
+    virtual void setSequenceText();
 
     void handleWordResponse(QChar letter);
 

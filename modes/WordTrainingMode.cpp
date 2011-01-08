@@ -79,10 +79,15 @@ bool WordTrainingMode::enterPressed() {
     m_morse->maybePlaySequence(true);
     m_enteredWord = "";
     m_ui->letter->setText("");
-    m_morse->m_sequenceLabel->setText(QString("%1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
     m_wordWasGood = true;
     m_rightCount = 0;
+    setSequenceText();
     return true;
+}
+
+void WordTrainingMode::setSequenceText()
+{
+    m_morse->m_sequenceLabel->setText(tr("Words: %1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
 }
 
 void WordTrainingMode::handleKeyPress(QChar letter) {
