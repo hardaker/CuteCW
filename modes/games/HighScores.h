@@ -16,6 +16,7 @@ public:
 public slots:
   virtual void loadScores();
   virtual void saveScores();
+  virtual void showScores();
 
 private:
   QString                            m_tableName;

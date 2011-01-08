@@ -16,6 +16,10 @@ void WordGame::switchToMode() {
     m_ui->modeMenu->setText(tr("Word Game"));
     m_ui->helpBar->setText(tr("<font color=\"green\">Type the groups of characters you hear ASAP.</font>"));
     m_ui->changeSequence->hide();
+
+    // Create the high scores button
+    QAction *action = m_morse->menuBar()->addAction("HighScores");
+    connect(action, SIGNAL(triggered()), &m_scores, SLOT(showScores()));
 }
 
 void WordGame::play()

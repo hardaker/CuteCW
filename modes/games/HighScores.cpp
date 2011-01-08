@@ -49,6 +49,11 @@ int HighScores::addScore(const QString &name, int score)
     return -1;
 }
 
+void HighScores::showScores() {
+    HighScoresDialog hsdialog(m_tableName, &m_scores, -1, -1);
+    hsdialog.exec();
+}
+
 void HighScores::saveScores()
 {
     QSettings settings("WS6Z", "qtcw");
