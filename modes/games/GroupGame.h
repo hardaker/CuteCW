@@ -23,10 +23,12 @@ public slots:
     void groupGuessed(int right, int total);
     virtual void play();
     virtual void setSequenceText();
+    void limitLength(int newValue);
 
 private:
     HighScores  m_scores;
     int         m_WPM;
+    QSpinBox   *m_groupLengthSpinBox;
 };
 
 #endif // GROUPGAMEMODE_H

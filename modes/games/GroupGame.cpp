@@ -8,7 +8,7 @@
 #include <QtGui/QMenuBar>
 
 GroupGame::GroupGame(Morse *parent, Ui::MainWindow *ui) :
-  GroupingMode(parent, ui), MCountGameMode(), m_scores("Group Accuracy Game")
+  GroupingMode(parent, ui), MCountGameMode(), m_scores("Group Accuracy Game"), m_groupLengthSpinBox(0)
 {
     connect(this, SIGNAL(groupEntered(int, int)),
             this, SLOT(groupGuessed(int, int)));
@@ -39,13 +39,16 @@ void GroupGame::play()
     layout->addLayout(&form);
 
     QSpinBox groupLength;
+    m_groupLengthSpinBox = &groupLength;
     groupLength.setValue(int(m_goodGuesses - m_badGuesses / GROUPLENGTH_WEIGHT));
     if (groupLength.value() < 1)
         groupLength.setValue(1);
+    groupLength.setMaximum(m_WPM);
     form.addRow(tr("Starting Group Length:"), &groupLength);
 
     QSpinBox WPM;
     WPM.setValue(m_WPM);
+    connect(&WPM, SIGNAL(valueChanged(int)), this, SLOT(limitLength(int)));
     form.addRow(tr("Starting WPM:"), &WPM);
 
     if (startInfo.exec() == QDialog::Accepted) {
@@ -54,6 +57,11 @@ void GroupGame::play()
         m_morse->createTones(m_WPM);
         startNextGroup();
     }
+    m_groupLengthSpinBox = 0;
+}
+
+void GroupGame::limitLength(int newValue) {
+    m_groupLengthSpinBox->setMaximum(newValue);
 }
 
 void GroupGame::gameOver()
