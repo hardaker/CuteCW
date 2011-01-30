@@ -63,6 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
     createAudioOutput();
+
+    m_morse = new Morse(this, m_audioOutput, ui);
+    connect(m_signalMapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
+
     connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
     ui->modeMenu->setText(tr("Type Morse Code"));
     this->setFocus();
@@ -121,8 +125,5 @@ MainWindow::createAudioOutput()
     settings.setSampleType(QAudioFormat::SignedInt);
 
     m_audioOutput = new QAudioOutput(settings);
-
-    m_morse = new Morse(this, m_audioOutput, ui);
-    connect(m_signalMapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
 }
 
