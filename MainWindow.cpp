@@ -23,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_morse = new Morse(this, m_audioOutput, ui);
 
-    connect(ui->prefs, SIGNAL(clicked()), m_morse, SLOT(prefsButton()));
-    ui->modeMenu->setText(tr("Type Morse Code"));
     this->setFocus();
 
     m_morse->setupWidgets();

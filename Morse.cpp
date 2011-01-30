@@ -426,8 +426,11 @@ void Morse::setupWidgets()
     topvbox->addLayout(m_ui->forModes = new QHBoxLayout(theMainThing));
     setupSequenceLayouts(topvbox, theMainThing);
 
+    setupConnections();
+
     m_parent->setCentralWidget(theMainThing);
 }
+
 
 void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
 {
@@ -525,4 +528,10 @@ void Morse::createModesMenu(QPushButton *modeButton) {
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
     connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchMode(int)));
+    m_ui->modeMenu->setText(tr("Type Morse Code"));
+}
+
+void Morse::setupConnections()
+{
+    connect(m_ui->prefs, SIGNAL(clicked()), this, SLOT(prefsButton()));
 }

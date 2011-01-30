@@ -47,6 +47,7 @@ public:
     void createModesMenu(QPushButton *modeButton);
     void setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing);
     void setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing);
+    void setupConnections();
 
     void setupWords();
     void setupSequences();
