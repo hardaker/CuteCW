@@ -422,16 +422,20 @@ void Morse::setupWidgets()
     topvbox->addLayout(buttonHBox);
 
     setupTopButtons(buttonHBox);
-
-    QHBoxLayout *modesLayout = m_ui->forModes = new QHBoxLayout(theMainThing);
-    topvbox->addLayout(modesLayout);
-
-    QHBoxLayout *WPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
-    topvbox->addLayout(WPMLayout);
-
+    setupWPMLayout(topvbox, theMainThing);
+    topvbox->addLayout(m_ui->forModes = new QHBoxLayout(theMainThing));
     setupSequenceLayouts(topvbox, theMainThing);
 
     m_parent->setCentralWidget(theMainThing);
+}
+
+void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    QHBoxLayout *WPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(WPMLayout);
+
+    WPMLayout->addWidget(m_ui->WPM = new QLabel(""));
+    WPMLayout->addWidget(m_ui->letter = new QLabel(""));
 }
 
 void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
