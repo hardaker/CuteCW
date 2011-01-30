@@ -56,9 +56,6 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(READ, new ReadMode(this, m_ui));
 
     switchMode(Morse::PLAY);
-
-    connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
-    connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }
 
 void Morse::prefsButton() {
@@ -206,6 +203,7 @@ void Morse::switchMode(int newmode) {
 
     m_modes[m_gameMode]->switchFromYou();
     m_gameMode = (Morse::TrainingMode) newmode;
+    setupWidgets();
     m_modes[(TrainingMode) newmode]->switchToYou();
 
     connect(menuBar()->addAction("About"), SIGNAL(triggered()), this, SLOT(aboutButton()));
@@ -411,4 +409,142 @@ float
 Morse::ditSecs()
 {
     return m_ditSecs;
+}
+
+void Morse::setupWidgets()
+{
+    QWidget *theMainThing = m_ui->centralWidget = new QWidget(m_parent);
+    QVBoxLayout *topvbox = m_ui->verticalLayout = new QVBoxLayout(theMainThing);
+
+    QHBoxLayout *buttonHBox = m_ui->horizontalLayout = new QHBoxLayout(theMainThing);
+    topvbox->addLayout(buttonHBox);
+
+    setupTopButtons(buttonHBox);
+    topvbox->addWidget(m_ui->helpBar = new QLabel("help"));
+    setupWPMLayout(topvbox, theMainThing);
+    topvbox->addLayout(m_ui->forModes = new QHBoxLayout(theMainThing));
+    setupSequenceLayouts(topvbox, theMainThing);
+
+    setupConnections();
+
+    m_parent->setCentralWidget(theMainThing);
+}
+
+
+void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    QHBoxLayout *WPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(WPMLayout);
+
+    WPMLayout->addWidget(m_ui->WPM = new QLabel(""));
+    WPMLayout->addWidget(m_ui->letter = new QLabel(""));
+
+    QFont font = m_ui->WPM->font();
+    font.setPointSize(font.pointSize() * 2); // A cheap way of getting bigger regardless of the default stylee
+    font.setBold(true);
+    m_ui->WPM->setFont(font);
+
+    font = m_ui->letter->font();
+    font.setPointSize(font.pointSize() * 2);
+    font.setBold(true);
+    m_ui->letter->setFont(font);
+}
+
+void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    QHBoxLayout *sequenceLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(sequenceLayout);
+    sequenceLayout->addWidget(m_ui->label = new QLabel(tr("Sequence:")));
+    sequenceLayout->addWidget(m_sequenceLabel = m_ui->sequence = new QLabel(tr("")));
+
+    QHBoxLayout *lastWPMLayout = m_ui->horizontalLayout_4 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(lastWPMLayout);
+    lastWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Last WPM:")));
+    lastWPMLayout->addWidget(m_ui->lastwpm = new QLabel(tr("")));
+
+    QHBoxLayout *aveWPMLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(aveWPMLayout);
+    aveWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Average WPM:")));
+    aveWPMLayout->addWidget(m_ui->avewpm = new QLabel(tr("")));
+}
+
+void Morse::setupTopButtons(QLayout *parentLayout)
+{
+    QPushButton *button;
+
+    button = m_ui->modeMenu = new QPushButton(tr("Mode"));
+    parentLayout->addWidget(button);
+    createModesMenu(button);
+
+    button = m_ui->play = new QPushButton(tr("Play"));
+    parentLayout->addWidget(button);
+    m_ui->play->setIcon(QIcon(":/icons/play.png"));
+
+    button = m_ui->changeSequence = new QPushButton(tr("Sequence"));
+    parentLayout->addWidget(button);
+
+    button = m_ui->changeWords = new QPushButton(tr("Change Words"));
+    parentLayout->addWidget(button);
+
+    button = m_ui->clearTraining = new QPushButton(tr("Clear Training"));
+    parentLayout->addWidget(button);
+
+    button = m_ui->prefs = new QPushButton(tr("Preferences"));
+    parentLayout->addWidget(button);
+}
+
+void Morse::createModesMenu(QPushButton *modeButton) {
+    // setup mode menu
+    m_signalMapper = new QSignalMapper(this);
+
+    // Create the "mode" menu
+    QMenu *modeMenu = new QMenu(modeButton);
+    modeButton->setMenu(modeMenu);
+
+    QAction *action = modeMenu->addAction(tr("Type Morse Code"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::PLAY);
+
+    QMenu *trainingMenu = modeMenu->addMenu(tr("Training"));
+
+    action = trainingMenu->addAction(tr("Recognition Train"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::TRAIN);
+
+    action = trainingMenu->addAction(tr("Speed Training"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::SPEEDTRAIN);
+
+    action = trainingMenu->addAction(tr("Word Training"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::WORDS);
+
+    action = trainingMenu->addAction(tr("Grouping Training"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPS);
+
+    QMenu *gamesMenu = modeMenu->addMenu(tr("Games"));
+
+    action = gamesMenu->addAction(tr("Word Accuracy"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::WORDGAME);
+
+    action = gamesMenu->addAction(tr("Grouping Accuracy"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPGAME);
+
+    action = modeMenu->addAction(tr("Read to me!"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::READ);
+
+    connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchMode(int)));
+    m_ui->modeMenu->setText(tr("Type Morse Code"));
+}
+
+void Morse::setupConnections()
+{
+    connect(m_ui->prefs, SIGNAL(clicked()), this, SLOT(prefsButton()));
+
+    connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
+    connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }

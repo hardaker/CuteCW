@@ -42,6 +42,13 @@ public:
     enum AudioMode { STOPPED, PLAYING, PAUSED };
     enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 
+    void setupWidgets();
+    void setupTopButtons(QLayout *parentLayout);
+    void createModesMenu(QPushButton *modeButton);
+    void setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing);
+    void setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing);
+    void setupConnections();
+
     void setupWords();
     void setupSequences();
     void clearList();
@@ -126,6 +133,8 @@ private:
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
     int                              m_tone;
+
+    QSignalMapper                   *m_signalMapper;
 };
 
 #endif // MORSE_H

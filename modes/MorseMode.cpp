@@ -120,7 +120,9 @@ void MorseMode::hideWidgets()
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
     m_ui->play->hide();
     m_ui->WPM->hide();
+#ifdef SMALL_DEVICE
     m_ui->helpBar->hide();
+#endif
     clearLayout(m_ui->forModes);
     //m_ui->forModes->hide();
 }
@@ -250,6 +252,7 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     spinbox->setValue(m_WPM);
     hbox->addWidget(spinbox);
     connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeWPM(int)));
+    changeWPM(m_WPM);
 
     hbox = new QHBoxLayout();
     vbox->addLayout(hbox);
@@ -263,6 +266,7 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     spinbox->setValue(m_letterSpaceWPM);
     hbox->addWidget(spinbox);
     connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeLetterSpaceWPM(int)));
+    changeLetterSpaceWPM(m_letterSpaceWPM);
 
     hbox = new QHBoxLayout();
     vbox->addLayout(hbox);
@@ -276,6 +280,7 @@ void MorseMode::setupWPMWidgets(QBoxLayout *to) {
     spinbox->setValue(m_spaceWPM);
     hbox->addWidget(spinbox);
     connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeSpaceWPM(int)));
+    changeSpaceWPM(m_spaceWPM);
 
 }
 
