@@ -11,6 +11,10 @@
 #include "ui_MainWindow.h"
 #include "MorseStat.h"
 
+#if (defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES))
+#define SMALL_DEVICE 1
+#endif
+
 class Morse;
 
 class MorseMode : public QObject
