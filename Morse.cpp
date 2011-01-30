@@ -478,6 +478,7 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 
     button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
+    m_ui->play->setIcon(QIcon(":/icons/play.png"));
 
     button = m_ui->changeSequence = new QPushButton(tr("Sequence"));
     parentLayout->addWidget(button);
