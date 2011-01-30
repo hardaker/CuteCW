@@ -25,8 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->setFocus();
 
-    m_morse->setupWidgets();
-
     startIt();
 }
 

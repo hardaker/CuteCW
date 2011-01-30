@@ -440,7 +440,7 @@ void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
     WPMLayout->addWidget(m_ui->letter = new QLabel(""));
 
     QFont font = m_ui->WPM->font();
-    font.setPointSize(font.pointSize() * 2); // A cheap way of getting bigger regardless of the default style
+    font.setPointSize(font.pointSize() * 2); // A cheap way of getting bigger regardless of the default stylee
     font.setBold(true);
     m_ui->WPM->setFont(font);
 
