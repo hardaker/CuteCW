@@ -203,6 +203,7 @@ void Morse::switchMode(int newmode) {
 
     m_modes[m_gameMode]->switchFromYou();
     m_gameMode = (Morse::TrainingMode) newmode;
+    setupWidgets();
     m_modes[(TrainingMode) newmode]->switchToYou();
 
     connect(menuBar()->addAction("About"), SIGNAL(triggered()), this, SLOT(aboutButton()));
@@ -437,6 +438,16 @@ void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
 
     WPMLayout->addWidget(m_ui->WPM = new QLabel(""));
     WPMLayout->addWidget(m_ui->letter = new QLabel(""));
+
+    QFont font = m_ui->WPM->font();
+    font.setPointSize(font.pointSize() * 2); // A cheap way of getting bigger regardless of the default style
+    font.setBold(true);
+    m_ui->WPM->setFont(font);
+
+    font = m_ui->letter->font();
+    font.setPointSize(font.pointSize() * 2);
+    font.setBold(true);
+    m_ui->letter->setFont(font);
 }
 
 void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
@@ -444,7 +455,7 @@ void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThin
     QHBoxLayout *sequenceLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
     parentLayout->addLayout(sequenceLayout);
     sequenceLayout->addWidget(m_ui->label = new QLabel(tr("Sequence:")));
-    sequenceLayout->addWidget(m_ui->sequence = new QLabel(tr("")));
+    sequenceLayout->addWidget(m_sequenceLabel = m_ui->sequence = new QLabel(tr("")));
 
     QHBoxLayout *lastWPMLayout = m_ui->horizontalLayout_4 = new QHBoxLayout(theMainThing);
     parentLayout->addLayout(lastWPMLayout);
