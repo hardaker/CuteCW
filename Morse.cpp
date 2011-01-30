@@ -415,38 +415,64 @@ Morse::ditSecs()
 
 void Morse::setupWidgets()
 {
-    QWidget *theMainThing = new QWidget(m_parent);
-    QVBoxLayout *topvbox = new QVBoxLayout(theMainThing);
+    QWidget *theMainThing = m_ui->centralWidget = new QWidget(m_parent);
+    QVBoxLayout *topvbox = m_ui->verticalLayout = new QVBoxLayout(theMainThing);
 
-    QHBoxLayout *buttonHBox = new QHBoxLayout(theMainThing);
+    QHBoxLayout *buttonHBox = m_ui->horizontalLayout = new QHBoxLayout(theMainThing);
     topvbox->addLayout(buttonHBox);
 
     setupTopButtons(buttonHBox);
 
+    QHBoxLayout *modesLayout = m_ui->forModes = new QHBoxLayout(theMainThing);
+    topvbox->addLayout(modesLayout);
+
+    QHBoxLayout *WPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
+    topvbox->addLayout(WPMLayout);
+
+    setupSequenceLayouts(topvbox, theMainThing);
+
     m_parent->setCentralWidget(theMainThing);
+}
+
+void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    QHBoxLayout *sequenceLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(sequenceLayout);
+    sequenceLayout->addWidget(m_ui->label = new QLabel(tr("Sequence:")));
+    sequenceLayout->addWidget(m_ui->sequence = new QLabel(tr("")));
+
+    QHBoxLayout *lastWPMLayout = m_ui->horizontalLayout_4 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(lastWPMLayout);
+    lastWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Last WPM:")));
+    lastWPMLayout->addWidget(m_ui->lastwpm = new QLabel(tr("")));
+
+    QHBoxLayout *aveWPMLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(aveWPMLayout);
+    aveWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Average WPM:")));
+    aveWPMLayout->addWidget(m_ui->avewpm = new QLabel(tr("")));
 }
 
 void Morse::setupTopButtons(QLayout *parentLayout)
 {
     QPushButton *button;
 
-    button = new QPushButton(tr("Mode"));
+    button = m_ui->modeMenu = new QPushButton(tr("Mode"));
     parentLayout->addWidget(button);
     createModesMenu(button);
 
-    button = new QPushButton(tr("Play"));
+    button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
 
-    button = new QPushButton(tr("Sequence"));
+    button = m_ui->changeSequence = new QPushButton(tr("Sequence"));
     parentLayout->addWidget(button);
 
-    button = new QPushButton(tr("Change Words"));
+    button = m_ui->changeWords = new QPushButton(tr("Change Words"));
     parentLayout->addWidget(button);
 
-    button = new QPushButton(tr("Clear Training"));
+    button = m_ui->clearTraining = new QPushButton(tr("Clear Training"));
     parentLayout->addWidget(button);
 
-    button = new QPushButton(tr("Preferences"));
+    button = m_ui->prefs = new QPushButton(tr("Preferences"));
     parentLayout->addWidget(button);
 }
 

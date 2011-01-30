@@ -45,6 +45,7 @@ public:
     void setupWidgets();
     void setupTopButtons(QLayout *parentLayout);
     void createModesMenu(QPushButton *modeButton);
+    void setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing);
 
     void setupWords();
     void setupSequences();
