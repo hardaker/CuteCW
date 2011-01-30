@@ -71,6 +71,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->modeMenu->setText(tr("Type Morse Code"));
     this->setFocus();
 
+    m_morse->setupWidgets();
+
     startIt();
 }
 

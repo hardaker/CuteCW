@@ -412,3 +412,39 @@ Morse::ditSecs()
 {
     return m_ditSecs;
 }
+
+void Morse::setupWidgets()
+{
+    QWidget *theMainThing = new QWidget(m_parent);
+    QVBoxLayout *topvbox = new QVBoxLayout(theMainThing);
+
+    QHBoxLayout *buttonHBox = new QHBoxLayout(theMainThing);
+    topvbox->addLayout(buttonHBox);
+
+    setupTopButtons(buttonHBox);
+
+    m_parent->setCentralWidget(theMainThing);
+}
+
+void Morse::setupTopButtons(QLayout *parentLayout)
+{
+    QPushButton *button;
+
+    button = new QPushButton(tr("Mode"));
+    parentLayout->addWidget(button);
+
+    button = new QPushButton(tr("Play"));
+    parentLayout->addWidget(button);
+
+    button = new QPushButton(tr("Sequence"));
+    parentLayout->addWidget(button);
+
+    button = new QPushButton(tr("Change Words"));
+    parentLayout->addWidget(button);
+
+    button = new QPushButton(tr("Clear Training"));
+    parentLayout->addWidget(button);
+
+    button = new QPushButton(tr("Preferences"));
+    parentLayout->addWidget(button);
+}

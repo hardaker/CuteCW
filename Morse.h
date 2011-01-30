@@ -42,6 +42,9 @@ public:
     enum AudioMode { STOPPED, PLAYING, PAUSED };
     enum BadLetterWeighting { LOW = 1, HIGH = 2 };
 
+    void setupWidgets();
+    void setupTopButtons(QLayout *parentLayout);
+
     void setupWords();
     void setupSequences();
     void clearList();
