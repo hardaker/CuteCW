@@ -56,9 +56,6 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(READ, new ReadMode(this, m_ui));
 
     switchMode(Morse::PLAY);
-
-    connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
-    connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }
 
 void Morse::prefsButton() {
@@ -422,6 +419,7 @@ void Morse::setupWidgets()
     topvbox->addLayout(buttonHBox);
 
     setupTopButtons(buttonHBox);
+    topvbox->addWidget(m_ui->helpBar = new QLabel("help"));
     setupWPMLayout(topvbox, theMainThing);
     topvbox->addLayout(m_ui->forModes = new QHBoxLayout(theMainThing));
     setupSequenceLayouts(topvbox, theMainThing);
@@ -534,4 +532,7 @@ void Morse::createModesMenu(QPushButton *modeButton) {
 void Morse::setupConnections()
 {
     connect(m_ui->prefs, SIGNAL(clicked()), this, SLOT(prefsButton()));
+
+    connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
+    connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }
