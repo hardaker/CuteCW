@@ -44,6 +44,7 @@ public:
 
     void setupWidgets();
     void setupTopButtons(QLayout *parentLayout);
+    void createModesMenu(QPushButton *modeButton);
 
     void setupWords();
     void setupSequences();
@@ -129,6 +130,8 @@ private:
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
     int                              m_tone;
+
+    QSignalMapper                   *m_signalMapper;
 };
 
 #endif // MORSE_H

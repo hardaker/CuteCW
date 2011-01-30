@@ -432,6 +432,7 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 
     button = new QPushButton(tr("Mode"));
     parentLayout->addWidget(button);
+    createModesMenu(button);
 
     button = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
@@ -447,4 +448,51 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 
     button = new QPushButton(tr("Preferences"));
     parentLayout->addWidget(button);
+}
+
+void Morse::createModesMenu(QPushButton *modeButton) {
+    // setup mode menu
+    m_signalMapper = new QSignalMapper(this);
+
+    // Create the "mode" menu
+    QMenu *modeMenu = new QMenu(modeButton);
+    modeButton->setMenu(modeMenu);
+
+    QAction *action = modeMenu->addAction(tr("Type Morse Code"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::PLAY);
+
+    QMenu *trainingMenu = modeMenu->addMenu(tr("Training"));
+
+    action = trainingMenu->addAction(tr("Recognition Train"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::TRAIN);
+
+    action = trainingMenu->addAction(tr("Speed Training"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::SPEEDTRAIN);
+
+    action = trainingMenu->addAction(tr("Word Training"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::WORDS);
+
+    action = trainingMenu->addAction(tr("Grouping Training"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPS);
+
+    QMenu *gamesMenu = modeMenu->addMenu(tr("Games"));
+
+    action = gamesMenu->addAction(tr("Word Accuracy"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::WORDGAME);
+
+    action = gamesMenu->addAction(tr("Grouping Accuracy"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::GROUPGAME);
+
+    action = modeMenu->addAction(tr("Read to me!"));
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::READ);
+
+    connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchMode(int)));
 }
