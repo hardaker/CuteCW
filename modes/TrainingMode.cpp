@@ -5,6 +5,7 @@
 #include <qdebug.h>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#include <QtGui/QProgressBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
     : MorseMode(parent, ui), m_doEntireSequence(false), m_maxBadLetters(2)
@@ -361,7 +362,16 @@ QGridLayout *TrainingMode::setupGraphs()
     int column = 0;
     QGridLayout *gridLayout = new QGridLayout();
     foreach(QChar theLetter, m_trainingSequence) {
-        gridLayout->addWidget(new QLabel(theLetter), 1, column);
+        QLabel *label = new QLabel(theLetter.toUpper());
+        label->setAlignment(Qt::AlignCenter);
+        gridLayout->addWidget(label, 1, column);
+
+        QProgressBar *bar = new QProgressBar();
+        bar->setRange(1,26);
+        bar->setValue(qMin(column+1,26));
+        bar->setOrientation(Qt::Vertical);
+        bar->setTextVisible(false);
+        gridLayout->addWidget(bar, 0, column);
         column++;
     }
     return gridLayout;
