@@ -132,7 +132,19 @@ void MorseMode::switchToYou()
     m_morse->createTones(m_morse->currentWPMGoal());
     hideWidgets();
     switchToMode();
+    createMenuStructures();
     createGlobalActions();
+}
+
+void MorseMode::createMenuStructures()
+{
+#ifdef SMALL_DEVICE
+    m_helpMenu = m_optionsMenu = m_morse->menuBar();
+#else
+    QMenuBar *topBar = m_morse->menuBar();
+    m_optionsMenu = topBar->addMenu(tr("Options"));
+    m_helpMenu = topBar->addMenu(tr("Help"));
+#endif
 }
 
 void MorseMode::createGlobalActions()
