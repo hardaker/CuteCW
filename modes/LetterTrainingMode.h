@@ -14,6 +14,7 @@ public:
     virtual void switchToMode();
     virtual void handleKeyPress(QChar letterPressed);
 
+    virtual QString name();
     virtual QString helpText();
 };
 

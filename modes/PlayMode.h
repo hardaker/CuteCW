@@ -16,6 +16,7 @@ public:
 public:
     PlayMode(Morse *parent, Ui::MainWindow *ui);
 
+    virtual QString name();
     virtual QString helpText();
 
 public slots:

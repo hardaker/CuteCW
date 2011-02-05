@@ -90,3 +90,8 @@ QString GroupGame::helpText()
     return tr("<p>Characters in the chosen training sequence will be keyed starting at the length and speed you request.  If you correctly type each letter in the sequence then the WPM rate will go up by one, and the sequence length will slowly go up as well.  Guess incorrectly, and the rate will drop as well the sequence length."
               "<p>Scoring is based on the following equation: <i>WPM * numberRight * 10 * (2 if all right)</i>");
 }
+
+QString GroupGame::name()
+{
+    return tr("Grouping game");
+}

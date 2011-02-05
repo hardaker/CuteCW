@@ -24,3 +24,8 @@ QString PlayMode::helpText()
               "To begin your listening training, switch to one of the other modes."
               "<p>Genreally you should follow the order in the mode menu.");
 }
+
+QString PlayMode::name()
+{
+    return tr("Type Morse Code");
+}

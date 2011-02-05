@@ -75,3 +75,8 @@ QString SpeedTrainingMode::helpText()
     return tr("Characters in the sequence will play at you with short pauses between each character.  As you guess more and more correctly the speed will increase "
               "and the spacing between the letters will decrease.");
 }
+
+QString SpeedTrainingMode::name()
+{
+    return tr("Word Training");
+}

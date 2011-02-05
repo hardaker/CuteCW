@@ -16,6 +16,7 @@ public:
     virtual void play();
     virtual void handleKeyPress(QChar letterPressed);
 
+    virtual QString name();
     virtual QString helpText();
 
     void startTimerToNextKey(QTime plusTime);

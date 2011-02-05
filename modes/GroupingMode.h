@@ -19,6 +19,7 @@ public:
     void createNextSequence();
     virtual void setSequenceText();
 
+    virtual QString name();
     virtual QString helpText();
 
  signals:

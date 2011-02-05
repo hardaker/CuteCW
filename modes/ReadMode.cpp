@@ -92,3 +92,8 @@ QString ReadMode::helpText()
               "<p><b>WARNING:</b> do not load big files...  A bug will end up using way too much memory.");
 }
 
+QString ReadMode::name()
+{
+    return tr("Read to me");
+}
+

@@ -24,6 +24,7 @@ public:
 
     void handleWordResponse(QChar letter);
 
+    virtual QString name();
     virtual QString helpText();
 
 signals:

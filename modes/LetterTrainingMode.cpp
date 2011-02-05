@@ -34,3 +34,8 @@ QString LetterTrainingMode::helpText()
               "As you get fast enough for particular characters then the next character in the sequence will be added.  Characters that you need the most work on will be "
               "sent more frequently than ones you're fast at responding to.");
 }
+
+QString LetterTrainingMode::name()
+{
+    return tr("Recognition Training");
+}

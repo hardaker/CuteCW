@@ -102,6 +102,11 @@ void GroupingMode::clear()
     m_badGuesses = 0;
 }
 
+QString GroupingMode::name()
+{
+    return tr("Grouping Training");
+}
+
 QString GroupingMode::helpText()
 {
     return tr("Characters in the chosen training sequence will be keyed starting with a single character.  "

@@ -15,6 +15,8 @@ public:
     ReadMode(Morse *parent, Ui::MainWindow *ui);
 
     void addButtons();
+
+    virtual QString name();
     virtual QString helpText();
 
 public slots:

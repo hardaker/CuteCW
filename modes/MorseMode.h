@@ -45,6 +45,7 @@ public:
 
     void clearLayout(QLayout *layout);
 
+    virtual QString name() = 0;
     virtual QString helpText() = 0;
 
 public slots:

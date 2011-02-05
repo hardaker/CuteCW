@@ -76,3 +76,8 @@ QString WordGame::helpText()
               "on the screen in green/red colors indicating good/bad guesses."
               "<p>As you guess more and more groups correctly the number of characters in the group will slowly go upward.");
 }
+
+QString WordGame::name()
+{
+    return tr("Word Game");
+}
