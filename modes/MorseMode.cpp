@@ -202,7 +202,7 @@ void MorseMode::clearLayout(QLayout *layout)
     }
 }
 
-void MorseMode::setupKeyWidgets(const QString &sequence) {
+void MorseMode::setupKeyWidgets(const QString &sequence, QBoxLayout *inside) {
     qDebug() << "setting up sequence buttons";
 
     // if we don't have a grid yet, create it
@@ -213,7 +213,10 @@ void MorseMode::setupKeyWidgets(const QString &sequence) {
     }
 
     m_buttons = new QGridLayout();
-    m_ui->forModes->addLayout(m_buttons);
+    if (inside)
+        inside->addLayout(m_buttons);
+    else
+        m_ui->forModes->addLayout(m_buttons);
 
     int column = 0;
     int row = 0;

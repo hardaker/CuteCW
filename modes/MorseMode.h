@@ -34,7 +34,7 @@ public:
     float msToPauseWPMF(float ms);
 
     void hideWidgets();
-    void setupKeyWidgets(const QString &sequence);
+    void setupKeyWidgets(const QString &sequence, QBoxLayout *inside = 0);
     void setupWPMWidgets(QBoxLayout *to = 0);
     void createGlobalActions();
 

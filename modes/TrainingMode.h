@@ -46,6 +46,7 @@ public slots:
     virtual void setDoEntireSequence(bool value);
     virtual void chooseCustomeSequence();
     virtual void setupWidgets(const QString &sequence);
+    virtual QGridLayout *setupGraphs();
 
 private:
     QStringList                     m_sequences;

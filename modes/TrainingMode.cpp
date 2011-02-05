@@ -343,7 +343,9 @@ void TrainingMode::setDoEntireSequence(bool value) {
 
 void TrainingMode::setupWidgets(const QString &sequence)
 {
-    setupKeyWidgets(sequence);
+    QVBoxLayout *vbox = new QVBoxLayout();
+    m_ui->forModes->addLayout(vbox);
+    setupKeyWidgets(sequence, vbox);
 
     // Create the preference items in the quick menu
     m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
@@ -351,4 +353,16 @@ void TrainingMode::setupWidgets(const QString &sequence)
     m_doEntireSequenceButton->setChecked(false);
     setSequence(m_trainingSequence, 1);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
+    vbox->addLayout(setupGraphs());
+}
+
+QGridLayout *TrainingMode::setupGraphs()
+{
+    int column = 0;
+    QGridLayout *gridLayout = new QGridLayout();
+    foreach(QChar theLetter, m_trainingSequence) {
+        gridLayout->addWidget(new QLabel(theLetter), 1, column);
+        column++;
+    }
+    return gridLayout;
 }
