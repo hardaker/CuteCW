@@ -53,7 +53,6 @@ void WordTrainingMode::switchToMode() {
     m_goodCount = 0;
     m_badCount = 0;
     m_ui->letter->show();
-    m_ui->modeMenu->setText("Word Training");
     m_ui->changeWords->show();
     m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
     m_ui->play->show();

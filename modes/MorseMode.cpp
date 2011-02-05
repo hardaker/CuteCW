@@ -115,7 +115,6 @@ void MorseMode::hideWidgets()
 {
     m_ui->letter->hide();
     m_ui->clearTraining->hide();
-    m_ui->modeMenu->setText("Recognition Training");
     m_ui->changeSequence->hide();
     m_ui->changeWords->hide();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
@@ -135,6 +134,7 @@ void MorseMode::switchToYou()
     hideWidgets();
     switchToMode();
     createGlobalActions();
+    m_ui->modeMenu->setText(name());
 }
 
 void MorseMode::createMenuStructures()
