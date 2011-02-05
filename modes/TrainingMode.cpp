@@ -7,7 +7,7 @@
 #include <QtGui/QMenuBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_doEntireSequence(false)
+    : MorseMode(parent, ui), m_doEntireSequence(false), m_maxBadLetters(2)
 {
     setupSequences();
 }
@@ -208,6 +208,7 @@ QTime TrainingMode::startNextTrainingKey() {
     float totalTime = 0.0, thisTime = 0.0, minTime = 0.0;
     MorseStat *stat = 0;
     QString currentLetterGoal;
+    int badLetters = 0;
 
     //if (m_morse->audioMode() == Morse::PLAYING)
     //    return;
@@ -247,9 +248,11 @@ QTime TrainingMode::startNextTrainingKey() {
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
         if(msToPauseWPM(thisTime) <= m_morse->currentWPMAccept()) {
-            // we're not fast enough; break here
             qDebug() << " too slow: " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
-            break;
+            if (++badLetters >= m_maxBadLetters) {
+                // we're not fast enough; break here
+                break;
+            }
         }
     }
 

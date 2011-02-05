@@ -59,6 +59,7 @@ protected:
     QList<QTime>                    m_lastTimes;
     QMap<QChar, MorseStat *>        m_stats;
     QAction                        *m_doEntireSequenceButton;
+    int                             m_maxBadLetters;
 };
 
 
