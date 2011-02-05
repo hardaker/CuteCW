@@ -142,16 +142,18 @@ void MorseMode::createMenuStructures()
     m_helpMenu = m_optionsMenu = m_morse->menuBar();
 #else
     QMenuBar *topBar = m_morse->menuBar();
-    m_optionsMenu = topBar->addMenu(tr("Options"));
-    m_helpMenu = topBar->addMenu(tr("Help"));
+    m_optionsMenu = topBar->addMenu(tr("&Options"));
+    m_helpMenu = topBar->addMenu(tr("&Help"));
 #endif
 }
 
 void MorseMode::createGlobalActions()
 {
     // Create the preference items in the quick menu
-    QAction *button = m_helpMenu->addAction(tr("Mode Help"));
+    QAction *button = m_helpMenu->addAction(tr("&Mode Help"));
     connect(button, SIGNAL(triggered()), this, SLOT(help()));
+
+    connect(m_helpMenu->addAction("&About"), SIGNAL(triggered()), m_morse, SLOT(aboutButton()));
 }
 
 void MorseMode::clearModeLayout() {

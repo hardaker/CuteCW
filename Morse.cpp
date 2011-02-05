@@ -205,8 +205,6 @@ void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::TrainingMode) newmode;
     setupWidgets();
     m_modes[(TrainingMode) newmode]->switchToYou();
-
-    connect(menuBar()->addAction("About"), SIGNAL(triggered()), this, SLOT(aboutButton()));
 }
 
 //
