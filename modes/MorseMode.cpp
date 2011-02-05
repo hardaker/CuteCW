@@ -129,10 +129,10 @@ void MorseMode::hideWidgets()
 
 void MorseMode::switchToYou()
 {
+    createMenuStructures();
     m_morse->createTones(m_morse->currentWPMGoal());
     hideWidgets();
     switchToMode();
-    createMenuStructures();
     createGlobalActions();
 }
 

@@ -346,7 +346,7 @@ void TrainingMode::setupWidgets(const QString &sequence)
     setupKeyWidgets(sequence);
 
     // Create the preference items in the quick menu
-    m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
+    m_doEntireSequenceButton = m_optionsMenu->addAction(tr("Use &Entire Sequence"));
     m_doEntireSequenceButton->setCheckable(true);
     m_doEntireSequenceButton->setChecked(false);
     setSequence(m_trainingSequence, 1);
