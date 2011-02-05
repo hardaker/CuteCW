@@ -153,7 +153,9 @@ void MorseMode::createGlobalActions()
     QAction *button = m_helpMenu->addAction(tr("&Mode Help"));
     connect(button, SIGNAL(triggered()), this, SLOT(help()));
 
-    connect(m_helpMenu->addAction("&About"), SIGNAL(triggered()), m_morse, SLOT(aboutButton()));
+    connect(m_helpMenu->addAction(tr("&About")), SIGNAL(triggered()), m_morse, SLOT(aboutButton()));
+
+    connect(m_optionsMenu->addAction(tr("&Preferences")), SIGNAL(triggered()), m_morse, SLOT(prefsButton()));
 }
 
 void MorseMode::clearModeLayout() {
