@@ -38,6 +38,7 @@ public:
     void setupWPMWidgets(QBoxLayout *to = 0);
     void createGlobalActions();
     void createMenuStructures();
+    virtual void modeMenus();
 
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
@@ -85,6 +86,8 @@ protected:
     QGridLayout                    *m_buttons;
     QMenu                          *m_helpMenu;
     QMenu                          *m_optionsMenu;
+    QMenu                          *m_modeMenu;
+    QMenu                          *m_cuteCWMenu;
 };
 
 #endif // MORSEMODE_H

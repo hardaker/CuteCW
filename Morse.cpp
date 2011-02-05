@@ -541,3 +541,8 @@ void Morse::setupConnections()
     connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
     connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }
+
+MainWindow *Morse::parent()
+{
+    return m_parent;
+}

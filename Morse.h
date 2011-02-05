@@ -84,6 +84,8 @@ public:
     TrainingMode trainingMode();
     BadLetterWeighting badLetterWeighting();
 
+    MainWindow *parent();
+
 public slots:
 
     void playSequence();

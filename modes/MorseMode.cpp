@@ -1,5 +1,6 @@
 #include "MorseMode.h"
 #include "Morse.h"
+#include "MainWindow.h"
 
 #include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
@@ -142,9 +143,15 @@ void MorseMode::createMenuStructures()
     m_helpMenu = m_optionsMenu = m_morse->menuBar();
 #else
     QMenuBar *topBar = m_morse->menuBar();
+    m_cuteCWMenu = topBar->addMenu("&CuteCW");
     m_optionsMenu = topBar->addMenu(tr("&Options"));
+    modeMenus();
     m_helpMenu = topBar->addMenu(tr("&Help"));
 #endif
+}
+
+void MorseMode::modeMenus()
+{
 }
 
 void MorseMode::createGlobalActions()
@@ -156,6 +163,8 @@ void MorseMode::createGlobalActions()
     connect(m_helpMenu->addAction(tr("&About")), SIGNAL(triggered()), m_morse, SLOT(aboutButton()));
 
     connect(m_optionsMenu->addAction(tr("&Preferences")), SIGNAL(triggered()), m_morse, SLOT(prefsButton()));
+
+    connect(m_cuteCWMenu->addAction(tr("&Quit")), SIGNAL(triggered()), m_morse->parent(), SLOT(close()));
 }
 
 void MorseMode::clearModeLayout() {
