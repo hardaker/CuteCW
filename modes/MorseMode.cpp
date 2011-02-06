@@ -139,7 +139,8 @@ void MorseMode::switchToYou()
 void MorseMode::createMenuStructures()
 {
 #ifdef SMALL_DEVICE
-    m_helpMenu = m_optionsMenu = m_morse->menuBar();
+    m_helpMenu = m_optionsMenu = m_cuteCWMenu = m_morse->menuBar();
+    // m_morse->createModesMenu(m_morse->menuBar()->addMenu(tr("Change Mode")));
 #else
     QMenuBar *topBar = m_morse->menuBar();
     m_cuteCWMenu = topBar->addMenu("&CuteCW");

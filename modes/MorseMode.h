@@ -85,10 +85,16 @@ protected:
     RunningMode                     m_runningMode;
     QSignalMapper                  *m_mapper;
     QGridLayout                    *m_buttons;
+#ifdef SMALL_DEVICE
+    QMenuBar                       *m_helpMenu;
+    QMenuBar                       *m_optionsMenu;
+    QMenuBar                       *m_cuteCWMenu;
+#else
     QMenu                          *m_helpMenu;
     QMenu                          *m_optionsMenu;
     QMenu                          *m_modeMenu;
     QMenu                          *m_cuteCWMenu;
+#endif
 };
 
 #endif // MORSEMODE_H
