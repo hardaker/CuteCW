@@ -14,7 +14,6 @@ WordGame::WordGame(Morse *parent, Ui::MainWindow *ui) :
 
 void WordGame::switchToMode() {
     WordTrainingMode::switchToMode();
-    m_ui->clearTraining->hide();
     m_ui->helpBar->setText(tr("<font color=\"green\">Type the groups of characters you hear ASAP.</font>"));
     m_ui->changeSequence->hide();
 

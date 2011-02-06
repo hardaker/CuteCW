@@ -9,7 +9,7 @@ LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
 void LetterTrainingMode::switchToMode() {
     m_ui->letter->show();
     m_ui->play->show();
-    m_ui->clearTraining->show();
+    setupTrainingWidgets();
     m_ui->changeSequence->show();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
     clear();

@@ -100,6 +100,10 @@ void TrainingMode::setupSequences() {
     connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
+void TrainingMode::setupTrainingWidgets() {
+    connect(m_optionsMenu->addAction(tr("Clear Training")), SIGNAL(triggered()), this, SLOT(clear()));
+}
+
 void TrainingMode::chooseCustomeSequence() {
     CustomSequenceDialog dialog(m_sequences[EVERYTHING], m_trainingSequence);
     if (dialog.exec() == QDialog::Accepted) {

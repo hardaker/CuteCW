@@ -34,6 +34,7 @@ public:
     void setWPMLabel(float wpm);
 
     virtual void clear();
+    virtual void setupTrainingWidgets();
 
 public slots:
     virtual void play();

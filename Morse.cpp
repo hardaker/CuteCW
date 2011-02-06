@@ -483,9 +483,6 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 
     button = m_ui->changeWords = new QPushButton(tr("Change Words"));
     parentLayout->addWidget(button);
-
-    button = m_ui->clearTraining = new QPushButton(tr("Clear Training"));
-    parentLayout->addWidget(button);
 }
 
 void Morse::createModesMenu(QPushButton *modeButton) {
@@ -538,7 +535,6 @@ void Morse::createModesMenu(QPushButton *modeButton) {
 
 void Morse::setupConnections()
 {
-    connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
     connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
 }
 
