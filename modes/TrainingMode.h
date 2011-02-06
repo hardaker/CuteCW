@@ -11,6 +11,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QInputDialog>
 #include <QtGui/QCheckBox>
+#include <QtGui/QProgressBar>
 
 #include "ChooseSequenceDialog.h"
 
@@ -47,6 +48,7 @@ public slots:
     virtual void chooseCustomeSequence();
     virtual void setupWidgets(const QString &sequence);
     virtual QGridLayout *setupGraphs();
+    virtual void updateGraphs();
 
 private:
     QStringList                     m_sequences;
@@ -58,6 +60,7 @@ protected:
     QChar                           m_lastKey;
     QList<QChar>                    m_lastKeys;
     QList<QTime>                    m_lastTimes;
+    QMap<QChar, QProgressBar *>     m_progressBars;
     QMap<QChar, MorseStat *>        m_stats;
     QAction                        *m_doEntireSequenceButton;
     int                             m_maxBadLetters;

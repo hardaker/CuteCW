@@ -241,6 +241,7 @@ QTime TrainingMode::startNextTrainingKey() {
                 else
                     setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
                 m_lastTimes.push_back(m_morse->playIt(*letter));
+                updateGraphs();
                 return m_lastTimes.last();
             }
         }
@@ -287,6 +288,7 @@ QTime TrainingMode::startNextTrainingKey() {
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
             m_lastTimes.push_back(m_morse->playIt((*search).first));
+            updateGraphs();
             return m_lastTimes.last();
         }
     }
@@ -373,6 +375,22 @@ QGridLayout *TrainingMode::setupGraphs()
         bar->setTextVisible(false);
         gridLayout->addWidget(bar, 0, column);
         column++;
+
+        m_progressBars[theLetter] = bar;
     }
     return gridLayout;
 }
+
+#define MULTFACTOR 10
+void TrainingMode::updateGraphs()
+{
+    int fastestWPM = 0;
+    foreach(QChar theLetter, m_trainingSequence) {
+        fastestWPM = qMax(msToWPM(getStat(theLetter)->getAverageTime() / MULTFACTOR), fastestWPM);
+    }
+    foreach(QChar theLetter, m_trainingSequence) {
+        m_progressBars[theLetter]->setRange(0,fastestWPM);
+        m_progressBars[theLetter]->setValue(msToWPM(m_stats[theLetter]->getAverageTime() / MULTFACTOR));
+    }
+}
+
