@@ -472,7 +472,7 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 
     button = m_ui->modeMenu = new QPushButton(tr("Mode"));
     parentLayout->addWidget(button);
-    createModesMenu(button);
+    createModesMenuButton(button);
 
     button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
@@ -485,13 +485,18 @@ void Morse::setupTopButtons(QLayout *parentLayout)
     parentLayout->addWidget(button);
 }
 
-void Morse::createModesMenu(QPushButton *modeButton) {
+void Morse::createModesMenuButton(QPushButton *modeButton) {
     // setup mode menu
     m_signalMapper = new QSignalMapper(this);
 
     // Create the "mode" menu
     QMenu *modeMenu = new QMenu(modeButton);
     modeButton->setMenu(modeMenu);
+
+    createModesMenu(modeMenu);
+}
+
+void Morse::createModesMenu(QMenu *modeMenu) {
 
     QAction *action = modeMenu->addAction(m_modes[PLAY]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
