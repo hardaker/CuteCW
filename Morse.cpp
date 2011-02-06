@@ -23,7 +23,7 @@ Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_signalMapper(new QSignalMapper(this))
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
@@ -35,7 +35,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_ui(ui), m_tone(DEFAULT_TONE)
+      m_ui(ui), m_tone(DEFAULT_TONE), m_signalMapper(new QSignalMapper(this))
 {
 
     qDebug() << "new morse2";
@@ -486,9 +486,6 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 }
 
 void Morse::createModesMenuButton(QPushButton *modeButton) {
-    // setup mode menu
-    m_signalMapper = new QSignalMapper(this);
-
     // Create the "mode" menu
     QMenu *modeMenu = new QMenu(modeButton);
     modeButton->setMenu(modeMenu);

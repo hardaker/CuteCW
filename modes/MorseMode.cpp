@@ -143,6 +143,7 @@ void MorseMode::createMenuStructures()
 #else
     QMenuBar *topBar = m_morse->menuBar();
     m_cuteCWMenu = topBar->addMenu("&CuteCW");
+    m_morse->createModesMenu(m_cuteCWMenu->addMenu(tr("Change Mode")));
     m_optionsMenu = topBar->addMenu(tr("&Options"));
     modeMenus();
     m_helpMenu = topBar->addMenu(tr("&Help"));
