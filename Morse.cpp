@@ -1,3 +1,4 @@
+
 #include "Morse.h"
 
 #include <QtCore/QSettings>
@@ -470,9 +471,11 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 {
     QPushButton *button;
 
+#ifdef SMALL_DEVICE
     button = m_ui->modeMenu = new QPushButton(tr("Mode"));
     parentLayout->addWidget(button);
     createModesMenuButton(button);
+#endif
 
     button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
@@ -532,7 +535,9 @@ void Morse::createModesMenu(QMenu *modeMenu) {
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
     connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchMode(int)));
+#ifdef SMALL_DEVICE
     m_ui->modeMenu->setText(m_modes[PLAY]->name());
+#endif
 }
 
 void Morse::setupConnections()
