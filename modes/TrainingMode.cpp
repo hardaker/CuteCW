@@ -8,7 +8,7 @@
 #include <QtGui/QProgressBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_doEntireSequence(false), m_maxBadLetters(2)
+    : MorseMode(parent, ui), m_doEntireSequence(false), m_maxBadLetters(2), m_includeProgressBars(true)
 {
     setupSequences();
 }
@@ -313,8 +313,21 @@ void TrainingMode::switchSequence(const QString &sequence) {
     m_trainingSequence = sequence;
     setSequence(m_trainingSequence, 1);
     clear();
-    setupKeyWidgets(m_trainingSequence);
+    setupModeWidgets(m_trainingSequence);
     startNextTrainingKey();
+}
+
+void TrainingMode::setupModeWidgets(const QString &sequence) {
+    QVBoxLayout *vbox = new QVBoxLayout();
+    clearLayout(m_ui->forModes);
+    m_buttons = 0;
+    m_ui->forModes->addLayout(vbox);
+    setupKeyWidgets(sequence, vbox);
+    setSequence(sequence, 1);
+#ifndef SMALL_DEVICE
+    if (m_includeProgressBars)
+        vbox->addLayout(setupGraphs());
+#endif
 }
 
 void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
@@ -344,24 +357,23 @@ void TrainingMode::setDoEntireSequence(bool value) {
     qDebug() << "Switching to " << value;
 }
 
-void TrainingMode::setupWidgets(const QString &sequence)
+void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBars)
 {
-    QVBoxLayout *vbox = new QVBoxLayout();
-    m_ui->forModes->addLayout(vbox);
-    setupKeyWidgets(sequence, vbox);
+    m_includeProgressBars = includeProgressBars;
 
     // Create the preference items in the quick menu
     m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
     m_doEntireSequenceButton->setCheckable(true);
     m_doEntireSequenceButton->setChecked(false);
-    setSequence(m_trainingSequence, 1);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
-    vbox->addLayout(setupGraphs());
+
+    setupModeWidgets(sequence);
 }
 
 QGridLayout *TrainingMode::setupGraphs()
 {
     int column = 0;
+    m_progressBars.clear();
     QGridLayout *gridLayout = new QGridLayout();
     foreach(QChar theLetter, m_trainingSequence) {
         QLabel *label = new QLabel(theLetter.toUpper());
@@ -369,13 +381,14 @@ QGridLayout *TrainingMode::setupGraphs()
         gridLayout->addWidget(label, 1, column);
 
         QProgressBar *bar = new QProgressBar();
-        bar->setRange(1,26);
-        bar->setValue(qMin(column+1,26));
+        bar->setRange(0,20);
+        bar->setValue(1);
         bar->setOrientation(Qt::Vertical);
         bar->setTextVisible(false);
         gridLayout->addWidget(bar, 0, column);
         column++;
 
+        qDebug() << "bar for " << theLetter;
         m_progressBars[theLetter] = bar;
     }
     return gridLayout;
@@ -384,7 +397,7 @@ QGridLayout *TrainingMode::setupGraphs()
 #define MULTFACTOR 10
 void TrainingMode::updateGraphs()
 {
-    int fastestWPM = 0;
+    int fastestWPM = MULTFACTOR * m_morse->currentWPMGoal();
     foreach(QChar theLetter, m_trainingSequence) {
         fastestWPM = qMax(msToWPM(getStat(theLetter)->getAverageTime() / MULTFACTOR), fastestWPM);
     }

@@ -18,7 +18,7 @@ void GroupingMode::switchToMode() {
     clear();
 
     setupSequences();
-    setupWidgets(m_trainingSequence);
+    setupWidgets(m_trainingSequence, false);
 }
 
 void GroupingMode::handleKeyPress(QChar letter) {
