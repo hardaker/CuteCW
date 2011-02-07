@@ -76,5 +76,5 @@ QString SpeedTrainingMode::helpText()
 
 QString SpeedTrainingMode::name()
 {
-    return tr("Word Training");
+    return tr("Speed Training");
 }
