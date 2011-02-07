@@ -9,8 +9,6 @@ SpeedTrainingMode::SpeedTrainingMode(Morse *parent, Ui::MainWindow *ui)
 
 void SpeedTrainingMode::switchToMode() {
     m_ui->letter->show();
-    m_ui->clearTraining->show();
-    m_ui->modeMenu->setText("Speed Training");
     m_ui->changeSequence->show();
     //m_ui->forModes->show();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
@@ -74,4 +72,9 @@ QString SpeedTrainingMode::helpText()
 {
     return tr("Characters in the sequence will play at you with short pauses between each character.  As you guess more and more correctly the speed will increase "
               "and the spacing between the letters will decrease.");
+}
+
+QString SpeedTrainingMode::name()
+{
+    return tr("Speed Training");
 }

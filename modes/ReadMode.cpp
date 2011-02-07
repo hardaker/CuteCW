@@ -13,7 +13,6 @@ ReadMode::ReadMode(Morse *parent, Ui::MainWindow *ui)
 
 void
 ReadMode::switchToMode() {
-    m_ui->modeMenu->setText("Read to me!");
     m_ui->helpBar->setText("<font color=\"green\">Enter text and hit the play button to hear the entire sequence.</font>");
     m_ui->play->show();
 
@@ -90,5 +89,10 @@ QString ReadMode::helpText()
     return tr("Learning by hearing a stream of text can be difficult at first.  Start with simple books like children would start with, like 'Cat in the Hat', and "
               "only after mastering listening to those simple books or text should you move to difficult texts like Shakespere or technical documents."
               "<p><b>WARNING:</b> do not load big files...  A bug will end up using way too much memory.");
+}
+
+QString ReadMode::name()
+{
+    return tr("Read to me");
 }
 

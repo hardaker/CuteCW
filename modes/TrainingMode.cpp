@@ -101,6 +101,10 @@ void TrainingMode::setupSequences() {
     connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
 }
 
+void TrainingMode::setupTrainingWidgets() {
+    connect(m_optionsMenu->addAction(tr("Clear Training")), SIGNAL(triggered()), this, SLOT(clear()));
+}
+
 void TrainingMode::chooseCustomeSequence() {
     CustomSequenceDialog dialog(m_sequences[EVERYTHING], m_trainingSequence);
     if (dialog.exec() == QDialog::Accepted) {
@@ -362,7 +366,7 @@ void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBar
     m_includeProgressBars = includeProgressBars;
 
     // Create the preference items in the quick menu
-    m_doEntireSequenceButton = m_morse->menuBar()->addAction("Use Entire Sequence");
+    m_doEntireSequenceButton = m_optionsMenu->addAction(tr("Use &Entire Sequence"));
     m_doEntireSequenceButton->setCheckable(true);
     m_doEntireSequenceButton->setChecked(false);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));

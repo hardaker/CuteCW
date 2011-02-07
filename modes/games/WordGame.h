@@ -14,6 +14,7 @@ public:
 
     virtual void switchToMode();
 
+    virtual QString name();
     virtual QString helpText();
 
 signals:

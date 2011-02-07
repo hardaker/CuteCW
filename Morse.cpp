@@ -1,3 +1,4 @@
+
 #include "Morse.h"
 
 #include <QtCore/QSettings>
@@ -23,7 +24,7 @@ Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE)
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_signalMapper(new QSignalMapper(this))
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
@@ -35,7 +36,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_ui(ui), m_tone(DEFAULT_TONE)
+      m_ui(ui), m_tone(DEFAULT_TONE), m_signalMapper(new QSignalMapper(this))
 {
 
     qDebug() << "new morse2";
@@ -205,8 +206,6 @@ void Morse::switchMode(int newmode) {
     m_gameMode = (Morse::TrainingMode) newmode;
     setupWidgets();
     m_modes[(TrainingMode) newmode]->switchToYou();
-
-    connect(menuBar()->addAction("About"), SIGNAL(triggered()), this, SLOT(aboutButton()));
 }
 
 //
@@ -472,9 +471,11 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 {
     QPushButton *button;
 
+#ifdef SMALL_DEVICE
     button = m_ui->modeMenu = new QPushButton(tr("Mode"));
     parentLayout->addWidget(button);
-    createModesMenu(button);
+    createModesMenuButton(button);
+#endif
 
     button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
@@ -485,66 +486,66 @@ void Morse::setupTopButtons(QLayout *parentLayout)
 
     button = m_ui->changeWords = new QPushButton(tr("Change Words"));
     parentLayout->addWidget(button);
-
-    button = m_ui->clearTraining = new QPushButton(tr("Clear Training"));
-    parentLayout->addWidget(button);
-
-    button = m_ui->prefs = new QPushButton(tr("Preferences"));
-    parentLayout->addWidget(button);
 }
 
-void Morse::createModesMenu(QPushButton *modeButton) {
-    // setup mode menu
-    m_signalMapper = new QSignalMapper(this);
-
+void Morse::createModesMenuButton(QPushButton *modeButton) {
     // Create the "mode" menu
     QMenu *modeMenu = new QMenu(modeButton);
     modeButton->setMenu(modeMenu);
 
-    QAction *action = modeMenu->addAction(tr("Type Morse Code"));
+    createModesMenu(modeMenu);
+}
+
+void Morse::createModesMenu(QMenu *modeMenu) {
+
+    QAction *action = modeMenu->addAction(m_modes[PLAY]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::PLAY);
 
     QMenu *trainingMenu = modeMenu->addMenu(tr("Training"));
 
-    action = trainingMenu->addAction(tr("Recognition Train"));
+    action = trainingMenu->addAction(m_modes[TRAIN]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::TRAIN);
 
-    action = trainingMenu->addAction(tr("Speed Training"));
+    action = trainingMenu->addAction(m_modes[SPEEDTRAIN]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::SPEEDTRAIN);
 
-    action = trainingMenu->addAction(tr("Word Training"));
+    action = trainingMenu->addAction(m_modes[WORDS]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDS);
 
-    action = trainingMenu->addAction(tr("Grouping Training"));
+    action = trainingMenu->addAction(m_modes[GROUPS]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPS);
 
     QMenu *gamesMenu = modeMenu->addMenu(tr("Games"));
 
-    action = gamesMenu->addAction(tr("Word Accuracy"));
+    action = gamesMenu->addAction(m_modes[WORDGAME]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::WORDGAME);
 
-    action = gamesMenu->addAction(tr("Grouping Accuracy"));
+    action = gamesMenu->addAction(m_modes[GROUPGAME]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPGAME);
 
-    action = modeMenu->addAction(tr("Read to me!"));
+    action = modeMenu->addAction(m_modes[READ]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
     connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchMode(int)));
-    m_ui->modeMenu->setText(tr("Type Morse Code"));
+#ifdef SMALL_DEVICE
+    m_ui->modeMenu->setText(m_modes[PLAY]->name());
+#endif
 }
 
 void Morse::setupConnections()
 {
-    connect(m_ui->prefs, SIGNAL(clicked()), this, SLOT(prefsButton()));
-
-    connect(m_ui->clearTraining, SIGNAL(clicked()), this, SLOT(clearStatsButton()));
     connect(m_ui->play, SIGNAL(clicked()), this, SLOT(playButton()));
+}
+
+MainWindow *Morse::parent()
+{
+    return m_parent;
 }

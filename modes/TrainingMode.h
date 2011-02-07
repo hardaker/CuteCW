@@ -36,6 +36,7 @@ public:
     void setupModeWidgets(const QString &sequence);
 
     virtual void clear();
+    virtual void setupTrainingWidgets();
 
 public slots:
     virtual void play();

@@ -1,5 +1,6 @@
 #include "MorseMode.h"
 #include "Morse.h"
+#include "MainWindow.h"
 
 #include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
@@ -113,8 +114,6 @@ float MorseMode::msToPauseWPMF(float ms) {
 void MorseMode::hideWidgets()
 {
     m_ui->letter->hide();
-    m_ui->clearTraining->hide();
-    m_ui->modeMenu->setText("Recognition Training");
     m_ui->changeSequence->hide();
     m_ui->changeWords->hide();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
@@ -129,17 +128,46 @@ void MorseMode::hideWidgets()
 
 void MorseMode::switchToYou()
 {
+    createMenuStructures();
     m_morse->createTones(m_morse->currentWPMGoal());
     hideWidgets();
     switchToMode();
     createGlobalActions();
+#ifdef SMALL_DEVICE
+    m_ui->modeMenu->setText(name());
+#endif
+}
+
+void MorseMode::createMenuStructures()
+{
+#ifdef SMALL_DEVICE
+    m_helpMenu = m_optionsMenu = m_cuteCWMenu = m_morse->menuBar();
+    // m_morse->createModesMenu(m_morse->menuBar()->addMenu(tr("Change Mode")));
+#else
+    QMenuBar *topBar = m_morse->menuBar();
+    m_cuteCWMenu = topBar->addMenu("&CuteCW");
+    m_morse->createModesMenu(m_cuteCWMenu->addMenu(tr("Change Mode")));
+    m_optionsMenu = topBar->addMenu(tr("&Options"));
+    modeMenus();
+    m_helpMenu = topBar->addMenu(tr("&Help"));
+#endif
+}
+
+void MorseMode::modeMenus()
+{
 }
 
 void MorseMode::createGlobalActions()
 {
     // Create the preference items in the quick menu
-    QAction *button = m_morse->menuBar()->addAction("Help");
+    QAction *button = m_helpMenu->addAction(tr("&Mode Help"));
     connect(button, SIGNAL(triggered()), this, SLOT(help()));
+
+    connect(m_helpMenu->addAction(tr("&About")), SIGNAL(triggered()), m_morse, SLOT(aboutButton()));
+
+    connect(m_optionsMenu->addAction(tr("&Preferences")), SIGNAL(triggered()), m_morse, SLOT(prefsButton()));
+
+    connect(m_cuteCWMenu->addAction(tr("&Quit")), SIGNAL(triggered()), m_morse->parent(), SLOT(close()));
 }
 
 void MorseMode::clearModeLayout() {

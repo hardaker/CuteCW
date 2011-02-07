@@ -44,7 +44,8 @@ public:
 
     void setupWidgets();
     void setupTopButtons(QLayout *parentLayout);
-    void createModesMenu(QPushButton *modeButton);
+    void createModesMenuButton(QPushButton *modeButton);
+    void createModesMenu(QMenu *modeButton);
     void setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing);
     void setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing);
     void setupConnections();
@@ -83,6 +84,8 @@ public:
     void setAudioMode(AudioMode newmode);
     TrainingMode trainingMode();
     BadLetterWeighting badLetterWeighting();
+
+    MainWindow *parent();
 
 public slots:
 

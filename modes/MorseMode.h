@@ -37,12 +37,15 @@ public:
     void setupKeyWidgets(const QString &sequence, QBoxLayout *inside = 0);
     void setupWPMWidgets(QBoxLayout *to = 0);
     void createGlobalActions();
+    void createMenuStructures();
+    virtual void modeMenus();
 
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
 
     void clearLayout(QLayout *layout);
 
+    virtual QString name() = 0;
     virtual QString helpText() = 0;
 
 public slots:
@@ -82,6 +85,16 @@ protected:
     RunningMode                     m_runningMode;
     QSignalMapper                  *m_mapper;
     QGridLayout                    *m_buttons;
+#ifdef SMALL_DEVICE
+    QMenuBar                       *m_helpMenu;
+    QMenuBar                       *m_optionsMenu;
+    QMenuBar                       *m_cuteCWMenu;
+#else
+    QMenu                          *m_helpMenu;
+    QMenu                          *m_optionsMenu;
+    QMenu                          *m_modeMenu;
+    QMenu                          *m_cuteCWMenu;
+#endif
 };
 
 #endif // MORSEMODE_H
