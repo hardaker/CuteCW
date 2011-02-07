@@ -394,16 +394,26 @@ QGridLayout *TrainingMode::setupGraphs()
     return gridLayout;
 }
 
-#define MULTFACTOR 10
+#define MULTFACTOR 10.0
 void TrainingMode::updateGraphs()
 {
     int fastestWPM = MULTFACTOR * m_morse->currentWPMGoal();
+    qDebug() << "start graph WPM: " << fastestWPM;
     foreach(QChar theLetter, m_trainingSequence) {
-        fastestWPM = qMax(msToWPM(getStat(theLetter)->getAverageTime() / MULTFACTOR), fastestWPM);
+        float aveTime = getStat(theLetter)->getAverageTime();
+        if (aveTime > 0) {
+            fastestWPM = qMax(msToPauseWPM(aveTime / MULTFACTOR), fastestWPM);
+            qDebug() << " " << theLetter << ": " << aveTime << msToPauseWPM(aveTime / MULTFACTOR);
+        }
     }
+    qDebug() << "max graph WPM: " << fastestWPM;
     foreach(QChar theLetter, m_trainingSequence) {
         m_progressBars[theLetter]->setRange(0,fastestWPM);
-        m_progressBars[theLetter]->setValue(msToWPM(m_stats[theLetter]->getAverageTime() / MULTFACTOR));
+        float aveTime = getStat(theLetter)->getAverageTime();
+        if (aveTime < 0)
+            aveTime = .5; // seconds is very slow
+        m_progressBars[theLetter]->setValue(msToPauseWPM(aveTime / MULTFACTOR));
     }
+    qDebug() << "max graph WPM: " << fastestWPM;
 }
 

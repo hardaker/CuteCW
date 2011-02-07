@@ -24,6 +24,7 @@ float MorseStat::getAverageTime() {
     return total/m_tryCount;
 }
 
+
 void MorseStat::addTime(float newtime) {
     m_timeList.append(newtime);
     if (m_tryCount >= maxTimeCount)
