@@ -8,6 +8,9 @@
 #include <QtGui/QIcon>
 #include <qdebug.h>
 
+// for SMALL_DEVICE definition
+#include "modes/MorseMode.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -16,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 {
     ui->setupUi(this);
+#ifdef SMALL_DEVICE
+    resize(800,440);
+#else
+    resize(1000,700);
+#endif
 
     setWindowIcon(QIcon(":/icons/64x64/cutecw.png"));
 

@@ -65,7 +65,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         totalPercent += thisPercent;
         if (minPercent > thisPercent)
             minPercent = thisPercent;
-        if (thisPercent == 0 || stat->getTryCount() <= m_minimumTries) {
+        if (thisPercent == 0) {
             if (m_doEntireSequence) {
                 thisPercent = 50;
             } else {
@@ -86,10 +86,10 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         qDebug() << "  adding " << *letter << " / " << thisPercent;
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
-        if(thisPercent <= m_percentGoal) {
+        if(thisPercent <= m_percentGoal || stat->getTryCount() <= m_minimumTries) {
             qDebug() << "   too low: " << *letter << " / " << thisPercent;
-            if (++badLetters >= m_maxBadLetters) {
-                // we're not fast enough; break here
+            if (++badLetters >= m_maxBadLetters && stat->getTryCount() > m_minimumTries) {
+                // we're not accurate enough; break here
                 break;
             }
         }
@@ -129,4 +129,13 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     }
     qDebug() << "**** shouldn't get here: " << randPercent << "," << totalPercent;
     return QTime();
+}
+
+void LetterTrainingMode::updateGraphs()
+{
+    foreach(QChar theLetter, m_trainingSequence) {
+        m_progressBars[theLetter]->setRange(0, 100);
+        m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage());
+    }
+    // qDebug() << "max graph WPM: " << fastestWPM;
 }

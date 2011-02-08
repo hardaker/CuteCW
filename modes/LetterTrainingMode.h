@@ -18,6 +18,9 @@ public:
     virtual QString name();
     virtual QString helpText();
 
+public slots:
+    virtual void updateGraphs();
+
 private:
     static const int m_percentGoal = 90;
     static const int m_minimumTries = 5;
