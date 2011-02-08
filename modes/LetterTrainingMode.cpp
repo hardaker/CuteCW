@@ -14,10 +14,10 @@ void LetterTrainingMode::switchToMode() {
     setupTrainingWidgets();
     m_ui->changeSequence->show();
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear as accurately as possible within a half a second.</font>");
-    clear();
 
     setupSequences();
     setupWidgets(m_trainingSequence);
+    clear();
 }
 
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
