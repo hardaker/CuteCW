@@ -13,7 +13,7 @@ void LetterTrainingMode::switchToMode() {
     m_ui->play->show();
     setupTrainingWidgets();
     m_ui->changeSequence->show();
-    m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.</font>");
+    m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear as accurately as possible within a half a second.</font>");
     clear();
 
     setupSequences();
@@ -87,9 +87,9 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
         if(thisPercent <= m_percentGoal || stat->getTryCount() <= m_minimumTries) {
-            qDebug() << "   too low: " << *letter << " / " << thisPercent;
-            if (++badLetters >= m_maxBadLetters && stat->getTryCount() > m_minimumTries) {
-                // we're not accurate enough; break here
+            qDebug() << "   too low: " << *letter << " / " << thisPercent << " / " << stat->getTryCount();
+            if (++badLetters >= m_maxBadLetters || stat->getTryCount() <= m_minimumTries) {
+                // enough letters aren't accurate; break here
                 break;
             }
         }
