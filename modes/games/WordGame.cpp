@@ -69,10 +69,8 @@ void WordGame::setSequenceText()
 
 QString WordGame::helpText()
 {
-    return tr("Characters in the chosen training sequence will be keyed starting with a single character.  "
-              "Type in the characters you hear in the group.  Your results good or bad will be displayed "
-              "on the screen in green/red colors indicating good/bad guesses."
-              "<p>As you guess more and more groups correctly the number of characters in the group will slowly go upward.");
+    return tr("Random words from the word group will be played to you.  Try to copy or hear them and type them in.  "
+              "Correctly guessing the words will earn you a higher score and will also increase the WPM rate.");
 }
 
 QString WordGame::name()

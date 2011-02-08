@@ -19,9 +19,9 @@ void PlayMode::switchToMode()
 
 QString PlayMode::helpText()
 {
-    return tr("<p>In </i>Play mode</i>, simply type keys and the Cute CW engine will play what you type at the speeds set in the preferences dialog box.  "
-              "To begin your listening training, switch to one of the other modes."
-              "<p>Genreally you should follow the order in the mode menu.");
+    return tr("<p>In </i>Type Morse Code</i> mode, simply type keys and the Cute CW engine will play what you type at the speeds set in the preferences dialog box.  "
+              "This is a fun mode to simply hear code that you type, but to begin your true training, switch to one of the other modes."
+              "<p>You may also wish to try the <i>read to me</i> mode as well.");
 }
 
 QString PlayMode::name()

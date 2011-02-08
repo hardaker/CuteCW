@@ -70,8 +70,10 @@ void SpeedTrainingMode::handleKeyPress(QChar letterPressed) {
 
 QString SpeedTrainingMode::helpText()
 {
-    return tr("Characters in the sequence will play at you with short pauses between each character.  As you guess more and more correctly the speed will increase "
-              "and the spacing between the letters will decrease.");
+    return tr("Characters in the sequence will play at you with short pauses between each character.  The goal here is to train for both accuracy while "
+              "under slight pressure as the next letter starts playing at you.  As you guess more and more correctly the speed will increase and incorrect guesses "
+              "will slow down the keying rate.  "
+              "As you get better, the spacing between the letters will decrease and will continue to challange you hopefully right near your learning point.");
 }
 
 QString SpeedTrainingMode::name()

@@ -133,7 +133,8 @@ QString WordTrainingMode::helpText()
             tr("Most words that you read or hear are from a very small set of words.  For example, 33% of the most common words fall into 100 simple words.  "
               "If you memorize these words so you can regonize them not as individual letters but as entire words you'll greatly increase your listening rate.  "
               "<p>As you hear words, type them in and hit enter when done.  After hitting enter the next word will be played.  "
-               "As you begin the number of words selected from will be small but will increase quickly for every right answer (and decrease for every wrong).");
+               "As you begin the number of words selected from will be small but will increase quickly for every right answer (and decrease for every wrong)."
+               "<p>Once you get good at the words in this group, try switching to the <i>Word Game</i> mode and see what score you can achieve!");
 }
 
 QString WordTrainingMode::name()

@@ -57,6 +57,7 @@ void MorseMode::help() {
     //helptext->setWindowFlag(Qt::Window);
     helptext->setReadOnly(true);
     helptext->append(helpText());
+    helptext->resize(800,440);
     helptext->show();
 }
 

@@ -87,8 +87,11 @@ void ReadMode::audioStopped()
 QString ReadMode::helpText()
 {
     return tr("Learning by hearing a stream of text can be difficult at first.  Start with simple books like children would start with, like 'Cat in the Hat', and "
-              "only after mastering listening to those simple books or text should you move to difficult texts like Shakespere or technical documents."
-              "<p><b>WARNING:</b> do not load big files...  A bug will end up using way too much memory.");
+              "only after mastering listening to those simple books with short words should you move to difficult texts like Shakespere or technical documents."
+              "<p>To listen to text more slowly, try to leave the WPM rate set to your goal (we suggest 20) and vary only the Letter and Word spacing.  "
+              "The word spacing affects the pauses between the words, and the letter spacing affects the pauses between the letters.  "
+              "Start by decreasing both if you need to, but try and get back to full speed letter spacing first and then word spacing. "
+              "<p><b>BUG WARNING:</b> do not load big files...  A bug will end up using way too much memory.");
 }
 
 QString ReadMode::name()
