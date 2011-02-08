@@ -15,6 +15,8 @@ int MorseStat::getGoodCount() {
 }
 
 int MorseStat::getGoodPercentage() {
+    if (m_tryCount == 0)
+        return 0;
     return int(100.0 * float(m_goodCount)/float(m_tryCount));
 }
 
