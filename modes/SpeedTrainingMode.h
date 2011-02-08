@@ -19,6 +19,7 @@ public:
     virtual QString name();
     virtual QString helpText();
 
+    virtual QTime startNextTrainingKey();
     void startTimerToNextKey(QTime plusTime);
 
 public slots:
