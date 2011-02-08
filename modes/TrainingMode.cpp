@@ -193,13 +193,13 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
 
     // if the keyed incorrectly, penalize them 3 times their average else add in the results
     if (letterPressed == lastKey) {
-        pressedStat->addTime(msElapsed);
+        pressedStat->addStat(msElapsed, true);
         m_goodCount++;
     } else {
         if (pressedStat->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
-            pressedStat->addTime(3.0 * pressedStat->getAverageTime());
+            pressedStat->addStat(3.0 * pressedStat->getAverageTime(), false);
         if (getStat(lastKey)->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
-            getStat(lastKey)->addTime(3.0 * getStat(lastKey)->getAverageTime());
+            getStat(lastKey)->addStat(3.0 * getStat(lastKey)->getAverageTime(), false);
         m_badCount++;
     }
 }
