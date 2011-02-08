@@ -13,9 +13,18 @@ public:
 
     virtual void switchToMode();
     virtual void handleKeyPress(QChar letterPressed);
+    virtual QTime startNextTrainingKey();
+    virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
     virtual QString name();
     virtual QString helpText();
+
+public slots:
+    virtual void updateGraphs();
+
+private:
+    static const int m_percentGoal = 90;
+    static const int m_minimumTries = 5;
 };
 
 #endif // LETTERTRAININGMODE_H

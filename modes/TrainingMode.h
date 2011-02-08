@@ -30,13 +30,14 @@ public:
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
-    QTime startNextTrainingKey();
+    virtual QTime startNextTrainingKey();
     MorseStat *getStat(const QChar &key);
     void setWPMLabel(float wpm);
     void setupModeWidgets(const QString &sequence);
 
     virtual void clear();
     virtual void setupTrainingWidgets();
+    virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
 public slots:
     virtual void play();
@@ -55,9 +56,9 @@ public slots:
 private:
     QStringList                     m_sequences;
     QSignalMapper                  *m_sequenceSignalMapper;
-    bool                            m_doEntireSequence;
 
 protected:
+    bool                            m_doEntireSequence;
     QString                         m_trainingSequence;
     QChar                           m_lastKey;
     QList<QChar>                    m_lastKeys;

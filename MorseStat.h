@@ -11,9 +11,15 @@ public:
 
     const int maxTimeCount;
 
-    void  addTime(float newtime);
     float getAverageTime();
     int   getTryCount();
+    int   getGoodCount();
+    int   getGoodPercentage();
+
+    void addStat(float newtime, bool successful);
+
+private:
+    void  addTime(float newtime);
 
 signals:
 
@@ -21,6 +27,7 @@ public slots:
 
 private:
     int             m_tryCount;
+    int             m_goodCount;
     QList<float>    m_timeList;
 };
 
