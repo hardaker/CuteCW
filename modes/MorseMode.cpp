@@ -56,7 +56,7 @@ void MorseMode::help() {
     QTextEdit *helptext = new QTextEdit();
     //helptext->setWindowFlag(Qt::Window);
     helptext->setReadOnly(true);
-    helptext->append(helpText());
+    helptext->append("<h2>" + name() + " Mode</h2>\n" + helpText());
     helptext->resize(800,440);
     helptext->show();
 }
