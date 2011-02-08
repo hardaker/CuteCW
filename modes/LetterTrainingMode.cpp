@@ -131,11 +131,20 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     return QTime();
 }
 
+bool LetterTrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
+    if (msElapsed > 500) {
+        return true;
+    }
+    return false;
+}
+
 void LetterTrainingMode::updateGraphs()
 {
+#ifndef SMALL_DEVICE
     foreach(QChar theLetter, m_trainingSequence) {
         m_progressBars[theLetter]->setRange(0, 100);
         m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage());
     }
     // qDebug() << "max graph WPM: " << fastestWPM;
+#endif
 }

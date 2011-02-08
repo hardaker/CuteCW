@@ -174,3 +174,33 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
     qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
     return QTime();
 }
+
+bool SpeedTrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
+    if ((stat->getTryCount() > 0 && msElapsed > 5 * stat->getAverageTime()) ||
+        (stat->getTryCount() == 0 && msElapsed > 5 * msToPauseWPM(m_morse->currentWPMAccept()))) {
+        return true;
+    }
+    return false;
+}
+
+#define MULTFACTOR 10.0
+void SpeedTrainingMode::updateGraphs()
+{
+#ifndef SMALL_DEVICE
+    int fastestWPM = MULTFACTOR * m_morse->currentWPMGoal();
+    foreach(QChar theLetter, m_trainingSequence) {
+        float aveTime = getStat(theLetter)->getAverageTime();
+        if (aveTime > 0) {
+            fastestWPM = qMax(msToPauseWPM(aveTime / MULTFACTOR), fastestWPM);
+        }
+    }
+    foreach(QChar theLetter, m_trainingSequence) {
+        m_progressBars[theLetter]->setRange(0,fastestWPM);
+        float aveTime = getStat(theLetter)->getAverageTime();
+        if (aveTime < 0)
+            aveTime = .5; // seconds is very slow
+        m_progressBars[theLetter]->setValue(msToPauseWPM(aveTime / MULTFACTOR));
+    }
+#endif
+    // qDebug() << "max graph WPM: " << fastestWPM;
+}

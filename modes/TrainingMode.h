@@ -37,6 +37,7 @@ public:
 
     virtual void clear();
     virtual void setupTrainingWidgets();
+    virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
 public slots:
     virtual void play();

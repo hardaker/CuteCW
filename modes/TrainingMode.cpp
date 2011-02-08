@@ -137,6 +137,7 @@ void TrainingMode::clear()  {
 
     if (runningMode() == RUNNING)
         playButton(); // pretend a pause was pressed too
+    updateGraphs();
 }
 
 void TrainingMode::play() {
@@ -177,8 +178,7 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     MorseStat *pressedStat = getStat(letterPressed);
 
     // if the user took a *really* long time, ignore the key press and assume they got distracted from training
-    if ((pressedStat->getTryCount() > 0 && msElapsed > 5 * pressedStat->getAverageTime()) ||
-        (pressedStat->getTryCount() == 0 && msElapsed > 5 * msToPauseWPM(m_morse->currentWPMAccept()))) {
+    if (elapsedTimeWasTooLong(msElapsed, pressedStat)) {
         qDebug() << "ignoring key press; too long and probably an interruption";
         return;
     }
@@ -302,28 +302,16 @@ QGridLayout *TrainingMode::setupGraphs()
     return gridLayout;
 }
 
-#define MULTFACTOR 10.0
-void TrainingMode::updateGraphs()
-{
-    int fastestWPM = MULTFACTOR * m_morse->currentWPMGoal();
-    foreach(QChar theLetter, m_trainingSequence) {
-        float aveTime = getStat(theLetter)->getAverageTime();
-        if (aveTime > 0) {
-            fastestWPM = qMax(msToPauseWPM(aveTime / MULTFACTOR), fastestWPM);
-        }
-    }
-    foreach(QChar theLetter, m_trainingSequence) {
-        m_progressBars[theLetter]->setRange(0,fastestWPM);
-        float aveTime = getStat(theLetter)->getAverageTime();
-        if (aveTime < 0)
-            aveTime = .5; // seconds is very slow
-        m_progressBars[theLetter]->setValue(msToPauseWPM(aveTime / MULTFACTOR));
-    }
-    // qDebug() << "max graph WPM: " << fastestWPM;
-}
 
 QTime TrainingMode::startNextTrainingKey()
 {
     exit(1); // should not ever be called
 }
 
+void TrainingMode::updateGraphs()
+{
+}
+
+bool TrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
+    exit(1); // should not ever be called
+}

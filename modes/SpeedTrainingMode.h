@@ -21,10 +21,12 @@ public:
 
     virtual QTime startNextTrainingKey();
     void startTimerToNextKey(QTime plusTime);
+    virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
 public slots:
     void startTimerToNextKey(int plusMSecs = 0);
     void startNextSpeedKey();
+    virtual void updateGraphs();
 };
 
 #endif // SPEEDTRAININGMODE_H

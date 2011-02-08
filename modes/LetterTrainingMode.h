@@ -14,6 +14,7 @@ public:
     virtual void switchToMode();
     virtual void handleKeyPress(QChar letterPressed);
     virtual QTime startNextTrainingKey();
+    virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
     virtual QString name();
     virtual QString helpText();
