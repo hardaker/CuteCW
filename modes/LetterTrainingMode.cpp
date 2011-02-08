@@ -46,8 +46,8 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         return QTime();
     qDebug() << "--- Start next training key";
     int letterCount = 0;
-    QList<QPair<QChar, float> > letters;
-    float totalTime = 0.0, thisTime = 0.0, minTime = 0.0;
+    QList<QPair<QChar, int> > letters;
+    int totalPercent = 0, thisPercent = 0, minPercent = 0;
     MorseStat *stat = 0;
     QString currentLetterGoal;
     int badLetters = 0;
@@ -61,37 +61,33 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         letterCount++;
         currentLetterGoal = (*letter).toUpper();
         stat = getStat(*letter);
-        thisTime = stat->getAverageTime();
-        totalTime += thisTime;
-        if (minTime > thisTime)
-            minTime = thisTime;
-        if (thisTime < 0) {
+        thisPercent = stat->getGoodPercentage();
+        totalPercent += thisPercent;
+        if (minPercent > thisPercent)
+            minPercent = thisPercent;
+        if (thisPercent == 0 || stat->getTryCount() <= m_minimumTries) {
             if (m_doEntireSequence) {
-                thisTime = 1000*60.0/(50.0*float(m_morse->currentWPMAccept()));
+                thisPercent = 50;
             } else {
                 // never keyed yet; do it immediately if we got this far
                 qDebug() << "|keying: " << *letter;
                 m_lastKey = *letter;
                 m_lastKeys.append(*letter);
                 setSequence(m_trainingSequence, letterCount);
-                m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+                m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
                                       *letter + ": NEW");
-                if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
-                    setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
-                                              totalTime/float(letterCount)));
-                else
-                    setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
+                setWPMLabel(thisPercent);
                 m_lastTimes.push_back(m_morse->playIt(*letter));
                 updateGraphs();
                 return m_lastTimes.last();
             }
         }
 
-        //qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
-        letters.append(QPair<QChar, float>(*letter, thisTime));
+        qDebug() << "  adding " << *letter << " / " << thisPercent;
+        letters.append(QPair<QChar, int>(*letter, thisPercent));
 
-        if(msToPauseWPM(thisTime) <= m_morse->currentWPMAccept()) {
-            qDebug() << " too slow: " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
+        if(thisPercent <= m_percentGoal) {
+            qDebug() << "   too low: " << *letter << " / " << thisPercent;
             if (++badLetters >= m_maxBadLetters) {
                 // we're not fast enough; break here
                 break;
@@ -101,30 +97,28 @@ QTime LetterTrainingMode::startNextTrainingKey() {
 
     // They have the whole sequence active at this point
 
-    m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
-                          currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime)));
-    if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
-        setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount)));
-    else
-        setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
+    m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
+                          *letter + ": NEW");
+    setWPMLabel(totalPercent/letterCount);
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
-    float randTime, subTime = 0.0;
+    float randPercent;
+    int subPercent = 0;
     if (m_morse->badLetterWeighting() == Morse::HIGH) {
-        subTime = minTime/2;
-        randTime = (totalTime - subTime * letters.count())*float(qrand())/float(RAND_MAX);
+        subPercent = minPercent/2;
+        randPercent = (totalPercent - subPercent * letters.count())*float(qrand())/float(RAND_MAX);
     } else
-        randTime = totalTime*float(qrand())/float(RAND_MAX);
+        randPercent = totalPercent*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
-    // qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
-    QList<QPair<QChar, float> >::iterator search;
-    QList<QPair<QChar, float> >::iterator last = letters.end();
+    // qDebug() << "letter set random: " << randPercent << " total: " << totalPercent << " min: " << minPercent/2 << ", count: " << letters.count();
+    QList<QPair<QChar, int> >::iterator search;
+    QList<QPair<QChar, int> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
         //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
-        newTotal += ((*search).second - subTime);
-        if (newTotal > randTime) {
+        newTotal += ((*search).second - subPercent);
+        if (newTotal > randPercent) {
             qDebug() << ">keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
@@ -133,6 +127,6 @@ QTime LetterTrainingMode::startNextTrainingKey() {
             return m_lastTimes.last();
         }
     }
-    qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
+    qDebug() << "**** shouldn't get here: " << randPercent << "," << totalPercent;
     return QTime();
 }

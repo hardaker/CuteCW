@@ -17,6 +17,10 @@ public:
 
     virtual QString name();
     virtual QString helpText();
+
+private:
+    static const int m_percentGoal = 90;
+    static const int m_minimumTries = 5;
 };
 
 #endif // LETTERTRAININGMODE_H
