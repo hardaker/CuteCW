@@ -14,10 +14,11 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->helpBar->setText("<font color=\"green\">Type the letter you hear ASAP.  The keying will get faster.</font>");
     m_ui->play->show();
     m_ui->WPM->show();
-    clear();
 
     setupSequences();
     setupWidgets(m_trainingSequence);
+
+    clear();
 }
 
 void SpeedTrainingMode::play() {
