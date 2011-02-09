@@ -57,6 +57,7 @@ void WordTrainingMode::switchToMode() {
 
     setupWordsMenu();
     setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
+    setSequenceText();
 }
 
 void WordTrainingMode::switchWords(int sequence) {

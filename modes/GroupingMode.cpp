@@ -16,6 +16,7 @@ void GroupingMode::switchToMode() {
 
     setupSequences();
     setupWidgets(m_trainingSequence, false);
+    setSequenceText();
 }
 
 void GroupingMode::handleKeyPress(QChar letter) {
@@ -121,7 +122,7 @@ QString GroupingMode::helpText()
 void GroupingMode::loadSettings(QSettings &settings)
 {
     QString prefix = name();
-    m_groupLength = settings.value(prefix + "/goodCount", 1).toInt();
+    m_groupLength = settings.value(prefix + "/groupLength", 1).toInt();
     m_goodGuesses = settings.value(prefix + "/goodGuesses", 1).toInt();
     m_badGuesses  = settings.value(prefix + "/badGuesses", 1).toInt();
 }
