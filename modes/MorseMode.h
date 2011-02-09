@@ -5,6 +5,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTime>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QSettings>
 #include <qaudio.h>
 
 // #include "Morse.h"
@@ -48,6 +49,7 @@ public:
     virtual QString name() = 0;
     virtual QString helpText() = 0;
 
+
 public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
     virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version
@@ -74,6 +76,9 @@ public slots:
     virtual void changeWPM(int wpm);
     virtual void changeSpaceWPM(int wpm);
     virtual void changeLetterSpaceWPM(int wpm);
+
+    virtual void loadSettings(QSettings &settings);
+    virtual void saveSettings(QSettings &settings);
 
 protected:
     Morse                          *m_morse;

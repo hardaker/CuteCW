@@ -2,6 +2,7 @@
 #define MORSESTAT_H
 
 #include <QObject>
+#include <QtCore/QSettings>
 
 class MorseStat : public QObject
 {
@@ -24,6 +25,7 @@ private:
 signals:
 
 public slots:
+    void saveStats(QSettings &settings, const QString &statSetName);
 
 private:
     int             m_tryCount;

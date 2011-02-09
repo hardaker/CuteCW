@@ -331,3 +331,11 @@ void MorseMode::changeLetterSpaceWPM(int wpm) {
     m_letterSpaceWPM = wpm;
     m_morse->createTones(m_WPM, m_spaceWPM, m_letterSpaceWPM);
 }
+
+void MorseMode::saveSettings(QSettings &settings) {
+    Q_UNUSED(settings);
+}
+
+void MorseMode::loadSettings(QSettings &settings) {
+    Q_UNUSED(settings);
+}

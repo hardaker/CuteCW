@@ -313,5 +313,7 @@ void TrainingMode::updateGraphs()
 }
 
 bool TrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
+    Q_UNUSED(msElapsed);
+    Q_UNUSED(stat);
     exit(1); // should not ever be called
 }

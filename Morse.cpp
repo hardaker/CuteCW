@@ -101,7 +101,10 @@ void Morse::saveSettings() {
     settings.setValue("WPM/Accept", m_currentWPMAccept);
     settings.setValue("Tone", m_tone);
     settings.setValue("LetterWeighting", int(m_badLetterWeighting));
-    qDebug() << "saving: " << m_badLetterWeighting;
+
+    for(int i = PLAY; i <= maximumTrainingMode; i++) {
+        m_modes[(TrainingMode) i]->saveSettings(settings);
+    }
 }
 
 void Morse::loadSettings() {
@@ -110,6 +113,9 @@ void Morse::loadSettings() {
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
     m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
     m_tone = settings.value("Tone", DEFAULT_TONE).toInt();
+    for(int i = PLAY; i <= maximumTrainingMode; i++) {
+        m_modes[(TrainingMode) i]->loadSettings(settings);
+    }
     createTones(m_currentWPMGoal);  
 }
 

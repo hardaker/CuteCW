@@ -1,4 +1,7 @@
 #include "MorseStat.h"
+
+#include <QtCore/QSettings>
+
 #include "qdebug.h"
 
 MorseStat::MorseStat(QObject *parent) :
@@ -46,4 +49,7 @@ void MorseStat::addStat(float newtime, bool successful) {
     addTime(newtime);
     if (successful)
         m_goodCount++;
+}
+
+void MorseStat::saveStats(QSettings &settings, const QString &statSetName) {
 }
