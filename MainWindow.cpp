@@ -89,3 +89,7 @@ MainWindow::createAudioOutput()
     m_audioOutput = new QAudioOutput(settings);
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+ {
+    m_morse->saveSettings();
+ }
