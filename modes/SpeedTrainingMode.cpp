@@ -17,8 +17,7 @@ void SpeedTrainingMode::switchToMode() {
 
     setupSequences();
     setupWidgets(m_trainingSequence);
-
-    clear();
+    updateGraphs();
 }
 
 void SpeedTrainingMode::play() {
