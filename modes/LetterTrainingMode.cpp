@@ -153,3 +153,14 @@ void LetterTrainingMode::updateGraphs()
     // qDebug() << "max graph WPM: " << fastestWPM;
 #endif
 }
+
+void LetterTrainingMode::loadSettings(QSettings &settings)
+{
+    loadStats(settings);
+    //updateGraphs();
+}
+
+void LetterTrainingMode::saveSettings(QSettings &settings)
+{
+    saveStats(settings);
+}

@@ -45,7 +45,6 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 
     createTones(WPMGOAL);
     qsrand(QTime::currentTime().msec());
-    loadSettings();
 
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
     m_modes.insert(TRAIN, new LetterTrainingMode(this, m_ui));
@@ -55,6 +54,8 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(WORDGAME, new WordGame(this, m_ui));
     m_modes.insert(GROUPGAME, new GroupGame(this, m_ui));
     m_modes.insert(READ, new ReadMode(this, m_ui));
+
+    loadSettings();
 
     switchMode(Morse::PLAY);
 }
@@ -114,6 +115,8 @@ void Morse::loadSettings() {
     m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
     m_tone = settings.value("Tone", DEFAULT_TONE).toInt();
     for(int i = PLAY; i <= maximumTrainingMode; i++) {
+        if (! m_modes.contains((TrainingMode) i))
+            continue;
         m_modes[(TrainingMode) i]->loadSettings(settings);
     }
     createTones(m_currentWPMGoal);  

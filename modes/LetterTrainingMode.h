@@ -19,6 +19,9 @@ public:
     virtual QString name();
     virtual QString helpText();
 
+    virtual void loadSettings(QSettings &settings);
+    virtual void saveSettings(QSettings &settings);
+
 public slots:
     virtual void updateGraphs();
 
