@@ -22,6 +22,9 @@ public:
     virtual QString name();
     virtual QString helpText();
 
+    virtual void loadSettings(QSettings &settings);
+    virtual void saveSettings(QSettings &settings);
+
  signals:
     void groupEntered(int right, int total);
 

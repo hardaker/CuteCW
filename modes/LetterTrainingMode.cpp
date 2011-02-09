@@ -157,7 +157,6 @@ void LetterTrainingMode::updateGraphs()
 void LetterTrainingMode::loadSettings(QSettings &settings)
 {
     loadStats(settings);
-    //updateGraphs();
 }
 
 void LetterTrainingMode::saveSettings(QSettings &settings)

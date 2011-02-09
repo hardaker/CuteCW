@@ -206,3 +206,13 @@ void SpeedTrainingMode::updateGraphs()
 #endif
     // qDebug() << "max graph WPM: " << fastestWPM;
 }
+
+void SpeedTrainingMode::loadSettings(QSettings &settings)
+{
+    loadStats(settings);
+}
+
+void SpeedTrainingMode::saveSettings(QSettings &settings)
+{
+    saveStats(settings);
+}

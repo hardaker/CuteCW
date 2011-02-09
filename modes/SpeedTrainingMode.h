@@ -23,6 +23,9 @@ public:
     void startTimerToNextKey(QTime plusTime);
     virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
+    virtual void loadSettings(QSettings &settings);
+    virtual void saveSettings(QSettings &settings);
+
 public slots:
     void startTimerToNextKey(int plusMSecs = 0);
     void startNextSpeedKey();

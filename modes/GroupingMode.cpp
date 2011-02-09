@@ -13,7 +13,6 @@ void GroupingMode::switchToMode() {
     m_ui->play->show();
     m_ui->changeSequence->show();
     m_ui->helpBar->setText(tr("<font color=\"green\">Type the groups of characters you hear ASAP.</font>"));
-    clear();
 
     setupSequences();
     setupWidgets(m_trainingSequence, false);
@@ -118,3 +117,19 @@ QString GroupingMode::helpText()
               "in the group more rapidly and also increases and decreases the WPM rate (and you can keep track of your scores!)");
 }
 
+
+void GroupingMode::loadSettings(QSettings &settings)
+{
+    QString prefix = name();
+    m_groupLength = settings.value(prefix + "/goodCount", 1).toInt();
+    m_goodGuesses = settings.value(prefix + "/goodGuesses", 1).toInt();
+    m_badGuesses  = settings.value(prefix + "/badGuesses", 1).toInt();
+}
+
+void GroupingMode::saveSettings(QSettings &settings)
+{
+    QString prefix = name();
+    settings.setValue(prefix + "/groupLength", m_groupLength);
+    settings.setValue(prefix + "/goodGuesses", m_goodGuesses);
+    settings.setValue(prefix + "/badGuesses",  m_badGuesses);
+}

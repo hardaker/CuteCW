@@ -50,17 +50,13 @@ void WordTrainingMode::setupWordsMenu() {
 }
 
 void WordTrainingMode::switchToMode() {
-    m_goodCount = 0;
-    m_badCount = 0;
     m_ui->letter->show();
     m_ui->changeWords->show();
     m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
     m_ui->play->show();
-    clear();
 
     setupWordsMenu();
     setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
-    m_maxWord = 2;
 }
 
 void WordTrainingMode::switchWords(int sequence) {
@@ -142,3 +138,18 @@ QString WordTrainingMode::name()
     return tr("Word Training");
 }
 
+
+
+void WordTrainingMode::loadSettings(QSettings &settings)
+{
+    QString prefix = name();
+    m_wordsNumber = (wordNums) settings.value(prefix + "/wordsNumber",  int(N100)).toInt();
+    m_maxWord     =            settings.value(prefix + "/maxWord",      2).toInt();
+}
+
+void WordTrainingMode::saveSettings(QSettings &settings)
+{
+    QString prefix = name();
+    settings.setValue(prefix + "/wordsNumber", m_wordsNumber);
+    settings.setValue(prefix + "/maxWord",     m_maxWord);
+}
