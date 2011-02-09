@@ -26,6 +26,7 @@ signals:
 
 public slots:
     void saveStats(QSettings &settings, const QString &statSetName);
+    void loadStats(QSettings &settings, const QString &statSetName);
 
 private:
     int             m_tryCount;

@@ -53,6 +53,9 @@ public slots:
     virtual QGridLayout *setupGraphs();
     virtual void updateGraphs();
 
+    void saveStats(QSettings &settings, QString statPrefix = "");
+    void loadStats(QSettings &settings, QString statPrefix = "");
+
 private:
     QStringList                     m_sequences;
     QSignalMapper                  *m_sequenceSignalMapper;

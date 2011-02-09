@@ -317,3 +317,19 @@ bool TrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
     Q_UNUSED(stat);
     exit(1); // should not ever be called
 }
+
+void TrainingMode::saveStats(QSettings &settings, QString statPrefix) {
+    if (statPrefix.length() == 0)
+        statPrefix = name();
+    foreach(QChar letter, m_sequences[EVERYTHING]) {
+        m_stats[letter]->saveStats(settings, statPrefix + "/" + letter);
+    }
+}
+
+void TrainingMode::loadStats(QSettings &settings, QString statPrefix) {
+    if (statPrefix.length() == 0)
+        statPrefix = name();
+    foreach(QChar letter, m_sequences[EVERYTHING]) {
+        getStat(letter)->loadStats(settings, statPrefix + "/" + letter);
+    }
+}

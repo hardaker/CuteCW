@@ -52,4 +52,26 @@ void MorseStat::addStat(float newtime, bool successful) {
 }
 
 void MorseStat::saveStats(QSettings &settings, const QString &statSetName) {
+    settings.setValue(statSetName + "/stats/tryCount", m_tryCount);
+    settings.setValue(statSetName + "/stats/goodCount", m_goodCount);
+
+    settings.beginWriteArray(statSetName + "/stats/times");
+    int maxListNum = m_timeList.count();
+    for(int i = 0; i < maxListNum; i++) {
+        settings.setArrayIndex(i);
+        settings.setValue("time", m_timeList[i]);
+    }
+    settings.endArray();
+}
+
+void MorseStat::loadStats(QSettings &settings, const QString &statSetName) {
+    m_tryCount  = settings.value(statSetName + "/stats/tryCount", 0).toInt();
+    m_goodCount = settings.value(statSetName + "/stats/goodCount", 0).toInt();
+    m_timeList.clear();
+    int maxListNum = settings.beginReadArray(statSetName + "/stats/times");
+    for(int i = 0; i < maxListNum; i++) {
+        settings.setArrayIndex(i);
+        m_timeList.push_back(settings.value("time").toFloat());
+    }
+    settings.endArray();
 }
