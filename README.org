@@ -19,6 +19,40 @@ Cute CW: train yourself
     http://www.github.com/hardaker/CuteCW/
 
 * The TODO list
-
 *** TODO More Fun Games!
 *** TODO Add a "test" button next to the frequency set spinbox
+*** TODO fix the probability for bad letters
+***** Example case with L good letters and 1 bad one:
+      + P = percent of the "bad" letter (eg, 50)
+      + L = # of letters at O%
+      + O = percentage of the good letter (eg, 100)
+      + T = target probability (eg, .5)
+      + N = magic constant
+
+***** probability calculation:
+      t=(n-p)/(l*n-lo+n-p)
+
+***** solved for N
+      n = ((p+lo)*t-p)/((l+1)*t-1) 
+
+      Note: fails at l = 1 with inf/inf
+
+***** Values for N given L
+      |----+------------------|
+      |  L |                N |
+      |----+------------------|
+      |  2 |              150 |
+      |  3 |              125 |
+      |  4 | 116.666666666667 |
+      |  5 |            112.5 |
+      |  6 |              110 |
+      |  7 | 108.333333333333 |
+      |  8 | 107.142857142857 |
+      |  9 |           106.25 |
+      | 10 | 105.555555555556 |
+      | 26 |              102 |
+      |----+------------------|
+
+***** Plotting the probability graph with gnuplot
+
+      plot [0:100] f(t)=(n-t)/((l*n-l*o) + n - t), n=110, l=6, o=100, f(x)
