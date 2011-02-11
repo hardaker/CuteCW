@@ -23,9 +23,9 @@ Cute CW: train yourself
 *** TODO Add a "test" button next to the frequency set spinbox
 *** TODO fix the probability for bad letters
 ***** Example case with L good letters and 1 bad one:
-      + P = percent of the "bad" letter (eg, 50)
+      + P = percent correct of the "bad" letter (eg, 50)
       + L = # of letters at O%
-      + O = percentage of the good letter (eg, 100)
+      + O = percent correct of the good letter (eg, 100)
       + T = target probability (eg, .5)
       + N = magic constant
 
