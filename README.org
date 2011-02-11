@@ -55,4 +55,4 @@ Cute CW: train yourself
 
 ***** Plotting the probability graph with gnuplot
 
-      plot [0:100] f(t)=(n-t)/((l*n-l*o) + n - t), n=110, l=6, o=100, f(x)
+      plot [0:100] f(p)=(n-p)/((l*n-l*o) + n - p), n=102, l=26, o=100, f(x)
