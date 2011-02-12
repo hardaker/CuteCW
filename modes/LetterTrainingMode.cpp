@@ -51,10 +51,13 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, int> > letters;
-    int totalPercent = 0, thisPercent = 0, minPercent = 0;
+    int totalPercent = 0, thisPercent = 0, minPercent = 100, maxPercent = 0;
     MorseStat *stat = 0;
     QString currentLetterGoal;
     int badLetters = 0;
+
+    m_lastKeys.clear();
+    m_lastTimes.clear();
 
     //if (m_morse->audioMode() == Morse::PLAYING)
     //    return;
@@ -65,32 +68,35 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         letterCount++;
         currentLetterGoal = (*letter).toUpper();
         stat = getStat(*letter);
-        thisPercent = stat->getGoodPercentage();
+
+        // if doEntireSequence is turned on, then estimate they're getting an F at least, but not a zero.
+        if (stat->getTryCount() == 0 && m_doEntireSequence)
+            thisPercent = 50;
+        else
+            thisPercent = stat->getGoodPercentage(m_minimumTries);
+
         totalPercent += thisPercent;
-        if (minPercent > thisPercent)
-            minPercent = thisPercent;
-        if (thisPercent == 0) {
-            if (m_doEntireSequence) {
-                thisPercent = 50;
-            } else {
-                // never keyed yet; do it immediately if we got this far
-                qDebug() << "|keying: " << *letter;
-                m_lastKey = *letter;
-                m_lastKeys.append(*letter);
-                setSequence(m_trainingSequence, letterCount);
-                m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
-                                      *letter + ": NEW");
-                setWPMLabel(thisPercent);
-                m_lastTimes.push_back(m_morse->playIt(*letter));
-                updateGraphs();
-                return m_lastTimes.last();
-            }
+        minPercent = qMin(minPercent, thisPercent);
+        maxPercent = qMax(minPercent, thisPercent);
+
+        if (stat->getTryCount() == 0 && !m_doEntireSequence) {
+            // never keyed yet; do it immediately if we got this far
+            qDebug() << "|keying: " << *letter;
+            m_lastKey = *letter;
+            m_lastKeys.append(*letter);
+            setSequence(m_trainingSequence, letterCount);
+            m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
+                                  *letter + ": NEW");
+            setWPMLabel(thisPercent);
+            m_lastTimes.push_back(m_morse->playIt(*letter));
+            updateGraphs();
+            return m_lastTimes.last();
         }
 
         qDebug() << "  adding " << *letter << " / " << thisPercent;
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
-        if(thisPercent <= m_percentGoal || stat->getTryCount() <= m_minimumTries) {
+        if(thisPercent <= m_percentGoal || stat->getTryCount() < m_minimumTries) {
             qDebug() << "   too low: " << *letter << " / " << thisPercent << " / " << stat->getTryCount();
             if (++badLetters >= m_maxBadLetters || stat->getTryCount() <= m_minimumTries) {
                 // enough letters aren't accurate; break here
@@ -99,29 +105,45 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         }
     }
 
-    // They have the whole sequence active at this point
+    // we have all the letters available to pick from at random
+
+    // Calculate our magic constant:
+    int numLetters = letters.count();
+    int magicHelper;
+    typedef QPair<QChar, int> ourpair;
+
+    if (numLetters > 2) {
+        //magicHelper = int(((50.0 + float(numLetters) * float(maxPercent))*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
+        magicHelper = int(((50.0 + float(numLetters) * 100.0)*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
+    } else
+        magicHelper = 200;
+
+    totalPercent = 0;
+    QList<QPair<QChar, int> >::iterator aletter;
+    QList<QPair<QChar, int> >::iterator last = letters.end();
+    for(aletter = letters.begin(); aletter != last; ++aletter) {
+        (*aletter).second = magicHelper - (*aletter).second;
+        totalPercent += (*aletter).second;
+    }
 
     m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
                           *letter + ": NEW");
+    setSequence(m_trainingSequence, letterCount);
+
     setWPMLabel(totalPercent/letterCount);
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
-    // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
     float randPercent;
-    int subPercent = 0;
-    if (m_morse->badLetterWeighting() == Morse::HIGH) {
-        subPercent = minPercent/2;
-        randPercent = (totalPercent - subPercent * letters.count())*float(qrand())/float(RAND_MAX);
-    } else
-        randPercent = totalPercent*float(qrand())/float(RAND_MAX);
     float newTotal = 0;
-    // qDebug() << "letter set random: " << randPercent << " total: " << totalPercent << " min: " << minPercent/2 << ", count: " << letters.count();
+
+    randPercent = totalPercent*float(qrand())/float(RAND_MAX);
+
+    qDebug() << "randomizing: " << randPercent << " total: " << totalPercent << " min/max: " << minPercent
+             << "/" << maxPercent << ", count: " << letters.count() << ", magic: " << magicHelper;
     QList<QPair<QChar, int> >::iterator search;
-    QList<QPair<QChar, int> >::iterator last = letters.end();
-    setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
-        //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
-        newTotal += ((*search).second - subPercent);
+        qDebug() << "  -> " << (*search).first << "/" << (*search).second;
+        newTotal += ((*search).second);
         if (newTotal > randPercent) {
             qDebug() << ">keying: " << (*search).first;
             m_lastKey = (*search).first;
@@ -137,7 +159,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
 
 bool LetterTrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
     Q_UNUSED(stat);
-    if (msElapsed > 500) {
+    if (msElapsed > 1000) {
         return true;
     }
     return false;
@@ -148,7 +170,7 @@ void LetterTrainingMode::updateGraphs()
 #ifndef SMALL_DEVICE
     foreach(QChar theLetter, m_trainingSequence) {
         m_progressBars[theLetter]->setRange(0, 100);
-        m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage());
+        m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage(m_minimumTries));
     }
     // qDebug() << "max graph WPM: " << fastestWPM;
 #endif

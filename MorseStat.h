@@ -15,7 +15,7 @@ public:
     float getAverageTime();
     int   getTryCount();
     int   getGoodCount();
-    int   getGoodPercentage();
+    int   getGoodPercentage(int minStartingGood = 0);
 
     void addStat(float newtime, bool successful);
 
