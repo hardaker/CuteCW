@@ -159,7 +159,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
 
 bool LetterTrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
     Q_UNUSED(stat);
-    if (msElapsed > 500) {
+    if (msElapsed > 1000) {
         return true;
     }
     return false;
