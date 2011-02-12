@@ -1,6 +1,14 @@
 #include "LetterTrainingMode.h"
 #include "Morse.h"
 
+#include <stdlib.h>
+
+#ifdef Q_OS_WIN32
+// cross compiling pulls in the wrong stdlib.h for some reason
+#undef RAND_MAX
+#define RAND_MAX 0x7FFF
+#endif
+
 #include <qdebug.h>
 
 LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
@@ -136,7 +144,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     float randPercent;
     float newTotal = 0;
 
-    randPercent = totalPercent*float(qrand())/float(RAND_MAX);
+    randPercent = float(totalPercent)*float(qrand())/float(RAND_MAX);
 
     qDebug() << "randomizing: " << randPercent << " total: " << totalPercent << " min/max: " << minPercent
              << "/" << maxPercent << ", count: " << letters.count() << ", magic: " << magicHelper;
