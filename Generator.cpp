@@ -22,7 +22,6 @@ Generator::Generator(float secs, int freq)
     len=fillData(t, m_freq, secs); /* mono FREQHz sine */
     pos   = 0;
     bytes_left = len;
-    setupPauses();
 }
 
 Generator::Generator(Generator *copyFrom)
@@ -35,23 +34,11 @@ Generator::Generator(Generator *copyFrom)
     len = copyFrom->len;
     pos = 0;
     bytes_left = len;
-    setupPauses();
 }
 
 Generator::~Generator()
 {
     delete [] buffer;
-}
-
-void Generator::setupPauses() {
-    for(int i = 0; i < ZEROLENGTH; i++) {
-        zerobuffer[0] = 0;
-    }
-    restartPauses();
-}
-
-void Generator::restartPauses() {
-    m_zerocount = ZEROCOUNTS;
 }
 
 void Generator::clearBuffer() {
@@ -61,7 +48,6 @@ void Generator::clearBuffer() {
     t = buffer;
     len = bytes_left = 4;
     pos = 0;
-    restartPauses();
 }
 
 void Generator::appendDataFrom(const Generator *copyFrom) {
@@ -72,14 +58,12 @@ void Generator::appendDataFrom(const Generator *copyFrom) {
     bytes_left += copyFrom->len;
     delete buffer;
     buffer = t = newbuf;
-    restartPauses();
     // qDebug() << "new left: "<< bytes_left;
 }
 
 void Generator::start()
 {
     open(QIODevice::ReadOnly);
-    restartPauses();
 }
 
 void Generator::stop()
@@ -126,7 +110,6 @@ void Generator::restartData()
 {
     bytes_left = len;
     pos = 0;
-    m_zerocount = ZEROCOUNTS;
 }
 
 qint64 Generator::readData(char *data, qint64 maxlen)
@@ -146,9 +129,9 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 #ifdef FILL_WITH_SPACE
     if (bytes_left <= 0) {
         // should really only be needed on linux with 4.7 I suspect
-        memcpy(data, zerobuffer, qMin(qint64(ZEROLENGTH), maxlen));
+        memset(data, 0, maxlen);
         bytes_left = -1;
-        return qMin(qint64(ZEROLENGTH), maxlen);
+        return maxlen;
     }
 #else
     if (bytes_left <= 0)

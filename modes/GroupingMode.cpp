@@ -3,9 +3,8 @@
 #include "modes/GroupingMode.h"
 
 GroupingMode::GroupingMode(Morse *parent, Ui::MainWindow *ui) :
-    TrainingMode(parent, ui)
+    TrainingMode(parent, ui), m_groupLength(0), m_goodGuesses(0), m_badGuesses(0), m_rightCount(0)
 {
-    createNextSequence();
 }
 
 void GroupingMode::switchToMode() {
