@@ -48,7 +48,6 @@ void MorseStat::addStat(float newtime, bool successful) {
     addTime(newtime);
     if (successful)
         m_goodCount++;
-    m_tryCount++;
 }
 
 void MorseStat::saveStats(QSettings &settings, const QString &statSetName) {
