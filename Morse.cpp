@@ -144,9 +144,9 @@ QTime Morse::maybePlaySequence(bool addPause) {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
         m_playBuffer->restartData();
         QTime playTime = sequenceTime();
-        playSequence();
         if (addPause)
             add(pause());
+        playSequence();
         return QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
     }
     return QTime(0,0,0);
@@ -234,7 +234,7 @@ QTime Morse::addAndPlayIt(QChar c) {
 QTime Morse::playIt(QChar c) {
     clearList();
     add(pause());  // allows audio device to kick in (otherwise distortion can occur)
-    add(c, false);
+    add(c, false); // add the pause in maybePlaySequence so it can calculate the sequence end
     return maybePlaySequence(true);
 }
 
