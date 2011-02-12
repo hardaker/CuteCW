@@ -196,9 +196,9 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
         pressedStat->addStat(msElapsed, true);
         m_goodCount++;
     } else {
-        if (pressedStat->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
+        if (pressedStat->getTryCount() > 0) /* don't do this unless the letter has been pressed before */
             pressedStat->addStat(3.0 * pressedStat->getAverageTime(), false);
-        if (getStat(lastKey)->getAverageTime() > 0) /* don't do this unless the letter has been pressed before */
+        if (getStat(lastKey)->getTryCount() > 0) /* don't do this unless the letter has been pressed before */
             getStat(lastKey)->addStat(3.0 * getStat(lastKey)->getAverageTime(), false);
         m_badCount++;
     }

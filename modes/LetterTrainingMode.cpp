@@ -56,6 +56,9 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     QString currentLetterGoal;
     int badLetters = 0;
 
+    m_lastKeys.clear();
+    m_lastTimes.clear();
+
     //if (m_morse->audioMode() == Morse::PLAYING)
     //    return;
 
@@ -110,7 +113,8 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     typedef QPair<QChar, int> ourpair;
 
     if (numLetters > 2) {
-        magicHelper = int(((50.0 + float(numLetters) * float(maxPercent))*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
+        //magicHelper = int(((50.0 + float(numLetters) * float(maxPercent))*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
+        magicHelper = int(((50.0 + float(numLetters) * 100.0)*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
     } else
         magicHelper = 200;
 
