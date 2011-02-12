@@ -17,9 +17,13 @@ int MorseStat::getGoodCount() {
     return m_goodCount;
 }
 
-int MorseStat::getGoodPercentage() {
+int MorseStat::getGoodPercentage(int minStartingGood) {
     if (m_tryCount == 0)
         return 0;
+    if (minStartingGood != 0 && m_goodCount < minStartingGood) {
+        qDebug() << "not good enough: " << m_goodCount << "/" << minStartingGood;
+        return 100 * m_goodCount / minStartingGood;
+    }
     return int(100.0 * float(m_goodCount)/float(m_tryCount));
 }
 
