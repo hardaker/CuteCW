@@ -34,21 +34,21 @@ float MorseStat::getAverageTime() {
     for(iter = m_timeList.begin(); iter != end; iter++) {
         total = total + *iter;
     }
-    return total/m_tryCount;
+    return total/m_timeList.count();
 }
 
 void MorseStat::addTime(float newtime) {
     m_timeList.append(newtime);
     if (m_tryCount >= maxTimeCount)
         m_timeList.pop_front();
-    else
-        m_tryCount++;
+    m_tryCount++;
 }
 
 void MorseStat::addStat(float newtime, bool successful) {
     addTime(newtime);
     if (successful)
         m_goodCount++;
+    m_tryCount++;
 }
 
 void MorseStat::saveStats(QSettings &settings, const QString &statSetName) {
