@@ -48,8 +48,11 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO home screen button
   SCHEDULED: <2011-02-13 Sun>
-*** TODO trailing sound sometimes cut off on linux
+*** DONE trailing sound sometimes cut off on linux
   SCHEDULED: <2011-02-13 Sun>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2011-02-13 Sun 08:33]
+  :END:
 *** TODO online documentation and theory
   SCHEDULED: <2011-02-13 Sun>
 *** TODO A makerelease packaging script.

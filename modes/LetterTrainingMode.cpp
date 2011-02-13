@@ -101,7 +101,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
             return m_lastTimes.last();
         }
 
-        qDebug() << "  adding " << *letter << " / " << thisPercent;
+        //qDebug() << "  adding " << *letter << " / " << thisPercent;
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
         if(thisPercent <= m_percentGoal || stat->getTryCount() < m_minimumTries) {

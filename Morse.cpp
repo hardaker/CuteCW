@@ -26,7 +26,7 @@ Morse::Morse()
     : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
-    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_signalMapper(new QSignalMapper(this))
+    m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_leadInPause(0,0), m_signalMapper(new QSignalMapper(this))
 {
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
@@ -38,7 +38,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
-      m_ui(ui), m_tone(DEFAULT_TONE), m_signalMapper(new QSignalMapper(this))
+      m_ui(ui), m_tone(DEFAULT_TONE), m_leadInPause(0,0), m_signalMapper(new QSignalMapper(this))
 {
 
     qDebug() << "new morse2";
@@ -155,7 +155,7 @@ QTime Morse::maybePlaySequence(bool addPause) {
         m_playBuffer->restartData();
         QTime playTime = sequenceTime();
         if (addPause)
-            add(pause());
+            add(letterPause());
         playSequence();
         return QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
     }
@@ -243,7 +243,8 @@ QTime Morse::addAndPlayIt(QChar c) {
 
 QTime Morse::playIt(QChar c) {
     clearList();
-    add(pause());  // allows audio device to kick in (otherwise distortion can occur)
+    add(letterPause());  // allows audio device to kick in (otherwise distortion can occur)
+    m_leadInPause = sequenceTime();
     add(c, false); // add the pause in maybePlaySequence so it can calculate the sequence end
     return maybePlaySequence(true);
 }

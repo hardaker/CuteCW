@@ -139,6 +139,7 @@ private:
     BadLetterWeighting               m_badLetterWeighting;
     QTimer                           m_timer;
     int                              m_tone;
+    QTime                            m_leadInPause;
 
     QSignalMapper                   *m_signalMapper;
 };
