@@ -18,49 +18,11 @@ Cute CW: train yourself
 
     http://www.github.com/hardaker/CuteCW/
 
-* The TODO list
-*** TODO More Fun Games!
-*** TODO Add a "test" button next to the frequency set spinbox
-*** DONE fix the probability for bad letters
-    :LOGBOOK:
-    - State "DONE"       from "TODO"       [2011-02-12 Sat 22:35]
-    :END:
-***** Example case with L good letters and 1 bad one:
-      + P = percent correct of the "bad" letter (eg, 50)
-      + L = # of letters at O%
-      + O = percent correct of the good letter (eg, 100)
-      + T = target probability (eg, .5)
-      + N = magic constant
+* Further Information
 
-***** probability calculation:
-      t=(n-p)/(l*n-lo+n-p)
+  More documentation can be found at:
 
-***** solved for N
-      n = ((p+lo)*t-p)/((l+1)*t-1) 
+    http://www.hamtools.org/qtcw/
 
-      Note: fails at l = 1 with inf/inf
+  The growing and sometimes shrinking [[file:docs/TODO.org][TODO list]]
 
-***** Values for N given L
-      |----+------------------|
-      |  L |                N |
-      |----+------------------|
-      |  2 |              150 |
-      |  3 |              125 |
-      |  4 | 116.666666666667 |
-      |  5 |            112.5 |
-      |  6 |              110 |
-      |  7 | 108.333333333333 |
-      |  8 | 107.142857142857 |
-      |  9 |           106.25 |
-      | 10 | 105.555555555556 |
-      | 26 |              102 |
-      |----+------------------|
-
-***** Plotting the probability graph with gnuplot
-
-      plot [0:100] f(p)=(n-p)/((l*n-l*o) + n - p), n=102, l=26, o=100, f(x)
-
-      change the top percent:
-
-      plot [0:100] f(p)=(n-p)/((l*n-l*o) + n - p), n=102, l=26, o=100, f(x) title "100", o=90, f(x) title "90", o=80, f(x) title "80", o=70, f(x) title "70"
-*** TODO Fix the probability in speed training

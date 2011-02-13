@@ -1,0 +1,66 @@
+* The TODO list
+*** TODO More Fun Games!
+*** TODO Add a "test" button next to the frequency set spinbox
+*** DONE fix the probability for bad letters
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2011-02-12 Sat 22:35]
+    :END:
+***** Example case with L good letters and 1 bad one:
+      + P = percent correct of the "bad" letter (eg, 50)
+      + L = # of letters at O%
+      + O = percent correct of the good letter (eg, 100)
+      + T = target probability (eg, .5)
+      + N = magic constant
+
+***** probability calculation:
+      t=(n-p)/(l*n-lo+n-p)
+
+***** solved for N
+      n = ((p+lo)*t-p)/((l+1)*t-1) 
+
+      Note: fails at l = 1 with inf/inf
+
+***** Values for N given L
+      |----+------------------|
+      |  L |                N |
+      |----+------------------|
+      |  2 |              150 |
+      |  3 |              125 |
+      |  4 | 116.666666666667 |
+      |  5 |            112.5 |
+      |  6 |              110 |
+      |  7 | 108.333333333333 |
+      |  8 | 107.142857142857 |
+      |  9 |           106.25 |
+      | 10 | 105.555555555556 |
+      | 26 |              102 |
+      |----+------------------|
+
+***** Plotting the probability graph with gnuplot
+
+      plot [0:100] f(p)=(n-p)/((l*n-l*o) + n - p), n=102, l=26, o=100, f(x)
+
+      change the top percent:
+
+      plot [0:100] f(p)=(n-p)/((l*n-l*o) + n - p), n=102, l=26, o=100, f(x) title "100", o=90, f(x) title "90", o=80, f(x) title "80", o=70, f(x) title "70"
+*** TODO Fix the probability in speed training
+*** TODO sound on the mac
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO home screen button
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO trailing sound sometimes cut off on linux
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO online documentation and theory
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO A makerelease packaging script.
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO direct listing on ws6z.com
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO mode specific preferences
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO help should be scrollable and also stacked on maemo
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO document how to create new mode classes
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO icons for the home page buttons
+  SCHEDULED: <2011-02-13 Sun>
