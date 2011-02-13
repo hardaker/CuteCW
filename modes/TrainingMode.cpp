@@ -287,7 +287,6 @@ QGridLayout *TrainingMode::setupGraphs(QString barLabel)
     QLabel *leftLabel = new QLabel(barLabel);
     leftLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     gridLayout->addWidget(leftLabel, 0, 0);
-    qDebug() << "here: " << barLabel;
 
     foreach(QChar theLetter, m_trainingSequence) {
         QLabel *label = new QLabel(theLetter.toUpper());
