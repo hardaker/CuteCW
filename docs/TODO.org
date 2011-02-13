@@ -78,3 +78,7 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO make the home screen use QGroupBoxes
   SCHEDULED: <2011-02-13 Sun>
+*** TODO fix read-to-me memory issues
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO make some default texts to pick from (gutenberg?)
+  SCHEDULED: <2011-02-13 Sun>
