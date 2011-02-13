@@ -440,6 +440,7 @@ void Morse::setupWidgets()
     topvbox->addWidget(m_ui->helpBar = new QLabel("help"));
     setupWPMLayout(topvbox, theMainThing);
     topvbox->addLayout(m_ui->forModes = new QHBoxLayout(theMainThing));
+    topvbox->setStretchFactor(m_ui->forModes, 10);
     setupSequenceLayouts(topvbox, theMainThing);
 
     setupConnections();

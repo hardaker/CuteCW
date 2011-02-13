@@ -31,6 +31,7 @@ void FrontPage::setupWidgets() {
     QSignalMapper *mapper = new QSignalMapper(m_ui->forModes);
     QVBoxLayout *topVBox = new QVBoxLayout();
     QHBoxLayout *mainHBox = new QHBoxLayout();
+    topVBox->setStretchFactor(mainHBox, 5);
     topVBox->addLayout(mainHBox);
 
     QVBoxLayout *leftBox = new QVBoxLayout();
@@ -45,6 +46,9 @@ void FrontPage::setupWidgets() {
 
     foreach(Morse::TrainingMode themode, leftContents) {
         button = new QPushButton(m_morse->getMode(themode)->name());
+        QSizePolicy policy = button->sizePolicy();
+        policy.setVerticalPolicy(QSizePolicy::Maximum);
+        button->setSizePolicy(policy);
         leftBox->addWidget(button);
         connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
         mapper->setMapping(button, (int) themode);
@@ -60,6 +64,7 @@ void FrontPage::setupWidgets() {
     connect(mapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
 
     m_ui->forModes->addLayout(topVBox);
+    m_ui->forModes->setStretchFactor(topVBox, 5);
 }
 
 
