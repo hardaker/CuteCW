@@ -145,30 +145,46 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
 
     // we have all the letters available to pick from at random
 
+    // Calculate our magic constant:
+    int numLetters = letters.count();
+    int magicHelper;
+    float currentAccept = m_morse->currentWPMAccept();
+
+    if (numLetters > 2) {
+        //magicHelper = int(((50.0 + float(numLetters) * float(maxPercent))*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
+        magicHelper = int(((currentAccept/2.0 + float(numLetters) * currentAccept)*0.5 - currentAccept/2.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
+    } else
+        magicHelper = currentAccept*2;
+
+    float totalWPM = 0;
+    QList<QPair<QChar, float> >::iterator aletter;
+    QList<QPair<QChar, float> >::iterator last = letters.end();
+
+    for(aletter = letters.begin(); aletter != last; ++aletter) {
+        float pauseWPM = qMax(msToPauseWPMF((*aletter).second), float(currentAccept));
+        (*aletter).second = pauseWPM;
+        totalWPM += pauseWPM;
+    }
+
     m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                           currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime)));
-    if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
-        setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount)));
-    else
-        setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
+    setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount)));
+
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
-    float randTime, subTime = 0.0;
-    if (m_morse->badLetterWeighting() == Morse::HIGH) {
-        subTime = minTime/2;
-        randTime = (totalTime - subTime * letters.count())*float(qrand())/float(RAND_MAX);
-    } else
-        randTime = totalTime*float(qrand())/float(RAND_MAX);
+    float randWPM, subTime = 0.0;
+
+    randWPM = totalWPM*float(qrand())/float(RAND_MAX);
+
     float newTotal = 0;
-    // qDebug() << "letter set random: " << randTime << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
+    // qDebug() << "letter set random: " << randWPM << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();
     QList<QPair<QChar, float> >::iterator search;
-    QList<QPair<QChar, float> >::iterator last = letters.end();
     setSequence(m_trainingSequence, letterCount);
     for(search = letters.begin(); search != last; ++search) {
         //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
-        newTotal += ((*search).second - subTime);
-        if (newTotal > randTime) {
+        newTotal += ((*search).second);
+        if (newTotal > randWPM) {
             qDebug() << ">keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
@@ -177,7 +193,7 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
             return m_lastTimes.last();
         }
     }
-    qDebug() << "**** shouldn't get here: " << randTime << "," << totalTime;
+    qDebug() << "**** shouldn't get here: " << randWPM << "," << totalTime;
     return QTime();
 }
 

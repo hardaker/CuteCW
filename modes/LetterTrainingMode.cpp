@@ -118,7 +118,6 @@ QTime LetterTrainingMode::startNextTrainingKey() {
     // Calculate our magic constant:
     int numLetters = letters.count();
     int magicHelper;
-    typedef QPair<QChar, int> ourpair;
 
     if (numLetters > 2) {
         //magicHelper = int(((50.0 + float(numLetters) * float(maxPercent))*0.5 - 50.0)/((float(numLetters) + 1.0)*0.5 - 1.0));
@@ -150,7 +149,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
              << "/" << maxPercent << ", count: " << letters.count() << ", magic: " << magicHelper;
     QList<QPair<QChar, int> >::iterator search;
     for(search = letters.begin(); search != last; ++search) {
-        qDebug() << "  -> " << (*search).first << "/" << (*search).second;
+        //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += ((*search).second);
         if (newTotal > randPercent) {
             qDebug() << ">keying: " << (*search).first;
