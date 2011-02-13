@@ -67,9 +67,14 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO icons for the home page buttons
   SCHEDULED: <2011-02-13 Sun>
-*** TODO Make the progress bars draw a level indicator on top for:
-    - [ ] The needed training level
-    - [ ] the WPM goal when appropriate
+*** DONE Make the progress bars draw a level indicator on top for:
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2011-02-13 Sun 09:02]
+    :END:
+    - [X] The needed training level
+    - [X] the WPM goal when appropriate
   SCHEDULED: <2011-02-13 Sun>
 *** TODO saving in maemo on window close is broken?
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO make the home screen use QGroupBoxes
   SCHEDULED: <2011-02-13 Sun>

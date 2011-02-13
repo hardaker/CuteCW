@@ -1,7 +1,6 @@
 #include "TrainingMode.h"
 #include "Morse.h"
 
-
 #include <qdebug.h>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -293,7 +292,7 @@ QGridLayout *TrainingMode::setupGraphs(QString barLabel)
         label->setAlignment(Qt::AlignCenter);
         gridLayout->addWidget(label, 1, column);
 
-        QProgressBar *bar = new QProgressBar();
+        GoalBar *bar = new GoalBar(0, 20);
         bar->setRange(0,20);
         bar->setValue(1);
         bar->setOrientation(Qt::Vertical);

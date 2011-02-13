@@ -16,6 +16,7 @@
 #include "ChooseSequenceDialog.h"
 
 #include "MorseMode.h"
+#include "GoalBar.h"
 #include "ui_MainWindow.h"
 
 class TrainingMode : public MorseMode
@@ -66,7 +67,7 @@ protected:
     QChar                           m_lastKey;
     QList<QChar>                    m_lastKeys;
     QList<QTime>                    m_lastTimes;
-    QMap<QChar, QProgressBar *>     m_progressBars;
+    QMap<QChar, GoalBar *>          m_progressBars;
     QMap<QChar, MorseStat *>        m_stats;
     QAction                        *m_doEntireSequenceButton;
     int                             m_maxBadLetters;

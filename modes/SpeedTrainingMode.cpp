@@ -194,6 +194,7 @@ void SpeedTrainingMode::updateGraphs()
 {
 #ifndef SMALL_DEVICE
     int fastestWPM = MULTFACTOR * m_morse->currentWPMGoal();
+    int goalWPM = MULTFACTOR * m_morse->currentWPMAccept();
     foreach(QChar theLetter, m_trainingSequence) {
         float aveTime = getStat(theLetter)->getAverageTime();
         if (aveTime > 0) {
@@ -202,6 +203,7 @@ void SpeedTrainingMode::updateGraphs()
     }
     foreach(QChar theLetter, m_trainingSequence) {
         m_progressBars[theLetter]->setRange(0,fastestWPM);
+        m_progressBars[theLetter]->setGoalBarLevel(goalWPM);
         float aveTime = getStat(theLetter)->getAverageTime();
         if (aveTime < 0)
             aveTime = .5; // seconds is very slow

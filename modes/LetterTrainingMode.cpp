@@ -178,6 +178,7 @@ void LetterTrainingMode::updateGraphs()
 #ifndef SMALL_DEVICE
     foreach(QChar theLetter, m_trainingSequence) {
         m_progressBars[theLetter]->setRange(0, 100);
+        m_progressBars[theLetter]->setGoalBarLevel(m_percentGoal);
         m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage(m_minimumTries));
     }
     // qDebug() << "max graph WPM: " << fastestWPM;
