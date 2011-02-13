@@ -50,6 +50,7 @@ public:
     void setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing);
     void setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing);
     void setupConnections();
+    MorseMode * getMode(TrainingMode) const;
 
     void setupWords();
     void setupSequences();

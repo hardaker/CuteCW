@@ -65,6 +65,10 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     switchMode(Morse::FRONTPAGE);
 }
 
+MorseMode *Morse::getMode(TrainingMode which) const {
+    return m_modes[which];
+}
+
 void Morse::prefsButton() {
     Ui::Prefs prefsDialog;
     QDialog *dialog = new QDialog(m_parent);
@@ -475,7 +479,7 @@ void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThin
     lastWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Last WPM:")));
     lastWPMLayout->addWidget(m_ui->lastwpm = new QLabel(tr("")));
 
-    QHBoxLayout *aveWPMLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
+    QHBoxLayout *aveWPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
     parentLayout->addLayout(aveWPMLayout);
     aveWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Average WPM:")));
     aveWPMLayout->addWidget(m_ui->avewpm = new QLabel(tr("")));

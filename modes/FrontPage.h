@@ -9,6 +9,7 @@ public:
     FrontPage(Morse *parent, Ui::MainWindow *ui);
 
     void switchToMode();
+    void setupWidgets();
 
     QString helpText();
     QString name();
