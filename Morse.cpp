@@ -500,12 +500,6 @@ void Morse::setupTopButtons(QLayout *parentLayout)
     parentLayout->addWidget(button);
     connect(button, SIGNAL(clicked()), this, SLOT(goHome()));
 
-#ifdef SMALL_DEVICE
-    button = m_ui->modeMenu = new QPushButton(tr("Mode"));
-    parentLayout->addWidget(button);
-    createModesMenuButton(button);
-#endif
-
     button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
     m_ui->play->setIcon(QIcon(":/icons/play.png"));
