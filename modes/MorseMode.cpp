@@ -133,9 +133,6 @@ void MorseMode::switchToYou()
     hideWidgets();
     switchToMode();
     createGlobalActions();
-#ifdef SMALL_DEVICE
-    m_ui->modeMenu->setText(name());
-#endif
 }
 
 void MorseMode::createMenuStructures()
