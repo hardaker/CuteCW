@@ -98,6 +98,7 @@ public slots:
     void audioFinished(QAudio::State state);
     void keyPressed(QString newtext);
     void keyPressed(QChar key);
+    void goHome();
 
     void prefsButton();
     void aboutButton();

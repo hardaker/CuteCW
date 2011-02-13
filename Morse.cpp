@@ -4,6 +4,7 @@
 #include <QtCore/QSettings>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#include <QtGui/QSizePolicy>
 #include <qdebug.h>
 
 #include "MainWindow.h"
@@ -489,6 +490,15 @@ void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThin
 void Morse::setupTopButtons(QLayout *parentLayout)
 {
     QPushButton *button;
+    QSizePolicy policy;
+    QIcon homeIcon(":/icons/go-home.png");
+
+    button = new QPushButton(homeIcon,tr("Home"));
+    policy = button->sizePolicy();
+    policy.setHorizontalPolicy(QSizePolicy::Fixed);
+    button->setSizePolicy(policy);
+    parentLayout->addWidget(button);
+    connect(button, SIGNAL(clicked()), this, SLOT(goHome()));
 
 #ifdef SMALL_DEVICE
     button = m_ui->modeMenu = new QPushButton(tr("Mode"));
@@ -567,4 +577,9 @@ void Morse::setupConnections()
 MainWindow *Morse::parent()
 {
     return m_parent;
+}
+
+void Morse::goHome()
+{
+    switchMode(FRONTPAGE);
 }

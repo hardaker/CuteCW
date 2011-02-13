@@ -4,5 +4,6 @@
     <file>icons/play.png</file>
     <file>icons/pause.png</file>
     <file>icons/64x64/cutecw.png</file>
+    <file>icons/go-home.png</file>
 </qresource>
 </RCC>
