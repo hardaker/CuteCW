@@ -23,6 +23,7 @@ void FrontPage::switchToMode()
     clearLayout(m_ui->horizontalLayout_3);
     clearLayout(m_ui->horizontalLayout_4);
     clearLayout(m_ui->horizontalLayout_5);
+    m_ui->homeButton->hide();
 
     setupWidgets();
 }

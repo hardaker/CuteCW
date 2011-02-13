@@ -493,7 +493,7 @@ void Morse::setupTopButtons(QLayout *parentLayout)
     QSizePolicy policy;
     QIcon homeIcon(":/icons/go-home.png");
 
-    button = new QPushButton(homeIcon,tr("Home"));
+    button = m_ui->homeButton = new QPushButton(homeIcon, tr("Home"));
     policy = button->sizePolicy();
     policy.setHorizontalPolicy(QSizePolicy::Fixed);
     button->setSizePolicy(policy);
