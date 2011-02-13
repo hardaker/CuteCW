@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     modes/games/HighScoresDialog.cpp \
     modes/games/HighScores.cpp \
     modes/QModeStart.cpp \
-    AboutDialog.cpp
+    AboutDialog.cpp \
+    modes/FrontPage.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -64,7 +65,8 @@ HEADERS  += MainWindow.h \
     modes/games/HighScoresDialog.h \
     modes/games/HighScores.h \
     modes/QModeStart.h \
-    AboutDialog.h
+    AboutDialog.h \
+    modes/FrontPage.h
 
 FORMS    += MainWindow.ui \
     Prefs.ui \

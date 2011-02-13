@@ -8,6 +8,7 @@
 
 #include "MainWindow.h"
 
+#include "modes/MorseMode.h"
 #include "modes/PlayMode.h"
 #include "modes/LetterTrainingMode.h"
 #include "modes/SpeedTrainingMode.h"
@@ -49,6 +50,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     qDebug() << "original buffer size: " << m_audioOutput->bufferSize();
     m_audioOutput->setBufferSize(qMin(m_audioOutput->bufferSize() * 4, 1024*64));
 
+    m_modes.insert(MORSEMODE, new MorseMode(this, m_ui));
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
     m_modes.insert(TRAIN, new LetterTrainingMode(this, m_ui));
     m_modes.insert(SPEEDTRAIN, new SpeedTrainingMode(this, m_ui));
