@@ -47,7 +47,7 @@ void FrontPage::setupWidgets() {
     foreach(Morse::TrainingMode themode, leftContents) {
         button = new QPushButton(m_morse->getMode(themode)->name());
         QSizePolicy policy = button->sizePolicy();
-        policy.setVerticalPolicy(QSizePolicy::Maximum);
+        policy.setVerticalPolicy(QSizePolicy::Expanding);
         button->setSizePolicy(policy);
         leftBox->addWidget(button);
         connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
@@ -56,6 +56,9 @@ void FrontPage::setupWidgets() {
 
     foreach(Morse::TrainingMode themode, rightContents) {
         button = new QPushButton(m_morse->getMode(themode)->name());
+        QSizePolicy policy = button->sizePolicy();
+        policy.setVerticalPolicy(QSizePolicy::Expanding);
+        button->setSizePolicy(policy);
         rightBox->addWidget(button);
         connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
         mapper->setMapping(button, (int) themode);
