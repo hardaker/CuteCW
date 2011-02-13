@@ -16,7 +16,7 @@ void SpeedTrainingMode::switchToMode() {
     m_ui->WPM->show();
 
     setupSequences();
-    setupWidgets(m_trainingSequence);
+    setupWidgets(m_trainingSequence, true, "S\np\ne\ne\nd\n \nR\na\nt\ni\nn\ng");
     updateGraphs();
 }
 

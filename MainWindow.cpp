@@ -69,7 +69,7 @@ MainWindow::startIt()
 {
 
     m_morse->clearList();
-    m_morse->add("ws6z");
+    //m_morse->add("ws6z");
 
     m_morse->playSequence();
 }

@@ -225,7 +225,7 @@ void TrainingMode::switchSequence(const QString &sequence) {
     startNextTrainingKey();
 }
 
-void TrainingMode::setupModeWidgets(const QString &sequence) {
+void TrainingMode::setupModeWidgets(const QString &sequence, QString barLabel) {
     QVBoxLayout *vbox = new QVBoxLayout();
     clearLayout(m_ui->forModes);
     m_buttons = 0;
@@ -234,7 +234,7 @@ void TrainingMode::setupModeWidgets(const QString &sequence) {
     setSequence(sequence, 1);
 #ifndef SMALL_DEVICE
     if (m_includeProgressBars)
-        vbox->addLayout(setupGraphs());
+        vbox->addLayout(setupGraphs(barLabel));
 #endif
 }
 
@@ -265,7 +265,7 @@ void TrainingMode::setDoEntireSequence(bool value) {
     qDebug() << "Switching to " << value;
 }
 
-void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBars)
+void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBars, QString barLabel)
 {
     m_includeProgressBars = includeProgressBars;
 
@@ -275,14 +275,20 @@ void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBar
     m_doEntireSequenceButton->setChecked(false);
     connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
 
-    setupModeWidgets(sequence);
+    setupModeWidgets(sequence, barLabel);
 }
 
-QGridLayout *TrainingMode::setupGraphs()
+QGridLayout *TrainingMode::setupGraphs(QString barLabel)
 {
-    int column = 0;
+    int column = 1;
     m_progressBars.clear();
     QGridLayout *gridLayout = new QGridLayout();
+
+    QLabel *leftLabel = new QLabel(barLabel);
+    leftLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    gridLayout->addWidget(leftLabel, 0, 0);
+    qDebug() << "here: " << barLabel;
+
     foreach(QChar theLetter, m_trainingSequence) {
         QLabel *label = new QLabel(theLetter.toUpper());
         label->setAlignment(Qt::AlignCenter);
@@ -296,7 +302,6 @@ QGridLayout *TrainingMode::setupGraphs()
         gridLayout->addWidget(bar, 0, column);
         column++;
 
-        qDebug() << "bar for " << theLetter;
         m_progressBars[theLetter] = bar;
     }
     return gridLayout;

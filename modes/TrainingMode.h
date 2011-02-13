@@ -33,7 +33,7 @@ public:
     virtual QTime startNextTrainingKey();
     MorseStat *getStat(const QChar &key);
     void setWPMLabel(float wpm);
-    void setupModeWidgets(const QString &sequence);
+    void setupModeWidgets(const QString &sequence, QString barLabel = "");
 
     virtual void clear();
     virtual void setupTrainingWidgets();
@@ -49,8 +49,8 @@ public slots:
     virtual void audioStopped();
     virtual void setDoEntireSequence(bool value);
     virtual void chooseCustomeSequence();
-    virtual void setupWidgets(const QString &sequence, bool includeProgressBars = true);
-    virtual QGridLayout *setupGraphs();
+    virtual void setupWidgets(const QString &sequence, bool includeProgressBars = true, QString barLabel = "");
+    virtual QGridLayout *setupGraphs(QString barLabel = "");
     virtual void updateGraphs();
 
     void saveStats(QSettings &settings, QString statPrefix = "");
