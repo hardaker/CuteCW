@@ -281,6 +281,7 @@ QGridLayout *TrainingMode::setupGraphs(QString barLabel)
 {
     int column = 1;
     m_progressBars.clear();
+    m_progressLabels.clear();
     QGridLayout *gridLayout = new QGridLayout();
 
     QLabel *leftLabel = new QLabel(barLabel);
@@ -301,6 +302,7 @@ QGridLayout *TrainingMode::setupGraphs(QString barLabel)
         column++;
 
         m_progressBars[theLetter] = bar;
+        m_progressLabels[theLetter] = label;
     }
     return gridLayout;
 }

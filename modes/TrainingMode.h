@@ -68,6 +68,7 @@ protected:
     QList<QChar>                    m_lastKeys;
     QList<QTime>                    m_lastTimes;
     QMap<QChar, GoalBar *>          m_progressBars;
+    QMap<QChar, QLabel *>           m_progressLabels;
     QMap<QChar, MorseStat *>        m_stats;
     QAction                        *m_doEntireSequenceButton;
     int                             m_maxBadLetters;
