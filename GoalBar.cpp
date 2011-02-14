@@ -24,7 +24,6 @@ void GoalBar::paintEvent(QPaintEvent *event)
     int barWidth = width();
     int barHeight = height();
     int drawAtHeight = barHeight - int(float(barHeight) * float(m_goalBarLevel - minimum())/float(maximum() - minimum()));
-    qDebug() << "drawing: " << minimum() << " - " << maximum() << " - " << m_goalBarLevel << " = " << drawAtHeight << " (out of)" << height();
 
     QColor markerColor(0,0,0);
 
