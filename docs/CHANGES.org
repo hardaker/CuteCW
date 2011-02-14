@@ -11,7 +11,6 @@
     :ARCHIVE_CATEGORY: TODO
     :ARCHIVE_TODO: DONE
     :END:
-
 * Version: 0.5
 *** DONE Use programmed screens instead of qtdesigner screens to get around maemo bugs
     :LOGBOOK:
@@ -141,6 +140,19 @@
   :END:
     :PROPERTIES:
     :ARCHIVE_TIME: 2011-02-13 Sun 19:34
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
+
+*** DONE color code letters in sequence graph according to current
+  SCHEDULED: <2011-02-13 Sun>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2011-02-14 Mon 15:15]
+  :END:
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-02-14 Mon 15:15
     :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
     :ARCHIVE_OLPATH: The TODO list
     :ARCHIVE_CATEGORY: TODO

@@ -22,8 +22,6 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO make some default texts to pick from (gutenberg?)
   SCHEDULED: <2011-02-13 Sun>
-*** TODO color code letters in sequence graph according to current
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO move highscores button into the options menu
   SCHEDULED: <2011-02-13 Sun>
 *** TODO make a "score" counter for recognition: sum(avewpm)
