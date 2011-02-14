@@ -8,8 +8,6 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO online documentation and theory
   SCHEDULED: <2011-02-13 Sun>
-*** TODO A makerelease packaging script.
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO direct listing on ws6z.com
   SCHEDULED: <2011-02-13 Sun>
 *** TODO mode specific preferences
