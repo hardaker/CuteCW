@@ -1,4 +1,4 @@
-* Version XXX
+* Next Version: 0.4
 *** DONE Use programmed screens instead of qtdesigner screens to get around maemo bugs
     :LOGBOOK:
     - State "DONE"       from ""           [2011-02-13 Sun 16:04]
