@@ -4,6 +4,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
+#include <QtGui/QGroupBox>
 #include <QtCore/QSignalMapper>
 
 FrontPage::FrontPage(Morse *parent, Ui::MainWindow *ui)
@@ -35,10 +36,15 @@ void FrontPage::setupWidgets() {
     topVBox->setStretchFactor(mainHBox, 5);
     topVBox->addLayout(mainHBox);
 
+    QGroupBox *leftGroup = new QGroupBox(tr("Training Modes"));
+    QGroupBox *rightGroup = new QGroupBox(tr("Play Modes"));
+
     QVBoxLayout *leftBox = new QVBoxLayout();
-    mainHBox->addLayout(leftBox);
+    leftGroup->setLayout(leftBox);
+    mainHBox->addWidget(leftGroup);
     QVBoxLayout *rightBox = new QVBoxLayout();
-    mainHBox->addLayout(rightBox);
+    rightGroup->setLayout(rightBox);
+    mainHBox->addWidget(rightGroup);
 
     QPushButton *button;
     QList<Morse::TrainingMode> leftContents, rightContents;
