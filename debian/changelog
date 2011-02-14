@@ -1,3 +1,9 @@
+cutecw (0.5-1) unstable; urgency=low
+
+  * Upgraded to upstream 0.5 
+
+ -- Wes Hardaker <wjhns177@hardakers.net>  Mon, 14 Feb 2011 13:54:19 -0700
+	
 cutecw (0.4-1) unstable; urgency=low
  
   * Upgraded to upstream 0.4 providing better game support
