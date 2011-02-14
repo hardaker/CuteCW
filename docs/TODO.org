@@ -28,6 +28,8 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO move highscores button into the options menu
   SCHEDULED: <2011-02-13 Sun>
+*** TODO make a "score" counter for recognition: sum(avewpm)
+  SCHEDULED: <2011-02-13 Sun>
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Version XXX
