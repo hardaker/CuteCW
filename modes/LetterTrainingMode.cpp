@@ -104,7 +104,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         //qDebug() << "  adding " << *letter << " / " << thisPercent;
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
-        if(thisPercent <= m_percentGoal || stat->getTryCount() < m_minimumTries) {
+        if(thisPercent < m_percentGoal || stat->getTryCount() < m_minimumTries) {
             qDebug() << "   too low: " << *letter << " / " << thisPercent << " / " << stat->getTryCount();
             if (++badLetters >= m_maxBadLetters || stat->getTryCount() <= m_minimumTries) {
                 // enough letters aren't accurate; break here
@@ -179,6 +179,11 @@ void LetterTrainingMode::updateGraphs()
         m_progressBars[theLetter]->setRange(0, 100);
         m_progressBars[theLetter]->setGoalBarLevel(m_percentGoal);
         m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage(m_minimumTries));
+        if (m_stats[theLetter]->getGoodPercentage() >= m_percentGoal) {
+            m_progressLabels[theLetter]->setText("<font color=\"red\">" + QString(theLetter) + "</font>");
+        } else {
+            m_progressLabels[theLetter]->setText("<font color=\"black\">" + QString(theLetter) + "</font>");
+        }
     }
     // qDebug() << "max graph WPM: " << fastestWPM;
 #endif

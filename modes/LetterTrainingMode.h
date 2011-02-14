@@ -27,7 +27,7 @@ public slots:
 
 private:
     static const int m_percentGoal = 90;
-    static const int m_minimumTries = 5;
+    static const int m_minimumTries = 10;
 };
 
 #endif // LETTERTRAININGMODE_H
