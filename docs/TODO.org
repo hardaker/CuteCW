@@ -14,8 +14,6 @@
   SCHEDULED: <2011-02-13 Sun>
 *** TODO mode specific preferences
   SCHEDULED: <2011-02-13 Sun>
-*** TODO help should be scrollable and also stacked on maemo
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO document how to create new mode classes
   SCHEDULED: <2011-02-13 Sun>
 *** TODO icons for the home page buttons
@@ -27,6 +25,8 @@
 *** TODO make some default texts to pick from (gutenberg?)
   SCHEDULED: <2011-02-13 Sun>
 *** TODO color code letters in sequence graph according to current
+  SCHEDULED: <2011-02-13 Sun>
+*** TODO move highscores button into the options menu
   SCHEDULED: <2011-02-13 Sun>
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s

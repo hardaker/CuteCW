@@ -7,6 +7,7 @@
 #include <QtGui/QTextEdit>
 #include <QtGui/QSpinBox>
 #include <QtGui/QLabel>
+#include <QtGui/QScrollArea>
 #include <qdebug.h>
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
@@ -51,14 +52,18 @@ void MorseMode::stop()
 }
 
 void MorseMode::help() {
-    //QMessageBox::information(0, tr("Mode Help"), helpText());
-    //QMessageBox::
+    QScrollArea *scrolled = new QScrollArea();
     QTextEdit *helptext = new QTextEdit();
-    //helptext->setWindowFlag(Qt::Window);
     helptext->setReadOnly(true);
     helptext->append("<h2>" + name() + " Mode</h2>\n" + helpText());
-    helptext->resize(800,440);
-    helptext->show();
+    scrolled->setWidget(helptext);
+    scrolled->setWidgetResizable(true);
+    scrolled->resize(800,440);
+#ifdef SMALL_DEVICE
+    scrolled->setAttribute(Qt::WA_Maemo5StackedWindow);
+#endif
+    scrolled->setWindowModality(Qt::WindowModal);
+    scrolled->show();
 }
 
 bool MorseMode::enterPressed() {

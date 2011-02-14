@@ -120,4 +120,16 @@
     :ARCHIVE_CATEGORY: TODO
     :ARCHIVE_TODO: DONE
     :END:
+*** DONE help should be scrollable and also stacked on maemo
+  SCHEDULED: <2011-02-13 Sun>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2011-02-13 Sun 19:34]
+  :END:
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-02-13 Sun 19:34
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
 

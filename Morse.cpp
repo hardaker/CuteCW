@@ -97,6 +97,9 @@ void Morse::aboutButton() {
     QDialog *dialog = new QDialog(m_parent);
     about.setupUi(dialog);
     about.helpicon->setPixmap(QPixmap(":/icons/64x64/cutecw.png"));
+#ifdef SMALL_DEVICE
+    dialog->setAttribute(Qt::WA_Maemo5StackedWindow);
+#endif
     dialog->exec();
 }
 
