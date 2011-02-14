@@ -223,8 +223,9 @@ void SpeedTrainingMode::updateGraphs()
         m_progressBars[theLetter]->setGoalBarLevel(goalWPM);
         float aveTime = getStat(theLetter)->getAverageTime();
         if (aveTime < 0)
-            aveTime = .5; // seconds is very slow
-        m_progressBars[theLetter]->setValue(msToPauseWPM(aveTime / MULTFACTOR));
+            m_progressBars[theLetter]->setValue(0);
+        else
+            m_progressBars[theLetter]->setValue(msToPauseWPM(aveTime / MULTFACTOR));
     }
 #endif
     // qDebug() << "max graph WPM: " << fastestWPM;
