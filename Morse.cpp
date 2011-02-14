@@ -78,14 +78,14 @@ void Morse::prefsButton() {
     prefsDialog.WPMGoal->setValue(m_currentWPMGoal);
     prefsDialog.tone->setValue(m_tone);
 
-    prefsDialog.weighting->insertItem(LOW, "Low");
-    prefsDialog.weighting->insertItem(HIGH, "High");
-    prefsDialog.weighting->setCurrentIndex(m_badLetterWeighting);
+    //prefsDialog.weighting->insertItem(LOW, "Low");
+    //prefsDialog.weighting->insertItem(HIGH, "High");
+    //prefsDialog.weighting->setCurrentIndex(m_badLetterWeighting);
 
     if (dialog->exec() == QDialog::Accepted) {
         m_currentWPMAccept = prefsDialog.WPMAccepted->value();
         m_currentWPMGoal = prefsDialog.WPMGoal->value();
-        m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
+        //m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
         m_tone = prefsDialog.tone->value();
         saveSettings();
         loadSettings();
@@ -114,7 +114,7 @@ void Morse::saveSettings() {
     settings.setValue("WPM/Goal", m_currentWPMGoal);
     settings.setValue("WPM/Accept", m_currentWPMAccept);
     settings.setValue("Tone", m_tone);
-    settings.setValue("LetterWeighting", int(m_badLetterWeighting));
+    //settings.setValue("LetterWeighting", int(m_badLetterWeighting));
 
     for(int i = PLAY; i <= maximumTrainingMode; i++) {
         m_modes[(TrainingMode) i]->saveSettings(settings);
@@ -125,7 +125,7 @@ void Morse::loadSettings() {
     QSettings settings("WS6Z", "qtcw");
     m_currentWPMGoal = settings.value("WPM/Goal", WPMGOAL).toInt();
     m_currentWPMAccept = settings.value("WPM/Accept", WPMACCEPT).toInt();
-    m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
+    //m_badLetterWeighting = (BadLetterWeighting) settings.value("LetterWeighting", HIGH).toInt();
     m_tone = settings.value("Tone", DEFAULT_TONE).toInt();
     for(int i = PLAY; i <= maximumTrainingMode; i++) {
         if (! m_modes.contains((TrainingMode) i))
