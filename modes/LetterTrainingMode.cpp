@@ -180,9 +180,9 @@ void LetterTrainingMode::updateGraphs()
         m_progressBars[theLetter]->setGoalBarLevel(m_percentGoal);
         m_progressBars[theLetter]->setValue(getStat(theLetter)->getGoodPercentage(m_minimumTries));
         if (m_stats[theLetter]->getGoodPercentage() >= m_percentGoal) {
-            m_progressLabels[theLetter]->setText("<font color=\"red\">" + QString(theLetter) + "</font>");
+            m_progressLabels[theLetter]->setText("<font color=\"red\">" + QString(theLetter.toUpper()) + "</font>");
         } else {
-            m_progressLabels[theLetter]->setText("<font color=\"black\">" + QString(theLetter) + "</font>");
+            m_progressLabels[theLetter]->setText("<font color=\"black\">" + QString(theLetter.toUpper()) + "</font>");
         }
     }
     // qDebug() << "max graph WPM: " << fastestWPM;
