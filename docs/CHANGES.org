@@ -1,3 +1,4 @@
+* Next Version: 0.6
 * Version: 0.5.1
 *** DONE A makerelease packaging script.
   SCHEDULED: <2011-02-13 Sun>
