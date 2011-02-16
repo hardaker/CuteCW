@@ -3,12 +3,6 @@
 
 #include <stdlib.h>
 
-#ifdef Q_OS_WIN32
-// cross compiling pulls in the wrong stdlib.h for some reason
-#undef RAND_MAX
-#define RAND_MAX 0x7FFF
-#endif
-
 #include <qdebug.h>
 
 LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
@@ -166,7 +160,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
 
 bool LetterTrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
     Q_UNUSED(stat);
-    if (msElapsed > 1000) {
+    if (msElapsed > 2000) {
         return true;
     }
     return false;

@@ -22,6 +22,8 @@ void SpeedTrainingMode::switchToMode() {
 }
 
 void SpeedTrainingMode::play() {
+    m_lastKeys.clear();
+    m_lastTimes.clear();
     startNextSpeedKey();
 }
 
@@ -47,7 +49,7 @@ void SpeedTrainingMode::startTimerToNextKey(int plusMSecs) {
     if (m_lastTimes.count() > 3) {
         // don't let them get *too* far behind
         m_badCount++;
-        QTimer::singleShot(1000, this, SLOT(startNextSpeedKey()));  // Try again in a second
+        QTimer::singleShot(1000, this, SLOT(startTimerToNextKey()));  // Try again in a second
         return;
     }
     avetime = getStat(m_lastKey)->getAverageTime();

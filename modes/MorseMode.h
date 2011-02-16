@@ -16,6 +16,12 @@
 #define SMALL_DEVICE 1
 #endif
 
+#ifdef Q_OS_WIN32
+// cross compiling pulls in the wrong stdlib.h for some reason
+#undef RAND_MAX
+#define RAND_MAX 0x7FFF
+#endif
+
 class Morse;
 
 class MorseMode : public QObject
