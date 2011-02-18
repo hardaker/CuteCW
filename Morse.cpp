@@ -145,6 +145,13 @@ Morse::playSequence()
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
+    if (m_audioOutput->error() != QAudio::NoError) {
+        // on OS X especially, this is needed on a regular basis.
+        // (on OS X, it's every time the audio pauses)
+        m_audioOutput = m_parent->createAudioOutput();
+    }
+    
+    
     m_audioOutput->start(m_playBuffer);
     return;
 }
@@ -154,7 +161,8 @@ QTime Morse::sequenceTime() {
 }
 
 QTime Morse::maybePlaySequence(bool addPause) {
-    if (m_playingMode == STOPPED || m_playingMode == PAUSED) {
+    if (m_playingMode == STOPPED || m_playingMode == PAUSED ||
+        m_audioOutput->state() == 2) {
         m_playBuffer->restartData();
         QTime playTime = sequenceTime();
         if (addPause)

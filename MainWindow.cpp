@@ -74,7 +74,7 @@ MainWindow::startIt()
     m_morse->playSequence();
 }
 
-void
+QAudioOutput *
 MainWindow::createAudioOutput()
 {
    QAudioFormat settings;
@@ -87,6 +87,7 @@ MainWindow::createAudioOutput()
     settings.setSampleType(QAudioFormat::SignedInt);
 
     m_audioOutput = new QAudioOutput(settings);
+    return m_audioOutput;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

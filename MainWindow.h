@@ -21,7 +21,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void createAudioOutput();
+    QAudioOutput *createAudioOutput();
     void keyPressEvent(QKeyEvent *);
     bool event(QEvent *event);
 
