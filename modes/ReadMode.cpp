@@ -34,6 +34,10 @@ ReadMode::addButtons() {
     connect(button, SIGNAL(clicked()), this, SLOT(openFile()));
 
     setupWPMWidgets(vLayout);
+
+    clearLayout(m_ui->horizontalLayout_3);
+    clearLayout(m_ui->horizontalLayout_4);
+    clearLayout(m_ui->horizontalLayout_5);
 }
 
 void
