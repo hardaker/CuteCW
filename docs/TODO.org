@@ -12,8 +12,17 @@
 *** TODO saving in maemo on window close is broken?
 *** TODO fix read-to-me memory issues
 *** TODO make some default texts to pick from (gutenberg?)
+*** TODO read rss feeds
 *** TODO move highscores button into the options menu
 *** TODO make a "score" counter for recognition: sum(avewpm)
+*** TODO make a keying input set of items:
+***** TODO training for straight keying with proper spacing/lengths
+***** TODO training for semi-automatic
+***** TODO training for iambic
+*** TODO add a training mode for pile-ups
+    + increase the number of simultaneous signals
+    + potentially at varying speed levels
+*** TODO other "similar" sequences: auv4, ndb6, eish5, ...
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Next Version: 0.6
