@@ -25,9 +25,10 @@ public:
     Q_OBJECT
 
 public:
-    enum sequences { KOCH = 0, KOCH1 = 1, KOCH2 = 2, KOCH3 = 3, KOCH4 = 4,
-                     ALPHABET = 5, AF = 6, GM = 7, NT = 8, UZ = 9,
-                     NUMBERS = 10, SYMBOLS = 11, EVERYTHING = 12};
+    enum sequences { KOCH, KOCH1, KOCH2, KOCH3, KOCH4,
+                     ALPHABET, AF, GM, NT, UZ,
+                     NUMBERS, SYMBOLS,
+                     EVERYTHING};
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
