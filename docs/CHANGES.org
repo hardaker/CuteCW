@@ -1,41 +1,12 @@
 * Next Version: 0.6
+*** DONE sound on the mac
 * Version: 0.5.1
 *** DONE A makerelease packaging script.
-  SCHEDULED: <2011-02-13 Sun>
-  :LOGBOOK:
-  - State "DONE"       from "TODO"       [2011-02-14 Mon 15:14]
-  :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-14 Mon 15:14
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 * Version: 0.5
 *** DONE Use programmed screens instead of qtdesigner screens to get around maemo bugs
-    :LOGBOOK:
-    - State "DONE"       from ""           [2011-02-13 Sun 16:04]
-    :END:
 *** DONE Rewrite the letter training mode to be purely based on percentage and not time
-    :LOGBOOK:
-    - State "DONE"       from ""           [2011-02-13 Sun 16:03]
-    :END:
 *** DONE Add a graph widget to indicate training progress
-    :LOGBOOK:
-    - State "DONE"       from ""           [2011-02-13 Sun 16:03]
-    :END:
 *** DONE improve the probability for bad letters in recognition mode
-    :LOGBOOK:
-    - State "DONE"       from "TODO"       [2011-02-12 Sat 22:35]
-    :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 16:00
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 ***** Example case with L good letters and 1 bad one:
       + P = percent correct of the "bad" letter (eg, 50)
       + L = # of letters at O%
@@ -75,102 +46,13 @@
 
       plot [0:100] f(p)=(n-p)/((l*n-l*o) + n - p), n=102, l=26, o=100, f(x) title "100", o=90, f(x) title "90", o=80, f(x) title "80", o=70, f(x) title "70"
 *** DONE Fix the probability in speed training mode
-    :LOGBOOK:
-    - State "DONE"       from "TODO"       [2011-02-13 Sun 15:51]
-    :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 16:00
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE create a home screen and a home screen button
-  SCHEDULED: <2011-02-13 Sun>
-  :LOGBOOK:
-  - State "DONE"       from "TODO"       [2011-02-13 Sun 15:51]
-  :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 16:01
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE fix trailing sound sometimes cut off on linux
-  SCHEDULED: <2011-02-13 Sun>
-  :LOGBOOK:
-  - State "DONE"       from "TODO"       [2011-02-13 Sun 08:33]
-  :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 16:01
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE Make the progress bars draw a level indicator on top for:
-    :LOGBOOK:
-    - State "DONE"       from "TODO"       [2011-02-13 Sun 09:02]
-    :END:
     - [X] The needed training level
-  SCHEDULED: <2011-02-13 Sun>
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 16:02
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE make the home screen use QGroupBoxes
-  SCHEDULED: <2011-02-13 Sun>
-  :LOGBOOK:
-  - State "DONE"       from "TODO"       [2011-02-13 Sun 16:19]
-  :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 16:19
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE help should be scrollable and also stacked on maemo
-  SCHEDULED: <2011-02-13 Sun>
-  :LOGBOOK:
-  - State "DONE"       from "TODO"       [2011-02-13 Sun 19:34]
-  :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-13 Sun 19:34
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
-
 *** DONE color code letters in sequence graph according to current
-  SCHEDULED: <2011-02-13 Sun>
-  :LOGBOOK:
-  - State "DONE"       from "TODO"       [2011-02-14 Mon 15:15]
-  :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-14 Mon 15:15
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
-
-
 * Next Version: 0.5.1
 *** DONE fix random sources on windows
-    :LOGBOOK:
-    - State "DONE"       from "TODO"       [2011-02-15 Tue 17:23]
-    :END:
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-15 Tue 17:23
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 

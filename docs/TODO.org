@@ -4,28 +4,22 @@
 ******* TODO space-invaders/falling-letters keying
 *** TODO Add a "test" button next to the frequency set spinbox
 *** TODO Test the speed increasing settings for speed mode
-*** TODO sound on the mac
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO online documentation and theory
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO direct listing on ws6z.com
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO mode specific preferences
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO document how to create new mode classes
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO icons for the home page buttons
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO saving in maemo on window close is broken?
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO fix read-to-me memory issues
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO make some default texts to pick from (gutenberg?)
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO move highscores button into the options menu
-  SCHEDULED: <2011-02-13 Sun>
 *** TODO make a "score" counter for recognition: sum(avewpm)
-  SCHEDULED: <2011-02-13 Sun>
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Next Version: 0.6
+#+STARTUP: nologdone nologrefile
+
+Local Variables:
+org-log-into-drawer: nil
+org-log-done-with-time: nil
+End:
