@@ -92,5 +92,6 @@ MainWindow::createAudioOutput()
 
 void MainWindow::closeEvent(QCloseEvent *event)
  {
+    Q_UNUSED(event);
     m_morse->saveSettings();
  }
