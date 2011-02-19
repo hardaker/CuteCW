@@ -34,15 +34,8 @@ public:
     QLabel *letter;
     QLabel *WPM;
     QHBoxLayout *forModes;
-    QHBoxLayout *horizontalLayout_3;
-    QLabel *label;
-    QLabel *sequence;
-    QHBoxLayout *horizontalLayout_4;
-    QLabel *label_3;
-    QLabel *lastwpm;
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_2;
-    QLabel *avewpm;
     QSpacerItem *verticalSpacer;
     QPushButton *homeButton;
 
@@ -110,8 +103,7 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setSpacing(6);
-        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
-        letter = new QLabel(verticalLayoutWidget);
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));     letter = new QLabel(verticalLayoutWidget);
         letter->setObjectName(QString::fromUtf8("letter"));
         QFont font1;
         font1.setPointSize(24);
@@ -137,72 +129,18 @@ public:
 
         verticalLayout->addLayout(forModes);
 
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setSpacing(6);
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        label = new QLabel(verticalLayoutWidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy);
-        label->setMinimumSize(QSize(200, 0));
-
-        horizontalLayout_3->addWidget(label);
-
-        sequence = new QLabel(verticalLayoutWidget);
-        sequence->setObjectName(QString::fromUtf8("sequence"));
-        QSizePolicy sizePolicy1(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(sequence->sizePolicy().hasHeightForWidth());
-        sequence->setSizePolicy(sizePolicy1);
-
-        horizontalLayout_3->addWidget(sequence);
-
-
-        verticalLayout->addLayout(horizontalLayout_3);
-
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setSpacing(6);
-        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        label_3 = new QLabel(verticalLayoutWidget);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-        sizePolicy.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
-        label_3->setSizePolicy(sizePolicy);
-        label_3->setMinimumSize(QSize(200, 0));
-
-        horizontalLayout_4->addWidget(label_3);
-
-        lastwpm = new QLabel(verticalLayoutWidget);
-        lastwpm->setObjectName(QString::fromUtf8("lastwpm"));
-        sizePolicy1.setHeightForWidth(lastwpm->sizePolicy().hasHeightForWidth());
-        lastwpm->setSizePolicy(sizePolicy1);
-
-        horizontalLayout_4->addWidget(lastwpm);
-
-
-        verticalLayout->addLayout(horizontalLayout_4);
-
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setSpacing(6);
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
         label_2 = new QLabel(verticalLayoutWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+
         sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
         label_2->setSizePolicy(sizePolicy);
         label_2->setMinimumSize(QSize(200, 0));
 
         horizontalLayout_6->addWidget(label_2);
-
-        avewpm = new QLabel(verticalLayoutWidget);
-        avewpm->setObjectName(QString::fromUtf8("avewpm"));
-        sizePolicy1.setHeightForWidth(avewpm->sizePolicy().hasHeightForWidth());
-        avewpm->setSizePolicy(sizePolicy1);
-
-        horizontalLayout_6->addWidget(avewpm);
-
 
         verticalLayout->addLayout(horizontalLayout_6);
 
@@ -227,14 +165,7 @@ public:
         clearTraining->setText(QApplication::translate("MainWindow", "Clear Training", 0, QApplication::UnicodeUTF8));
         prefs->setText(QApplication::translate("MainWindow", "Preferences", 0, QApplication::UnicodeUTF8));
         helpBar->setText(QString());
-        letter->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
-        WPM->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("MainWindow", "Sequence:", 0, QApplication::UnicodeUTF8));
-        sequence->setText(QString());
-        label_3->setText(QApplication::translate("MainWindow", "Last WPM:", 0, QApplication::UnicodeUTF8));
-        lastwpm->setText(QString());
         label_2->setText(QApplication::translate("MainWindow", "Average WPM:", 0, QApplication::UnicodeUTF8));
-        avewpm->setText(QString());
     } // retranslateUi
 
 };

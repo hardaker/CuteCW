@@ -46,6 +46,8 @@ public:
     void createGlobalActions();
     void createMenuStructures();
     virtual void modeMenus();
+    virtual void setupSequenceLayouts(QVBoxLayout *parentLayout = 0,
+                                      QWidget *theMainThing = 0);
 
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
@@ -54,7 +56,6 @@ public:
 
     virtual QString name() = 0;
     virtual QString helpText() = 0;
-
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
@@ -106,6 +107,14 @@ protected:
     QMenu                          *m_modeMenu;
     QMenu                          *m_cuteCWMenu;
 #endif
+
+    QHBoxLayout                    *m_sequenceLayout;
+    QHBoxLayout                    *m_lastWPMLayout;
+    QHBoxLayout                    *m_aveWPMLayout;
+
+    QLabel                         *m_avewpmLabel;
+    QLabel                         *m_lastwpmLabel;
+    QLabel                         *m_sequenceLabel;
 };
 
 #endif // MORSEMODE_H

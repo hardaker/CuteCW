@@ -23,7 +23,7 @@
 #define WPMACCEPT 2
 
 Morse::Morse()
-    : QObject(), m_sequenceLabel(0), m_parent(0), m_audioOutput(),
+    : QObject(), m_parent(0), m_audioOutput(),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_leadInPause(0,0), m_signalMapper(new QSignalMapper(this))
@@ -34,7 +34,7 @@ Morse::Morse()
 }
 
 Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
-    : QObject(parent), m_sequenceLabel(ui->sequence), m_parent(parent), m_audioOutput(output),
+    : QObject(parent), m_parent(parent), m_audioOutput(output),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
       m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT),
@@ -229,11 +229,10 @@ Morse::audioFinished(QAudio::State state)
 void Morse::switchMode(int newmode) {
     qDebug() << "switch to:" << newmode;
     m_playBuffer->stop();
-    m_ui->letter->setText("");
-    m_ui->WPM->setText("");
 
     m_modes[m_gameMode]->switchFromYou();
     m_gameMode = (Morse::TrainingMode) newmode;
+
     setupWidgets();
     m_modes[(TrainingMode) newmode]->switchToYou();
 }
@@ -454,7 +453,6 @@ void Morse::setupWidgets()
     setupWPMLayout(topvbox, theMainThing);
     topvbox->addLayout(m_ui->forModes = new QHBoxLayout(theMainThing));
     topvbox->setStretchFactor(m_ui->forModes, 10);
-    setupSequenceLayouts(topvbox, theMainThing);
 
     setupConnections();
 
@@ -464,7 +462,7 @@ void Morse::setupWidgets()
 
 void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
 {
-    QHBoxLayout *WPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
+    QHBoxLayout *WPMLayout = new QHBoxLayout(theMainThing);
     parentLayout->addLayout(WPMLayout);
 
     WPMLayout->addWidget(m_ui->WPM = new QLabel(""));
@@ -479,24 +477,6 @@ void Morse::setupWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
     font.setPointSize(font.pointSize() * 2);
     font.setBold(true);
     m_ui->letter->setFont(font);
-}
-
-void Morse::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
-{
-    QHBoxLayout *sequenceLayout = m_ui->horizontalLayout_3 = new QHBoxLayout(theMainThing);
-    parentLayout->addLayout(sequenceLayout);
-    sequenceLayout->addWidget(m_ui->label = new QLabel(tr("Sequence:")));
-    sequenceLayout->addWidget(m_sequenceLabel = m_ui->sequence = new QLabel(tr("")));
-
-    QHBoxLayout *lastWPMLayout = m_ui->horizontalLayout_4 = new QHBoxLayout(theMainThing);
-    parentLayout->addLayout(lastWPMLayout);
-    lastWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Last WPM:")));
-    lastWPMLayout->addWidget(m_ui->lastwpm = new QLabel(tr("")));
-
-    QHBoxLayout *aveWPMLayout = m_ui->horizontalLayout_5 = new QHBoxLayout(theMainThing);
-    parentLayout->addLayout(aveWPMLayout);
-    aveWPMLayout->addWidget(m_ui->label_3 = new QLabel(tr("Average WPM:")));
-    aveWPMLayout->addWidget(m_ui->avewpm = new QLabel(tr("")));
 }
 
 void Morse::setupTopButtons(QLayout *parentLayout)

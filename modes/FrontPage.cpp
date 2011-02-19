@@ -20,10 +20,6 @@ void FrontPage::switchToMode()
     m_ui->play->hide();
     m_ui->changeSequence->hide();
 
-    m_ui->sequence->hide();
-    clearLayout(m_ui->horizontalLayout_3);
-    clearLayout(m_ui->horizontalLayout_4);
-    clearLayout(m_ui->horizontalLayout_5);
     m_ui->homeButton->hide();
 
     setupWidgets();

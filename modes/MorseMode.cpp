@@ -8,6 +8,7 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QLabel>
 #include <QtGui/QScrollArea>
+#include <QtGui/QHBoxLayout>
 #include <qdebug.h>
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
@@ -339,4 +340,27 @@ void MorseMode::saveSettings(QSettings &settings) {
 
 void MorseMode::loadSettings(QSettings &settings) {
     Q_UNUSED(settings);
+}
+
+void MorseMode::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    if (parentLayout == 0)
+        parentLayout = m_ui->verticalLayout;
+    if (theMainThing == 0)
+        theMainThing = m_ui->centralWidget;
+
+    m_sequenceLayout = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(m_sequenceLayout);
+    m_sequenceLayout->addWidget(new QLabel(tr("Sequence:")));
+    m_sequenceLayout->addWidget(m_sequenceLabel = new QLabel(tr("")));
+
+    m_lastWPMLayout = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(m_lastWPMLayout);
+    m_lastWPMLayout->addWidget(new QLabel(tr("Last WPM:")));
+    m_lastWPMLayout->addWidget(m_lastwpmLabel = new QLabel(tr("")));
+
+    m_aveWPMLayout = new QHBoxLayout(theMainThing);
+    parentLayout->addLayout(m_aveWPMLayout);
+    m_aveWPMLayout->addWidget(new QLabel(tr("Average WPM:")));
+    m_aveWPMLayout->addWidget(m_avewpmLabel = new QLabel(tr("")));
 }

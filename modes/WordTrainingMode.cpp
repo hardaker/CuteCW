@@ -50,6 +50,8 @@ void WordTrainingMode::setupWordsMenu() {
 }
 
 void WordTrainingMode::switchToMode() {
+    setupSequenceLayouts();
+
     m_ui->letter->show();
     m_ui->changeWords->show();
     m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
@@ -83,7 +85,7 @@ bool WordTrainingMode::enterPressed() {
 
 void WordTrainingMode::setSequenceText()
 {
-    m_morse->m_sequenceLabel->setText(tr("Words: %1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
+    m_sequenceLabel->setText(tr("Words: %1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
 }
 
 void WordTrainingMode::handleKeyPress(QChar letter) {

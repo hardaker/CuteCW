@@ -101,6 +101,11 @@ void TrainingMode::setupSequences() {
 }
 
 void TrainingMode::setupTrainingWidgets() {
+    setupSequenceLayouts();
+
+    m_ui->letter->setText("");
+    m_ui->WPM->setText("");
+
     connect(m_optionsMenu->addAction(tr("Clear Training")), SIGNAL(triggered()), this, SLOT(clear()));
 }
 
@@ -132,7 +137,7 @@ void TrainingMode::clear()  {
     m_goodCount = 0;
     m_badCount = 0;
 
-    m_ui->avewpm->setText("All WPM: [None], K WPM: NEW");
+    m_avewpmLabel->setText("All WPM: [None], K WPM: NEW");
 
     if (runningMode() == RUNNING)
         playButton(); // pretend a pause was pressed too
@@ -188,7 +193,7 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
         WPM = WPM + "-";
     }
     qDebug() << "WPM text: " << WPM;
-    m_ui->lastwpm->setText(WPM);
+    m_lastwpmLabel->setText(WPM);
 
     // if the keyed incorrectly, penalize them 3 times their average else add in the results
     if (letterPressed == lastKey) {
@@ -238,10 +243,10 @@ void TrainingMode::setupModeWidgets(const QString &sequence, QString barLabel) {
 }
 
 void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
-    if (m_morse->m_sequenceLabel) {
+    if (m_sequenceLabel) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
-        m_morse->m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
+        m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
 
         QChar theLetter = sequence[currentlyAt-1].toLower();
         QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "&nbsp;&nbsp;&nbsp;&nbsp;";

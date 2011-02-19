@@ -8,6 +8,8 @@ GroupingMode::GroupingMode(Morse *parent, Ui::MainWindow *ui) :
 }
 
 void GroupingMode::switchToMode() {
+    setupSequenceLayouts();
+
     m_ui->letter->show();
     m_ui->play->show();
     m_ui->changeSequence->show();
@@ -53,7 +55,7 @@ void GroupingMode::handleKeyPress(QChar letter) {
 }
 
 void GroupingMode::setSequenceText() {
-    m_morse->m_sequenceLabel->setText(QString("current length = %1, good = %2, bad = %3").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses));
+    m_sequenceLabel->setText(QString("current length = %1, good = %2, bad = %3").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses));
 }
 
 void GroupingMode::createNextSequence() {

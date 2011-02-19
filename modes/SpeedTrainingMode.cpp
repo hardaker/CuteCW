@@ -8,6 +8,9 @@ SpeedTrainingMode::SpeedTrainingMode(Morse *parent, Ui::MainWindow *ui)
 }
 
 void SpeedTrainingMode::switchToMode() {
+
+    setupTrainingWidgets();
+
     m_ui->letter->show();
     m_ui->changeSequence->show();
     //m_ui->forModes->show();
@@ -17,7 +20,6 @@ void SpeedTrainingMode::switchToMode() {
 
     setupSequences();
     setupWidgets(m_trainingSequence, true, "S\np\ne\ne\nd\n \nR\na\nt\ni\nn\ng");
-    setupTrainingWidgets();
     updateGraphs();
 }
 
@@ -122,7 +124,7 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
             m_lastKey = *letter;
             m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
-            m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+            m_avewpmLabel->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                                   *letter + ": NEW");
             if (m_morse->trainingMode() == Morse::SPEEDTRAIN)
                 setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) *
@@ -169,14 +171,14 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
         totalWPM += pauseWPM;
     }
 
-    m_ui->avewpm->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
+    m_avewpmLabel->setText("All WPM: " + QString().setNum(msToPauseWPM(totalTime/letterCount)) + ", " +
                           currentLetterGoal + " WPM: " + QString().setNum(msToPauseWPM(thisTime)));
     setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount)));
 
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
     // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
-    float randWPM, subTime = 0.0;
+    float randWPM;
 
     randWPM = totalWPM*float(qrand())/float(RAND_MAX);
 

@@ -87,7 +87,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
             m_lastKey = *letter;
             m_lastKeys.append(*letter);
             setSequence(m_trainingSequence, letterCount);
-            m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
+            m_avewpmLabel->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
                                   *letter + ": NEW");
             setWPMLabel(thisPercent);
             m_lastTimes.push_back(m_morse->playIt(*letter));
@@ -127,7 +127,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
         totalPercent += (*aletter).second;
     }
 
-    m_ui->avewpm->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
+    m_avewpmLabel->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
                           *letter + ": NEW");
     setSequence(m_trainingSequence, letterCount);
 

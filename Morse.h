@@ -115,7 +115,6 @@ public slots:
     void playAudio();
 
 public:
-    QLabel                          *m_sequenceLabel;
     QMap<QChar, QList<ditdah> *>    code;
 
     QMenuBar * menuBar();
