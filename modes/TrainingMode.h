@@ -28,6 +28,7 @@ public:
     enum sequences { KOCH, KOCH1, KOCH2, KOCH3, KOCH4,
                      ALPHABET, AF, GM, NT, UZ,
                      NUMBERS, SYMBOLS,
+                     SIM1, SIM2, SIM3, SIM4, SIM5,
                      EVERYTHING};
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);

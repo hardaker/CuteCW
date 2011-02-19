@@ -1,5 +1,7 @@
 * Next Version: 0.6
-*** DONE sound on the mac
+*** DONE fixed the sound issues on the mac and hopefully maemo
+*** DONE added "similar" sequences: auv4, ndb6, eish5, ...
+
 * Version: 0.5.1
 *** DONE A makerelease packaging script.
 * Version: 0.5

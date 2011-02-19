@@ -22,7 +22,6 @@
 *** TODO add a training mode for pile-ups
     + increase the number of simultaneous signals
     + potentially at varying speed levels
-*** TODO other "similar" sequences: auv4, ndb6, eish5, ...
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Next Version: 0.6

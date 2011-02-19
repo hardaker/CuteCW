@@ -26,6 +26,11 @@ void TrainingMode::setupSequences() {
     m_sequences.append("tuvwxyz");
     m_sequences.append("1234567890");
     m_sequences.append(".,/=?");
+    m_sequences.append("eish5");
+    m_sequences.append("tmo0");
+    m_sequences.append("auv4");
+    m_sequences.append("ndb6");
+    m_sequences.append("awj1");
     m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
 
     // Koch sequences
@@ -79,6 +84,30 @@ void TrainingMode::setupSequences() {
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) UZ);
 
+    // Similar
+    subMenu = modeMenu->addMenu(tr("Similar"));
+
+    action = subMenu->addAction("EISH5");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) SIM1);
+
+    action = subMenu->addAction("TMO0");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) SIM2);
+
+    action = subMenu->addAction("AUV4");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) SIM3);
+
+    action = subMenu->addAction("NDB6");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) SIM4);
+
+    action = subMenu->addAction("AWJ1");
+    connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
+    m_sequenceSignalMapper->setMapping(action, (int) SIM5);
+
+
     // numbers and symbols
 
     action = modeMenu->addAction("Numbers");
@@ -89,9 +118,11 @@ void TrainingMode::setupSequences() {
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) SYMBOLS);
 
-    action = modeMenu->addAction("Symbols");
+    action = modeMenu->addAction("Everything");
     connect(action, SIGNAL(triggered()), m_sequenceSignalMapper, SLOT(map()));
     m_sequenceSignalMapper->setMapping(action, (int) EVERYTHING);
+
+    // Custom
 
     action = modeMenu->addAction("Custom");
     connect(action, SIGNAL(triggered()), this, SLOT(chooseCustomeSequence()));
