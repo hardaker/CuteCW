@@ -8,7 +8,7 @@ GroupingMode::GroupingMode(Morse *parent, Ui::MainWindow *ui) :
 }
 
 void GroupingMode::switchToMode() {
-    setupSequenceLayouts();
+    setupSequenceLayout();
 
     m_ui->letter->show();
     m_ui->play->show();

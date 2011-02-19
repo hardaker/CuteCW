@@ -342,7 +342,7 @@ void MorseMode::loadSettings(QSettings &settings) {
     Q_UNUSED(settings);
 }
 
-void MorseMode::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
+void MorseMode::setupSequenceLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
 {
     if (parentLayout == 0)
         parentLayout = m_ui->verticalLayout;
@@ -353,14 +353,37 @@ void MorseMode::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMain
     parentLayout->addLayout(m_sequenceLayout);
     m_sequenceLayout->addWidget(new QLabel(tr("Sequence:")));
     m_sequenceLayout->addWidget(m_sequenceLabel = new QLabel(tr("")));
+}
+
+void MorseMode::setupLastWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    if (parentLayout == 0)
+        parentLayout = m_ui->verticalLayout;
+    if (theMainThing == 0)
+        theMainThing = m_ui->centralWidget;
 
     m_lastWPMLayout = new QHBoxLayout(theMainThing);
     parentLayout->addLayout(m_lastWPMLayout);
     m_lastWPMLayout->addWidget(new QLabel(tr("Last WPM:")));
     m_lastWPMLayout->addWidget(m_lastwpmLabel = new QLabel(tr("")));
+}
+
+void MorseMode::setupAveWPMLayout(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    if (parentLayout == 0)
+        parentLayout = m_ui->verticalLayout;
+    if (theMainThing == 0)
+        theMainThing = m_ui->centralWidget;
 
     m_aveWPMLayout = new QHBoxLayout(theMainThing);
     parentLayout->addLayout(m_aveWPMLayout);
     m_aveWPMLayout->addWidget(new QLabel(tr("Average WPM:")));
     m_aveWPMLayout->addWidget(m_avewpmLabel = new QLabel(tr("")));
+}
+
+void MorseMode::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMainThing)
+{
+    setupSequenceLayout(parentLayout, theMainThing);
+    setupLastWPMLayout(parentLayout, theMainThing);
+    setupAveWPMLayout(parentLayout, theMainThing);
 }

@@ -50,7 +50,7 @@ void WordTrainingMode::setupWordsMenu() {
 }
 
 void WordTrainingMode::switchToMode() {
-    setupSequenceLayouts();
+    setupSequenceLayout();
 
     m_ui->letter->show();
     m_ui->changeWords->show();

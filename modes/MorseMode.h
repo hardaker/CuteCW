@@ -46,6 +46,12 @@ public:
     void createGlobalActions();
     void createMenuStructures();
     virtual void modeMenus();
+    virtual void setupSequenceLayout(QVBoxLayout *parentLayout = 0,
+                                      QWidget *theMainThing = 0);
+    virtual void setupLastWPMLayout(QVBoxLayout *parentLayout = 0,
+                                      QWidget *theMainThing = 0);
+    virtual void setupAveWPMLayout(QVBoxLayout *parentLayout = 0,
+                                      QWidget *theMainThing = 0);
     virtual void setupSequenceLayouts(QVBoxLayout *parentLayout = 0,
                                       QWidget *theMainThing = 0);
 
