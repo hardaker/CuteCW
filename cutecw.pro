@@ -95,6 +95,11 @@ OTHER_FILES += \
 BINDIR = $$PREFIX/bin
 DATADIR =$$PREFIX/share
 
+macx {
+    CONFIG += x86 x86_64
+    #  CONFIG += x86 ppc x86_64 ppc64
+}
+
 unix:!symbian {
     icon26.files = icons/26x26/cutecw.png
     icon48.files = icons/48x48/cutecw.png
