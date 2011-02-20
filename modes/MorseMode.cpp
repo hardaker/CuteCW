@@ -392,3 +392,7 @@ QBoxLayout *MorseMode::getPrefsLayout()
 {
     return 0;
 }
+
+void MorseMode::acceptPrefs()
+{
+}

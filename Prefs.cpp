@@ -64,6 +64,13 @@ void Prefs::ok()
     m_morse->setWPMAccept(m_acceptRate->value());
     m_morse->saveSettings();
     m_morse->loadSettings();
+
+    // load all the mode preferences if they have some
+    for(int which = Morse::TM_FIRST; which <= Morse::TM_LAST ; which++) {
+        MorseMode *mode = m_morse->getMode(Morse::TrainingMode(which));
+        mode->acceptPrefs();
+    }
+
     accept();
 }
 
