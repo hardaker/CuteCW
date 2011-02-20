@@ -63,8 +63,10 @@ public:
 
     virtual QString name() = 0;
     virtual QString helpText() = 0;
+
     virtual QBoxLayout *getPrefsLayout();
     virtual void acceptPrefs();
+    virtual void rejectPrefs();
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing

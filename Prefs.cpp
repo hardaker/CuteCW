@@ -76,6 +76,12 @@ void Prefs::ok()
 
 void Prefs::cancel()
 {
+    // load all the mode preferences if they have some
+    for(int which = Morse::TM_FIRST; which <= Morse::TM_LAST ; which++) {
+        MorseMode *mode = m_morse->getMode(Morse::TrainingMode(which));
+        mode->rejectPrefs();
+    }
+
     reject();
 }
 

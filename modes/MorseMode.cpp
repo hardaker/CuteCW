@@ -396,3 +396,7 @@ QBoxLayout *MorseMode::getPrefsLayout()
 void MorseMode::acceptPrefs()
 {
 }
+
+void MorseMode::rejectPrefs()
+{
+}
