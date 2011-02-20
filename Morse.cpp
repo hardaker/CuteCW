@@ -8,6 +8,7 @@
 #include <qdebug.h>
 
 #include "MainWindow.h"
+#include "Prefs.h"
 
 #include "modes/FrontPage.h"
 #include "modes/PlayMode.h"
@@ -71,25 +72,8 @@ MorseMode *Morse::getMode(TrainingMode which) const {
 }
 
 void Morse::prefsButton() {
-    Ui::Prefs prefsDialog;
-    QDialog *dialog = new QDialog(m_parent);
-    prefsDialog.setupUi(dialog);
-    prefsDialog.WPMAccepted->setValue(m_currentWPMAccept);
-    prefsDialog.WPMGoal->setValue(m_currentWPMGoal);
-    prefsDialog.tone->setValue(m_tone);
-
-    //prefsDialog.weighting->insertItem(LOW, "Low");
-    //prefsDialog.weighting->insertItem(HIGH, "High");
-    //prefsDialog.weighting->setCurrentIndex(m_badLetterWeighting);
-
-    if (dialog->exec() == QDialog::Accepted) {
-        m_currentWPMAccept = prefsDialog.WPMAccepted->value();
-        m_currentWPMGoal = prefsDialog.WPMGoal->value();
-        //m_badLetterWeighting = (BadLetterWeighting) prefsDialog.weighting->currentIndex();
-        m_tone = prefsDialog.tone->value();
-        saveSettings();
-        loadSettings();
-    }
+    Prefs prefs(this);
+    prefs.exec();
 }
 
 void Morse::aboutButton() {
