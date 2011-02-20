@@ -569,3 +569,23 @@ void Morse::goHome()
 {
     switchMode(FRONTPAGE);
 }
+
+int Morse::tone()
+{
+    return m_tone;
+}
+
+void Morse::setWPMGoal(int wpmGoal)
+{
+    m_currentWPMGoal = wpmGoal;
+}
+
+void Morse::setWPMAccept(int wpmAccept)
+{
+    m_currentWPMAccept = wpmAccept;
+}
+
+void Morse::setTone(int tone)
+{
+    m_tone = tone;
+}
