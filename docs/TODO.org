@@ -22,6 +22,7 @@
 *** TODO add a training mode for pile-ups
     + increase the number of simultaneous signals
     + potentially at varying speed levels
+*** TODO try buffering sound output after end of tone to auto-pad with spaces
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Next Version: 0.6
