@@ -6,7 +6,7 @@
 #include <qdebug.h>
 
 LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : TrainingMode(parent, ui)
+    : TrainingMode(parent, ui), m_percentGoal(90), m_minimumTries(10), m_percentGoalBox(0)
 {
 }
 
@@ -185,10 +185,14 @@ void LetterTrainingMode::updateGraphs()
 
 void LetterTrainingMode::loadSettings(QSettings &settings)
 {
+    m_percentGoal = settings.value("lettertraining/percentGoal", 90).toInt();
+    m_minimumTries = settings.value("lettertraining/minimumTries", 10).toInt();
     loadStats(settings);
 }
 
 void LetterTrainingMode::saveSettings(QSettings &settings)
 {
+    settings.setValue("lettertraining/percentGoal", m_percentGoal);
+    settings.setValue("lettertraining/minimumTries", m_minimumTries);
     saveStats(settings);
 }

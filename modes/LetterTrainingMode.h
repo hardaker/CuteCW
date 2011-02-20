@@ -1,6 +1,8 @@
 #ifndef LETTERTRAININGMODE_H
 #define LETTERTRAININGMODE_H
 
+#include <QtGui/QSpinBox>
+
 #include "TrainingMode.h"
 
 class LetterTrainingMode : public TrainingMode
@@ -26,8 +28,10 @@ public slots:
     virtual void updateGraphs();
 
 private:
-    static const int m_percentGoal = 90;
-    static const int m_minimumTries = 10;
+    int m_percentGoal;
+    int m_minimumTries;
+
+    QSpinBox *m_percentGoalBox;
 };
 
 #endif // LETTERTRAININGMODE_H
