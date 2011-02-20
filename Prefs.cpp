@@ -43,6 +43,7 @@ Prefs::Prefs(Morse *morse, QWidget *parent) :
     topLayout->addWidget(buttonBox);
 
     setLayout(topLayout);
+    resize(800,440);
 }
 
 void Prefs::ok()
