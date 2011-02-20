@@ -1,12 +1,14 @@
 #include "LetterTrainingMode.h"
 #include "Morse.h"
 
+#include <QtGui/QFormLayout>
+
 #include <stdlib.h>
 
 #include <qdebug.h>
 
 LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : TrainingMode(parent, ui)
+    : TrainingMode(parent, ui), m_percentGoal(90), m_minimumTries(10), m_percentGoalBox(0)
 {
 }
 
@@ -185,10 +187,37 @@ void LetterTrainingMode::updateGraphs()
 
 void LetterTrainingMode::loadSettings(QSettings &settings)
 {
+    m_percentGoal = settings.value("lettertraining/percentGoal", 90).toInt();
+    m_minimumTries = settings.value("lettertraining/minimumTries", 10).toInt();
     loadStats(settings);
 }
 
 void LetterTrainingMode::saveSettings(QSettings &settings)
 {
+    settings.setValue("lettertraining/percentGoal", m_percentGoal);
+    settings.setValue("lettertraining/minimumTries", m_minimumTries);
     saveStats(settings);
+}
+
+QBoxLayout *LetterTrainingMode::getPrefsLayout()
+{
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QFormLayout *form = new QFormLayout();
+    hbox->addLayout(form);
+
+    form->addRow(tr("Percentage Goal"), m_percentGoalBox = new QSpinBox());
+    m_percentGoalBox->setRange(0,100);
+    m_percentGoalBox->setValue(m_percentGoal);
+
+    form->addRow(tr("Minimum Correct Number"), m_minimumTriesBox = new QSpinBox());
+    m_minimumTriesBox->setRange(1,100);
+    m_minimumTriesBox->setValue(m_minimumTries);
+
+    return hbox;
+}
+
+void LetterTrainingMode::acceptPrefs()
+{
+    m_percentGoal = m_percentGoalBox->value();
+    m_minimumTries = m_minimumTriesBox->value();
 }
