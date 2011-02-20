@@ -1,6 +1,6 @@
 #ifndef PREFS_H
 #define PREFS_H
-
+#include "Morse.h"
 #include <QDialog>
 
 namespace Ui {
@@ -12,11 +12,19 @@ class Prefs : public QDialog
     Q_OBJECT
 
 public:
-    explicit Prefs(QWidget *parent = 0);
+    explicit Prefs(Morse *morse, QWidget *parent = 0);
     ~Prefs();
 
+public slots:
+    void ok();
+    void cancel();
 private:
-    Ui::Prefs *ui;
+    Morse *m_morse;
+
+    QSpinBox *m_WPMRate;
+    QSpinBox *m_acceptRate;
+    QSpinBox *m_tone;
+
 };
 
 #endif // PREFS_H
