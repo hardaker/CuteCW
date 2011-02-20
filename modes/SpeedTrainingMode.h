@@ -1,6 +1,8 @@
 #ifndef SPEEDTRAININGMODE_H
 #define SPEEDTRAININGMODE_H
 
+#include <QtGui/QSpinBox>
+
 #include "TrainingMode.h"
 #include "Morse.h"
 
@@ -26,10 +28,15 @@ public:
     virtual void loadSettings(QSettings &settings);
     virtual void saveSettings(QSettings &settings);
 
+    virtual QBoxLayout * getPrefsLayout();
+    virtual void acceptPrefs();
 public slots:
     void startTimerToNextKey(int plusMSecs = 0);
     void startNextSpeedKey();
     virtual void updateGraphs();
+
+private:
+    QSpinBox *m_acceptRateBox;
 };
 
 #endif // SPEEDTRAININGMODE_H

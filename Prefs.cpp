@@ -21,11 +21,6 @@ Prefs::Prefs(Morse *morse, QWidget *parent) :
     m_WPMRate->setValue(m_morse->currentWPMGoal());
     genericForm->addRow(tr("WPM Play Rate"), m_WPMRate);
 
-    m_acceptRate = new QSpinBox();
-    m_acceptRate->setRange(1,40);
-    m_acceptRate->setValue(m_morse->currentWPMAccept());
-    genericForm->addRow(tr("Acceptance Rate"), m_acceptRate);
-
     m_tone = new QSpinBox();
     m_tone->setRange(100,1200);
     m_tone->setValue(m_morse->tone());
@@ -61,7 +56,6 @@ void Prefs::ok()
 {
     m_morse->setTone(m_tone->value());
     m_morse->setWPMGoal(m_WPMRate->value());
-    m_morse->setWPMAccept(m_acceptRate->value());
     m_morse->saveSettings();
     m_morse->loadSettings();
 

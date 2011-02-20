@@ -24,8 +24,8 @@ public:
     virtual void loadSettings(QSettings &settings);
     virtual void saveSettings(QSettings &settings);
 
-    QBoxLayout * getPrefsLayout();
-    void acceptPrefs();
+    virtual QBoxLayout * getPrefsLayout();
+    virtual void acceptPrefs();
 public slots:
     virtual void updateGraphs();
 

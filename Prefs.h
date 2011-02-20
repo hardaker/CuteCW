@@ -22,7 +22,6 @@ private:
     Morse *m_morse;
 
     QSpinBox *m_WPMRate;
-    QSpinBox *m_acceptRate;
     QSpinBox *m_tone;
 
 };

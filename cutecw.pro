@@ -70,8 +70,7 @@ HEADERS  += MainWindow.h \
     modes/FrontPage.h \
     GoalBar.h
 
-FORMS    += Prefs.ui \
-    AboutDialog.ui
+FORMS    += AboutDialog.ui
 
 CONFIG += mobility
 MOBILITY = 
