@@ -42,6 +42,17 @@ Prefs::Prefs(Morse *morse, QWidget *parent) :
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(cancel()));
     topLayout->addWidget(buttonBox);
 
+    // load all the mode preferences if they have some
+    for(int which = Morse::TM_FIRST; which <= Morse::TM_LAST ; which++) {
+        MorseMode *mode = m_morse->getMode(Morse::TrainingMode(which));
+        QBoxLayout *modeLayout;
+        if ((modeLayout = mode->getPrefsLayout()) != 0) {
+            QWidget *modeWidget = new QWidget();
+            modeWidget->setLayout(modeLayout);
+            tabWidget->addTab(modeWidget, mode->name());
+        }
+    }
+
     setLayout(topLayout);
     resize(800,440);
 }
