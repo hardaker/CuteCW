@@ -24,6 +24,8 @@ public:
     virtual void loadSettings(QSettings &settings);
     virtual void saveSettings(QSettings &settings);
 
+    QBoxLayout * getPrefsLayout();
+    void acceptPrefs();
 public slots:
     virtual void updateGraphs();
 
@@ -32,6 +34,7 @@ private:
     int m_minimumTries;
 
     QSpinBox *m_percentGoalBox;
+    QSpinBox *m_minimumTriesBox;
 };
 
 #endif // LETTERTRAININGMODE_H
