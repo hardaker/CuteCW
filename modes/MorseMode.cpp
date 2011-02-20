@@ -387,3 +387,8 @@ void MorseMode::setupSequenceLayouts(QVBoxLayout *parentLayout, QWidget *theMain
     setupLastWPMLayout(parentLayout, theMainThing);
     setupAveWPMLayout(parentLayout, theMainThing);
 }
+
+QBoxLayout *MorseMode::getPrefsLayout()
+{
+    return 0;
+}

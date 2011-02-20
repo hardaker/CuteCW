@@ -34,7 +34,7 @@ public:
     Morse();
     Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui);
 
-    static const int DEFAULT_TONE = 500;
+    static const int DEFAULT_TONE = 700;
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
@@ -82,6 +82,11 @@ public:
 
     int currentWPMGoal();
     int currentWPMAccept();
+    int tone();
+    void setWPMGoal(int wpmGoal);
+    void setWPMAccept(int wpmAccept);
+    void setTone(int tone);
+
     AudioMode audioMode();
     void setAudioMode(AudioMode newmode);
     TrainingMode trainingMode();
