@@ -6,6 +6,7 @@
 #include <QtCore/QTime>
 #include <QtCore/QSignalMapper>
 #include <QtCore/QSettings>
+#include <QtGui/QBoxLayout>
 #include <qaudio.h>
 
 // #include "Morse.h"
@@ -62,6 +63,7 @@ public:
 
     virtual QString name() = 0;
     virtual QString helpText() = 0;
+    virtual QBoxLayout *getPrefsLayout();
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
