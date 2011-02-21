@@ -18,7 +18,6 @@
 #include "modes/MorseMode.h"
 
 #include "ui_MainWindow.h"
-#include "ui_Prefs.h"
 #include "ui_AboutDialog.h"
 
 class MainWindow;
