@@ -150,7 +150,7 @@ QTime Morse::maybePlaySequence(bool addPause) {
         m_playBuffer->restartData();
         QTime playTime = sequenceTime();
         if (addPause)
-            add(letterPause());
+            add(pause());
         playSequence();
         return QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
     }

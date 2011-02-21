@@ -5,7 +5,6 @@
 *** TODO [#B] Add a "test" button next to the frequency set spinbox
 *** TODO [#A] Test the speed increasing settings for speed mode
 *** TODO online documentation and theory
-*** TODO direct listing on ws6z.com
 *** STARTED [#B] mode specific preferences
 *** STARTED document how to create new mode classes
 *** TODO [#B] icons for the home page buttons

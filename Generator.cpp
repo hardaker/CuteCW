@@ -155,16 +155,17 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 
     if (len < bytes_left) {
         // Normal
-        memcpy(data,t+pos,len);
+        memcpy(data, t+pos, len);
         pos += len;
         bytes_left -= len;
         return len;
     } else {
         // Whats left
-        memcpy(data,t+pos,bytes_left);
+        memcpy(data, t+pos, bytes_left);
+        int to_return = bytes_left;
         bytes_left = 0;
         pos=0;
-        return bytes_left;
+        return to_return;
     }
 }
 
