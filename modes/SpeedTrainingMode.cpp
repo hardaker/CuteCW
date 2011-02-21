@@ -244,3 +244,21 @@ void SpeedTrainingMode::saveSettings(QSettings &settings)
 {
     saveStats(settings);
 }
+
+QBoxLayout *SpeedTrainingMode::getPrefsLayout()
+{
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QFormLayout *form = new QFormLayout();
+    hbox->addLayout(form);
+
+    form->addRow(tr("Speed Acceptance Rate"), m_acceptRateBox = new QSpinBox());
+    m_acceptRateBox->setRange(1,100);
+    m_acceptRateBox->setValue(m_morse->currentWPMAccept());
+
+    return hbox;
+}
+
+void SpeedTrainingMode::acceptPrefs()
+{
+    m_morse->setWPMAccept(m_acceptRateBox->value());
+}
