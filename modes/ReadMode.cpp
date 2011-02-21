@@ -52,10 +52,10 @@ ReadMode::openFile() {
 }
 
 void ReadMode::play() {
-    QTextCursor readSpot = m_textEdit->textCursor();
-    readSpot.select(QTextCursor::Document);
+    m_readSpot = m_textEdit->textCursor();
+    m_readSpot.select(QTextCursor::Document);
 
-    m_morse->add(readSpot.selectedText());
+    m_morse->add(m_readSpot.selectedText());
     m_morse->playSequence();
     return;
     //qDebug() << "starting to read";
