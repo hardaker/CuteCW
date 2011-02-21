@@ -64,7 +64,6 @@ void GroupGame::limitLength(int newValue) {
 
 void GroupGame::gameOver()
 {
-  pause();
   m_scores.addScore("", score());
 }
 

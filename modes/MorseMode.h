@@ -37,16 +37,15 @@ public:
     Morse *morseParent();
     MorseStat *getStat(const QChar &key);
 
+    // converts time delays into WPM rates:
     int msToWPM(float ms);
     int msToPauseWPM(float ms);
     float msToPauseWPMF(float ms);
 
-    void hideWidgets();
     void setupKeyWidgets(const QString &sequence, QBoxLayout *inside = 0);
     void setupWPMWidgets(QBoxLayout *to = 0);
-    void createGlobalActions();
-    void createMenuStructures();
-    virtual void modeMenus();
+
+    // sets up the sequence: and related bottom bars
     virtual void setupSequenceLayout(QVBoxLayout *parentLayout = 0,
                                       QWidget *theMainThing = 0);
     virtual void setupLastWPMLayout(QVBoxLayout *parentLayout = 0,
@@ -59,44 +58,56 @@ public:
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
 
+    // erases the contents of a layout object
     void clearLayout(QLayout *layout);
 
+    // should return a global name and help text for the mode:
     virtual QString name() = 0;
     virtual QString helpText() = 0;
 
+    // For implementing preference screens.
+    // getPrefsLayout should return a pointer to a HBox or VBox layout
+    // accept/reject prefs should handle an 'ok' or 'cancel' button if needed
     virtual QBoxLayout *getPrefsLayout();
     virtual void acceptPrefs();
     virtual void rejectPrefs();
 
 public slots:
-    virtual void handleKeyPress(QChar letterPressed); // by default does nothing
-    virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version
-    virtual void switchToMode() = 0;
-    virtual void switchFromMode();
+    // switchToYou, by default calls the following ones in order:
     virtual void switchToYou();
+    virtual void createMenuStructures();  // this calls modeMenus():
+    virtual void modeMenus();             // by default does nothing
+    // m_morse->createTones
+    virtual void hideWidgets();
+    virtual void switchToMode() = 0;      // you can install mode widgets into m_ui->forModes
+    virtual void createGlobalActions();
+
+    virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version:
+    virtual void handleKeyPress(QChar letterPressed); // by default does nothing
+    virtual void switchFromMode();
     virtual void switchFromYou();
 
-    virtual void playButton();
+    // by default this changes the mode to RUNNING or PAUSED (and stops the audio)
+    virtual void playButton();            // sets the icons, and calls play() or stop()
     virtual bool enterPressed();
 
-    virtual void play();
-    virtual void pause();
-    virtual void stop();
+    virtual void play();                  // called when Play is pressed
+    virtual void stop();                  // called when Pause is pressed
 
     virtual void clear();
-    virtual void clearModeLayout();
+    virtual void clearModeLayout();      // calls clearLayout on m_ui->forModes
 
-    virtual void help();
+    virtual void help();                 // opens a help window to show helpText() contents
 
-    virtual void audioFinished(QAudio::State state);
-    virtual void audioStopped();
+    virtual void audioFinished(QAudio::State state);  // changes the internal state and calls:
+    virtual void audioStopped();                      // this when audio has stopped playing
 
-    virtual void changeWPM(int wpm);
-    virtual void changeSpaceWPM(int wpm);
-    virtual void changeLetterSpaceWPM(int wpm);
+    virtual void changeWPM(int wpm);                  // call this to change the WPM rate
+    virtual void changeSpaceWPM(int wpm);             // call this to change the spacing WPM rate
+    virtual void changeLetterSpaceWPM(int wpm);       // call this to change the spacing between letters
 
-    virtual void loadSettings(QSettings &settings);
-    virtual void saveSettings(QSettings &settings);
+    virtual void loadSettings(QSettings &settings);   // load any mode specific data
+    virtual void saveSettings(QSettings &settings);   // save any mode specific data
 
 protected:
     Morse                          *m_morse;
@@ -109,6 +120,7 @@ protected:
     QSignalMapper                  *m_mapper;
     QGridLayout                    *m_buttons;
 #ifdef SMALL_DEVICE
+    // on small devices (ie, maemo) everything goes straight into the main help bar
     QMenuBar                       *m_helpMenu;
     QMenuBar                       *m_optionsMenu;
     QMenuBar                       *m_cuteCWMenu;

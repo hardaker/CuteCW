@@ -44,10 +44,6 @@ void MorseMode::play()
 {
 }
 
-void MorseMode::pause()
-{
-}
-
 void MorseMode::stop()
 {
 }
