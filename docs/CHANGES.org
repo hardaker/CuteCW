@@ -1,6 +1,14 @@
 * Next Version: 0.6
 *** DONE fixed the sound issues on the mac and hopefully maemo
 *** DONE added "similar" sequences: auv4, ndb6, eish5, ...
+*** DONE fix read-to-me memory issues
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-02-20 Sun 18:18
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
 
 * Version: 0.5.1
 *** DONE A makerelease packaging script.
