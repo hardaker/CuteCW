@@ -58,9 +58,6 @@ void ReadMode::play() {
     readWordUnderCursor();
 
     return;
-    //qDebug() << "starting to read";
-    //m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
-    //readNextLetter();
 }
 
 void ReadMode::stop() {
