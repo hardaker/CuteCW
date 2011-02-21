@@ -19,12 +19,12 @@ Prefs::Prefs(Morse *morse, QWidget *parent) :
     m_WPMRate = new QSpinBox();
     m_WPMRate->setRange(1,40);
     m_WPMRate->setValue(m_morse->currentWPMGoal());
-    genericForm->addRow(tr("WPM Play Rate"), m_WPMRate);
+    genericForm->addRow(tr("WPM Goal and Play Rate"), m_WPMRate);
 
     m_tone = new QSpinBox();
     m_tone->setRange(100,1200);
     m_tone->setValue(m_morse->tone());
-    genericForm->addRow(tr("Tone Frequency"), m_tone);
+    genericForm->addRow(tr("CW Tone Frequency"), m_tone);
 
     tabWidget->addTab(genericPrefs, tr("General"));
 
