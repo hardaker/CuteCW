@@ -38,6 +38,7 @@ public slots:
 private:
     int                             m_countWeight;
     QSpinBox *m_acceptRateBox;
+    QSpinBox *m_countWeightBox;
 };
 
 #endif // SPEEDTRAININGMODE_H

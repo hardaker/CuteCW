@@ -241,11 +241,13 @@ void SpeedTrainingMode::updateGraphs()
 
 void SpeedTrainingMode::loadSettings(QSettings &settings)
 {
+    m_countWeight = settings.value("speedtraining/countWeight", 50).toInt();
     loadStats(settings);
 }
 
 void SpeedTrainingMode::saveSettings(QSettings &settings)
 {
+    settings.setValue("speedtraining/countWeight", m_countWeight);
     saveStats(settings);
 }
 
@@ -259,10 +261,21 @@ QBoxLayout *SpeedTrainingMode::getPrefsLayout()
     m_acceptRateBox->setRange(1,100);
     m_acceptRateBox->setValue(m_morse->currentWPMAccept());
 
+    form->addRow(tr("Speed Increasing Aggressiveness"), m_countWeightBox = new QSpinBox());
+    m_countWeightBox->setRange(1,1000);
+    m_countWeightBox->setValue(m_countWeight);
+
+    QLabel *helpLabel = new QLabel(tr("(lower = speed increases more quickly)"));
+    QFont font = helpLabel->font();
+    font.setItalic(true);
+    helpLabel->setFont(font);
+    form->addRow("", helpLabel);
+
     return hbox;
 }
 
 void SpeedTrainingMode::acceptPrefs()
 {
     m_morse->setWPMAccept(m_acceptRateBox->value());
+    m_countWeight = m_countWeightBox->value();
 }
