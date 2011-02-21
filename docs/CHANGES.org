@@ -9,6 +9,24 @@
     :ARCHIVE_CATEGORY: TODO
     :ARCHIVE_TODO: DONE
     :END:
+*** DONE [#A] Test the speed increasing settings for speed mode
+    - State "DONE"       from "TODO"       [2011-02-21 Mon 10:48]
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-02-21 Mon 10:49
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
+*** DONE [#B] mode specific preferences
+    - State "DONE"       from "STARTED"    [2011-02-21 Mon 10:49]
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-02-21 Mon 10:49
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
 
 * Version: 0.5.1
 *** DONE A makerelease packaging script.

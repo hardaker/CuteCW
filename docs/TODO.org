@@ -3,9 +3,7 @@
 ***** TODO Keying practice using on or two keys for practicing keying.
 ******* TODO space-invaders/falling-letters keying
 *** TODO [#B] Add a "test" button next to the frequency set spinbox
-*** TODO [#A] Test the speed increasing settings for speed mode
 *** TODO online documentation and theory
-*** STARTED [#B] mode specific preferences
 *** STARTED document how to create new mode classes
 *** TODO [#B] icons for the home page buttons
 *** TODO [#A] saving in maemo on window close is broken?
@@ -20,7 +18,9 @@
 *** TODO add a training mode for pile-ups
     + increase the number of simultaneous signals
     + potentially at varying speed levels
-*** TODO [#A] try buffering sound output after end of tone to auto-pad with spaces
+*** CANCELED [#A] try buffering sound output after end of tone to auto-pad with spaces
+    - Note taken on [2011-02-21 Mon 10:49] \\
+      seems that fixing the output ending bug fixed this issue
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Next Version: 0.6
