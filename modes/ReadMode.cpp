@@ -67,12 +67,20 @@ void ReadMode::stop() {
 void ReadMode::readWordUnderCursor() {
     m_readSpot.select(QTextCursor::WordUnderCursor);
     m_morse->add(m_readSpot.selectedText());
-    m_readSpot.movePosition(QTextCursor::NextWord);
     m_morse->playSequence();
+    QTextCharFormat format = m_readSpot.blockCharFormat();
+    format.setFontUnderline(true);
+    //m_readSpot.setBlockCharFormat(format);
+    m_currentText = m_readSpot.selectedText();
+    m_readSpot.insertHtml("<u>" + m_currentText + "</u>");
 }
 
 void ReadMode::audioStopped()
 {
+    m_readSpot.select(QTextCursor::WordUnderCursor);
+    m_readSpot.insertHtml(m_currentText);
+    m_currentText = "";
+    m_readSpot.movePosition(QTextCursor::NextWord);
     if (!m_readSpot.atEnd()) {
         QTimer::singleShot(int(m_morse->spaceSecs() * 1000.0), this, SLOT(readWordUnderCursor()));
     } else {

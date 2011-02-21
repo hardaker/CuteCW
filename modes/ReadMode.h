@@ -30,6 +30,7 @@ public slots:
 private:
     QTextCursor                     m_readSpot;
     QTextEdit                      *m_textEdit;
+    QString                         m_currentText;
 
 };
 
