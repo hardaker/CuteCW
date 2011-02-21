@@ -2,6 +2,7 @@
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
+#include <QtCore/QTimer>
 
 #include "ReadMode.h"
 #include "Morse.h"
@@ -53,14 +54,17 @@ ReadMode::openFile() {
 
 void ReadMode::play() {
     m_readSpot = m_textEdit->textCursor();
-    m_readSpot.select(QTextCursor::Document);
+    m_readSpot.movePosition(QTextCursor::Start);
+    readWordUnderCursor();
 
-    m_morse->add(m_readSpot.selectedText());
-    m_morse->playSequence();
     return;
     //qDebug() << "starting to read";
     //m_readSpot = m_ui->wordbox->cursorForPosition(QPoint(0,0));
     //readNextLetter();
+}
+
+void ReadMode::stop() {
+    m_readSpot.movePosition(QTextCursor::End);
 }
 
 void ReadMode::readNextLetter() {
@@ -78,10 +82,21 @@ void ReadMode::readNextLetter() {
     m_morse->addAndPlayIt(m_readSpot.selectedText()[0]);
 }
 
+void ReadMode::readWordUnderCursor() {
+    m_readSpot.select(QTextCursor::WordUnderCursor);
+    m_morse->add(m_readSpot.selectedText());
+    m_readSpot.movePosition(QTextCursor::NextWord);
+    m_morse->playSequence();
+}
+
 void ReadMode::audioStopped()
 {
-    qDebug() << "audio stopped method";
-    setRunningMode(PAUSED);
+    if (!m_readSpot.atEnd()) {
+        QTimer::singleShot(int(m_morse->spaceSecs() * 1000.0), this, SLOT(readWordUnderCursor()));
+    } else {
+        qDebug() << "audio stopped method";
+        setRunningMode(PAUSED);
+    }
 }
 
 QString ReadMode::helpText()

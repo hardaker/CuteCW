@@ -80,6 +80,10 @@ public:
     Generator *space();
 
     float ditSecs();
+    float dahSecs();
+    float pauseSecs();
+    float letterPauseSecs();
+    float spaceSecs();
 
     int currentWPMGoal();
     int currentWPMAccept();
@@ -119,6 +123,7 @@ public slots:
 
     void pauseAudio();
     void playAudio();
+
 
 public:
     QMap<QChar, QList<ditdah> *>    code;

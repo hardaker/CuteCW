@@ -22,8 +22,10 @@ public:
 public slots:
     virtual void switchToMode();
     virtual void play();
+    virtual void stop();
     virtual void readNextLetter();
     virtual void audioStopped();
+    virtual void readWordUnderCursor();
     void openFile();
 
 private:

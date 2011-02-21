@@ -573,3 +573,23 @@ void Morse::setTone(int tone)
 {
     m_tone = tone;
 }
+
+float Morse::dahSecs()
+{
+    return m_dahSecs;
+}
+
+float Morse::pauseSecs()
+{
+    return m_pauseSecs;
+}
+
+float Morse::letterPauseSecs()
+{
+    return m_letterPauseSecs;
+}
+
+float Morse::spaceSecs()
+{
+    return m_spaceSecs;
+}
