@@ -67,21 +67,6 @@ void ReadMode::stop() {
     m_readSpot.movePosition(QTextCursor::End);
 }
 
-void ReadMode::readNextLetter() {
-    if (m_readSpot.atEnd()) {
-        qDebug() << "reached the end; stopping playing";
-        return;
-    }
-    // move the anchor to where the cursor is
-    m_readSpot.movePosition(QTextCursor::NoMove, QTextCursor::MoveAnchor, 0);
-    // move the selection pointer to the right one, highlighting the current
-    // selection letter we're going to play
-    m_readSpot.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
-    // play the selection
-    qDebug() << "playing selected text: " << m_readSpot.selectedText();
-    m_morse->addAndPlayIt(m_readSpot.selectedText()[0]);
-}
-
 void ReadMode::readWordUnderCursor() {
     m_readSpot.select(QTextCursor::WordUnderCursor);
     m_morse->add(m_readSpot.selectedText());
