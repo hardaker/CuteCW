@@ -65,7 +65,7 @@ public:
     void add(QChar c, bool addpause = true);
     void add(const QString &textToAdd);
     QTime addAndPlayIt(QChar c);
-    QTime playIt(QChar c);
+    QTime playIt(QChar c, bool addLeadInPause = true);
     QTime sequenceTime();
 
     MorseStat *getStat(const QChar &key);

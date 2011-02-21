@@ -235,9 +235,10 @@ QTime Morse::addAndPlayIt(QChar c) {
     return maybePlaySequence();
 }
 
-QTime Morse::playIt(QChar c) {
+QTime Morse::playIt(QChar c, bool addLeadInPause) {
     clearList();
-    add(letterPause());  // allows audio device to kick in (otherwise distortion can occur)
+    if (addLeadInPause)
+        add(pause());  // allows audio device to kick in (otherwise distortion can occur)
     m_leadInPause = sequenceTime();
     add(c, false); // add the pause in maybePlaySequence so it can calculate the sequence end
     return maybePlaySequence(true);

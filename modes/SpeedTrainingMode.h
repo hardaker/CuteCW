@@ -36,6 +36,7 @@ public slots:
     virtual void updateGraphs();
 
 private:
+    int                             m_countWeight;
     QSpinBox *m_acceptRateBox;
 };
 

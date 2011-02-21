@@ -13,7 +13,7 @@
 
 MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
     : m_morse(morse), m_ui(ui),
-      m_badCount(0), m_goodCount(0), m_countWeight(100),
+      m_badCount(0), m_goodCount(0),
       m_playIcon(":/icons/play.png"), m_pauseIcon(":/icons/pause.png"), m_runningMode(PAUSED),
       m_mapper(new QSignalMapper()), m_buttons(0)
 {

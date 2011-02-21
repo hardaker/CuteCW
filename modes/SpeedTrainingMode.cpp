@@ -3,7 +3,7 @@
 #include "SpeedTrainingMode.h"
 
 SpeedTrainingMode::SpeedTrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : TrainingMode(parent, ui)
+    : TrainingMode(parent, ui), m_countWeight(50)
 {
 }
 
@@ -48,6 +48,10 @@ void SpeedTrainingMode::startTimerToNextKey(int plusMSecs) {
     if (runningMode() != RUNNING)
         return;
 
+    if (plusMSecs <= 0) {
+        qDebug() << "stop here!";
+        plusMSecs = QTime::currentTime().msecsTo(m_morse->sequenceTime());
+    }
     if (m_lastTimes.count() > 3) {
         // don't let them get *too* far behind
         m_badCount++;
@@ -61,7 +65,8 @@ void SpeedTrainingMode::startTimerToNextKey(int plusMSecs) {
         qDebug() << "setting avetime to: " << avetime;
     }
     delay  = plusMSecs + (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
-    qDebug() << "delaying for: " << delay << " ms (good=" << m_goodCount << ", bad=" << m_badCount << ")";
+    qDebug() << "delaying for: t=" << avetime << " + ex=" << plusMSecs << " = " << delay << " ms (good=" << m_goodCount << ", bad=" << m_badCount
+             << ", wt=" << m_countWeight << ")";
     QTimer::singleShot(delay, this, SLOT(startNextSpeedKey()));
 }
 
@@ -131,7 +136,7 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
                                           totalTime/float(letterCount)));
             else
                 setWPMLabel(msToPauseWPMF(totalTime/float(letterCount)));
-            m_lastTimes.push_back(m_morse->playIt(*letter));
+            m_lastTimes.push_back(m_morse->playIt(*letter, false));
             updateGraphs();
             return m_lastTimes.last();
         }
@@ -176,7 +181,6 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
     setWPMLabel(msToPauseWPMF((float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * totalTime/float(letterCount)));
 
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
-    // XXX: probably could use a weighted average (subtract off min speed from all speeds)?
 
     float randWPM;
 
@@ -193,7 +197,7 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
             qDebug() << ">keying: " << (*search).first;
             m_lastKey = (*search).first;
             m_lastKeys.append((*search).first);
-            m_lastTimes.push_back(m_morse->playIt((*search).first));
+            m_lastTimes.push_back(m_morse->playIt((*search).first, false));
             updateGraphs();
             return m_lastTimes.last();
         }
