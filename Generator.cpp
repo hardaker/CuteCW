@@ -82,24 +82,23 @@ int Generator::fillData(char *start, int frequency, float seconds)
 {
     int i, len=0;
     int value;
-    for(i=0; i<int(seconds*SYSTEM_FREQ); i++) {
+    int ramp_samples = (int)(8e-3 * SYSTEM_FREQ); // ramp for 8ms
+    int total_samples = int(seconds*SYSTEM_FREQ);
+    
+    for(i=0; i<total_samples; i++) {
         if (frequency == 0.0)
             value = 0;
         else
             value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
+	if (i < ramp_samples || total_samples - i <= ramp_samples) {
+            int filter_sample = i < ramp_samples ? i : (total_samples - i - 1);
+            double filter = (1 - cos(M_PI * (double)filter_sample / (double)ramp_samples)) / 2;
+
+            value *= filter;
+        }
         putShort(start, value);
         start += 2;
         len+=2;
-    }
-    if (frequency > 100) {
-        // ramp down or up to 0 for a better drop off in sound
-        while(value > 8 || value < -8) {
-            i++;
-            value=(int)(32767.0*sin(2.0*M_PI*((double)(i))*(double)(frequency)/SYSTEM_FREQ));
-            putShort(start, value);
-            len += 2;
-            start += 2;
-        }
     }
     bytes_left = len;
     pos = 0;
@@ -120,7 +119,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 
     //qDebug() << "left: " << bytes_left << " / wanted: " << len;
 
-    if (bytes_left == 0) {
+    if (bytes_left == -1) {
         emit generatorDone();
     }
 
