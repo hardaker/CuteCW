@@ -146,7 +146,7 @@ QTime Morse::sequenceTime() {
 
 QTime Morse::maybePlaySequence(bool addPause) {
     if (m_playingMode == STOPPED || m_playingMode == PAUSED ||
-        m_audioOutput->state() == 2) {
+        m_audioOutput->state() != QAudio::ActiveState) {
         m_playBuffer->restartData();
         QTime playTime = sequenceTime();
         if (addPause)
@@ -207,6 +207,8 @@ Morse::BadLetterWeighting Morse::badLetterWeighting() {
 void
 Morse::audioFinished(QAudio::State state)
 {
+    if (state != QAudio::ActiveState)
+        m_audioOutput->stop();
     m_modes[m_gameMode]->audioFinished(state);
 }
 
