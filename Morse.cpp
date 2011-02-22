@@ -207,8 +207,11 @@ Morse::BadLetterWeighting Morse::badLetterWeighting() {
 void
 Morse::audioFinished(QAudio::State state)
 {
+#ifndef Q_OS_LINUX
+    // This triggers a nasty hang on linux with Qt 4.7.1
     if (state != QAudio::ActiveState)
         m_audioOutput->stop();
+#endif
     m_modes[m_gameMode]->audioFinished(state);
 }
 
