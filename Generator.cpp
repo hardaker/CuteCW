@@ -119,7 +119,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 
     //qDebug() << "left: " << bytes_left << " / wanted: " << len;
 
-    if (bytes_left == 0) {
+    if (bytes_left == -1) {
         emit generatorDone();
     }
 

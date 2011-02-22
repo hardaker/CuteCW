@@ -352,6 +352,8 @@ Morse::_createTones()
     if (!m_playBuffer) {
         m_playBuffer = new Generator(m_pause);
         m_playBuffer->start();
+        // windows Qt fails to generate an audio state change, so we detect
+        // the end of the sound buffer this way instead
         connect(m_playBuffer, SIGNAL(generatorDone()), this, SLOT(generatorDone()), Qt::QueuedConnection);
     }
 
