@@ -147,7 +147,7 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
         //qDebug() << "  adding " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
         letters.append(QPair<QChar, float>(*letter, thisTime));
 
-        if(msToPauseWPM(thisTime) <= m_morse->currentWPMAccept()) {
+        if(msToPauseWPM(thisTime) < m_morse->currentWPMAccept()) {
             qDebug() << " too slow: " << *letter << " / " << thisTime << " / " << msToPauseWPM(thisTime);
             if (++badLetters >= m_maxBadLetters) {
                 // we're not fast enough; break here
