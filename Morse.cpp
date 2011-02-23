@@ -207,8 +207,11 @@ Morse::BadLetterWeighting Morse::badLetterWeighting() {
 void
 Morse::audioFinished(QAudio::State state)
 {
-#ifndef Q_OS_LINUX
+#if (defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES))
     // This triggers a nasty hang on linux with Qt 4.7.1
+    // this also makes popping sounds on windows
+    // it also stops audio from working at all on the mac
+    // but it seems like the right thing to do, and fixes maemo
     if (state != QAudio::ActiveState)
         m_audioOutput->stop();
 #endif
