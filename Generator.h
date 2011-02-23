@@ -43,6 +43,8 @@ public slots:
 private:
     int putShort(char *t, unsigned int value);
     int fillData(char *start, int frequency, float seconds);
+
+    bool isGenerating;
 };
 
 

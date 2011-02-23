@@ -13,7 +13,7 @@
 #define SYSTEM_FREQ 44100
 
 Generator::Generator(float secs, int freq)
-    :QIODevice( )
+    :QIODevice( ), isGenerating(false)
 {
     finished = false;
     buffer = new char[int(secs * SYSTEM_FREQ * 4) + 3000];
@@ -25,7 +25,7 @@ Generator::Generator(float secs, int freq)
 }
 
 Generator::Generator(Generator *copyFrom)
-    : QIODevice()
+    : QIODevice(), isGenerating(false)
 {
     buffer = new char[copyFrom->len];
     memcpy(buffer, copyFrom->buffer, copyFrom->len);
@@ -48,6 +48,7 @@ void Generator::clearBuffer() {
     t = buffer;
     len = bytes_left = 4;
     pos = 0;
+    isGenerating = false;
 }
 
 void Generator::appendDataFrom(const Generator *copyFrom) {
@@ -64,11 +65,13 @@ void Generator::appendDataFrom(const Generator *copyFrom) {
 void Generator::start()
 {
     open(QIODevice::ReadOnly);
+    isGenerating = true;
 }
 
 void Generator::stop()
 {
     close();
+    isGenerating = false;
 }
 
 int Generator::putShort(char *t, unsigned int value)
@@ -119,15 +122,18 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 
     //qDebug() << "left: " << bytes_left << " / wanted: " << len;
 
-    if (bytes_left == -1) {
+    if (bytes_left == -1 && isGenerating) {
+        isGenerating = false;
         emit generatorDone();
     }
 
+#undef FILL_WITH_SPACE_ONCE
+#undef ALWAYS_FILL_WITH_SPACE
+
 #ifdef Q_OS_LINUX
-    // On linux (with Qt 4.7 and 4.7.1) there is a nasty second-long pause/freeze after the audio finishes playing
+    // On linux (with Qt 4.7 and 4.7.1) there is a nasty second-long pause/freeze after the audio finishes playing, so
+    // we continue to emit empty sound endlessly to get around the gui/qt lockup.
 #define ALWAYS_FILL_WITH_SPACE 1
-#else
-#define FILL_WITH_SPACE_ONCE 0
 #endif
 
 #ifdef ALWAYS_FILL_WITH_SPACE
@@ -137,13 +143,15 @@ qint64 Generator::readData(char *data, qint64 maxlen)
         bytes_left = -1;
         return maxlen;
     }
-#elif FILL_WITH_SPACE_ONCE
+#elif defined(FILL_WITH_SPACE_ONCE)
     /* fill with a blank space just once after the starting */
-    if (bytes_left < 0) {
+    if (bytes_left == 0) {
         memset(data, 0, maxlen);
         bytes_left = -1;
         return maxlen;
     }
+    if (bytes_left == -1)
+        return -1;
 #else
     /* this is how it *should* be done, if the Qt output buffers didn't truncate things */
     if (bytes_left == 0)
