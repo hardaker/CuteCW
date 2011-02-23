@@ -156,8 +156,13 @@ qint64 Generator::readData(char *data, qint64 maxlen)
     /* this is how it *should* be done, if the Qt output buffers didn't truncate things */
     if (bytes_left == 0)
         bytes_left = -1;
-    if (bytes_left <= 0)
+    if (bytes_left <= 0) {
+        if (isGenerating) {
+            isGenerating = false;
+            emit generatorDone();
+        }
         return -1;
+    }
 #endif
 
     if (len < bytes_left) {
