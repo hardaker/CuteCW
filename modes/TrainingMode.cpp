@@ -312,11 +312,12 @@ void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBar
     setupModeWidgets(sequence, barLabel);
 }
 
-QGridLayout *TrainingMode::setupGraphs(QString barLabel)
+QBoxLayout *TrainingMode::setupGraphs(QString barLabel)
 {
     int column = 1;
     m_progressBars.clear();
     m_progressLabels.clear();
+    QHBoxLayout *hbox = new QHBoxLayout();
     QGridLayout *gridLayout = new QGridLayout();
 
     QLabel *leftLabel = new QLabel(barLabel);
@@ -339,7 +340,9 @@ QGridLayout *TrainingMode::setupGraphs(QString barLabel)
         m_progressBars[theLetter] = bar;
         m_progressLabels[theLetter] = label;
     }
-    return gridLayout;
+    hbox->addLayout(gridLayout);
+    hbox->addStretch(1);
+    return hbox;
 }
 
 

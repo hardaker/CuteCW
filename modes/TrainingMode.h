@@ -53,7 +53,7 @@ public slots:
     virtual void setDoEntireSequence(bool value);
     virtual void chooseCustomeSequence();
     virtual void setupWidgets(const QString &sequence, bool includeProgressBars = true, QString barLabel = "");
-    virtual QGridLayout *setupGraphs(QString barLabel = "");
+    virtual QBoxLayout *setupGraphs(QString barLabel = "");
     virtual void updateGraphs();
 
     void saveStats(QSettings &settings, QString statPrefix = "");
