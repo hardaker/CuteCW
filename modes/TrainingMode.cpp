@@ -255,7 +255,6 @@ void TrainingMode::switchSequence(int sequence) {
 void TrainingMode::switchSequence(const QString &sequence) {
     m_trainingSequence = sequence;
     setSequence(m_trainingSequence, 1);
-    clear();
     setupModeWidgets(m_trainingSequence);
     startNextTrainingKey();
 }
