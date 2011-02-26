@@ -267,8 +267,10 @@ void TrainingMode::setupModeWidgets(const QString &sequence, QString barLabel) {
     setupKeyWidgets(sequence, vbox);
     setSequence(sequence, 1);
 #ifndef SMALL_DEVICE
-    if (m_includeProgressBars)
+    if (m_includeProgressBars) {
         vbox->addLayout(setupGraphs(barLabel));
+        updateGraphs();
+    }
 #endif
 }
 
