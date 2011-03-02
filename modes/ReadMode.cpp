@@ -54,14 +54,15 @@ ReadMode::openFile() {
 
 void ReadMode::play() {
     m_readSpot = m_textEdit->textCursor();
-    m_readSpot.movePosition(QTextCursor::Start);
+    if (m_readSpot.atEnd())
+        m_readSpot.movePosition(QTextCursor::Start);
     readWordUnderCursor();
 
     return;
 }
 
 void ReadMode::stop() {
-    m_readSpot.movePosition(QTextCursor::End);
+    m_textEdit->setTextCursor(m_readSpot);
 }
 
 void ReadMode::readWordUnderCursor() {
@@ -85,6 +86,7 @@ void ReadMode::audioStopped()
         QTimer::singleShot(int(m_morse->spaceSecs() * 1000.0), this, SLOT(readWordUnderCursor()));
     } else {
         qDebug() << "audio stopped method";
+        m_textEdit->setTextCursor(m_readSpot);
         setRunningMode(PAUSED);
     }
 }
