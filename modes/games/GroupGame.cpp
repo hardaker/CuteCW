@@ -21,7 +21,7 @@ void GroupGame::switchToMode() {
     m_ui->changeSequence->hide();
 
     // Create the high scores button
-    QAction *action = m_morse->menuBar()->addAction("HighScores");
+    QAction *action = m_modeSpecificMenu->addAction("HighScores");
     connect(action, SIGNAL(triggered()), &m_scores, SLOT(showScores()));
 }
 

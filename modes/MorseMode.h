@@ -122,11 +122,13 @@ protected:
     // on small devices (ie, maemo) everything goes straight into the main help bar
     QMenuBar                       *m_helpMenu;
     QMenuBar                       *m_optionsMenu;
+    QMenuBar                       *m_modeSpecificMenu;
     QMenuBar                       *m_cuteCWMenu;
 #else
     QMenu                          *m_helpMenu;
     QMenu                          *m_optionsMenu;
     QMenu                          *m_modeMenu;
+    QMenu                          *m_modeSpecificMenu;
     QMenu                          *m_cuteCWMenu;
 #endif
 
