@@ -34,6 +34,12 @@ void FrontPage::setupWidgets() {
 
     QGroupBox *leftGroup = new QGroupBox(tr("Training Modes"));
     QGroupBox *rightGroup = new QGroupBox(tr("Play Modes"));
+#ifndef SMALL_DEVICE
+    QFont groupFont = leftGroup->font();
+    groupFont.setPointSize(groupFont.pointSize() * 2);
+    leftGroup->setFont(groupFont);
+    rightGroup->setFont(groupFont);
+#endif
 
     QVBoxLayout *leftBox = new QVBoxLayout();
     leftGroup->setLayout(leftBox);
