@@ -36,7 +36,7 @@ void FrontPage::setupWidgets() {
     QGroupBox *rightGroup = new QGroupBox(tr("Play Modes"));
 #ifndef SMALL_DEVICE
     QFont groupFont = leftGroup->font();
-    groupFont.setPointSize(groupFont.pointSize() * 2);
+    groupFont.setPointSize(3 * groupFont.pointSize() / 2);
     leftGroup->setFont(groupFont);
     rightGroup->setFont(groupFont);
 #endif
