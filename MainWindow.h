@@ -28,9 +28,6 @@ public:
 public slots:
     void startIt();
 
-protected:
-    void closeEvent(QCloseEvent *event);
-
 private:
     Ui::MainWindow *ui;
     Ui::Prefs      *prefs;

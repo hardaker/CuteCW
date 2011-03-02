@@ -94,6 +94,8 @@ Morse::menuBar()
 }
 
 void Morse::saveSettings() {
+    qDebug() << "saving!";
+
     QSettings settings("WS6Z", "qtcw");
     settings.setValue("WPM/Goal", m_currentWPMGoal);
     settings.setValue("WPM/Accept", m_currentWPMAccept);

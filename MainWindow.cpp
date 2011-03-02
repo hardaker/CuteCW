@@ -60,6 +60,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 MainWindow::~MainWindow()
 {
+    m_morse->saveSettings();
     delete ui;
 }
 
@@ -89,8 +90,3 @@ MainWindow::createAudioOutput()
     return m_audioOutput;
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
- {
-    Q_UNUSED(event);
-    m_morse->saveSettings();
- }
