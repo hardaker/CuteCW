@@ -1,13 +1,14 @@
 * The TODO list
-*** TODO More Fun Games!
-***** TODO Keying practice using on or two keys for practicing keying.
-******* TODO space-invaders/falling-letters keying
 *** TODO online documentation and theory
-*** STARTED document how to create new mode classes
 *** TODO [#B] icons for the home page buttons
 *** TODO [#B] make some default texts to pick from (gutenberg?)
 *** TODO [#B] read rss feeds
 *** TODO make a "score" counter for recognition: sum(avewpm)
+* Longer Term
+*** TODO More Fun Games!
+***** TODO Keying practice using on or two keys for practicing keying.
+******* TODO space-invaders/falling-letters keying
+
 *** TODO make a keying input set of items:
 ***** TODO training for straight keying with proper spacing/lengths
 ***** TODO training for semi-automatic
@@ -15,6 +16,12 @@
 *** TODO add a training mode for pile-ups
     + increase the number of simultaneous signals
     + potentially at varying speed levels
+* Code Management
+*** STARTED document how to create new mode classes
+*** TODO create a template class
+*** TODO clean up some of the remaining code-moved remains
+    + [ ] speed settings for current accept rate m_morse -> speed
+* Canceled
 *** CANCELED [#A] try buffering sound output after end of tone to auto-pad with spaces
     - Note taken on [2011-02-21 Mon 10:49] \\
       seems that fixing the output ending bug fixed this issue
