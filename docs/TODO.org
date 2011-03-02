@@ -5,7 +5,6 @@
 *** TODO online documentation and theory
 *** STARTED document how to create new mode classes
 *** TODO [#B] icons for the home page buttons
-*** TODO [#A] saving in maemo on window close is broken?
 *** TODO [#B] make some default texts to pick from (gutenberg?)
 *** TODO [#B] read rss feeds
 *** TODO make a "score" counter for recognition: sum(avewpm)
