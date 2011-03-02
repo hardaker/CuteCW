@@ -2,7 +2,6 @@
 *** TODO More Fun Games!
 ***** TODO Keying practice using on or two keys for practicing keying.
 ******* TODO space-invaders/falling-letters keying
-*** TODO [#B] Add a "test" button next to the frequency set spinbox
 *** TODO online documentation and theory
 *** STARTED document how to create new mode classes
 *** TODO [#B] icons for the home page buttons
