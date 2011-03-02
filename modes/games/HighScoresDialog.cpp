@@ -70,11 +70,11 @@ void HighScoresDialog::setScoreTable() {
     for(QList<QPair<int,QString> >::iterator begin = m_scores->begin();
         begin != end;
         begin++) {
-        if (m_newSlot == count)
-            text = text + QString("<tr><td><font color=\"green\"><a anchor=\"newslot\">%1</font></td><td><font color=\"green\">%2</font></td></tr>").arg((*begin).second).arg((*begin).first);
-        else
-            text = text + QString("<tr><td>%1</td><td>%2</td></tr>").arg((*begin).second).arg((*begin).first);
         count++;
+        if (m_newSlot == count)
+            text = text + QString("<tr><td><font color=\"green\"><a anchor=\"newslot\">%1</font></td><td><font color=\"green\"><a anchor=\"newslot\">%2</font></td><td><font color=\"green\">%3</font></td></tr>").arg(count).arg((*begin).second).arg((*begin).first);
+        else
+            text = text + QString("<tr><td>%1</td><td>%2</td><td>%1</td></tr>").arg(count).arg((*begin).second).arg((*begin).first);
     }
     text = text + "</table>";
 
