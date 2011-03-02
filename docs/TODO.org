@@ -18,7 +18,6 @@
 *** CANCELED [#A] try buffering sound output after end of tone to auto-pad with spaces
     - Note taken on [2011-02-21 Mon 10:49] \\
       seems that fixing the output ending bug fixed this issue
-*** TODO add a starting slightly slower speed to speed training
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
 #+ARCHIVE: CHANGES.org::* Next Version: 0.6

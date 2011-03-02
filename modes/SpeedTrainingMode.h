@@ -37,8 +37,11 @@ public slots:
 
 private:
     int                             m_countWeight;
+    float                           m_speedMultiplier;
+
     QSpinBox *m_acceptRateBox;
     QSpinBox *m_countWeightBox;
+    QDoubleSpinBox *m_speedMultiplierBox;
 };
 
 #endif // SPEEDTRAININGMODE_H

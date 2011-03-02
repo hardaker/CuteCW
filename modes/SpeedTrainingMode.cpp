@@ -6,7 +6,7 @@
 #include "SpeedTrainingMode.h"
 
 SpeedTrainingMode::SpeedTrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : TrainingMode(parent, ui), m_countWeight(50)
+    : TrainingMode(parent, ui), m_countWeight(50), m_speedMultiplier(1.5)
 {
 }
 
@@ -67,7 +67,7 @@ void SpeedTrainingMode::startTimerToNextKey(int plusMSecs) {
         avetime = 1000.0;
         qDebug() << "setting avetime to: " << avetime;
     }
-    delay  = plusMSecs + (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime;
+    delay  = plusMSecs + (float(m_badCount + m_countWeight)/float(m_goodCount + m_countWeight)) * avetime * m_speedMultiplier;
     qDebug() << "delaying for: t=" << avetime << " + ex=" << plusMSecs << " = " << delay << " ms (good=" << m_goodCount << ", bad=" << m_badCount
              << ", wt=" << m_countWeight << ")";
     QTimer::singleShot(delay, this, SLOT(startNextSpeedKey()));
@@ -245,12 +245,14 @@ void SpeedTrainingMode::updateGraphs()
 void SpeedTrainingMode::loadSettings(QSettings &settings)
 {
     m_countWeight = settings.value("speedtraining/countWeight", 50).toInt();
+    m_speedMultiplier = settings.value("speedtraining/speedWeight", 1.5).toFloat();
     loadStats(settings);
 }
 
 void SpeedTrainingMode::saveSettings(QSettings &settings)
 {
     settings.setValue("speedtraining/countWeight", m_countWeight);
+    settings.setValue("speedtraining/speedWeight", m_speedMultiplier);
     saveStats(settings);
 }
 
@@ -268,9 +270,17 @@ QBoxLayout *SpeedTrainingMode::getPrefsLayout()
     m_countWeightBox->setRange(1,1000);
     m_countWeightBox->setValue(m_countWeight);
 
-    QLabel *helpLabel = new QLabel(tr("(lower = speed increases more quickly)"));
+    QLabel *helpLabel = new QLabel(tr("(lower values mean speed increases more quickly)"));
     QFont font = helpLabel->font();
     font.setItalic(true);
+    helpLabel->setFont(font);
+    form->addRow("", helpLabel);
+
+    form->addRow(tr("Speed Multiplier"), m_speedMultiplierBox = new QDoubleSpinBox());
+    m_speedMultiplierBox->setRange(.1, 5.0);
+    m_speedMultiplierBox->setValue(m_speedMultiplier);
+
+    helpLabel = new QLabel(tr("(higher forces a slower starting speed)"));
     helpLabel->setFont(font);
     form->addRow("", helpLabel);
 
@@ -281,4 +291,5 @@ void SpeedTrainingMode::acceptPrefs()
 {
     m_morse->setWPMAccept(m_acceptRateBox->value());
     m_countWeight = m_countWeightBox->value();
+    m_speedMultiplier = m_speedMultiplierBox->value();
 }
