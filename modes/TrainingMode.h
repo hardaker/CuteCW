@@ -33,7 +33,6 @@ public:
 
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
-    virtual QTime startNextTrainingKey();
     MorseStat *getStat(const QChar &key);
     void setWPMLabel(float wpm);
     void setupModeWidgets(const QString &sequence, QString barLabel = "");
@@ -43,7 +42,6 @@ public:
     virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
 public slots:
-    virtual void play();
 
     virtual void handleKeyPress(QChar letterPressed);
     void setSequence(const QString &sequence, int currentlyAt);

@@ -54,6 +54,15 @@
     :ARCHIVE_CATEGORY: TODO
     :ARCHIVE_TODO: DONE
     :END:
+*** DONE add a pause after recognition mode training before next key
+    - State "DONE"       from "TODO"       [2011-03-02 Wed 14:47]
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-03-02 Wed 14:47
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
 
 * Version: 0.5.1
 *** DONE A makerelease packaging script.

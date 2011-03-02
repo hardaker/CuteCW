@@ -15,7 +15,6 @@ public:
 
     virtual void switchToMode();
     virtual void handleKeyPress(QChar letterPressed);
-    virtual QTime startNextTrainingKey();
     virtual bool elapsedTimeWasTooLong(int msElapsed, MorseStat *stat);
 
     virtual QString name();
@@ -26,15 +25,21 @@ public:
 
     virtual QBoxLayout * getPrefsLayout();
     virtual void acceptPrefs();
+
 public slots:
     virtual void updateGraphs();
+    virtual void startNextTrainingKey();
+    virtual void play();
 
 private:
     int m_percentGoal;
     int m_minimumTries;
+    float m_letterDelay;
 
     QSpinBox *m_percentGoalBox;
     QSpinBox *m_minimumTriesBox;
+    QDoubleSpinBox *m_letterDelayBox;
+
 };
 
 #endif // LETTERTRAININGMODE_H

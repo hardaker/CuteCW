@@ -175,10 +175,6 @@ void TrainingMode::clear()  {
     updateGraphs();
 }
 
-void TrainingMode::play() {
-    startNextTrainingKey();
-}
-
 void TrainingMode::audioStopped() {
     qDebug() << "audio stopped";
     // now done based on predicted time
@@ -256,7 +252,6 @@ void TrainingMode::switchSequence(const QString &sequence) {
     m_trainingSequence = sequence;
     setSequence(m_trainingSequence, 1);
     setupModeWidgets(m_trainingSequence);
-    startNextTrainingKey();
 }
 
 void TrainingMode::setupModeWidgets(const QString &sequence, QString barLabel) {
@@ -345,12 +340,6 @@ QBoxLayout *TrainingMode::setupGraphs(QString barLabel)
     hbox->addLayout(gridLayout);
     hbox->addStretch(1);
     return hbox;
-}
-
-
-QTime TrainingMode::startNextTrainingKey()
-{
-    exit(1); // should not ever be called
 }
 
 void TrainingMode::updateGraphs()

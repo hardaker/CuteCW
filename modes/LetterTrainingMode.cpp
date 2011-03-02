@@ -2,13 +2,14 @@
 #include "Morse.h"
 
 #include <QtGui/QFormLayout>
+#include <QtCore/QTimer>
 
 #include <stdlib.h>
 
 #include <qdebug.h>
 
 LetterTrainingMode::LetterTrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : TrainingMode(parent, ui), m_percentGoal(90), m_minimumTries(10), m_percentGoalBox(0)
+    : TrainingMode(parent, ui), m_percentGoal(90), m_minimumTries(10), m_letterDelay(0.5), m_percentGoalBox(0)
 {
 }
 
@@ -24,13 +25,17 @@ void LetterTrainingMode::switchToMode() {
     updateGraphs();
 }
 
+void LetterTrainingMode::play() {
+    startNextTrainingKey();
+}
+
 void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
     if (runningMode() != RUNNING)
         return;
 
     // analyze they're keyed letter and immediately start playing a new one
     TrainingMode::handleKeyPress(letterPressed);
-    startNextTrainingKey();
+    QTimer::singleShot(m_letterDelay * 1000, this, SLOT(startNextTrainingKey()));
 }
 
 QString LetterTrainingMode::helpText()
@@ -49,9 +54,9 @@ QString LetterTrainingMode::name()
     return tr("Recognition Training");
 }
 
-QTime LetterTrainingMode::startNextTrainingKey() {
+void LetterTrainingMode::startNextTrainingKey() {
     if (runningMode() != RUNNING)
-        return QTime();
+        return;
     qDebug() << "--- Start next training key";
     int letterCount = 0;
     QList<QPair<QChar, int> > letters;
@@ -94,7 +99,7 @@ QTime LetterTrainingMode::startNextTrainingKey() {
             setWPMLabel(thisPercent);
             m_lastTimes.push_back(m_morse->playIt(*letter));
             updateGraphs();
-            return m_lastTimes.last();
+            return;
         }
 
         //qDebug() << "  adding " << *letter << " / " << thisPercent;
@@ -153,11 +158,11 @@ QTime LetterTrainingMode::startNextTrainingKey() {
             m_lastKeys.append((*search).first);
             m_lastTimes.push_back(m_morse->playIt((*search).first));
             updateGraphs();
-            return m_lastTimes.last();
+            return;
         }
     }
     qDebug() << "**** shouldn't get here: " << randPercent << "," << totalPercent;
-    return QTime();
+    return;
 }
 
 bool LetterTrainingMode::elapsedTimeWasTooLong(int msElapsed, MorseStat *stat) {
@@ -189,6 +194,7 @@ void LetterTrainingMode::loadSettings(QSettings &settings)
 {
     m_percentGoal = settings.value("lettertraining/percentGoal", 90).toInt();
     m_minimumTries = settings.value("lettertraining/minimumTries", 10).toInt();
+    m_letterDelay = settings.value("lettertraining/letterDelay", 0.5).toFloat();
     loadStats(settings);
 }
 
@@ -196,6 +202,7 @@ void LetterTrainingMode::saveSettings(QSettings &settings)
 {
     settings.setValue("lettertraining/percentGoal", m_percentGoal);
     settings.setValue("lettertraining/minimumTries", m_minimumTries);
+    settings.setValue("lettertraining/letterDelay", m_letterDelay);
     saveStats(settings);
 }
 
@@ -213,6 +220,10 @@ QBoxLayout *LetterTrainingMode::getPrefsLayout()
     m_minimumTriesBox->setRange(1,100);
     m_minimumTriesBox->setValue(m_minimumTries);
 
+    form->addRow(tr("Delay to Next Letter (seconds)"), m_letterDelayBox = new QDoubleSpinBox());
+    m_letterDelayBox->setRange(0.0, 5.0);
+    m_letterDelayBox->setValue(m_letterDelay);
+
     return hbox;
 }
 
@@ -220,4 +231,5 @@ void LetterTrainingMode::acceptPrefs()
 {
     m_percentGoal = m_percentGoalBox->value();
     m_minimumTries = m_minimumTriesBox->value();
+    m_letterDelay = m_letterDelayBox->value();
 }
