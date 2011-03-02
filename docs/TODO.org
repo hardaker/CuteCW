@@ -9,7 +9,6 @@
 *** TODO [#A] saving in maemo on window close is broken?
 *** TODO [#B] make some default texts to pick from (gutenberg?)
 *** TODO [#B] read rss feeds
-*** TODO move highscores button into the options menu
 *** TODO make a "score" counter for recognition: sum(avewpm)
 *** TODO make a keying input set of items:
 ***** TODO training for straight keying with proper spacing/lengths

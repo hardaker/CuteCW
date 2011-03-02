@@ -27,6 +27,15 @@
     :ARCHIVE_CATEGORY: TODO
     :ARCHIVE_TODO: DONE
     :END:
+*** DONE move highscores button into the options menu
+    - State "DONE"       from "TODO"       [2011-03-02 Wed 13:27]
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-03-02 Wed 13:27
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
 
 * Version: 0.5.1
 *** DONE A makerelease packaging script.
