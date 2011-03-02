@@ -19,12 +19,15 @@ public:
 public slots:
     void ok();
     void cancel();
+    void testTone();
+
 private:
     Morse *m_morse;
 
     QSpinBox *m_WPMRate;
     QSpinBox *m_tone;
 
+    int m_oldTone;
 };
 
 #endif // PREFS_H

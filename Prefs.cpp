@@ -8,7 +8,7 @@
 #include <QtGui/QDialogButtonBox>
 
 Prefs::Prefs(Morse *morse, QWidget *parent) :
-    QDialog(parent), m_morse(morse)
+    QDialog(parent), m_morse(morse), m_oldTone(-1)
 {
     QVBoxLayout *topLayout = new QVBoxLayout();
     QTabWidget *tabWidget = new QTabWidget();
@@ -25,6 +25,10 @@ Prefs::Prefs(Morse *morse, QWidget *parent) :
     m_tone->setRange(100,1200);
     m_tone->setValue(m_morse->tone());
     genericForm->addRow(tr("CW Tone Frequency"), m_tone);
+
+    QPushButton *button = new QPushButton(tr("Test"));
+    genericForm->addRow("", button);
+    connect(button, SIGNAL(clicked()), this, SLOT(testTone()));
 
     tabWidget->addTab(genericPrefs, tr("General"));
 
@@ -76,7 +80,17 @@ void Prefs::cancel()
         mode->rejectPrefs();
     }
 
+    if (m_oldTone == -1)
+        m_morse->setTone(m_oldTone);
+
     reject();
+}
+
+void Prefs::testTone() {
+    if (m_oldTone == -1)
+        m_oldTone = m_morse->tone();
+    m_morse->setTone(m_tone->value());
+    m_morse->playIt('.');
 }
 
 Prefs::~Prefs()
