@@ -54,7 +54,8 @@ void FrontPage::setupWidgets() {
     rightContents << Morse::PLAY << Morse::READ << Morse::WORDGAME << Morse::GROUPGAME;
 
     foreach(Morse::TrainingMode themode, leftContents) {
-        button = new QPushButton(m_morse->getMode(themode)->name());
+        button = new QPushButton(QIcon(m_morse->getMode(themode)->icon()), m_morse->getMode(themode)->name());
+        button->setIconSize(QSize(64,64));
         QSizePolicy policy = button->sizePolicy();
         policy.setVerticalPolicy(QSizePolicy::Expanding);
         button->setSizePolicy(policy);
@@ -64,7 +65,8 @@ void FrontPage::setupWidgets() {
     }
 
     foreach(Morse::TrainingMode themode, rightContents) {
-        button = new QPushButton(m_morse->getMode(themode)->name());
+        button = new QPushButton(QIcon(m_morse->getMode(themode)->icon()), m_morse->getMode(themode)->name());
+        button->setIconSize(QSize(64,64));
         QSizePolicy policy = button->sizePolicy();
         policy.setVerticalPolicy(QSizePolicy::Expanding);
         button->setSizePolicy(policy);

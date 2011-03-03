@@ -19,6 +19,7 @@ public:
 
     virtual QString name();
     virtual QString helpText();
+    virtual QString icon();
 
     virtual void loadSettings(QSettings &settings);
     virtual void saveSettings(QSettings &settings);

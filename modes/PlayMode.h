@@ -18,6 +18,7 @@ public:
 
     virtual QString name();
     virtual QString helpText();
+    virtual QString icon();
 
 public slots:
     virtual void handleKeyPress(QChar letterPressed);

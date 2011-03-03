@@ -16,6 +16,7 @@ public:
 
     virtual QString name();
     virtual QString helpText();
+    virtual QString icon();
 
 signals:
 

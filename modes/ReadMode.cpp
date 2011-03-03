@@ -106,3 +106,8 @@ QString ReadMode::name()
     return tr("Read to me");
 }
 
+QString ReadMode::icon()
+{
+    qDebug() << "here:xx";
+    return ":/icons/64x64/read-to-me.png";
+}

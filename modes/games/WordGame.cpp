@@ -80,3 +80,8 @@ QString WordGame::name()
 {
     return tr("Word Game");
 }
+
+QString WordGame::icon()
+{
+    return ":/icons/64x64/game.png";
+}

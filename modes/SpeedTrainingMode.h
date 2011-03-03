@@ -20,6 +20,7 @@ public:
 
     virtual QString name();
     virtual QString helpText();
+    virtual QString icon();
 
     virtual QTime startNextTrainingKey();
     void startTimerToNextKey(QTime plusTime);

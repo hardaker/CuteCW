@@ -5,5 +5,11 @@
     <file>icons/pause.png</file>
     <file>icons/64x64/cutecw.png</file>
     <file>icons/go-home.png</file>
+
+    <file>icons/64x64/game.png</file>
+    <file>icons/64x64/read-to-me.png</file>
+    <file>icons/64x64/recognition.png</file>
+    <file>icons/64x64/speed.png</file>
+    <file>icons/64x64/type.png</file>
 </qresource>
 </RCC>

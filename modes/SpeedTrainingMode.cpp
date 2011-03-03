@@ -94,6 +94,12 @@ QString SpeedTrainingMode::name()
     return tr("Speed Training");
 }
 
+QString SpeedTrainingMode::icon()
+{
+    qDebug() << "here:xx";
+    return ":/icons/64x64/speed.png";
+}
+
 QTime SpeedTrainingMode::startNextTrainingKey() {
     if (runningMode() != RUNNING)
         return QTime();

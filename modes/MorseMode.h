@@ -64,6 +64,7 @@ public:
     // should return a global name and help text for the mode:
     virtual QString name() = 0;
     virtual QString helpText() = 0;
+    virtual QString icon();
 
     // For implementing preference screens.
     // getPrefsLayout should return a pointer to a HBox or VBox layout

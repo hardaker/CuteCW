@@ -396,3 +396,8 @@ void MorseMode::acceptPrefs()
 void MorseMode::rejectPrefs()
 {
 }
+
+QString MorseMode::icon()
+{
+    return QString();
+}
