@@ -141,7 +141,10 @@ QString WordTrainingMode::name()
     return tr("Word Training");
 }
 
-
+QString WordTrainingMode::icon()
+{
+    return ":/icons/64x64/words.png";
+}
 
 void WordTrainingMode::loadSettings(QSettings &settings)
 {

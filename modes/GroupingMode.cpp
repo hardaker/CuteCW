@@ -119,6 +119,11 @@ QString GroupingMode::helpText()
               "in the group more rapidly and also increases and decreases the WPM rate (and you can keep track of your scores!)");
 }
 
+QString GroupingMode::icon()
+{
+    return ":/icons/64x64/grouping.png";
+}
+
 
 void GroupingMode::loadSettings(QSettings &settings)
 {
