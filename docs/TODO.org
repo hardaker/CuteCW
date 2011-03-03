@@ -1,6 +1,5 @@
 * The TODO list
 *** TODO online documentation and theory
-*** TODO [#B] icons for the home page buttons
 *** TODO [#B] make some default texts to pick from (gutenberg?)
 ***** Maybe partial selections (parts 1-20 of ...)
 ***** Possible Text Choices:
