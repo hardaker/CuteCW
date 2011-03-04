@@ -56,7 +56,6 @@ QString LetterTrainingMode::name()
 
 QString LetterTrainingMode::icon()
 {
-    qDebug() << "here:xx";
     return ":/icons/64x64/recognition.png";
 }
 

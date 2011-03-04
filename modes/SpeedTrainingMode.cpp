@@ -96,7 +96,6 @@ QString SpeedTrainingMode::name()
 
 QString SpeedTrainingMode::icon()
 {
-    qDebug() << "here:xx";
     return ":/icons/64x64/speed.png";
 }
 
