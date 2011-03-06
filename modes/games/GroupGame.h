@@ -15,6 +15,7 @@ public:
     explicit GroupGame(Morse *parent, Ui::MainWindow *ui);
 
     virtual void switchToMode();
+    virtual void modeMenus();
 
     virtual QString name();
     virtual QString helpText();

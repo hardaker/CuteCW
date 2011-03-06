@@ -54,7 +54,11 @@ public:
                                       QWidget *theMainThing = 0);
     virtual void setupSequenceLayouts(QVBoxLayout *parentLayout = 0,
                                       QWidget *theMainThing = 0);
-
+#ifdef SMALL_DEVICE
+    virtual QMenuBar *menu();
+#else
+    virtual QMenu *menu();
+#endif
     RunningMode runningMode();
     void setRunningMode(RunningMode newMode);
 
@@ -77,7 +81,7 @@ public slots:
     // switchToYou, by default calls the following ones in order:
     virtual void switchToYou();
     virtual void createMenuStructures();  // this calls modeMenus():
-    virtual void modeMenus();             // by default does nothing
+    virtual void modeMenus();             // by default does nothing; call menu() to get a mode specific menu
     // m_morse->createTones
     virtual void hideWidgets();
     virtual void switchToMode() = 0;      // you can install mode widgets into m_ui->forModes

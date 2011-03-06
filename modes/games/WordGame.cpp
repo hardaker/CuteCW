@@ -19,11 +19,14 @@ void WordGame::switchToMode() {
     WordTrainingMode::switchToMode();
     m_ui->helpBar->setText(tr("<font color=\"green\">Type the groups of characters you hear ASAP.</font>"));
     m_ui->changeSequence->hide();
+}
 
+void WordGame::modeMenus() {
     // Create the high scores button
-    QAction *action = m_modeSpecificMenu->addAction("HighScores");
+    QAction *action = menu()->addAction("HighScores");
     connect(action, SIGNAL(triggered()), &m_scores, SLOT(showScores()));
 }
+
 
 void WordGame::play()
 {

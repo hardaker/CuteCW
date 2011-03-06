@@ -9,7 +9,7 @@
 #include "Morse.h"
 
 ReadMode::ReadMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_readWordCount(1)
+    : MorseMode(parent, ui), m_textEdit(0), m_readWordCount(1)
 {
 }
 
@@ -63,9 +63,11 @@ void ReadMode::play() {
 }
 
 void ReadMode::stop() {
-    m_textEdit->setTextCursor(m_readSpot);
-    m_readSpot.select(QTextCursor::WordUnderCursor);
-    m_readSpot.insertHtml(m_currentText);
+    if (m_textEdit && !m_readSpot.isNull()) {
+        m_textEdit->setTextCursor(m_readSpot);
+        m_readSpot.select(QTextCursor::WordUnderCursor);
+        m_readSpot.insertHtml(m_currentText);
+    }
 }
 
 void ReadMode::readWordUnderCursor() {

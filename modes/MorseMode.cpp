@@ -15,7 +15,7 @@ MorseMode::MorseMode(Morse *morse, Ui::MainWindow *ui)
     : m_morse(morse), m_ui(ui),
       m_badCount(0), m_goodCount(0),
       m_playIcon(":/icons/play.png"), m_pauseIcon(":/icons/pause.png"), m_runningMode(PAUSED),
-      m_mapper(new QSignalMapper()), m_buttons(0)
+      m_mapper(new QSignalMapper()), m_buttons(0), m_modeSpecificMenu(0)
 {
     setRunningMode(PAUSED);
     m_WPM = m_morse->currentWPMGoal();
@@ -144,13 +144,26 @@ void MorseMode::createMenuStructures()
     // m_morse->createModesMenu(m_morse->menuBar()->addMenu(tr("Change Mode")));
 #else
     QMenuBar *topBar = m_morse->menuBar();
-    m_modeSpecificMenu = m_cuteCWMenu = topBar->addMenu("&CuteCW");
+    m_cuteCWMenu = topBar->addMenu("&CuteCW");
     m_morse->createModesMenu(m_cuteCWMenu->addMenu(tr("Change Mode")));
     m_optionsMenu = topBar->addMenu(tr("&Options"));
     modeMenus();
     m_helpMenu = topBar->addMenu(tr("&Help"));
 #endif
 }
+
+#ifdef SMALL_DEVICE
+QMenuBar *MorseMode::menu() {
+    return m_morse->menuBar();
+}
+#else
+QMenu *MorseMode::menu() {
+    if (!m_modeSpecificMenu)
+        m_modeSpecificMenu = m_morse->menuBar()->addMenu(name());
+
+    return m_modeSpecificMenu;
+}
+#endif
 
 void MorseMode::modeMenus()
 {
@@ -180,6 +193,13 @@ void MorseMode::switchFromYou()
     // erase the menu and mode layout
     m_morse->menuBar()->clear();
     clearModeLayout();
+
+    // clear the mode specific menu
+    if (m_modeSpecificMenu) {
+        m_modeSpecificMenu->clear();
+        delete m_modeSpecificMenu;
+        m_modeSpecificMenu = 0;
+    }
 
     // stop the audio
     m_morse->pauseAudio();
