@@ -1,0 +1,384 @@
+<!-- this is a makerelease script: http://github.com/hardaker/makerelease -->
+<makerelease>
+  <steps>
+    <step type="section" name="prompting" title="Starting Information Needed"
+          pause="0" mandatory="1" prompt="yes">
+      <text>
+        foo
+      </text>
+      <steps>
+        <step type="perl" name="version:date" title="Figure out the date"
+	      pause="0" mandatory="1">
+	  <text>
+	    Figure out the current date
+	  </text>
+	  <perl>
+	    <code>
+	      $self->{'parameters'}{'DATESTRING'} = 
+                  `date "+%a, %d %b %Y %H:%M:%S -0700"`;
+	      chomp($self->{'parameters'}{'DATESTRING'});
+	      return 0;
+ 	    </code>
+	  </perl>
+	</step>
+        <step type="command" name="version:previous" title="Finding the previous version"
+	      pause="0" mandatory="0">
+	  <text>
+	    The following tries to find the existing version number to help
+            you in deciding on the next one.
+	  </text>
+	  <commands>
+	    <command>grep Version: AboutDialog.ui</command>
+	  </commands>
+	</step>
+
+        <step type="prompt" name="versionnumber" title="Enter the version number"
+    	  mandatory="1"
+    	  parameter="VERSIONNUMBER"
+    	  prompt="Enter a version number:">
+          <text>
+    	This version number will be used in multiple places as we progress
+          </text>
+        </step>
+        <step type="Informational"	name="foo" title="bar"
+	      pause="0" mandatory="0">
+	  <text>
+	    We'll use this as the version number: {VERSIONNUMBER}
+
+	    We'll use this as the date: {DATESTRING}
+	  </text>
+	</step>
+      </steps>
+    </step>
+    <step type="section" name="modifysource" title="Modify Sources"
+    	pause="1" mandatory="0" interactive="yes">
+      <text>
+        We'll now modify the source code in various places to set it up
+        with version numbers, etc.
+      </text>
+      <steps>
+        <step type="modify" title="Modify for version number"
+    	    stepname="modify:version">
+    	  <text>
+    	    We'll modify a number of files to add the version number
+    	  </text>
+    	  <modifications>
+    	    <modify
+    	        find="Version: (.*)&lt;"
+    	        replace="Version: {VERSIONNUMBER}&lt;">
+    	      <files>
+    	        <file>AboutDialog.ui</file>
+    	      </files>
+    	    </modify>
+              <modify
+    	        find="Next Version: (.*)"
+    	        replace="Next Version: {VERSIONNUMBER}">
+    	      <files>
+    	        <file>docs/TODO.org</file>
+    	      </files>
+    	    </modify>
+              <modify
+    	        find="Next Version: (.*)"
+    	        replace="Version: {VERSIONNUMBER}">
+    	      <files>
+    	        <file>docs/CHANGES.org</file>
+    	      </files>
+    	    </modify>
+
+    	    <!-- <modify>...</modify> ; use mr-modify1 -->
+    	  </modifications>
+        </step>
+        <step type="Informational" name="modify:debian" title="Update the debian changes file."
+	      pause="0" mandatory="0">
+	  <text>
+	    Update the debian/changelog file to reflect the current version.
+            Likely helpful text:
+
+cutecw ({VERSIONNUMBER}-1) unstable; urgency=low
+
+  * Upgraded to upstream {VERSIONNUMBER}
+ 
+
+ -- Wes Hardaker &lt;wjhns177@hardakers.net&gt;  {DATESTRING}
+	  </text>
+	</step>
+
+        <step type="command" name="version:editdebian" title="Editing the debian changelog"
+	      pause="0" mandatory="0">
+	  <text>
+	    Please edit the changelog as previously described.
+	  </text>
+	  <commands>
+	    <command>emacsclient debian/changelog</command>
+	  </commands>
+	</step>
+
+        <step type="command" name="modify:verify" title="Verify the diff"
+	      pause="1" mandatory="1">
+	  <text>
+	    Verify that the output of the diff is correct.
+
+            (next we'll commit it)
+	  </text>
+	  <commands>
+	    <command>git diff | cat</command>
+	  </commands>
+	</step>
+        <step type="command" name="modify:commit" title="Commit the version number"
+	      pause="1" mandatory="0">
+	  <text>
+	    We'll now commit the changes to the git repo.
+	  </text>
+	  <commands>
+	    <command>git commit -m "version update to {VERSIONNUMBER}" .</command>
+	  </commands>
+	</step>
+
+      </steps>
+    </step>
+    <step type="section" name="tagandrelease" title="Tag and Release"
+	  pause="1" mandatory="0" interactive="yes">
+      <text>
+	LAST CHANCE TO STOP!
+
+        We're about to tag the source with the version tag and push it out.
+      </text>
+      <steps>
+	 <step type="command" name="tagandrelease:tag" title="Tag it"
+	       pause="1" mandatory="0">
+	   <text>
+	     Tagging it.
+	   </text>
+	   <commands>
+	     <command>git -s tag -m "tagging of version {VERSIONNUMBER}" {VERSIONNUMBER}</command>
+	   </commands>
+	 </step>
+         <step type="command" name="tagandrelease:push" title="Push it"
+	       pause="1" mandatory="0">
+	   <text>
+	     git push it to github, including the tag
+	   </text>
+	   <commands>
+	     <command>git push --tags origin master</command>
+	   </commands>
+	 </step>
+         <step type="command" name="tagandrelease:src" title="make source"
+	       pause="1" mandatory="0">
+	   <text>
+	     Creates the source tar ball
+	   </text>
+	   <commands>
+	     <command>cd .. &amp;&amp; git clone qtcw cutecw-{VERSIONNUMBER}</command>
+             <command>cd .. &amp;&amp; rm -rf cutecw-{VERSIONNUMBER}/.git</command>
+             <command>cd .. &amp;&amp; tar czf cutecw-{VERSIONNUMBER}.tar.gz cutecw-{VERSIONNUMBER}</command>
+	   </commands>
+	 </step>
+         <step type="command" name="tagandrelease:pushsrc" title="push the source out"
+	       pause="1" mandatory="0">
+	   <text>
+	     Copy the release source to the server
+	   </text>
+	   <commands>
+	     <command>scp -pr ../cutecw-{VERSIONNUMBER}.tar.gz dh.hardakers.net:hamtools.org/cutecw/releases/</command>
+	   </commands>
+	 </step>
+      </steps>
+    </step>
+    <step type="section" name="binaries" title="Build Releasable Binaries"
+	  pause="1" mandatory="0" interactive="yes">
+      <text>
+	This will build binaries for:
+
+           - windows
+           - linux (with help)
+           - maemo (with help)
+    
+      </text>
+      <steps>
+        <step type="section" name="build:windows" title="Build for windows"
+	      pause="1" mandatory="0" interactive="yes">
+	  <text>
+	    Build the current release for windows
+	  </text>
+	  <steps>
+	    
+            <step type="command" name="build:windows:build" title="Build it"
+    	      pause="0" mandatory="0">
+    	      <text>
+    	        Build in ../cutecw-build-windows/
+    	      </text>
+    	      <commands>
+    	        <command>cd ../cutecw-build-windows/ &amp;&amp; mad make clean</command>
+    	        <command>cd ../cutecw-build-windows/ &amp;&amp; mad make</command>
+    	        <command>cp ../cutecw-build-windows/release/cutecw.exe ../cutecw-dist-windows/</command>
+    	        <command>cd ../cutecw-dist-windows/ &amp;&amp; for i in *.dll ; do cp /usr/i686-pc-mingw32/sys-root/mingw/bin/$i . ; done</command>
+    	        <command>mv ../cutecw-{VERSIONNUMBER} ../cutecw-{VERSIONNUMBER}.src</command>
+    	        <command>cp -r ../cutecw-dist-windows/ ../cutecw-{VERSIONNUMBER} </command>
+    	        <command>cd .. &amp;&amp; zip -r cutecw-{VERSIONNUMBER}.zip cutecw-{VERSIONNUMBER} </command>
+    	        <command>mv ../cutecw-{VERSIONNUMBER} ../cutecw-{VERSIONNUMBER}.win32</command>
+    	        <command>mv ../cutecw-{VERSIONNUMBER}.src ../cutecw-{VERSIONNUMBER}</command>
+    	      </commands>
+    	    </step>
+
+            <step type="command" name="build:windows:release" title="Release it"
+		  pause="1" mandatory="0">
+	      <text>
+		Push the windows build results to the server
+	      </text>
+	      <commands>
+		<command>scp ../cutecw-{VERSIONNUMBER}.zip dh.hardakers.net:hamtools.org/cutecw/releases/</command>
+	      </commands>
+	    </step>
+
+	  </steps>
+	</step>
+
+        <step type="section" name="build:linux" title="Build for Linux"
+	      pause="1" mandatory="0" interactive="yes">
+	  <text>
+	    Build the release as a single binary for linux
+	  </text>
+	  <steps>
+	    <step type="command" name="build:linux:build" title="Build it"
+		  pause="0" mandatory="0">
+	      <text>
+		Builds a binary for linux
+	      </text>
+	      <commands>
+		<command>cd ../cutecw-build-desktop &amp;&amp; make clean</command>
+		<command>cd ../cutecw-build-desktop &amp;&amp; make</command>
+	      </commands>
+	    </step>
+
+            <step type="command" name="build:linux:release" title="Release it"
+		  pause="1" mandatory="0">
+	      <text>
+		Push the linux binary on the server
+	      </text>
+	      <commands>
+		<command>scp ../cutecw-build-desktop/cutecw dh.hardakers.net:hamtools.org/cutecw/releases/cutecw-{VERSIONNUMBER}.linux</command>
+	      </commands>
+	    </step>
+
+	  </steps>
+	</step>
+
+        <step type="Informational" name="build:maemo" title="Build for Maemo"
+	      pause="1" mandatory="0">
+	  <text>
+	    To build this for maemo you'll need to do this by hand at the moment.
+	  </text>
+	</step>
+
+        <step type="section" name="build:fedora" title="Build for Fedora"
+	      pause="1" mandatory="0" interactive="yes">
+	  <text>
+	    Build the release for fedora and push it
+	  </text>
+	  <steps>
+	    <step type="command" name="build:fedora:copy-in" title="Preperation"
+		  pause="1" mandatory="0">
+	      <text>
+		Copies files in place and adds new sources to git
+	      </text>
+	      <commands>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch master</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg pull</command>
+		<command>cp ../cutecw-{VERSIONNUMBER}.tar.gz ~/src/fedora/cutecw &amp;&amp; fedpkg pull</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg new-sources cutecw-{VERSIONNUMBER}.tar.gz</command>
+		<!-- <comand>...</command> ; use mr-command1 -->
+	      </commands>
+	    </step>
+            <step type="Informational"	name="build:fedor:finish" title="Finish building on fedora"
+		  pause="1" mandatory="0">
+	      <text>
+		Finish building/pushing everything fedora:
+	      </text>
+	    </step>
+            <step type="command" name="build:fedora:doit" title="Finish up the fedora releases"
+		  pause="1" mandatory="0">
+	      <text>
+		Perform the fedora builds
+	      </text>
+	      <commands>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch master</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; gnuclient cutecw.spec</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg local</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; git push</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg build</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch f15</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; git merge master</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; git push</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg build --nowait</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch f14 </command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; git merge master</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; git push</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg build --nowait</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch f15</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg update</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch f14</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg update</command>
+		<!-- <comand>...</command> ; use mr-command1 -->
+	      </commands>
+	    </step>
+	  </steps>
+	</step>
+      </steps>
+    </step>
+
+    <step type="section" name="advertise" title="Advertise"
+	  pause="1" mandatory="0">
+      <text>
+	Advertise on various places
+      </text>
+      <steps>
+	<step type="command" name="advertise:freshmeat" title="Advertise on freshmeat"
+	      pause="1" mandatory="0">
+	  <text>
+	    Advertise on freshmeat
+	  </text>
+	  <commands>
+	    <command>firefox http://freshmeat.net/projects/cute-cw</command>
+	  </commands>
+	</step>
+
+      </steps>
+    </step>
+
+
+
+    <step type="section" name="future" title="Setup for the future"
+	  pause="1" mandatory="0">
+      <text>
+	These steps need to be performed in order to get ready for the future.
+      </text>
+      <steps>
+	<step type="Informational"	name="future:TODO" title="Update the TODO files"
+	      pause="1" mandatory="0">
+	  <text>
+	    Update the docs/TODO.org file:
+
+               - near the end add "Next Version: SOMETHING"
+
+            Update the docs/CHANGES.org file:
+
+               - add a new entry at the top with "Next Version: SOMETHING"
+
+            (the real version number will be changed at next release)
+	  </text>
+	</step>
+        <step type="command" name="future:committodo" title="Commit the TODO/CHANGES.org"
+	      pause="1" mandatory="0">
+	  <text>
+	    Commit the changes to the TODO.org and CHANGES.org files
+	  </text>
+	  <commands>
+	    <command>git commit -m 'updated for the next release' docs/</command>
+	  </commands>
+	</step>
+
+      </steps>
+    </step>
+
+  </steps>
+</makerelease>
