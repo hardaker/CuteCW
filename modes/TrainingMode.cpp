@@ -136,8 +136,16 @@ void TrainingMode::setupTrainingWidgets() {
 
     m_ui->letter->setText("");
     m_ui->WPM->setText("");
+}
 
-    connect(m_optionsMenu->addAction(tr("Clear Training")), SIGNAL(triggered()), this, SLOT(clear()));
+void TrainingMode::modeMenus() {
+    connect(menu()->addAction(tr("Clear Training")), SIGNAL(triggered()), this, SLOT(clear()));
+
+    // Create the preference items in the quick menu
+    m_doEntireSequenceButton = menu()->addAction(tr("Use &Entire Sequence"));
+    m_doEntireSequenceButton->setCheckable(true);
+    m_doEntireSequenceButton->setChecked(false);
+    connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
 }
 
 void TrainingMode::chooseCustomeSequence() {
@@ -299,12 +307,6 @@ void TrainingMode::setDoEntireSequence(bool value) {
 void TrainingMode::setupWidgets(const QString &sequence, bool includeProgressBars, QString barLabel)
 {
     m_includeProgressBars = includeProgressBars;
-
-    // Create the preference items in the quick menu
-    m_doEntireSequenceButton = m_optionsMenu->addAction(tr("Use &Entire Sequence"));
-    m_doEntireSequenceButton->setCheckable(true);
-    m_doEntireSequenceButton->setChecked(false);
-    connect(m_doEntireSequenceButton, SIGNAL(toggled(bool)), this, SLOT(setDoEntireSequence(bool)));
 
     setupModeWidgets(sequence, barLabel);
 }

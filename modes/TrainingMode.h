@@ -36,6 +36,7 @@ public:
     MorseStat *getStat(const QChar &key);
     void setWPMLabel(float wpm);
     void setupModeWidgets(const QString &sequence, QString barLabel = "");
+    virtual void modeMenus();
 
     virtual void clear();
     virtual void setupTrainingWidgets();
