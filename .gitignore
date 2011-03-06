@@ -6,4 +6,4 @@ Makefile.Release
 qtc_packaging
 cutecw.pro.user*
 cutecw.zip
-
+*.orig
