@@ -150,7 +150,7 @@ cutecw ({VERSIONNUMBER}-1) unstable; urgency=low
 	     Tagging it.
 	   </text>
 	   <commands>
-	     <command>git -s tag -m "tagging of version {VERSIONNUMBER}" {VERSIONNUMBER}</command>
+	     <command>git tag -s -m "tagging of version {VERSIONNUMBER}" {VERSIONNUMBER}</command>
 	   </commands>
 	 </step>
          <step type="command" name="tagandrelease:push" title="Push it"
