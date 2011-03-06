@@ -286,6 +286,7 @@ cutecw ({VERSIONNUMBER}-1) unstable; urgency=low
 		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg pull</command>
 		<command>cp ../cutecw-{VERSIONNUMBER}.tar.gz ~/src/fedora/cutecw &amp;&amp; fedpkg pull</command>
 		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg new-sources cutecw-{VERSIONNUMBER}.tar.gz</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; git commit -m "new sources for {VERSIONNUMBER}</command>
 		<!-- <comand>...</command> ; use mr-command1 -->
 	      </commands>
 	    </step>
@@ -302,7 +303,7 @@ cutecw ({VERSIONNUMBER}-1) unstable; urgency=low
 	      </text>
 	      <commands>
 		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg switch-branch master</command>
-		<command>cd ~/src/fedora/cutecw &amp;&amp; gnuclient cutecw.spec</command>
+		<command>cd ~/src/fedora/cutecw &amp;&amp; emacsclient cutecw.spec</command>
 		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg local</command>
 		<command>cd ~/src/fedora/cutecw &amp;&amp; git push</command>
 		<command>cd ~/src/fedora/cutecw &amp;&amp; fedpkg build</command>
