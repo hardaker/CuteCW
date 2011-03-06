@@ -80,16 +80,22 @@ void Prefs::cancel()
         mode->rejectPrefs();
     }
 
-    if (m_oldTone == -1)
+    if (m_oldTone != -1) {
         m_morse->setTone(m_oldTone);
+        m_morse->setWPMGoal(m_oldRate);
+        m_morse->createTones(m_oldRate);
+    }
 
     reject();
 }
 
 void Prefs::testTone() {
-    if (m_oldTone == -1)
+    if (m_oldTone == -1) {
         m_oldTone = m_morse->tone();
+        m_oldRate = m_morse->currentWPMGoal();
+    }
     m_morse->setTone(m_tone->value());
+    m_morse->createTones(m_WPMRate->value());
     m_morse->playIt('.');
 }
 

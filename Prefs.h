@@ -28,6 +28,7 @@ private:
     QSpinBox *m_tone;
 
     int m_oldTone;
+    int m_oldRate;
 };
 
 #endif // PREFS_H
