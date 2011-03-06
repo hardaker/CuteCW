@@ -7,7 +7,7 @@
 #include <QtGui/QProgressBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_doEntireSequence(false), m_maxBadLetters(2), m_includeProgressBars(true)
+    : MorseMode(parent, ui), m_doEntireSequence(false), m_maxBadLetters(2), m_includeProgressBars(true), m_acceptForwardKeys(true)
 {
     setupSequences();
 }
@@ -216,10 +216,36 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";
     MorseStat *pressedStat = getStat(letterPressed);
 
-    // if the user took a *really* long time, ignore the key press and assume they got distracted from training
-    if (elapsedTimeWasTooLong(msElapsed, pressedStat)) {
-        qDebug() << "ignoring key press; too long and probably an interruption";
-        return;
+    if (m_acceptForwardKeys && letterPressed != lastKey && m_lastKeys.count() > 0) {
+        int whichLetter = 0;
+        bool foundOne = false;
+
+        foreach(QChar thekey, m_lastKeys) {
+            if (letterPressed == thekey) {
+                // We found the key they pressed that was correct.
+                foundOne = true;
+                break;
+            }
+            whichLetter++;
+        }
+
+        if (foundOne) {
+            // drop (and penalize) all the earlier ones
+            for(int i = 0; i < whichLetter; i++) {
+                QChar theLetter = m_lastKeys.takeFirst();
+                lastTime = m_lastTimes.takeFirst();
+                getStat(theLetter)->addStat(3.0 * getStat(theLetter)->getAverageTime(), false);
+                m_badCount++;
+            }
+
+            // penalize the key previously pulled off
+            getStat(lastKey)->addStat(3.0 * getStat(lastKey)->getAverageTime(), false);
+            m_badCount++;
+
+            // pull the new matching key off
+            lastKey = m_lastKeys.takeFirst();
+            lastTime = m_lastTimes.takeFirst();
+        }
     }
 
     // set the last WPM record on the display
@@ -229,6 +255,12 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     }
     qDebug() << "WPM text: " << WPM;
     m_lastwpmLabel->setText(WPM);
+
+    // if the user took a *really* long time, ignore the key press and assume they got distracted from training
+    if (elapsedTimeWasTooLong(msElapsed, pressedStat)) {
+        qDebug() << "ignoring key press; too long and probably an interruption";
+        return;
+    }
 
     // if the keyed incorrectly, penalize them 3 times their average else add in the results
     if (letterPressed == lastKey) {

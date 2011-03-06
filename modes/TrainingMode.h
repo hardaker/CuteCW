@@ -74,6 +74,7 @@ protected:
     QAction                        *m_doEntireSequenceButton;
     int                             m_maxBadLetters;
     bool                            m_includeProgressBars;
+    bool                            m_acceptForwardKeys;
 
 };
 
