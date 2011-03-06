@@ -2,113 +2,17 @@
 *** DONE fixed the sound issues on the mac and hopefully maemo
 *** DONE added "similar" sequences: auv4, ndb6, eish5, ...
 *** DONE fix read-to-me memory issues
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-20 Sun 18:18
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE [#A] Test the speed increasing settings for speed mode
-    - State "DONE"       from "TODO"       [2011-02-21 Mon 10:48]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-21 Mon 10:49
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE [#B] mode specific preferences
-    - State "DONE"       from "STARTED"    [2011-02-21 Mon 10:49]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-02-21 Mon 10:49
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE move highscores button into the options menu
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 13:27]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 13:27
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE [#B] Add a "test" button next to the frequency set spinbox
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 13:41]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 13:41
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE [#A] saving in maemo on window close is broken?
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 13:50]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 13:50
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE add a pause after recognition mode training before next key
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 14:47]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 14:47
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE add a starting slightly slower speed to speed training
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 15:06]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 15:06
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE start read-to-me at current cursor position
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 15:23]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 15:23
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE [#B] icons for the home page buttons
-    - State "DONE"       from "TODO"       [2011-03-02 Wed 21:47]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-02 Wed 21:47
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE make the read-to-me mode be able to read each word multiple times
-    - State "DONE"       from "TODO"       [2011-03-05 Sat 20:05]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-05 Sat 20:05
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
 *** DONE make speed mode match letters ahead
-    - State "DONE"       from "TODO"       [2011-03-06 Sun 08:19]
-    :PROPERTIES:
-    :ARCHIVE_TIME: 2011-03-06 Sun 08:19
-    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
-    :ARCHIVE_OLPATH: The TODO list
-    :ARCHIVE_CATEGORY: TODO
-    :ARCHIVE_TODO: DONE
-    :END:
-
 * Version: 0.5.1
 *** DONE A makerelease packaging script.
 * Version: 0.5
