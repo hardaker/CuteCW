@@ -63,6 +63,8 @@ void ReadMode::play() {
 
 void ReadMode::stop() {
     m_textEdit->setTextCursor(m_readSpot);
+    m_readSpot.select(QTextCursor::WordUnderCursor);
+    m_readSpot.insertHtml(m_currentText);
 }
 
 void ReadMode::readWordUnderCursor() {
