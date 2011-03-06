@@ -90,6 +90,15 @@
     :ARCHIVE_CATEGORY: TODO
     :ARCHIVE_TODO: DONE
     :END:
+*** DONE make the read-to-me mode be able to read each word multiple times
+    - State "DONE"       from "TODO"       [2011-03-05 Sat 20:05]
+    :PROPERTIES:
+    :ARCHIVE_TIME: 2011-03-05 Sat 20:05
+    :ARCHIVE_FILE: ~/src/qtcw/qtcw/docs/TODO.org
+    :ARCHIVE_OLPATH: The TODO list
+    :ARCHIVE_CATEGORY: TODO
+    :ARCHIVE_TODO: DONE
+    :END:
 
 * Version: 0.5.1
 *** DONE A makerelease packaging script.

@@ -2,13 +2,14 @@
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
+#include <QtGui/QFormLayout>
 #include <QtCore/QTimer>
 
 #include "ReadMode.h"
 #include "Morse.h"
 
 ReadMode::ReadMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui)
+    : MorseMode(parent, ui), m_readWordCount(1)
 {
 }
 
@@ -57,7 +58,7 @@ void ReadMode::play() {
     if (m_readSpot.atEnd())
         m_readSpot.movePosition(QTextCursor::Start);
     readWordUnderCursor();
-
+    m_currentWordCount = 1;
     return;
 }
 
@@ -80,14 +81,20 @@ void ReadMode::readWordUnderCursor() {
 
 void ReadMode::audioStopped()
 {
-    m_readSpot.select(QTextCursor::WordUnderCursor);
-    m_readSpot.insertHtml(m_currentText);
-    m_currentText = "";
-    m_readSpot.movePosition(QTextCursor::NextWord);
+    // decide if we're going to re-read the current word or not.
+    if (m_currentWordCount >= m_readWordCount) {
+        m_currentWordCount = 1;
+        m_readSpot.select(QTextCursor::WordUnderCursor);
+        m_readSpot.insertHtml(m_currentText);
+        m_currentText = "";
+        m_readSpot.movePosition(QTextCursor::NextWord);
+    } else {
+        m_currentWordCount++;
+    }
+
     if (!m_readSpot.atEnd()) {
         QTimer::singleShot(int(m_morse->spaceSecs() * 1000.0), this, SLOT(readWordUnderCursor()));
     } else {
-        qDebug() << "audio stopped method";
         m_textEdit->setTextCursor(m_readSpot);
         setRunningMode(PAUSED);
     }
@@ -111,4 +118,33 @@ QString ReadMode::name()
 QString ReadMode::icon()
 {
     return ":/icons/64x64/read-to-me.png";
+}
+
+
+void ReadMode::loadSettings(QSettings &settings)
+{
+    m_readWordCount = settings.value("readtome/readWordCount", 1).toInt();
+}
+
+void ReadMode::saveSettings(QSettings &settings)
+{
+    settings.setValue("readtome/readWordCount", m_readWordCount);
+}
+
+QBoxLayout *ReadMode::getPrefsLayout()
+{
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QFormLayout *form = new QFormLayout();
+    hbox->addLayout(form);
+
+    form->addRow(tr("Read each word this many times:"), m_readWordCountBox = new QSpinBox());
+    m_readWordCountBox->setRange(1,10);
+    m_readWordCountBox->setValue(m_readWordCount);
+
+    return hbox;
+}
+
+void ReadMode::acceptPrefs()
+{
+    m_readWordCount = m_readWordCountBox->value();
 }
