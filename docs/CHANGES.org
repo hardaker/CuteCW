@@ -1,3 +1,4 @@
+* Next Version: 1.0
 * Version: 1.0
 *** DONE fixed the sound issues on the mac and hopefully maemo
 *** DONE added "similar" sequences: auv4, ndb6, eish5, ...
