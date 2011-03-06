@@ -1,4 +1,4 @@
-* Next Version: 0.6
+* Version: 1.0
 *** DONE fixed the sound issues on the mac and hopefully maemo
 *** DONE added "similar" sequences: auv4, ndb6, eish5, ...
 *** DONE fix read-to-me memory issues
@@ -66,6 +66,6 @@
 *** DONE make the home screen use QGroupBoxes
 *** DONE help should be scrollable and also stacked on maemo
 *** DONE color code letters in sequence graph according to current
-* Next Version: 0.5.1
+* Version: 1.0
 *** DONE fix random sources on windows
 

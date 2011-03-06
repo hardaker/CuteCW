@@ -30,7 +30,7 @@
       seems that fixing the output ending bug fixed this issue
 * END
   moves DONE entries to CHANGES.org via c-c c-x c-s
-#+ARCHIVE: CHANGES.org::* Next Version: 0.6
+#+ARCHIVE: CHANGES.org::* Next Version: 1.0
 #+STARTUP: nologdone nologrefile
 
 Local Variables:
