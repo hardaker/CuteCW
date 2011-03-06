@@ -6,6 +6,8 @@
       + Dr. Dolittle
 *** TODO [#B] read rss feeds
 *** TODO make a "score" counter for recognition: sum(avewpm)
+*** TODO make speed mode match letters ahead
+*** TODO make speed mode (and others)? show a running track of letters
 * Longer Term
 *** TODO More Fun Games!
 ***** TODO Keying practice using on or two keys for practicing keying.
