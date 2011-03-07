@@ -8,7 +8,7 @@
 #include <QtGui/QDialogButtonBox>
 
 Prefs::Prefs(Morse *morse, QWidget *parent) :
-    QDialog(parent), m_morse(morse), m_oldTone(-1)
+    QDialog(parent, Qt::Window), m_morse(morse), m_oldTone(-1)
 {
     QVBoxLayout *topLayout = new QVBoxLayout();
     QTabWidget *tabWidget = new QTabWidget();
@@ -53,6 +53,9 @@ Prefs::Prefs(Morse *morse, QWidget *parent) :
     }
 
     setLayout(topLayout);
+#ifdef SMALL_DEVICE
+    setAttribute(Qt::WA_Maemo5StackedWindow);
+#endif
     resize(800,440);
 }
 
