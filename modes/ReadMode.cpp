@@ -64,6 +64,12 @@ ReadMode::addButtons() {
     connect(action = menu->addAction("CNN - Top Stories"), SIGNAL(triggered()), m_mapper, SLOT(map()));
     m_mapper->setMapping(action, "http://rss.cnn.com/rss/cnn_topstories.rss");
 
+    connect(action = menu->addAction("Word of the Day"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    m_mapper->setMapping(action, "http://wordsmith.org/awad/rss1.xml");
+
+    connect(action = menu->addAction("Quote of the Day"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    m_mapper->setMapping(action, "http://feeds.feedburner.com/quotationspage/qotd");
+
     connect(m_mapper, SIGNAL(mapped(QString)), this, SLOT(fetchNews(QString)));
 
     setupWPMWidgets(vLayout);
