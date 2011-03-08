@@ -47,11 +47,22 @@ ReadMode::addButtons() {
     buttonLayout->addWidget(button);
 
     QAction *action;
+
+    connect(action = menu->addAction("ARRL - Ham News"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    m_mapper->setMapping(action, "http://www.arrl.org/arrl.rss");
+
+    // fails for some reason I haven't dived into yet:
+    //connect(action = menu->addAction("EHAM - Postings"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    //m_mapper->setMapping(action, "http://www.eham.net/rss/rss.php");
+
     connect(action = menu->addAction("SlashDot - News for Nerds"), SIGNAL(triggered()), m_mapper, SLOT(map()));
     m_mapper->setMapping(action, "http://rss.slashdot.org/Slashdot/slashdot");
 
     connect(action = menu->addAction("BBC - North America"), SIGNAL(triggered()), m_mapper, SLOT(map()));
     m_mapper->setMapping(action, "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml");
+
+    connect(action = menu->addAction("CNN - Top Stories"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    m_mapper->setMapping(action, "http://rss.cnn.com/rss/cnn_topstories.rss");
 
     connect(m_mapper, SIGNAL(mapped(QString)), this, SLOT(fetchNews(QString)));
 
