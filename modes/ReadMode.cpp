@@ -12,7 +12,7 @@
 #include "Morse.h"
 
 ReadMode::ReadMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_textEdit(0), m_readWordCount(1)
+    : MorseMode(parent, ui), m_textEdit(0), m_readWordCount(1), m_mapper(new QSignalMapper())
 {
 }
 
@@ -46,15 +46,23 @@ ReadMode::addButtons() {
     button->setMenu(menu);
     buttonLayout->addWidget(button);
 
-    connect(menu->addAction("SlashDot - News for Nerds"), SIGNAL(triggered()), this, SLOT(getSlashDot()));
+    QAction *action;
+    connect(action = menu->addAction("SlashDot - News for Nerds"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    m_mapper->setMapping(action, "http://rss.slashdot.org/Slashdot/slashdot");
+
+    connect(action = menu->addAction("BBC - North America"), SIGNAL(triggered()), m_mapper, SLOT(map()));
+    m_mapper->setMapping(action, "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml");
+
+    connect(m_mapper, SIGNAL(mapped(QString)), this, SLOT(fetchNews(QString)));
 
     setupWPMWidgets(vLayout);
 }
 
 void
-ReadMode::getSlashDot() {
+ReadMode::fetchNews(const QString &source) {
+    qDebug() << "loading: " << source;
     m_manager = new QNetworkAccessManager(this);
-    m_reply = m_manager->get(QNetworkRequest(QUrl("http://rss.slashdot.org/Slashdot/slashdot")));
+    m_reply = m_manager->get(QNetworkRequest(QUrl(source)));
     if (m_reply) {
         connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(netLoadFinished(QNetworkReply*)));
     }

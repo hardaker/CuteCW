@@ -4,6 +4,7 @@
 #include <QtGui/QTextCursor>
 #include <QtGui/QTextEdit>
 #include <QtGui/QSpinBox>
+#include <QtCore/QSignalMapper>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
@@ -35,8 +36,8 @@ public slots:
     virtual void audioStopped();
     virtual void readWordUnderCursor();
     void openFile();
-    void getSlashDot();
     void netLoadFinished(QNetworkReply *reply);
+    void fetchNews(const QString &source);
 
 private:
     QTextCursor                     m_readSpot;
@@ -48,6 +49,7 @@ private:
 
     QNetworkReply                  *m_reply;
     QNetworkAccessManager          *m_manager;
+    QSignalMapper                  *m_mapper;
 };
 
 #endif // READMODE_H
