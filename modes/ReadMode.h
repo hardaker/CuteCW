@@ -4,6 +4,8 @@
 #include <QtGui/QTextCursor>
 #include <QtGui/QTextEdit>
 #include <QtGui/QSpinBox>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
 #include "MorseMode.h"
 
@@ -33,6 +35,8 @@ public slots:
     virtual void audioStopped();
     virtual void readWordUnderCursor();
     void openFile();
+    void getSlashDot();
+    void netLoadFinished(QNetworkReply *reply);
 
 private:
     QTextCursor                     m_readSpot;
@@ -41,6 +45,9 @@ private:
     int                             m_readWordCount;
     int                             m_currentWordCount;
     QSpinBox                       *m_readWordCountBox;
+
+    QNetworkReply                  *m_reply;
+    QNetworkAccessManager          *m_manager;
 };
 
 #endif // READMODE_H

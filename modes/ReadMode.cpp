@@ -5,6 +5,8 @@
 #include <QtGui/QFormLayout>
 #include <QtCore/QTimer>
 #include <QtGui/QMenu>
+#include <QtXml/QDomDocument>
+#include <QtGui/QTextDocumentFragment>
 
 #include "ReadMode.h"
 #include "Morse.h"
@@ -44,9 +46,48 @@ ReadMode::addButtons() {
     button->setMenu(menu);
     buttonLayout->addWidget(button);
 
-    connect(menu->addAction("test"), SIGNAL(triggered()), this, SLOT(openFile()));
+    connect(menu->addAction("SlashDot - News for Nerds"), SIGNAL(triggered()), this, SLOT(getSlashDot()));
 
     setupWPMWidgets(vLayout);
+}
+
+void
+ReadMode::getSlashDot() {
+    m_manager = new QNetworkAccessManager(this);
+    m_reply = m_manager->get(QNetworkRequest(QUrl("http://rss.slashdot.org/Slashdot/slashdot")));
+    if (m_reply) {
+        connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(netLoadFinished(QNetworkReply*)));
+    }
+}
+
+void
+ReadMode::netLoadFinished(QNetworkReply *reply) {
+    if (reply->error() != QNetworkReply::NoError) {
+        m_textEdit->setText("Failed to load the news");
+        return;
+    }
+    QDomDocument document;
+    QTextDocumentFragment fragment;
+    if (document.setContent(reply)) {
+        QDomNodeList nodes = document.elementsByTagName("title");
+        QDomNodeList storyNodes = document.elementsByTagName("description");
+        if (!nodes.isEmpty()) {
+            QString totalText;
+            for (int i = 1; i < storyNodes.count(); i++) { // skip the first title: is the whole RSS title
+                QDomNode node = nodes.item(i+1);
+                QDomNode story = storyNodes.item(i);
+                totalText = totalText + node.firstChild().nodeValue() + "\n";
+                fragment = QTextDocumentFragment::fromHtml(story.firstChild().nodeValue());
+                qDebug() << "here: " << fragment.toPlainText();
+                totalText = totalText + fragment.toPlainText() + "\n\n";
+            }
+            m_textEdit->setText(totalText);
+        } else {
+            m_textEdit->setText("no news is likely not good news in this case");
+        }
+    } else {
+        m_textEdit->setText("Failed to load the news document");
+    }
 }
 
 void
