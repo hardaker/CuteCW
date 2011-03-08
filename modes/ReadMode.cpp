@@ -4,6 +4,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QFormLayout>
 #include <QtCore/QTimer>
+#include <QtGui/QMenu>
 
 #include "ReadMode.h"
 #include "Morse.h"
@@ -26,14 +27,24 @@ void
 ReadMode::addButtons() {
     QPushButton *button = new QPushButton(tr("Load File"));
     QVBoxLayout *vLayout = new QVBoxLayout();
+    QVBoxLayout *buttonLayout = new QVBoxLayout();
     m_ui->forModes->addLayout(vLayout);
 
     QHBoxLayout *hLayout = new QHBoxLayout();
     vLayout->addLayout(hLayout);
-    hLayout->addWidget(button);
+    hLayout->addLayout(buttonLayout);
     m_textEdit = new QTextEdit();
     hLayout->addWidget(m_textEdit);
+
+    buttonLayout->addWidget(button);
     connect(button, SIGNAL(clicked()), this, SLOT(openFile()));
+
+    button = new QPushButton("Get News");
+    QMenu *menu = new QMenu(button);
+    button->setMenu(menu);
+    buttonLayout->addWidget(button);
+
+    connect(menu->addAction("test"), SIGNAL(triggered()), this, SLOT(openFile()));
 
     setupWPMWidgets(vLayout);
 }
