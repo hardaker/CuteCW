@@ -26,3 +26,14 @@ Cute CW: train yourself
 
   The growing list of [[file:docs/CHANGES.org][CHANGES]] and the hopefully shrinking [[file:docs/TODO.org][TODO list]]
 
+* Compiling It
+
+  CuteCW is a Qt4 based program.  That means to compile it you'll need
+  some distribution of [[http://qt.nokia.com/][Qt4]].  You can download any of the recent Qt SDK
+  sets and open the cutecw.pro file using qtcreator, which will then
+  be able to compile and edit the code.  Or, if you want to compile it
+  via a terminal you can try the following steps:
+
+  1. qmake-qt4                      (if that doesn't work, try just "qmake")
+  2. make
+  3. optionally: make install
