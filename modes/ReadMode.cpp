@@ -82,6 +82,7 @@ ReadMode::fetchNews(const QString &source) {
     m_reply = m_manager->get(QNetworkRequest(QUrl(source)));
     if (m_reply) {
         connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(netLoadFinished(QNetworkReply*)));
+        m_textEdit->setText("Loading news....  Please wait....");
     }
 }
 

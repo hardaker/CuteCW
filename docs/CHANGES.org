@@ -1,4 +1,8 @@
 * Next Version: 1.0
+*** DONE Added the ability to read news from various news sources
+    :LOGBOOK:
+    - State "DONE"       from ""           [2011-03-12 Sat 08:04]
+    :END:
 * Version: 1.0
 *** DONE fixed the sound issues on the mac and hopefully maemo
 *** DONE added "similar" sequences: auv4, ndb6, eish5, ...
