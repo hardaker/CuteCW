@@ -12,7 +12,7 @@
 #include "Morse.h"
 
 ReadMode::ReadMode(Morse *parent, Ui::MainWindow *ui)
-    : MorseMode(parent, ui), m_textEdit(0), m_readWordCount(1), m_mapper(new QSignalMapper())
+    : MorseMode(parent, ui), m_textEdit(0), m_readWordCount(1), m_mapper(new QSignalMapper()), m_oldText()
 {
 }
 
@@ -26,6 +26,13 @@ ReadMode::switchToMode() {
 }
 
 void
+ReadMode::switchFromMode() {
+    m_readSpot = m_textEdit->textCursor();
+    m_readSpot.select(QTextCursor::Document);
+    m_oldText = m_readSpot.selectedText();
+}
+
+void
 ReadMode::addButtons() {
     QPushButton *button = new QPushButton(tr("Load File"));
     QVBoxLayout *vLayout = new QVBoxLayout();
@@ -36,6 +43,7 @@ ReadMode::addButtons() {
     vLayout->addLayout(hLayout);
     hLayout->addLayout(buttonLayout);
     m_textEdit = new QTextEdit();
+    m_textEdit->setText(m_oldText);
     hLayout->addWidget(m_textEdit);
 
     buttonLayout->addWidget(button);

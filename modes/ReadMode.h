@@ -31,6 +31,8 @@ public:
 
 public slots:
     virtual void switchToMode();
+    virtual void switchFromMode();
+
     virtual void play();
     virtual void stop();
     virtual void audioStopped();
@@ -50,6 +52,7 @@ private:
     QNetworkReply                  *m_reply;
     QNetworkAccessManager          *m_manager;
     QSignalMapper                  *m_mapper;
+    QString                         m_oldText;
 };
 
 #endif // READMODE_H

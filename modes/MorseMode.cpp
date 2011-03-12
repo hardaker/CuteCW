@@ -190,6 +190,9 @@ void MorseMode::clearModeLayout() {
 
 void MorseMode::switchFromYou()
 {
+    // let the mode clean itself up first
+    switchFromMode();
+
     // erase the menu and mode layout
     m_morse->menuBar()->clear();
     clearModeLayout();
@@ -205,7 +208,6 @@ void MorseMode::switchFromYou()
     m_morse->pauseAudio();
     setRunningMode(PAUSED);
 
-    switchFromMode();
 }
 
 void MorseMode::switchFromMode()
