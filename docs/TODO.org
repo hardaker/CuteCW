@@ -6,6 +6,8 @@
       + Dr. Dolittle
 *** TODO [#B] read rss feeds
 *** TODO make a "score" counter for recognition: sum(avewpm)
+*** TODO Use two letter-tall lines to show history of keyed/guessed letters
+*** TODO fix maemo bug: clear training doesn't appear
 * Longer Term
 *** TODO More Fun Games!
 ***** TODO Keying practice using on or two keys for practicing keying.
