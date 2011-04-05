@@ -40,6 +40,10 @@ bool MainWindow::event(QEvent *event) {
         keyPressEvent(static_cast<QKeyEvent *>(event));
         event->accept();
         return true;
+    } else if (event->type() == QEvent::KeyRelease) {
+        keyReleaseEvent(static_cast<QKeyEvent *>(event));
+        event->accept();
+        return true;
     } else
         return QMainWindow::event(event);
 }
@@ -56,6 +60,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         return;
     }
     m_morse->keyPressed(event->text().at(event->text().length()-1).toLower());
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+    if (event->text().size() != 1 || event->text().length() != 1) {
+        QMainWindow::keyReleaseEvent(event);
+        return;
+    }
+    m_morse->keyReleased(event->text().at(event->text().length()-1).toLower());
 }
 
 MainWindow::~MainWindow()

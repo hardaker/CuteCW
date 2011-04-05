@@ -89,6 +89,8 @@ public slots:
 
     virtual void handleKeyPress(const QString &letterPressed);  // by default calls the QChar version:
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
+    virtual void handleKeyRelease(const QString &letterReleased);  // by default calls the QChar version:
+    virtual void handleKeyRelease(QChar letterReleased); // by default does nothing
     virtual void switchFromMode();
     virtual void switchFromYou();
 

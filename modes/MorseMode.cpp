@@ -75,7 +75,13 @@ void MorseMode::handleKeyPress(const QString &letterPressed) {
     handleKeyPress(letterPressed[0]);
 }
 
+void MorseMode::handleKeyRelease(QChar letterReleased) {
+    Q_UNUSED(letterReleased);
+}
 
+void MorseMode::handleKeyRelease(const QString &letterReleased) {
+    handleKeyRelease(letterReleased[0]);
+}
 
 void MorseMode::audioFinished(QAudio::State state) {
     if (state != QAudio::IdleState && state != QAudio::StoppedState)

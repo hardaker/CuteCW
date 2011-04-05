@@ -166,8 +166,22 @@ void Morse::keyPressed(QString newtext) {
     keyPressed(newletter);
 }
 
+void Morse::keyPressed(QChar newletter) {
+    m_modes[m_gameMode]->handleKeyPress(newletter);
+}
+
 bool Morse::enterPressed() {
     return m_modes[m_gameMode]->enterPressed();
+}
+
+void Morse::keyReleased(QString newtext) {
+    QChar newletter = newtext.at(newtext.length()-1).toLower();
+    qDebug() << "*** user pressed: " << newletter;
+    keyReleased(newletter);
+}
+
+void Morse::keyReleased(QChar newletter) {
+    m_modes[m_gameMode]->handleKeyRelease(newletter);
 }
 
 Morse::AudioMode Morse::audioMode() {
@@ -176,10 +190,6 @@ Morse::AudioMode Morse::audioMode() {
 
 void Morse::playButton() {
     m_modes[m_gameMode]->playButton();
-}
-
-void Morse::keyPressed(QChar newletter) {
-    m_modes[m_gameMode]->handleKeyPress(newletter);
 }
 
 void Morse::generatorDone() {

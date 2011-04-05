@@ -23,6 +23,7 @@ public:
 
     QAudioOutput *createAudioOutput();
     void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
     bool event(QEvent *event);
 
 public slots:
