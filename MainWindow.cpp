@@ -49,7 +49,8 @@ bool MainWindow::event(QEvent *event) {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    qDebug() << "key pressed: " << event->text() << " " << event->text().size() << " " << event->text().length();
+    if (event->isAutoRepeat())  // We don't currently want repeats for any mode
+        return;
     if (event->key() == Qt::Key_Enter) {
         qDebug() << " was enter";
         m_morse->enterPressed();
@@ -63,6 +64,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+    if (event->isAutoRepeat())  // We don't currently want repeats for any mode
+        return;
     if (event->text().size() != 1 || event->text().length() != 1) {
         QMainWindow::keyReleaseEvent(event);
         return;
