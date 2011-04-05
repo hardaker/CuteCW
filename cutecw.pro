@@ -26,6 +26,7 @@ SOURCES += main.cpp\
     modes/ReadMode.cpp \
     modes/ChooseSequenceDialog.cpp \
     modes/GroupingMode.cpp \
+    modes/KeyTraining.cpp \
     modes/games/MGameMode.cpp \
     modes/games/MCountGameMode.cpp \
     modes/games/MTimeGameMode.cpp \
@@ -58,6 +59,7 @@ HEADERS  += MainWindow.h \
     modes/ReadMode.h \
     modes/ChooseSequenceDialog.h \
     modes/GroupingMode.h \
+    modes/KeyTraining.h \
     modes/games/MGameMode.h \
     modes/games/MCountGameMode.h \
     modes/games/MTimeGameMode.h \
