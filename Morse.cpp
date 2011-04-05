@@ -15,6 +15,7 @@
 #include "modes/LetterTrainingMode.h"
 #include "modes/SpeedTrainingMode.h"
 #include "modes/WordTrainingMode.h"
+#include "modes/KeyTraining.h"
 #include "modes/ReadMode.h"
 #include "modes/GroupingMode.h"
 #include "modes/games/WordGame.h"
@@ -58,6 +59,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(SPEEDTRAIN, new SpeedTrainingMode(this, m_ui));
     m_modes.insert(WORDS, new WordTrainingMode(this, m_ui));
     m_modes.insert(GROUPS, new GroupingMode(this, m_ui));
+    m_modes.insert(KEYING, new KeyTraining(this, m_ui));
     m_modes.insert(WORDGAME, new WordGame(this, m_ui));
     m_modes.insert(GROUPGAME, new GroupGame(this, m_ui));
     m_modes.insert(READ, new ReadMode(this, m_ui));
@@ -541,6 +543,10 @@ void Morse::createModesMenu(QMenu *modeMenu) {
     action = trainingMenu->addAction(m_modes[GROUPS]->name());
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::GROUPS);
+
+    action = trainingMenu->addAction(m_modes[KEYING]->name());
+    connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
+    m_signalMapper->setMapping(action, (int) Morse::KEYING);
 
     QMenu *gamesMenu = modeMenu->addMenu(tr("Games"));
 

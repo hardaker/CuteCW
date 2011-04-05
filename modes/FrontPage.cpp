@@ -50,7 +50,7 @@ void FrontPage::setupWidgets() {
 
     QPushButton *button;
     QList<Morse::TrainingMode> leftContents, rightContents;
-    leftContents << Morse::TRAIN << Morse::SPEEDTRAIN << Morse::WORDS << Morse::GROUPS;
+    leftContents << Morse::TRAIN << Morse::SPEEDTRAIN << Morse::WORDS << Morse::GROUPS << Morse::KEYING;
     rightContents << Morse::PLAY << Morse::READ << Morse::WORDGAME << Morse::GROUPGAME;
 
     foreach(Morse::TrainingMode themode, leftContents) {

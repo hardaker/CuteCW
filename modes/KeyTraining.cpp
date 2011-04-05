@@ -37,6 +37,11 @@ void KeyTraining::handleKeyPress(QChar letterPressed)
     // XXX: recond the timing
 }
 
+void KeyTraining::handleKeyRelease(QChar letterPressed)
+{
+    // XXX: recond the timing
+}
+
 void KeyTraining::play()
 {
     // pick new keying sequence, and display it

@@ -40,7 +40,8 @@ public slots:
     // m_morse->createTones
     virtual void switchToMode();      // you can install mode widgets into m_ui->forModes
 
-    virtual void handleKeyPress(QChar letterPressed); // by default does nothing
+    virtual void handleKeyPress(QChar letterPressed);
+    virtual void handleKeyRelease(QChar letterPressed);
     //virtual void switchFromMode();
 
     virtual void play();                  // called when Play is pressed
