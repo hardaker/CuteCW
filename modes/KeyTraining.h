@@ -51,6 +51,11 @@ public slots:
     // virtual void saveSettings(QSettings &settings);   // save any mode specific data
 
 protected:
+
+private:
+    QTime      m_startTime;
+    QList<int> m_keyTimes;
+    int        m_required, m_keyCount;
 };
 
 #endif // KEYTRAINING_H
