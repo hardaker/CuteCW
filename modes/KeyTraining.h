@@ -23,21 +23,22 @@ public:
     KeyTraining(Morse *morse, Ui::MainWindow *ui);
 
     // should return a global name and help text for the mode:
-    virtual QString name() = 0;
-    virtual QString helpText() = 0;
+    virtual QString name();
+    virtual QString helpText();
     // virtual QString icon();
 
     // For implementing preference screens.
     // getPrefsLayout should return a pointer to a HBox or VBox layout
     // accept/reject prefs should handle an 'ok' or 'cancel' button if needed
-    virtual QBoxLayout *getPrefsLayout();
-    virtual void acceptPrefs();
-    virtual void rejectPrefs();
+
+    // virtual QBoxLayout *getPrefsLayout();
+    // virtual void acceptPrefs();
+    // virtual void rejectPrefs();
 
 public slots:
     //virtual void modeMenus();             // by default does nothing; call menu() to get a mode specific menu
     // m_morse->createTones
-    virtual void switchToMode() = 0;      // you can install mode widgets into m_ui->forModes
+    virtual void switchToMode();      // you can install mode widgets into m_ui->forModes
 
     virtual void handleKeyPress(QChar letterPressed); // by default does nothing
     //virtual void switchFromMode();

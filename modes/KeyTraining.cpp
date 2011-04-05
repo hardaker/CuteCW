@@ -17,3 +17,35 @@ KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
 
 }
 
+QString KeyTraining::name()
+{
+    return tr("KeyTraining");
+}
+
+QString KeyTraining::helpText()
+{
+    return tr("this is for practing keying.");
+}
+
+void KeyTraining::switchToMode()
+{
+    // XXX: setup layout
+}
+
+void KeyTraining::handleKeyPress(QChar letterPressed)
+{
+    // XXX: recond the timing
+}
+
+void KeyTraining::play()
+{
+    // pick new keying sequence, and display it
+}
+
+void KeyTraining::stop()
+{
+    // err...  nothing?
+}
+
+
+
