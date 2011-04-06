@@ -1,6 +1,7 @@
 #include "KeyTimingDisplay.h"
 
 #include <QtGui/QPainter>
+#include <QtGui/QPolygon>
 #include <qdebug.h>
 
 KeyTimingDisplay::KeyTimingDisplay(QWidget *parent) :
@@ -15,7 +16,7 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
 
     int minx = 10, miny = 0, maxx = width() - 10, maxy = height();
     int widgetWidth = maxx - minx, widgetHeight = height();
-    int lineHeight = 10;
+    int lineHeight = 10, spacingHeight = widgetHeight/4;
 
     painter.setBrush(Qt::black);
     painter.drawRect(0, 0, width(), height());
@@ -43,17 +44,24 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
 
             // draw the box that was actually keyed
             keyedSpot++;
-            painter.drawRect(minx + (widgetWidth * *keyedStartingSpot)/biggestTime,          3*lineHeight,
+            painter.drawRect(minx + (widgetWidth * *keyedStartingSpot)/biggestTime,          lineHeight * 2 + spacingHeight,
                              (widgetWidth * (*keyedSpot - *keyedStartingSpot))/biggestTime,  lineHeight);
 
             // draw a red line from the ends of the boxes to each other
-            painter.setPen(Qt::red);
-            painter.drawLine(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight*2,
-                             minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight*3);
+            painter.setPen(Qt::darkRed);
+            painter.setBrush(Qt::darkRed);
+            QPolygon polygone;
+            polygone << QPoint(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight * 2)
+                     << QPoint(minx + (widgetWidth * *spot)/biggestTime,              lineHeight * 2)
+                     << QPoint(minx + (widgetWidth * *keyedSpot)/biggestTime,         lineHeight * 2 + spacingHeight)
+                     << QPoint(minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight * 2 + spacingHeight);
+            painter.drawPolygon(polygone);
 
-            painter.setPen(Qt::red);
-            painter.drawLine(minx + (widgetWidth * *spot)/biggestTime,      lineHeight*2,
-                             minx + (widgetWidth * *keyedSpot)/biggestTime, lineHeight*3);
+            //painter.drawLine(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight*2,
+            //                 minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight*3);
+
+            //painter.drawLine(minx + (widgetWidth * *spot)/biggestTime,      lineHeight*2,
+            //                 minx + (widgetWidth * *keyedSpot)/biggestTime, lineHeight*3);
 
 
             spot++;
