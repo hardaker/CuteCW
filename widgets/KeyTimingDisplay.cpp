@@ -20,5 +20,13 @@ void KeyTimingDisplay::setTimings(QList<int> keyedTimings, QList<int> requiredTi
 {
     m_keyedTimings = keyedTimings;
     m_requiredTimings = requiredTimings;
+    update();
+}
+
+void KeyTimingDisplay::clear()
+{
+    m_keyedTimings.clear();
+    m_requiredTimings.clear();
+    update();
 }
 

@@ -11,6 +11,7 @@ public:
     void paintEvent(QPaintEvent *);
 
     void setTimings(QList<int> keyedTimings, QList<int> requiredTimings);
+    void clear();
 
 signals:
 
