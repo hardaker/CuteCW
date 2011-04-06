@@ -60,11 +60,17 @@ void KeyTraining::handleKeyRelease(QChar letterPressed)
 
 void KeyTraining::play()
 {
-    m_ui->letter->setText("foo");
+    selectKeySequence();
+    m_ui->letter->setText(m_keySequence);
     m_required = 4;
     m_keyCount = 0;
     m_keyTimes.clear();
     // pick new keying sequence, and display it
+}
+
+void KeyTraining::selectKeySequence()
+{
+    m_keySequence = completeCharacterSet[qrand() % completeCharacterSet.length()];
 }
 
 void KeyTraining::stop()

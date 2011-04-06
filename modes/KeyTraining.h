@@ -35,6 +35,8 @@ public:
     // virtual void acceptPrefs();
     // virtual void rejectPrefs();
 
+    void selectKeySequence();
+
 public slots:
     //virtual void modeMenus();             // by default does nothing; call menu() to get a mode specific menu
     // m_morse->createTones
@@ -56,6 +58,7 @@ private:
     QTime      m_startTime;
     QList<int> m_keyTimes;
     int        m_required, m_keyCount;
+    QString    m_keySequence;
 };
 
 #endif // KEYTRAINING_H
