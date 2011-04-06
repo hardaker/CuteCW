@@ -13,6 +13,7 @@
 #include "MorseMode.h"
 #include "ui_MainWindow.h"
 #include "MorseStat.h"
+#include "widgets/KeyTimingDisplay.h"
 
 class KeyTraining : public MorseMode
 {
@@ -61,6 +62,7 @@ private:
     QList<int> m_requiredTimes;
     int        m_required, m_keyCount;
     QString    m_keySequence;
+    KeyTimingDisplay *m_timingDisplay;
 };
 
 #endif // KEYTRAINING_H

@@ -32,6 +32,8 @@ void KeyTraining::switchToMode()
     m_ui->letter->show();
     m_ui->helpBar->setText("<font color=\"green\">Key the letters using any keyborad key as a straight key.</font>");
     m_ui->play->show();
+
+    m_ui->forModes->addWidget(m_timingDisplay = new KeyTimingDisplay());
 }
 
 void KeyTraining::handleKeyPress(QChar letterPressed)
