@@ -66,6 +66,11 @@ private:
     int        m_required, m_keyCount;
     QString    m_keySequence;
     KeyTimingDisplay *m_timingDisplay;
+
+    QLabel    *m_ditStats;
+    QLabel    *m_dahStats;
+    QLabel    *m_pauseStats;
+    QLabel    *m_letterPauseStats;
 };
 
 #endif // KEYTRAINING_H

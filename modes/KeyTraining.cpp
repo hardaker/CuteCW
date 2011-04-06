@@ -9,6 +9,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QScrollArea>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QGridLayout>
 #include <qdebug.h>
 
 KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
@@ -33,7 +35,23 @@ void KeyTraining::switchToMode()
     m_ui->helpBar->setText("<font color=\"green\">Key the letters using any keyborad key as a straight key.</font>");
     m_ui->play->show();
 
-    m_ui->forModes->addWidget(m_timingDisplay = new KeyTimingDisplay());
+    QVBoxLayout *vbox = new QVBoxLayout();
+    m_ui->forModes->addLayout(vbox);
+
+    vbox->addWidget(m_timingDisplay = new KeyTimingDisplay());
+
+    QGridLayout *grid = new QGridLayout();
+    grid->addWidget(new QLabel("Dit Accuracy:"), 0, 0);
+    grid->addWidget(new QLabel("Dah Accuracy:"), 0, 2);
+    grid->addWidget(new QLabel("Pause Accuracy:"), 1, 0);
+    grid->addWidget(new QLabel("Letter Spacing:"), 1, 2);
+
+    grid->addWidget(m_ditStats = new QLabel(""), 0, 1);
+    grid->addWidget(m_dahStats = new QLabel(""), 0, 3);
+    grid->addWidget(m_pauseStats = new QLabel(""), 1, 1);
+    grid->addWidget(m_letterPauseStats = new QLabel(""), 1, 3);
+
+    vbox->addLayout(grid);
 }
 
 void KeyTraining::handleKeyPress(QChar letterPressed)
