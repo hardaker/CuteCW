@@ -24,23 +24,23 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
     if (m_keyedTimings.length() > 0) {
         int biggestTime = qMax(m_keyedTimings.last(), m_requiredTimings.last());
 
-        QList<int>::const_iterator spot = m_requiredTimings.begin();
-        QList<int>::const_iterator end = m_requiredTimings.end();
+        QList<int>::const_iterator requiredSpot = m_requiredTimings.begin();
+        QList<int>::const_iterator requiredEnd = m_requiredTimings.end();
 
         QList<int>::const_iterator keyedSpot = m_keyedTimings.begin();
         QList<int>::const_iterator keyedEnd = m_keyedTimings.end();
 
-        while(spot != end) {
-            QList<int>::const_iterator startingSpot = spot;
+        while(requiredSpot != requiredEnd) {
+            QList<int>::const_iterator startingSpot = requiredSpot;
             QList<int>::const_iterator keyedStartingSpot = keyedSpot;
 
             painter.setBrush(Qt::yellow);
             painter.setPen(Qt::darkYellow);
 
             // draw the required timing box that is the perfect keying
-            spot++;
+            requiredSpot++;
             painter.drawRect(minx + (widgetWidth * *startingSpot)/biggestTime,    lineHeight,
-                             (widgetWidth * (*spot - *startingSpot))/biggestTime, lineHeight);
+                             (widgetWidth * (*requiredSpot - *startingSpot))/biggestTime, lineHeight);
 
             // draw the box that was actually keyed
             keyedSpot++;
@@ -52,7 +52,7 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
             painter.setBrush(Qt::darkRed);
             QPolygon polygone;
             polygone << QPoint(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight * 2)
-                     << QPoint(minx + (widgetWidth * *spot)/biggestTime,              lineHeight * 2)
+                     << QPoint(minx + (widgetWidth * *requiredSpot)/biggestTime,              lineHeight * 2)
                      << QPoint(minx + (widgetWidth * *keyedSpot)/biggestTime,         lineHeight * 2 + spacingHeight)
                      << QPoint(minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight * 2 + spacingHeight);
             painter.drawPolygon(polygone);
@@ -64,7 +64,7 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
             //                 minx + (widgetWidth * *keyedSpot)/biggestTime, lineHeight*3);
 
 
-            spot++;
+            requiredSpot++;
             keyedSpot++;
         }
     }
