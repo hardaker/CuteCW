@@ -23,7 +23,6 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
     if (m_keyedTimings.length() > 0) {
         int biggestTime = qMax(m_keyedTimings.last(), m_requiredTimings.last());
 
-        painter.setBrush(Qt::yellow);
         QList<int>::const_iterator spot = m_requiredTimings.begin();
         QList<int>::const_iterator end = m_requiredTimings.end();
 
@@ -34,16 +33,30 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
             QList<int>::const_iterator startingSpot = spot;
             QList<int>::const_iterator keyedStartingSpot = keyedSpot;
 
+            painter.setBrush(Qt::yellow);
+            painter.setPen(Qt::darkYellow);
+
             // draw the required timing box that is the perfect keying
             spot++;
             painter.drawRect(minx + (widgetWidth * *startingSpot)/biggestTime,    lineHeight,
                              (widgetWidth * (*spot - *startingSpot))/biggestTime, lineHeight);
-            spot++;
 
             // draw the box that was actually keyed
             keyedSpot++;
             painter.drawRect(minx + (widgetWidth * *keyedStartingSpot)/biggestTime,          3*lineHeight,
                              (widgetWidth * (*keyedSpot - *keyedStartingSpot))/biggestTime,  lineHeight);
+
+            // draw a red line from the ends of the boxes to each other
+            painter.setPen(Qt::red);
+            painter.drawLine(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight*2,
+                             minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight*3);
+
+            painter.setPen(Qt::red);
+            painter.drawLine(minx + (widgetWidth * *spot)/biggestTime,      lineHeight*2,
+                             minx + (widgetWidth * *keyedSpot)/biggestTime, lineHeight*3);
+
+
+            spot++;
             keyedSpot++;
         }
     }
