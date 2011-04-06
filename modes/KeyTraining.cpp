@@ -102,6 +102,9 @@ void KeyTraining::selectKeySequence()
                 m_requiredTimes.push_back(currentMS);  // save this as the end spot
                 currentMS += m_morse->pauseSecsMS();   // add in the pause till the next letter
             }
+
+            // at the end of the letter, change the sound pause to a letter pause
+            currentMS += m_morse->letterPauseSecsMS() - m_morse->pauseSecsMS();
         } else {
             // we ended with a pause segment that needs to change to a space
             currentMS -= m_morse->pauseSecsMS();
