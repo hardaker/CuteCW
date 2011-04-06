@@ -35,6 +35,8 @@ public:
 
 public:
     enum RunningMode { RUNNING = 0, PAUSED = 1 };
+    enum WPMWidgets { WPMRATE = 1, LETTERRATE = 2, WORDRATE = 4,
+                      ALLRATE = WPMRATE | LETTERRATE | WORDRATE };
 
     MorseMode(Morse *morse, Ui::MainWindow *ui);
     Morse *morseParent();
@@ -46,7 +48,7 @@ public:
     float msToPauseWPMF(float ms);
 
     void setupKeyWidgets(const QString &sequence, QBoxLayout *inside = 0);
-    void setupWPMWidgets(QBoxLayout *to = 0);
+    void setupWPMWidgets(QBoxLayout *to = 0, WPMWidgets widgets = ALLRATE);
 
     // sets up the sequence: and related bottom bars
     virtual void setupSequenceLayout(QVBoxLayout *parentLayout = 0,

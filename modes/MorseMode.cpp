@@ -291,55 +291,64 @@ void MorseMode::setupKeyWidgets(const QString &sequence, QBoxLayout *inside) {
             this, SLOT(handleKeyPress(const QString &)));
 }
 
-void MorseMode::setupWPMWidgets(QBoxLayout *to) {
+void MorseMode::setupWPMWidgets(QBoxLayout *to, WPMWidgets whichWidgets) {
     if (!to)
         to = m_ui->forModes;
 
     QVBoxLayout *vbox = new QVBoxLayout();
     to->addLayout(vbox);
 
-    QHBoxLayout *hbox = new QHBoxLayout();
-    vbox->addLayout(hbox);
+    QLabel *label;
+    QSpinBox *spinbox;
+    QHBoxLayout *hbox;
 
-    QLabel *label = new QLabel(tr("WPM:"));
-    hbox->addWidget(label);
+    if (whichWidgets & WPMRATE) {
+        hbox = new QHBoxLayout();
+        vbox->addLayout(hbox);
 
-    QSpinBox *spinbox = new QSpinBox();
-    spinbox->setMaximum(100);
-    spinbox->setMinimum(1);
-    spinbox->setValue(m_WPM);
-    hbox->addWidget(spinbox);
-    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeWPM(int)));
-    changeWPM(m_WPM);
+        label = new QLabel(tr("WPM:"));
+        hbox->addWidget(label);
 
-    hbox = new QHBoxLayout();
-    vbox->addLayout(hbox);
+        spinbox = new QSpinBox();
+        spinbox->setMaximum(100);
+        spinbox->setMinimum(1);
+        spinbox->setValue(m_WPM);
+        hbox->addWidget(spinbox);
+        connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeWPM(int)));
+        changeWPM(m_WPM);
+    }
 
-    label = new QLabel(tr("Letter Spacing WPM:"));
-    hbox->addWidget(label);
+    if (whichWidgets & LETTERRATE) {
+        hbox = new QHBoxLayout();
+        vbox->addLayout(hbox);
 
-    spinbox = new QSpinBox();
-    spinbox->setMaximum(100);
-    spinbox->setMinimum(1);
-    spinbox->setValue(m_letterSpaceWPM);
-    hbox->addWidget(spinbox);
-    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeLetterSpaceWPM(int)));
-    changeLetterSpaceWPM(m_letterSpaceWPM);
+        label = new QLabel(tr("Letter Spacing WPM:"));
+        hbox->addWidget(label);
 
-    hbox = new QHBoxLayout();
-    vbox->addLayout(hbox);
+        spinbox = new QSpinBox();
+        spinbox->setMaximum(100);
+        spinbox->setMinimum(1);
+        spinbox->setValue(m_letterSpaceWPM);
+        hbox->addWidget(spinbox);
+        connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeLetterSpaceWPM(int)));
+        changeLetterSpaceWPM(m_letterSpaceWPM);
+    }
 
-    label = new QLabel(tr("Word Spacing WPM:"));
-    hbox->addWidget(label);
+    if (whichWidgets & WORDRATE) {
+        hbox = new QHBoxLayout();
+        vbox->addLayout(hbox);
 
-    spinbox = new QSpinBox();
-    spinbox->setMaximum(100);
-    spinbox->setMinimum(1);
-    spinbox->setValue(m_spaceWPM);
-    hbox->addWidget(spinbox);
-    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeSpaceWPM(int)));
-    changeSpaceWPM(m_spaceWPM);
+        label = new QLabel(tr("Word Spacing WPM:"));
+        hbox->addWidget(label);
 
+        spinbox = new QSpinBox();
+        spinbox->setMaximum(100);
+        spinbox->setMinimum(1);
+        spinbox->setValue(m_spaceWPM);
+        hbox->addWidget(spinbox);
+        connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(changeSpaceWPM(int)));
+        changeSpaceWPM(m_spaceWPM);
+    }
 }
 
 void MorseMode::changeWPM(int wpm) {
