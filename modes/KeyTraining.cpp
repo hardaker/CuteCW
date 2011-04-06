@@ -39,6 +39,7 @@ void KeyTraining::switchToMode()
     m_ui->forModes->addLayout(vbox);
 
     vbox->addWidget(m_timingDisplay = new KeyTimingDisplay());
+    vbox->setStretchFactor(m_timingDisplay, 2);
 
     QGridLayout *grid = new QGridLayout();
     grid->addWidget(new QLabel("Dit Accuracy:"), 0, 0);
@@ -77,10 +78,6 @@ void KeyTraining::handleKeyPress(QChar letterPressed)
         m_timingDisplay->setTimings(m_keyedTimes, m_requiredTimes);
         calculateStats();
     }
-
-    qDebug() << m_keyedTimes;
-
-    // XXX: recond the timing
 }
 
 void KeyTraining::handleKeyRelease(QChar letterPressed)
