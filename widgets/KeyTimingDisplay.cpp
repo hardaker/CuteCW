@@ -16,7 +16,7 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
 
     int minx = 100, miny = 0, maxx = width() - 10, maxy = height();
     int widgetWidth = maxx - minx, widgetHeight = height();
-    int lineHeight = 15, spacingHeight = widgetHeight/4;
+    int lineHeight = 15, spacingHeight = widgetHeight - lineHeight * 4;
 
     painter.setBrush(Qt::black);
     painter.drawRect(0, 0, width(), height());
