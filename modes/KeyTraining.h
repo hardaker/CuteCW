@@ -9,7 +9,7 @@
 #include <QtGui/QBoxLayout>
 #include <qaudio.h>
 
-// #include "Morse.h"
+#include "Morse.h"
 #include "MorseMode.h"
 #include "ui_MainWindow.h"
 #include "MorseStat.h"
@@ -36,6 +36,7 @@ public:
     // virtual void rejectPrefs();
 
     void selectKeySequence();
+    int  ditDahToMS(Morse::ditdah it);
 
 public slots:
     //virtual void modeMenus();             // by default does nothing; call menu() to get a mode specific menu
@@ -56,7 +57,8 @@ protected:
 
 private:
     QTime      m_startTime;
-    QList<int> m_keyTimes;
+    QList<int> m_keyedTimes;
+    QList<int> m_requiredTimes;
     int        m_required, m_keyCount;
     QString    m_keySequence;
 };
