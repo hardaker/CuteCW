@@ -39,6 +39,8 @@ public:
     void selectKeySequence();
     int  ditDahToMS(Morse::ditdah it);
 
+    virtual bool enterPressed();
+
 public slots:
     //virtual void modeMenus();             // by default does nothing; call menu() to get a mode specific menu
     // m_morse->createTones

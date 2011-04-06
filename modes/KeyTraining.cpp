@@ -38,6 +38,11 @@ void KeyTraining::switchToMode()
 
 void KeyTraining::handleKeyPress(QChar letterPressed)
 {
+    if (letterPressed == '\r') {
+        enterPressed();
+        return;
+    }
+
     if (m_keyCount >= m_required)
         return;
 
@@ -71,6 +76,11 @@ void KeyTraining::play()
     m_keyedTimes.clear();
     m_timingDisplay->clear();
     // pick new keying sequence, and display it
+}
+
+bool KeyTraining::enterPressed() {
+    play();
+    return true;
 }
 
 void KeyTraining::selectKeySequence()
