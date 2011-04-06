@@ -50,6 +50,9 @@ void KeyTraining::handleKeyPress(QChar letterPressed)
 
     m_keyCount++;
 
+    if (m_keyCount == m_required) // update the widgets based on the results
+        m_timingDisplay->setTimings(m_keyedTimes, m_requiredTimes);
+
     qDebug() << m_keyedTimes;
 
     // XXX: recond the timing
@@ -66,6 +69,7 @@ void KeyTraining::play()
     m_ui->letter->setText(m_keySequence);
     m_keyCount = 0;
     m_keyedTimes.clear();
+    m_timingDisplay->clear();
     // pick new keying sequence, and display it
 }
 

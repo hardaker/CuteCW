@@ -11,7 +11,10 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.save();
-    painter.setPen(Qt::red);
+    if (m_keyedTimings.count() > 0)
+        painter.setPen(Qt::red);
+    else
+        painter.setPen(Qt::blue);
     painter.drawRect(5,5,width()-10,height()-10);
     painter.restore();
 }
