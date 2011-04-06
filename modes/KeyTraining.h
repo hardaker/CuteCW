@@ -54,6 +54,8 @@ public slots:
     virtual void play();                  // called when Play is pressed
     virtual void stop();                  // called when Pause is pressed
 
+    void changeNumberOfLetters(int value);
+
     // virtual void loadSettings(QSettings &settings);   // load any mode specific data
     // virtual void saveSettings(QSettings &settings);   // save any mode specific data
 

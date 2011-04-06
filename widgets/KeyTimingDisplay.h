@@ -9,6 +9,7 @@ class KeyTimingDisplay : public QWidget
 public:
     explicit KeyTimingDisplay(QWidget *parent = 0);
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
 
     void setTimings(QList<int> keyedTimings, QList<int> requiredTimings);
     void clear();

@@ -29,6 +29,11 @@ QString KeyTraining::helpText()
     return tr("this is for practing keying.");
 }
 
+void KeyTraining::changeNumberOfLetters(int value) {
+    m_letterCount = value;
+    selectKeySequence();
+}
+
 void KeyTraining::switchToMode()
 {
     m_ui->letter->show();
@@ -38,7 +43,18 @@ void KeyTraining::switchToMode()
     QVBoxLayout *vbox = new QVBoxLayout();
     m_ui->forModes->addLayout(vbox);
 
-    setupWPMWidgets(vbox, WPMRATE);
+    QHBoxLayout *hbox = new QHBoxLayout(), *leftBox = new QHBoxLayout();
+    hbox->addLayout(leftBox);
+    vbox->addLayout(hbox);
+
+    leftBox->addWidget(new QLabel(tr("Number of Letters:")));
+    QSpinBox *lettersBox = new QSpinBox();
+    lettersBox->setValue(m_letterCount);
+    lettersBox->setRange(1,10);
+    connect(lettersBox, SIGNAL(valueChanged(int)), this, SLOT(changeNumberOfLetters(int)));
+    leftBox->addWidget(lettersBox);
+
+    setupWPMWidgets(hbox, WPMRATE);
 
     vbox->addWidget(m_timingDisplay = new KeyTimingDisplay());
     vbox->setStretchFactor(m_timingDisplay, 2);
@@ -55,6 +71,8 @@ void KeyTraining::switchToMode()
     grid->addWidget(m_letterPauseStats = new QLabel(""), 1, 3);
 
     vbox->addLayout(grid);
+
+    selectKeySequence();
 }
 
 void KeyTraining::handleKeyPress(QChar letterPressed)
@@ -90,7 +108,6 @@ void KeyTraining::handleKeyRelease(QChar letterPressed)
 void KeyTraining::play()
 {
     selectKeySequence();
-    m_ui->letter->setText(m_keySequence);
     m_keyCount = 0;
     m_keyedTimes.clear();
     m_timingDisplay->clear();
@@ -135,6 +152,7 @@ void KeyTraining::selectKeySequence()
     }
 
     m_required = m_requiredTimes.count();
+    m_ui->letter->setText(m_keySequence);
 }
 
 int KeyTraining::ditDahToMS(Morse::ditdah it) {

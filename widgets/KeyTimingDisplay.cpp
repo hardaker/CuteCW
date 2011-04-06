@@ -90,3 +90,8 @@ void KeyTimingDisplay::clear()
     update();
 }
 
+void KeyTimingDisplay::mousePressEvent(QMouseEvent *)
+{
+    parentWidget()->setFocus();
+}
+
