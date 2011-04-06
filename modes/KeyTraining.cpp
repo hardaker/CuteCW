@@ -12,7 +12,7 @@
 #include <qdebug.h>
 
 KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
-    : MorseMode(morse, ui), m_required(0), m_keyCount(0)
+    : MorseMode(morse, ui), m_letterCount(3), m_required(0), m_keyCount(0)
 {
 
 }
@@ -89,7 +89,10 @@ void KeyTraining::selectKeySequence()
     m_requiredTimes.clear();
 
     // select the sequence we want them to key
-    m_keySequence = completeCharacterSet[qrand() % completeCharacterSet.length()];
+    m_keySequence = "";
+    for(int i = 0; i < m_letterCount; i++) {
+        m_keySequence += completeCharacterSet[qrand() % completeCharacterSet.length()];
+    }
 
     // translate the sequence into a list of timings (by MS)
     foreach(QChar letter, m_keySequence) {

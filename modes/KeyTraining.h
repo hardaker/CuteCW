@@ -59,6 +59,7 @@ public slots:
 protected:
 
 private:
+    int        m_letterCount;
     QTime      m_startTime;
     QList<int> m_keyedTimes;
     QList<int> m_requiredTimes;
