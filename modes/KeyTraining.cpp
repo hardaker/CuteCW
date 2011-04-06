@@ -38,6 +38,8 @@ void KeyTraining::switchToMode()
     QVBoxLayout *vbox = new QVBoxLayout();
     m_ui->forModes->addLayout(vbox);
 
+    setupWPMWidgets(vbox, WPMRATE);
+
     vbox->addWidget(m_timingDisplay = new KeyTimingDisplay());
     vbox->setStretchFactor(m_timingDisplay, 2);
 
