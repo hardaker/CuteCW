@@ -210,7 +210,7 @@ void TrainingMode::handleKeyPress(QChar letterPressed) {
     // calculate the time since the keying ended to the time the user hit a key
     // XXX: we need to store a list of times, not just a single time
 
-    int msElapsed = lastTime.msecsTo(now) - m_morse->ditSecs(); // subtract off blank-after time
+    int msElapsed = lastTime.msecsTo(now) - m_morse->ditSecsF(); // subtract off blank-after time
     if (msElapsed <= 0)
         msElapsed = 1;
     qDebug() << "Training response: elapsed " << msElapsed << "ms (" << msToPauseWPM(msElapsed) << " WPM)";

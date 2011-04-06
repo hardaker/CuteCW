@@ -444,7 +444,7 @@ Morse::space()
 }
 
 float
-Morse::ditSecs()
+Morse::ditSecsF()
 {
     return m_ditSecs;
 }
@@ -603,22 +603,22 @@ void Morse::setTone(int tone)
     m_tone = tone;
 }
 
-float Morse::dahSecs()
+float Morse::dahSecsF()
 {
     return m_dahSecs;
 }
 
-float Morse::pauseSecs()
+float Morse::pauseSecsF()
 {
     return m_pauseSecs;
 }
 
-float Morse::letterPauseSecs()
+float Morse::letterPauseSecsF()
 {
     return m_letterPauseSecs;
 }
 
-float Morse::spaceSecs()
+float Morse::spaceSecsF()
 {
     return m_spaceSecs;
 }

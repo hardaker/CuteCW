@@ -114,7 +114,7 @@ int MorseMode::msToPauseWPM(float ms) {
 
 float MorseMode::msToPauseWPMF(float ms) {
     // 3 dits in length is the pause between letter spacing
-    float pauseLength = 3.0 * m_morse->ditSecs();
+    float pauseLength = 3.0 * m_morse->ditSecsF();
     // calculate the WPM based on the space it took for the letter to be identified during the pause
     // qDebug() << "pause length: " << pauseLength << ", recorded time: " << ms << ", % = " << (pauseLength * 1000.0 * 100.0 / ms );
     return float(m_morse->currentWPMGoal()) * pauseLength * 1000.0 / ms;

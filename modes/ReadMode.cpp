@@ -181,7 +181,7 @@ void ReadMode::audioStopped()
     }
 
     if (!m_readSpot.atEnd()) {
-        QTimer::singleShot(int(m_morse->spaceSecs() * 1000.0), this, SLOT(readWordUnderCursor()));
+        QTimer::singleShot(int(m_morse->spaceSecsF() * 1000.0), this, SLOT(readWordUnderCursor()));
     } else {
         m_textEdit->setTextCursor(m_readSpot);
         setRunningMode(PAUSED);
