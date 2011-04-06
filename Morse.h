@@ -67,6 +67,8 @@ public:
     QTime playIt(QChar c, bool addLeadInPause = true);
     QTime sequenceTime();
 
+    const QList<ditdah> *getLetterCode(QChar letter) const;
+
     MorseStat *getStat(const QChar &key);
 
     void handleKeyResponse(QChar letterPressed);

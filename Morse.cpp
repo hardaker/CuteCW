@@ -622,3 +622,8 @@ float Morse::spaceSecsF()
 {
     return m_spaceSecs;
 }
+
+const QList<Morse::ditdah> *Morse::getLetterCode(QChar letter) const
+{
+    return code[letter];
+}
