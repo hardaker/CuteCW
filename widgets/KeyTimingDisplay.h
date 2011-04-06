@@ -10,10 +10,15 @@ public:
     explicit KeyTimingDisplay(QWidget *parent = 0);
     void paintEvent(QPaintEvent *);
 
+    void setTimings(QList<int> keyedTimings, QList<int> requiredTimings);
+
 signals:
 
 public slots:
 
+private:
+    QList<int> m_keyedTimings;
+    QList<int> m_requiredTimings;
 };
 
 #endif // KEYTIMINGDISPLAY_H

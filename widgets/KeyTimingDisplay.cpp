@@ -16,3 +16,9 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
     painter.restore();
 }
 
+void KeyTimingDisplay::setTimings(QList<int> keyedTimings, QList<int> requiredTimings)
+{
+    m_keyedTimings = keyedTimings;
+    m_requiredTimings = requiredTimings;
+}
+
