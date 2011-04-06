@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     modes/QModeStart.cpp \
     AboutDialog.cpp \
     modes/FrontPage.cpp \
-    GoalBar.cpp
+    GoalBar.cpp \
+    widgets/KeyTimingDisplay.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -70,7 +71,8 @@ HEADERS  += MainWindow.h \
     modes/QModeStart.h \
     AboutDialog.h \
     modes/FrontPage.h \
-    GoalBar.h
+    GoalBar.h \
+    widgets/KeyTimingDisplay.h
 
 FORMS    += AboutDialog.ui
 
