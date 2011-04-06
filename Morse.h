@@ -86,6 +86,12 @@ public:
     float letterPauseSecsF();
     float spaceSecsF();
 
+    int   ditSecsMS();
+    int   dahSecsMS();
+    int   pauseSecsMS();
+    int   letterPauseSecsMS();
+    int   spaceSecsMS();
+
     int currentWPMGoal();
     int currentWPMAccept();
     int tone();

@@ -627,3 +627,28 @@ const QList<Morse::ditdah> *Morse::getLetterCode(QChar letter) const
 {
     return code[letter];
 }
+
+int Morse::ditSecsMS()
+{
+    return int(m_ditSecs * 1000.0);
+}
+
+int Morse::dahSecsMS()
+{
+    return int(m_dahSecs * 1000.0);
+}
+
+int Morse::pauseSecsMS()
+{
+    return int(m_pauseSecs * 1000.0);
+}
+
+int Morse::letterPauseSecsMS()
+{
+    return int(m_letterPauseSecs * 1000.0);
+}
+
+int Morse::spaceSecsMS()
+{
+    return int(m_spaceSecs * 1000.0);
+}
