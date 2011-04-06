@@ -83,13 +83,19 @@ void KeyTraining::selectKeySequence()
 
     // translate the sequence into a list of timings (by MS)
     foreach(QChar letter, m_keySequence) {
-        const QList<Morse::ditdah> *code = m_morse->getLetterCode(letter);
-        // XXX: treat spaces specially (pop the last pause, add a longer one)
-        foreach(Morse::ditdah segment, *code) {
-            m_requiredTimes.push_back(currentMS);  // save the current spot as the beginning
-            currentMS += ditDahToMS(segment);      // mark the end as the next spot
-            m_requiredTimes.push_back(currentMS);  // save this as the end spot
-            currentMS += m_morse->pauseSecsMS();   // add in the pause till the next letter
+        if (letter != ' ') {
+            const QList<Morse::ditdah> *code = m_morse->getLetterCode(letter);
+            // XXX: treat spaces specially (pop the last pause, add a longer one)
+            foreach(Morse::ditdah segment, *code) {
+                m_requiredTimes.push_back(currentMS);  // save the current spot as the beginning
+                currentMS += ditDahToMS(segment);      // mark the end as the next spot
+                m_requiredTimes.push_back(currentMS);  // save this as the end spot
+                currentMS += m_morse->pauseSecsMS();   // add in the pause till the next letter
+            }
+        } else {
+            // we ended with a pause segment that needs to change to a space
+            currentMS -= m_morse->pauseSecsMS();
+            currentMS += m_morse->spaceSecsMS();
         }
     }
 
