@@ -31,7 +31,7 @@ void TrainingMode::setupSequences() {
     m_sequences.append("auv4");
     m_sequences.append("ndb6");
     m_sequences.append("awj1");
-    m_sequences.append("abcdefghijklmnopqrstuvwxyz1234567890.,/=?");
+    m_sequences.append(completeCharacterSet);
 
     // Koch sequences
     m_sequenceSignalMapper = new QSignalMapper();

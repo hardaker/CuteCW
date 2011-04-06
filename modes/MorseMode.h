@@ -13,6 +13,7 @@
 #include "ui_MainWindow.h"
 #include "MorseStat.h"
 
+// global constants
 #if (defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES))
 #define SMALL_DEVICE 1
 #endif
@@ -22,6 +23,8 @@
 #undef RAND_MAX
 #define RAND_MAX 0x7FFF
 #endif
+
+const QString completeCharacterSet = "abcdefghijklmnopqrstuvwxyz1234567890.,/=?";
 
 class Morse;
 
