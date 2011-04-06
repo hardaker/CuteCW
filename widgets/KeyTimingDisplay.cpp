@@ -14,12 +14,16 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.save();
 
-    int minx = 10, miny = 0, maxx = width() - 10, maxy = height();
+    int minx = 100, miny = 0, maxx = width() - 10, maxy = height();
     int widgetWidth = maxx - minx, widgetHeight = height();
-    int lineHeight = 10, spacingHeight = widgetHeight/4;
+    int lineHeight = 15, spacingHeight = widgetHeight/4;
 
     painter.setBrush(Qt::black);
     painter.drawRect(0, 0, width(), height());
+
+    painter.setPen(Qt::yellow);
+    painter.drawText(QRect(0, lineHeight, 100, lineHeight), "keyed:");
+    painter.drawText(QRect(0, lineHeight*2 + spacingHeight, 100, lineHeight), "expected:");
 
     if (m_keyedTimings.length() > 0) {
         int biggestTime = qMax(m_keyedTimings.last(), m_requiredTimings.last());
