@@ -73,8 +73,10 @@ void KeyTraining::handleKeyPress(QChar letterPressed)
 
     m_keyCount++;
 
-    if (m_keyCount == m_required) // update the widgets based on the results
+    if (m_keyCount == m_required) { // update the widgets based on the results
         m_timingDisplay->setTimings(m_keyedTimes, m_requiredTimes);
+        calculateStats();
+    }
 
     qDebug() << m_keyedTimes;
 
@@ -153,5 +155,67 @@ void KeyTraining::stop()
     // err...  nothing?
 }
 
+void KeyTraining::calculateStats() {
+    int expectedDits = 0, expectedDahs = 0;
+    int keyedDits = 0, keyedDahs = 0;
 
+    QList<int>::const_iterator requiredSpot = m_requiredTimes.begin();
+    QList<int>::const_iterator keyedSpot = m_keyedTimes.begin();
 
+    int startRequired;
+    int startKeyed;
+    int requiredDelta;
+    int keyedDelta;
+
+    // translate the sequence into a list of timings (by MS)
+    foreach(QChar letter, m_keySequence) {
+        if (letter != ' ') {
+            const QList<Morse::ditdah> *code = m_morse->getLetterCode(letter);
+            // XXX: treat spaces specially (pop the last pause, add a longer one)
+            foreach(Morse::ditdah segment, *code) {
+
+                // calculate the lengths of this spot
+                startRequired = *requiredSpot;
+                startKeyed = *keyedSpot;
+                requiredSpot++;
+                keyedSpot++;
+                requiredDelta = *requiredSpot - startRequired;
+                keyedDelta = *keyedSpot - startKeyed;
+
+                switch(segment) {
+                case Morse::DIT:
+                    expectedDits += requiredDelta;
+                    keyedDits += keyedDelta;
+                    break;
+                case Morse::DAH:
+                    expectedDahs += requiredDelta;
+                    keyedDahs += keyedDelta;
+                    break;
+                default:
+                    qWarning() << "uh oh";
+                    exit(98);
+                }
+
+                requiredSpot++;
+                keyedSpot++;
+                // XXX: calculate the pause spacing accuracy too
+            }
+            // XXX: calculate the letter pause accuracy
+        } else {
+            // XXX: calculate the space pausing
+        }
+    }
+
+    // update all the labels
+    if (expectedDits > keyedDits) {
+        m_ditStats->setText(QString().setNum(100*(expectedDits - keyedDits)/expectedDits) + tr("% too fast"));
+    } else {
+        m_ditStats->setText(QString().setNum(100*(keyedDits - expectedDits)/keyedDits) + tr("% too slow"));
+    }
+
+    if (expectedDahs > keyedDahs) {
+        m_dahStats->setText(QString().setNum(100*(expectedDahs - keyedDahs)/expectedDahs) + tr("% too fast"));
+    } else {
+        m_dahStats->setText(QString().setNum(100*(keyedDahs - expectedDahs)/keyedDahs) + tr("% too slow"));
+    }
+}

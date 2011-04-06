@@ -37,6 +37,7 @@ public:
     // virtual void rejectPrefs();
 
     void selectKeySequence();
+    void calculateStats();
     int  ditDahToMS(Morse::ditdah it);
 
     virtual bool enterPressed();
