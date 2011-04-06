@@ -37,24 +37,24 @@ void KeyTimingDisplay::paintEvent(QPaintEvent *event)
             painter.setBrush(Qt::yellow);
             painter.setPen(Qt::darkYellow);
 
-            // draw the required timing box that is the perfect keying
-            requiredSpot++;
-            painter.drawRect(minx + (widgetWidth * *startingSpot)/biggestTime,    lineHeight,
-                             (widgetWidth * (*requiredSpot - *startingSpot))/biggestTime, lineHeight);
-
             // draw the box that was actually keyed
             keyedSpot++;
-            painter.drawRect(minx + (widgetWidth * *keyedStartingSpot)/biggestTime,          lineHeight * 2 + spacingHeight,
+            painter.drawRect(minx + (widgetWidth * *keyedStartingSpot)/biggestTime,          lineHeight,
                              (widgetWidth * (*keyedSpot - *keyedStartingSpot))/biggestTime,  lineHeight);
+
+            // draw the required timing box that is the perfect keying
+            requiredSpot++;
+            painter.drawRect(minx + (widgetWidth * *startingSpot)/biggestTime,    lineHeight * 2 + spacingHeight,
+                             (widgetWidth * (*requiredSpot - *startingSpot))/biggestTime, lineHeight);
 
             // draw a red line from the ends of the boxes to each other
             painter.setPen(Qt::darkRed);
             painter.setBrush(Qt::darkRed);
             QPolygon polygone;
-            polygone << QPoint(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight * 2)
-                     << QPoint(minx + (widgetWidth * *requiredSpot)/biggestTime,              lineHeight * 2)
-                     << QPoint(minx + (widgetWidth * *keyedSpot)/biggestTime,         lineHeight * 2 + spacingHeight)
-                     << QPoint(minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight * 2 + spacingHeight);
+            polygone << QPoint(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight * 2 + spacingHeight)
+                     << QPoint(minx + (widgetWidth * *requiredSpot)/biggestTime,      lineHeight * 2 + spacingHeight)
+                     << QPoint(minx + (widgetWidth * *keyedSpot)/biggestTime,         lineHeight * 2)
+                     << QPoint(minx + (widgetWidth * *keyedStartingSpot)/biggestTime, lineHeight * 2);
             painter.drawPolygon(polygone);
 
             //painter.drawLine(minx + (widgetWidth * *startingSpot)/biggestTime,      lineHeight*2,
