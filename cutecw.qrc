@@ -13,5 +13,6 @@
     <file>icons/64x64/type.png</file>
     <file>icons/64x64/words.png</file>
     <file>icons/64x64/grouping.png</file>
+    <file>icons/64x64/keying.png</file>
 </qresource>
 </RCC>
