@@ -21,12 +21,17 @@ KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
 
 QString KeyTraining::name()
 {
-    return tr("KeyTraining");
+    return tr("Straight Key Training");
 }
 
 QString KeyTraining::helpText()
 {
     return tr("this is for practing keying.");
+}
+
+QString KeyTraining::icon()
+{
+    return QString(":/icons/64x64/keying.png");
 }
 
 void KeyTraining::changeNumberOfLetters(int value) {
