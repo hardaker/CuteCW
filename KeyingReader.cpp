@@ -3,6 +3,9 @@
 
 KeyingReader::KeyingReader()
 {
+    int intCode;
+
+#include "inverse_code.h"
 }
 
 QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingUsed, bool useAll)
@@ -10,7 +13,7 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
     QString results = "";
     const int letterSpaceWeight = 5; // number of dits
     int spaceExpected = -1;
-    int ditLength = -1;
+    int ditLength = 0xffff;
     int usedCount = 0;
     *timingUsed = 0;
     QList<int>::const_iterator end = m_keyedTimes.end();
@@ -22,6 +25,7 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
 
         startAt = spot;
         for(; spot != end; spot++) {
+            usedCount++;
             // starting point is a key-down
             int downKey = *spot;
             spot++;
@@ -36,29 +40,33 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
 
             keyedTimes.push_back(delta);
 
-            // if we don't have a spaceExpected setting, then this was either
-            // the first dit or dah.  Assume a dit for now and thus the space must be at least 5 long.
-            if (spaceExpected == -1)
+            // Always use the smallest value for the dit
+            if (ditLength > delta) {
+                ditLength = delta;
                 spaceExpected = delta * letterSpaceWeight;
+            }
 
             // now calculate the length of the space after this
             if (spot != end) {
+                // XXX: we should really just require an ending space and force a timer usage
                 spot++;
                 int nextSpace = *spot - upKey;
 
                 if (nextSpace > spaceExpected) {
                     // we've gotten to a point where everything from startAt till now is a letter.
-                    analyzeKey(keyedTimes, spaceExpected);
+                    results = results + analyzeKey(keyedTimes, spaceExpected);
+                    *timingUsed = usedCount;
                 }
             }
         }
     }
+    return results;
 }
 
 QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLength) {
-    // we have a complete sequence from first keyDown to last keyUp
+    // we have a complete sequence from first keyDown to last keyUp for a letter
     QList<int>::const_iterator pt1, pt2;
-    QList<Morse::ditdah> ditDahs;
+    int sequence = 0;
 
     int maxv = -1, minv = 0xffff;
     int aveLength;
@@ -71,7 +79,7 @@ QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLeng
         minv = qMin(minv, *length);
     }
 
-    // Ok, if the maxv is at least 2x the minv then they're different lengths in general.
+    // Ok, if the maxv is at least 2x the minv then they're different lengths in general (yay)
     if (maxv > minv*2.0) {
         aveLength = minv + (maxv - minv)/2;
     } else {
@@ -86,11 +94,12 @@ QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLeng
     for(length =  m_keyedLengths.begin() ; length != end; length++) {
         if (*length > aveLength) {
             // it's a DAH
-            ditDahs.push_back(Morse::DAH);
+            sequence = (sequence << 8) | 2;
         } else {
-            ditDahs.push_back(Morse::DAH);
+            sequence = (sequence << 8) | 1;
         }
     }
 
+    return inverseCode[sequence];
     // Now we have the list, we can get the char from the sequence
 }
