@@ -1,5 +1,6 @@
 #include "KeyingReader.h"
 #include "Morse.h"
+#include "qdebug.h"
 
 KeyingReader::KeyingReader()
 {
@@ -100,6 +101,10 @@ QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLeng
         }
     }
 
+    if (!inverseCode.contains(sequence)) {
+        qWarning() << "ERROR: they keyed something invalid: " << sequence;
+        return "";
+    }
     return inverseCode[sequence];
     // Now we have the list, we can get the char from the sequence
 }
