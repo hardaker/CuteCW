@@ -1,21 +1,23 @@
 #include "KeyInvaders.h"
+#include <qdebug.h>
 #include <QtGui/QMenu>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsTextItem>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
-    : MorseMode(parent, main), m_scores("Key Invaders")
+    : MorseMode(parent, main), m_scores("Key Invaders"), invadingTimer(this)
 {
 }
 
 void
 KeyInvaders::advanceFrame() {
-
+    qDebug() << "here";
 }
+
 
 void KeyInvaders::switchToMode() {
     m_ui->helpBar->setText(tr("<font color=\"green\">Key the letters using a st.</font>"));
-    m_ui->changeSequence->hide();
+    m_ui->play->show();
     setupWidgets();
 }
 
@@ -74,4 +76,17 @@ QString KeyInvaders::name()
 QString KeyInvaders::icon()
 {
     return ":/icons/64x64/game.png";
+}
+
+void KeyInvaders::play()
+{
+    qDebug() << "foo";
+    invadingTimer.setInterval(100);
+    connect(&invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));
+    invadingTimer.start();
+}
+
+void KeyInvaders::stop()
+{
+    invadingTimer.stop();
 }
