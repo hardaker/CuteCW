@@ -31,3 +31,9 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->setPen(Qt::red);
     painter->drawText(QRectF(0,0,20,20), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
 }
+
+void Invader::advance() {
+    QPointF myPos = pos();
+    myPos.setY(myPos.y() + 1);
+    setPos(myPos);
+}

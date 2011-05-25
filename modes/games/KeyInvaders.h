@@ -12,6 +12,8 @@
 #include <QtGui/QGraphicsView>
 #include <QtCore/QTimer>
 
+#include "Invader.h"
+
 class KeyInvaders : public MorseMode, MGameMode
 {
     Q_OBJECT
@@ -47,6 +49,8 @@ private:
     QGraphicsView *m_graph;
 
     QTimer invadingTimer;
+
+    QList<Invader *> invaders;
 };
 
 #endif // KEYINVADERS_H

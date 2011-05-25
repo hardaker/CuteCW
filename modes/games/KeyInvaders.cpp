@@ -5,13 +5,17 @@
 #include <QtGui/QGraphicsTextItem>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
-    : MorseMode(parent, main), m_scores("Key Invaders"), invadingTimer(this)
+    : MorseMode(parent, main), m_scores("Key Invaders"), invadingTimer(this),
+      invaders()
 {
 }
 
 void
 KeyInvaders::advanceFrame() {
     qDebug() << "here";
+    foreach (Invader *invader, invaders) {
+        invader->advance();
+    }
 }
 
 
@@ -28,6 +32,8 @@ void KeyInvaders::modeMenus() {
 }
 
 void KeyInvaders::setupWidgets() {
+    Invader *inv;
+
     m_ui->forModes->addWidget(m_graph = new QGraphicsView());
     QGraphicsScene *myScene = new QGraphicsScene(m_graph);
     m_graph->setScene(myScene);
@@ -35,7 +41,8 @@ void KeyInvaders::setupWidgets() {
     myScene->addEllipse(10,10,10,10);
     myScene->addEllipse(10,100,20,10);
     myScene->addEllipse(100,10,20,10);
-    myScene->addItem(new Invader(0, "a"));
+    myScene->addItem(inv = new Invader(0, "a"));
+    invaders.push_back(inv);
     QGraphicsTextItem *item = myScene->addText("foo");
     item->setPos(50,50);
 }
