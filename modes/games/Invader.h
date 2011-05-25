@@ -14,7 +14,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 signals:
 

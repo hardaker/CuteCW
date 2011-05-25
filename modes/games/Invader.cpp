@@ -31,8 +31,3 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->setPen(Qt::red);
     painter->drawText(QRectF(0,0,20,20), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
 }
-
-QVariant Invader::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGraphicsItem::itemChange(change, value);
-}
