@@ -12,7 +12,7 @@ KeyingReader::KeyingReader()
 QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingUsed, bool useAll)
 {
     QString results = "";
-    const int letterSpaceWeight = 5; // number of dits
+    const int letterSpaceWeight = 4; // number of dits
     int spaceExpected = -1;
     int ditLength = 0xffff;
     int usedCount = 0;
@@ -21,17 +21,19 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
     QList<int>::const_iterator spot = m_keyedTimes.begin();
     QList<int>::const_iterator startAt;
 
+    qDebug() << "keyed times: " << m_keyedTimes;
+
     while ((useAll && spot != end) || spot == m_keyedTimes.begin()) {
         QList<int> keyedTimes;
 
         startAt = spot;
-        for(; spot != end; spot++) {
+        for(; spot != end;) {
             usedCount++;
             // starting point is a key-down
             int downKey = *spot;
             spot++;
             if (spot == end)
-                return results;
+                return results; // key pressed down, not up yet
 
             // next is the release
             int upKey = *spot;
@@ -56,6 +58,7 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
                 if (nextSpace > spaceExpected) {
                     // we've gotten to a point where everything from startAt till now is a letter.
                     results = results + analyzeKey(keyedTimes, spaceExpected);
+                    keyedTimes.clear();
                     *timingUsed = usedCount;
                 }
             }
@@ -68,6 +71,8 @@ QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLeng
     // we have a complete sequence from first keyDown to last keyUp for a letter
     QList<int>::const_iterator pt1, pt2;
     int sequence = 0;
+
+    qDebug() << "keyed lengths:" << m_keyedLengths;
 
     int maxv = -1, minv = 0xffff;
     int aveLength;
@@ -95,14 +100,15 @@ QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLeng
     for(length =  m_keyedLengths.begin() ; length != end; length++) {
         if (*length > aveLength) {
             // it's a DAH
-            sequence = (sequence << 8) | 2;
+            sequence = (sequence << 4) | 2;
         } else {
-            sequence = (sequence << 8) | 1;
+            sequence = (sequence << 4) | 1;
         }
     }
 
+    qDebug() << "keyed: " << sequence;
     if (!inverseCode.contains(sequence)) {
-        qWarning() << "ERROR: they keyed something invalid: " << sequence;
+        qWarning() << "ERROR: they keyed something invalid: " << QString::number(sequence, 16);
         return "";
     }
     return inverseCode[sequence];

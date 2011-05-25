@@ -14,7 +14,7 @@
 #include <qdebug.h>
 
 KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
-    : MorseMode(morse, ui), m_letterCount(3), m_required(0), m_keyCount(0)
+    : MorseMode(morse, ui), KeyingReader(), m_letterCount(3), m_required(0), m_keyCount(0)
 {
 
 }
@@ -100,8 +100,11 @@ void KeyTraining::handleKeyPress(QChar letterPressed)
     m_keyCount++;
 
     if (m_keyCount == m_required) { // update the widgets based on the results
+        int count;
         m_timingDisplay->setTimings(m_keyedTimes, m_requiredTimes);
         calculateStats();
+        m_keyedTimes.push_back(m_keyedTimes.last() + 1000);
+        qWarning() << "got: " << analyzeKeying(m_keyedTimes, &count);
     }
 }
 

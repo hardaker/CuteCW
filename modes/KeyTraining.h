@@ -14,8 +14,9 @@
 #include "ui_MainWindow.h"
 #include "MorseStat.h"
 #include "widgets/KeyTimingDisplay.h"
+#include "KeyingReader.h"
 
-class KeyTraining : public MorseMode
+class KeyTraining : public MorseMode, KeyingReader
 {
 public:
     Q_OBJECT
