@@ -4,6 +4,7 @@
 #include "../MorseMode.h"
 #include "MGameMode.h"
 #include "HighScores.h"
+#include "Invader.h"
 
 #include <QtCore/QList>
 #include <QtCore/QList>

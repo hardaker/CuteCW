@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     GoalBar.cpp \
     widgets/KeyTimingDisplay.cpp \
     KeyingReader.cpp \
-    modes/games/KeyInvaders.cpp
+    modes/games/KeyInvaders.cpp \
+    modes/games/Invader.cpp
 
 HEADERS  += MainWindow.h \
     Morse.h \
@@ -76,7 +77,8 @@ HEADERS  += MainWindow.h \
     GoalBar.h \
     widgets/KeyTimingDisplay.h \
     KeyingReader.h \
-    modes/games/KeyInvaders.h
+    modes/games/KeyInvaders.h \
+    modes/games/Invader.h
 
 FORMS    += AboutDialog.ui
 

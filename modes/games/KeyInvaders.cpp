@@ -35,6 +35,7 @@ void KeyInvaders::setupWidgets() {
     myScene->addEllipse(10,10,10,10);
     myScene->addEllipse(10,100,20,10);
     myScene->addEllipse(100,10,20,10);
+    myScene->addItem(new Invader(0, "a"));
     QGraphicsTextItem *item = myScene->addText("foo");
     item->setPos(50,50);
 }
