@@ -8,6 +8,7 @@
 #include <QtCore/QList>
 #include <QtCore/QList>
 #include <QtCore/QTime>
+#include <QtGui/QGraphicsView>
 
 class KeyInvaders : public MorseMode, MGameMode
 {
@@ -35,6 +36,7 @@ private:
     int m_keyCount;
     QTime m_startTime;
     QList<int> m_keyedTimes;
+    QGraphicsView *m_graph;
 };
 
 #endif // KEYINVADERS_H

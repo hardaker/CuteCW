@@ -1,5 +1,7 @@
 #include "KeyInvaders.h"
 #include <QtGui/QMenu>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsTextItem>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
     : MorseMode(parent, main), m_scores("Key Invaders")
@@ -24,7 +26,15 @@ void KeyInvaders::modeMenus() {
 }
 
 void KeyInvaders::setupWidgets() {
+    m_ui->forModes->addWidget(m_graph = new QGraphicsView());
+    QGraphicsScene *myScene = new QGraphicsScene(m_graph);
+    m_graph->setScene(myScene);
 
+    myScene->addEllipse(10,10,10,10);
+    myScene->addEllipse(10,100,20,10);
+    myScene->addEllipse(100,10,20,10);
+    QGraphicsTextItem *item = myScene->addText("foo");
+    item->setPos(50,50);
 }
 
 void KeyInvaders::handleKeyPress(QChar letterPressed)
