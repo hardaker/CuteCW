@@ -1,0 +1,46 @@
+
+* Availability
+
+  Download from:
+    http://www.hamtools.org/cutecw/releases/
+
+  Announcement Mailing List:
+    http://mail.hamtools.org/mailman/listinfo/cutecw-announce/
+
+  Available for:
+    + Windows
+    + OS X (Snow Leopard)
+    + Linux
+    + Maemo (N900 smart phone)
+
+* Training mode improvements
+
+  The algorithms for the recognition and speed training modes have
+  been improved to more provide a better learning path.
+
+  + A new set of training sequences for learning "similar" sounding
+    character sequences (eg, "e, i, s, h, and 5").
+  + The speed mode, in particular, now contains a carefully crafted
+    rate increase to gradually increase the rate of speed.
+  + A slight (configurable) delay has been introduced in recognition
+    training to allow a time break before the next sound is played.
+    (requested by multiple people)
+
+* Read-to-me mode
+
+  The read-to-me mode underwent an almost complete rewrite.  This
+  brings the following features and improvements:
+
+  + Fixed the memory-hog issue so you can now load large files
+  + Visual underlying display of words being played
+  + A new ability to repeat every word a settable number of times
+
+* Miscellaneous
+
+  + Front page icons have been added for a better visual starting page
+  + A new audio-test button for selecting a tone-frequency
+  + Many more preference settings
+  + Many other miscellaneous bug fixes
+  + Sound fixes provided by Simon Schubert
+    + it should now work correctly on Linux, Windows, OS X and Maemo
+    + His patches provided sound quality improvements as well
