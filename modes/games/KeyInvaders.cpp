@@ -16,6 +16,12 @@ KeyInvaders::advanceFrame() {
     foreach (Invader *invader, invaders) {
         invader->advance();
     }
+    addCount++;
+    if (addCount%10 == 0) {
+        Invader *inv;
+        m_scene->addItem(inv = new Invader(0, "Z"));
+        invaders.push_back(inv);
+    }
 }
 
 
@@ -35,15 +41,15 @@ void KeyInvaders::setupWidgets() {
     Invader *inv;
 
     m_ui->forModes->addWidget(m_graph = new QGraphicsView());
-    QGraphicsScene *myScene = new QGraphicsScene(m_graph);
-    m_graph->setScene(myScene);
+    m_scene = new QGraphicsScene(m_graph);
+    m_graph->setScene(m_scene);
 
-    myScene->addEllipse(10,10,10,10);
-    myScene->addEllipse(10,100,20,10);
-    myScene->addEllipse(100,10,20,10);
-    myScene->addItem(inv = new Invader(0, "a"));
+    m_scene->addEllipse(10,10,10,10);
+    m_scene->addEllipse(10,100,20,10);
+    m_scene->addEllipse(100,10,20,10);
+    m_scene->addItem(inv = new Invader(0, "a"));
     invaders.push_back(inv);
-    QGraphicsTextItem *item = myScene->addText("foo");
+    QGraphicsTextItem *item = m_scene->addText("foo");
     item->setPos(50,50);
 }
 
@@ -88,6 +94,7 @@ QString KeyInvaders::icon()
 
 void KeyInvaders::play()
 {
+    addCount = 0;
     qDebug() << "foo";
     invadingTimer.setInterval(100);
     connect(&invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));

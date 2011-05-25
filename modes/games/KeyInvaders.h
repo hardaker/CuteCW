@@ -51,6 +51,9 @@ private:
     QTimer invadingTimer;
 
     QList<Invader *> invaders;
+    QGraphicsScene *m_scene;
+
+    int addCount;
 };
 
 #endif // KEYINVADERS_H
