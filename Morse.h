@@ -37,8 +37,8 @@ public:
 
     enum ditdah{ DIT, DAH, SPACE, PAUSE };
 
-    enum TrainingMode { FRONTPAGE, PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, KEYING, WORDGAME, GROUPGAME, READ,  // eventually: TEST
-                        TM_FIRST = FRONTPAGE, TM_LAST = READ };
+    enum TrainingMode { FRONTPAGE, PLAY, TRAIN, SPEEDTRAIN, WORDS, GROUPS, KEYING, WORDGAME, GROUPGAME, READ, KEYINVADERS, // eventually: TEST
+                        TM_FIRST = FRONTPAGE, TM_LAST = KEYINVADERS };
     static const int maximumTrainingMode = READ;
     enum AudioMode { STOPPED, PLAYING, PAUSED };
     enum BadLetterWeighting { LOW = 1, HIGH = 2 };

@@ -20,6 +20,7 @@
 #include "modes/GroupingMode.h"
 #include "modes/games/WordGame.h"
 #include "modes/games/GroupGame.h"
+#include "modes/games/KeyInvaders.h"
 
 #define WPMGOAL   20
 #define WPMACCEPT 2
@@ -63,6 +64,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
     m_modes.insert(WORDGAME, new WordGame(this, m_ui));
     m_modes.insert(GROUPGAME, new GroupGame(this, m_ui));
     m_modes.insert(READ, new ReadMode(this, m_ui));
+    m_modes.insert(KEYINVADERS, new KeyInvaders(this, m_ui));
 
     loadSettings();
 
