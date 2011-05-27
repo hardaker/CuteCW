@@ -13,7 +13,7 @@ public:
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    void advance();
+    bool advanceInvader(int maxYPos = 0);
 protected:
 
 signals:

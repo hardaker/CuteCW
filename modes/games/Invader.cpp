@@ -5,6 +5,7 @@
 Invader::Invader(QGraphicsWidget *parent, const QString &text) :
     QGraphicsItem(), m_text(text)
 {
+    setZValue(2);
 }
 
 QRectF Invader::boundingRect() const
@@ -32,9 +33,12 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawText(QRectF(-9,-9,9,9), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
 }
 
-void Invader::advance() {
+bool Invader::advanceInvader(int maxYPos) {
     QPointF myPos = pos();
     myPos.setY(myPos.y() + 1);
     setPos(myPos);
+    if (maxYPos && myPos.y() > maxYPos)
+        return true;
+    return false;
 }
 
