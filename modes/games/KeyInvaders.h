@@ -56,6 +56,7 @@ private:
     QGraphicsScene *m_scene;
 
     int addCount;
+    int maxInvaderY;
 };
 
 #endif // KEYINVADERS_H

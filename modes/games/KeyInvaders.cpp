@@ -6,7 +6,7 @@
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
     : MorseMode(parent, main), MSequences(), m_scores("Key Invaders"), invadingTimer(this),
-      invaders()
+      invaders(), maxInvaderY(90)
 {
 }
 
@@ -14,7 +14,9 @@ void
 KeyInvaders::advanceFrame() {
     qDebug() << "here";
     foreach (Invader *invader, invaders) {
-        invader->advance();
+        if (invader->advanceInvader(maxInvaderY)) {
+            gameOver();
+        }
     }
 
     addCount++;
@@ -22,6 +24,7 @@ KeyInvaders::advanceFrame() {
         // every once in a while do something interesting.  Like add more invaders.
         Invader *inv;
         m_scene->addItem(inv = new Invader(0, completeCharacterSet[qrand() % completeCharacterSet.length()].toUpper()));
+        inv->setPos(qrand() % 200, 10);
         invaders.push_back(inv);
     }
 }
@@ -40,19 +43,22 @@ void KeyInvaders::modeMenus() {
 }
 
 void KeyInvaders::setupWidgets() {
-    Invader *inv;
-
     m_ui->forModes->addWidget(m_graph = new QGraphicsView());
     m_scene = new QGraphicsScene(m_graph);
     m_graph->setBackgroundBrush(Qt::black);
     m_graph->setScene(m_scene);
 
+    QPen whitePen(Qt::white);
+    QPen bluePen(Qt::blue);
+    QPen greenPen(Qt::green);
+    QBrush greenBrush(Qt::green);
+
+    m_scene->addRect(-10,0,220,100,whitePen);
     m_scene->addEllipse(10,10,10,10);
     m_scene->addEllipse(10,100,20,10);
     m_scene->addEllipse(100,10,20,10);
-    m_scene->addItem(inv = new Invader(0, "A"));
+    m_scene->addRect(-10,maxInvaderY,220,10, greenPen, greenBrush);
 
-    invaders.push_back(inv);
     QGraphicsTextItem *item = m_scene->addText("Fear The Invaders");
     item->setZValue(-5);
     item->setPos(20,50);
@@ -82,6 +88,7 @@ void KeyInvaders::handleKeyRelease(QChar letterPressed)
 void KeyInvaders::gameOver()
 {
   m_scores.addScore("", score());
+  stop();
 }
 
 QString KeyInvaders::helpText()
@@ -102,7 +109,11 @@ QString KeyInvaders::icon()
 void KeyInvaders::play()
 {
     addCount = 0;
-    qDebug() << "foo";
+    foreach (Invader *inv, invaders) {
+        m_scene->removeItem(inv);
+        delete inv;
+    }
+    invaders.clear();
     invadingTimer.setInterval(100);
     connect(&invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));
     invadingTimer.start();
