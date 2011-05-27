@@ -16,21 +16,16 @@
 #include "ChooseSequenceDialog.h"
 
 #include "MorseMode.h"
+#include "MSequences.h"
 #include "GoalBar.h"
 #include "ui_MainWindow.h"
 
-class TrainingMode : public MorseMode
+class TrainingMode : public MorseMode, MSequences
 {
 public:
     Q_OBJECT
 
 public:
-    enum sequences { KOCH, KOCH1, KOCH2, KOCH3, KOCH4,
-                     ALPHABET, AF, GM, NT, UZ,
-                     NUMBERS, SYMBOLS,
-                     SIM1, SIM2, SIM3, SIM4, SIM5,
-                     EVERYTHING};
-
     TrainingMode(Morse *parent, Ui::MainWindow *ui);
     void setupSequences();
     MorseStat *getStat(const QChar &key);
@@ -59,7 +54,6 @@ public slots:
     void loadStats(QSettings &settings, QString statPrefix = "");
 
 private:
-    QStringList                     m_sequences;
     QSignalMapper                  *m_sequenceSignalMapper;
 
 protected:

@@ -24,8 +24,6 @@
 #define RAND_MAX 0x7FFF
 #endif
 
-const QString completeCharacterSet = "abcdefghijklmnopqrstuvwxyz1234567890.,/=?";
-
 class Morse;
 
 class MorseMode : public QObject

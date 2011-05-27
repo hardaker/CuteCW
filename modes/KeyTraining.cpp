@@ -14,7 +14,7 @@
 #include <qdebug.h>
 
 KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
-    : MorseMode(morse, ui), KeyingReader(), m_letterCount(3), m_required(0), m_keyCount(0)
+    : MorseMode(morse, ui), KeyingReader(), MSequences(), m_letterCount(3), m_required(0), m_keyCount(0)
 {
 
 }
