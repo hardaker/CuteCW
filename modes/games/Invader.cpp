@@ -9,13 +9,13 @@ Invader::Invader(QGraphicsWidget *parent, const QString &text) :
 
 QRectF Invader::boundingRect() const
 {
-    return QRectF(0, 0, 20, 20);
+    return QRectF(-10, -10, 10, 10);
 }
 
 QPainterPath Invader::shape() const
 {
     QPainterPath path;
-    path.addEllipse(0, 0, 20, 20);
+    path.addEllipse(-10, -10, 10, 10);
     return path;
 }
 
@@ -23,13 +23,13 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::yellow);
-    painter->drawEllipse(-5, -5, 20, 20);
+    painter->drawEllipse(-10, -10, 10, 10);
 
     QFont font = painter->font();
-    font.setPointSize(14);
+    font.setPointSize(6);
     painter->setFont(font);
     painter->setPen(Qt::red);
-    painter->drawText(QRectF(-4,-4,19,19), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
+    painter->drawText(QRectF(-9,-9,9,9), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
 }
 
 void Invader::advance() {
@@ -37,3 +37,4 @@ void Invader::advance() {
     myPos.setY(myPos.y() + 1);
     setPos(myPos);
 }
+
