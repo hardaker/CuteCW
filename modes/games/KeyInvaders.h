@@ -26,6 +26,7 @@ public:
     virtual void switchToMode();
     virtual void modeMenus();
     void setupWidgets();
+    void scaleWindow();
 
     // standard functions
     virtual QString helpText();

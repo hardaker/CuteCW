@@ -50,11 +50,14 @@ void KeyInvaders::setupWidgets() {
     m_scene->addEllipse(10,10,10,10);
     m_scene->addEllipse(10,100,20,10);
     m_scene->addEllipse(100,10,20,10);
-    m_scene->addItem(inv = new Invader(0, "a"));
+    m_scene->addItem(inv = new Invader(0, "A"));
 
     invaders.push_back(inv);
-    QGraphicsTextItem *item = m_scene->addText("foo");
-    item->setPos(50,50);
+    QGraphicsTextItem *item = m_scene->addText("Fear The Invaders");
+    item->setZValue(-5);
+    item->setPos(20,50);
+
+    scaleWindow();
 }
 
 void KeyInvaders::handleKeyPress(QChar letterPressed)
@@ -108,4 +111,19 @@ void KeyInvaders::play()
 void KeyInvaders::stop()
 {
     invadingTimer.stop();
+}
+
+void KeyInvaders::scaleWindow() {
+    // get rid of the current scale
+    qreal oldScale = 1.0 / m_graph->transform().mapRect(QRectF(0, 0, 1, 1)).height();
+    m_graph->scale(oldScale, oldScale);
+
+    // calculate the new scale
+    QSize windowSize = m_graph->size();
+    qDebug() << "window: " << windowSize;
+    qreal newscale = qMin(windowSize.width() / m_scene->sceneRect().width(), windowSize.height() / m_scene->sceneRect().width());
+
+    // apply it
+    m_graph->scale(.95 * newscale, .95 * newscale);
+    qDebug() << "scale: " << newscale;
 }
