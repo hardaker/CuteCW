@@ -5,7 +5,7 @@
 #include <QtGui/QGraphicsTextItem>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
-    : MorseMode(parent, main), m_scores("Key Invaders"), invadingTimer(this),
+    : MorseMode(parent, main), MSequences(), m_scores("Key Invaders"), invadingTimer(this),
       invaders()
 {
 }
@@ -16,10 +16,12 @@ KeyInvaders::advanceFrame() {
     foreach (Invader *invader, invaders) {
         invader->advance();
     }
+
     addCount++;
-    if (addCount%10 == 0) {
+    if (addCount%20 == 0) {
+        // every once in a while do something interesting.  Like add more invaders.
         Invader *inv;
-        m_scene->addItem(inv = new Invader(0, "Z"));
+        m_scene->addItem(inv = new Invader(0, completeCharacterSet[qrand() % completeCharacterSet.length()].toUpper()));
         invaders.push_back(inv);
     }
 }
@@ -42,12 +44,14 @@ void KeyInvaders::setupWidgets() {
 
     m_ui->forModes->addWidget(m_graph = new QGraphicsView());
     m_scene = new QGraphicsScene(m_graph);
+    m_graph->setBackgroundBrush(Qt::black);
     m_graph->setScene(m_scene);
 
     m_scene->addEllipse(10,10,10,10);
     m_scene->addEllipse(10,100,20,10);
     m_scene->addEllipse(100,10,20,10);
     m_scene->addItem(inv = new Invader(0, "a"));
+
     invaders.push_back(inv);
     QGraphicsTextItem *item = m_scene->addText("foo");
     item->setPos(50,50);

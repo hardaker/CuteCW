@@ -22,14 +22,14 @@ QPainterPath Invader::shape() const
 void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::lightGray);
+    painter->setBrush(Qt::yellow);
     painter->drawEllipse(-5, -5, 20, 20);
 
     QFont font = painter->font();
-    font.setPointSize(16);
+    font.setPointSize(14);
     painter->setFont(font);
     painter->setPen(Qt::red);
-    painter->drawText(QRectF(0,0,20,20), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
+    painter->drawText(QRectF(-4,-4,19,19), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
 }
 
 void Invader::advance() {
