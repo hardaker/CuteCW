@@ -27,10 +27,13 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawEllipse(-10, -10, 10, 10);
 
     QFont font = painter->font();
-    font.setPointSize(6);
+    font.setPointSize(5);
     painter->setFont(font);
     painter->setPen(Qt::red);
     painter->drawText(QRectF(-9,-9,9,9), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
+    painter->setPen(Qt::darkYellow);
+    painter->setBrush(Qt::NoBrush);
+    painter->drawEllipse(-10,-10,10,10);
 }
 
 bool Invader::advanceInvader(int maxYPos) {
