@@ -15,6 +15,7 @@ public:
 
 private:
     QHash<int, QChar> inverseCode;
+    int pastDitLength;
 };
 
 #endif // KEYINGREADER_H

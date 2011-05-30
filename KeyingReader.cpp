@@ -3,6 +3,7 @@
 #include "qdebug.h"
 
 KeyingReader::KeyingReader()
+    : pastDitLength(-1)
 {
     int intCode;
 
@@ -57,7 +58,10 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
 
                 if (nextSpace > spaceExpected) {
                     // we've gotten to a point where everything from startAt till now is a letter.
-                    results = results + analyzeKey(keyedTimes, spaceExpected);
+                    if (m_keyedTimes.count() > 3) // at least two keys
+                        results = results + analyzeKey(keyedTimes, (*(m_keyedTimes.begin() + 2) - (*(m_keyedTimes.begin() + 1))));
+                    else
+                        results = results + analyzeKey(keyedTimes, -1); // single character; we don't know how long it should be
                     keyedTimes.clear();
                     *timingUsed = usedCount;
                 }
@@ -85,15 +89,25 @@ QString KeyingReader::analyzeKey(const QList<int> &m_keyedLengths, int pauseLeng
         minv = qMin(minv, *length);
     }
 
+    qDebug() << "min=" << minv << ", max=" << maxv << ", pause=" << pauseLength * 3;
     // Ok, if the maxv is at least 2x the minv then they're different lengths in general (yay)
     if (maxv > minv*2.0) {
+        pastDitLength = minv;
         aveLength = minv + (maxv - minv)/2;
     } else {
         // the lengths are the same, so either they're all dits or they're all dahs
-        if (maxv < pauseLength)
-            aveLength = maxv+1; // they're all dits
-        else
-            aveLength = minv-1; // they're all dahs
+        if (pastDitLength != -1) {
+            if (maxv < 2 * pastDitLength)
+                aveLength = maxv + 1; // all dahs
+            else
+                aveLength = minv - 1; // all dits
+        } else {
+            // the guessing gets worse if we've never recevied a true dit/dah letter yet
+            if (maxv < pauseLength/2)
+                aveLength = maxv+1; // they're all dits
+            else
+                aveLength = minv-1; // they're all dahs
+        }
     }
 
     // Ok, now loop through them all and determine what each is.
