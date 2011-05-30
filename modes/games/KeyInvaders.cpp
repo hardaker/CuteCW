@@ -36,11 +36,9 @@ KeyInvaders::advanceFrame() {
             foreach(QChar result, results) {
                 bool gotOne = false;
                 foreach (Invader *invader, invaders) {
-                    if (!gotOne && invader->text() == result.toUpper()) {
-                        // XXX: animate to fade out or explode (scale?) or ...?
-                        invaders.removeOne(invader);
+                    if (!gotOne && !invader->exploding() && invader->text() == result.toUpper()) {
+                        invader->setExploding(true);
                         addToScore(10 * (maxInvaderY - invader->y()));
-                        delete invader;
                         gotOne = true;
                     }
                 }
@@ -58,6 +56,10 @@ KeyInvaders::advanceFrame() {
     foreach (Invader *invader, invaders) {
         if (invader->advanceInvader(maxInvaderY)) {
             gameOver();
+        }
+        if (invader->doneExploding()) {
+            invaders.removeOne(invader);
+            delete invader;
         }
     }
 
@@ -154,7 +156,11 @@ void KeyInvaders::play()
         m_scene->removeItem(inv);
         delete inv;
     }
+
     invaders.clear();
+    m_keyedTimes.clear();
+
+    // set the animation timer
     if (!invadingTimer) {
         invadingTimer = new QTimer(this);
         connect(invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));
