@@ -3,7 +3,7 @@
 #include <QtGui/QPainter>
 
 Invader::Invader(QGraphicsWidget *parent, const QString &text) :
-    QGraphicsItem(), m_text(text), m_exploding(false), m_explodeSize(10)
+    QGraphicsItem(parent), m_text(text), m_exploding(false), m_explodeSize(InvaderCircleSize)
 {
     setZValue(2);
 }
@@ -20,22 +20,25 @@ QPainterPath Invader::shape() const
     return path;
 }
 
-void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
+void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     int oneLess = m_explodeSize-1;
 
     painter->setPen(Qt::NoPen);
     QBrush yellow(Qt::yellow);
     if (m_exploding) {
         QColor newYellow = yellow.color();
-        newYellow.setAlpha(255.0 * (20.0 - m_explodeSize) / 10.0);
+        newYellow.setAlpha(255.0 * (float(InvaderExplodedSize) - m_explodeSize) / float(InvaderCircleSize));
         yellow.setColor(newYellow);
     }
     painter->setBrush(yellow);
     painter->drawEllipse(-m_explodeSize, -m_explodeSize, m_explodeSize, m_explodeSize);
 
     QFont font = painter->font();
-    font.setPointSize(5);
+    font.setPointSizeF(float(m_explodeSize)/2.5);
     painter->setFont(font);
     painter->setPen(Qt::red);
     painter->drawText(QRectF(-oneLess,-oneLess,oneLess,oneLess), Qt::AlignHCenter | Qt::AlignVCenter, m_text);
@@ -57,7 +60,7 @@ bool Invader::advanceInvader(int maxYPos) {
 }
 
 bool Invader::doneExploding() {
-    if (m_exploding && m_explodeSize > 20)
+    if (m_exploding && m_explodeSize > InvaderExplodedSize)
         return true;
     return false;
 }

@@ -22,6 +22,8 @@ public:
     bool doneExploding();
 
 protected:
+    static const int InvaderCircleSize = 7;
+    static const int InvaderExplodedSize = InvaderCircleSize * 2;
 
 signals:
 
