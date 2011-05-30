@@ -21,7 +21,7 @@ QString KeyingReader::analyzeKeying(const QList<int> &m_keyedTimes, int *timingU
     QList<int>::const_iterator spot = m_keyedTimes.begin();
     QList<int>::const_iterator startAt;
 
-    qDebug() << "keyed times: " << m_keyedTimes;
+    //qDebug() << "keyed times: " << m_keyedTimes;
 
     while ((useAll && spot != end) || spot == m_keyedTimes.begin()) {
         QList<int> keyedTimes;
