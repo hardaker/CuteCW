@@ -25,7 +25,13 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     int oneLess = m_explodeSize-1;
 
     painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::yellow);
+    QBrush yellow(Qt::yellow);
+    if (m_exploding) {
+        QColor newYellow = yellow.color();
+        newYellow.setAlpha(255.0 * (20.0 - m_explodeSize) / 10.0);
+        yellow.setColor(newYellow);
+    }
+    painter->setBrush(yellow);
     painter->drawEllipse(-m_explodeSize, -m_explodeSize, m_explodeSize, m_explodeSize);
 
     QFont font = painter->font();
