@@ -86,9 +86,6 @@ void KeyInvaders::setupWidgets() {
     QBrush greenBrush(Qt::green);
 
     m_scene->addRect(-10,0,220,100,whitePen);
-    m_scene->addEllipse(10,10,10,10);
-    m_scene->addEllipse(10,100,20,10);
-    m_scene->addEllipse(100,10,20,10);
     m_scene->addRect(-10,maxInvaderY,220,10, greenPen, greenBrush);
 
     QGraphicsTextItem *item = m_scene->addText("Fear The Invaders");
@@ -161,14 +158,18 @@ void KeyInvaders::stop()
 void KeyInvaders::scaleWindow() {
     // get rid of the current scale
     qreal oldScale = 1.0 / m_graph->transform().mapRect(QRectF(0, 0, 1, 1)).height();
+    qDebug() << "old scale = " << oldScale;
     m_graph->scale(oldScale, oldScale);
 
     // calculate the new scale
     QSize windowSize = m_graph->size();
     qDebug() << "window: " << windowSize;
-    qreal newscale = qMin(windowSize.width() / m_scene->sceneRect().width(), windowSize.height() / m_scene->sceneRect().width());
+    qDebug() << "scene: " << m_scene->sceneRect().width() << "x" << m_scene->sceneRect().height();
+    qDebug() << "scale: " << windowSize.width() << "/" << m_scene->sceneRect().width() << " : " << windowSize.height() << "/" << m_scene->sceneRect().height();
+    qDebug() << "scale: " << windowSize.width()/m_scene->sceneRect().width() << " : " << windowSize.height()/m_scene->sceneRect().height();
+    qreal newscale = qMin(windowSize.width() / m_scene->sceneRect().width(), windowSize.height() / m_scene->sceneRect().height());
 
     // apply it
-    m_graph->scale(.95 * newscale, .95 * newscale);
+    m_graph->scale(1.5 * newscale, 1.5 * newscale); // why why why the 1.5?
     qDebug() << "scale: " << newscale;
 }
