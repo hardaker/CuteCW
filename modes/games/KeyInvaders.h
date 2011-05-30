@@ -6,6 +6,7 @@
 #include "HighScores.h"
 #include "Invader.h"
 #include "../MSequences.h"
+#include "KeyingReader.h"
 
 #include <QtCore/QList>
 #include <QtCore/QList>
@@ -15,7 +16,7 @@
 
 #include "Invader.h"
 
-class KeyInvaders : public MorseMode, MGameMode, MSequences
+class KeyInvaders : public MorseMode, MGameMode, MSequences, KeyingReader
 {
     Q_OBJECT
 

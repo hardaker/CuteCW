@@ -5,17 +5,49 @@
 #include <QtGui/QGraphicsTextItem>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
-    : MorseMode(parent, main), MSequences(), m_scores("Key Invaders"), invadingTimer(this),
+    : MorseMode(parent, main), MGameMode(), MSequences(), KeyingReader(),
+      m_scores("Key Invaders"), invadingTimer(this),
       invaders(), maxInvaderY(90)
 {
 }
 
 void
 KeyInvaders::advanceFrame() {
-    qDebug() << "here";
+    int timing_used;
+
+
+    // check what the user has keyed.
+
+    // temporarily push back the current time
+    // But we only do this if they're key is currently up (even number of times)
+    if (m_keyedTimes.count() > 0) {
+        bool pushedOne = false;
+
+        if (m_keyedTimes.count() % 2 == 0) {
+            m_keyedTimes.push_back(m_startTime.elapsed());
+            pushedOne = true;
+        }
+
+        // check what we have so far
+        QString results = analyzeKeying(m_keyedTimes, &timing_used);
+
+        if (results.length() > 0) {
+            qDebug() << "got a keying: " << results;
+            // XXX: this should only drop up till the 'timing_used' number of entries
+            m_keyedTimes.clear();
+        } else {
+            // drop the most recently pushed "space" time.
+            if (pushedOne)
+                m_keyedTimes.pop_back();
+        }
+    }
+
     foreach (Invader *invader, invaders) {
         if (invader->advanceInvader(maxInvaderY)) {
-            gameOver();
+            // gameOver();
+            m_scene->removeItem(invader);
+            invaders.removeOne(invader);
+            delete invader;
         }
     }
 
@@ -77,11 +109,13 @@ void KeyInvaders::handleKeyPress(QChar letterPressed)
     } else {
         m_keyedTimes.push_back(m_startTime.elapsed());
     }
+    qDebug() << "key down: " << m_keyedTimes;
 }
 
 void KeyInvaders::handleKeyRelease(QChar letterPressed)
 {
     handleKeyPress(letterPressed);  // doesn't really matter whether it's up/down
+    qDebug() << "key up:   " << m_keyedTimes;
 }
 
 
