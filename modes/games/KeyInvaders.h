@@ -51,7 +51,7 @@ private:
     QList<int> m_keyedTimes;
     QGraphicsView *m_graph;
 
-    QTimer invadingTimer;
+    QTimer *invadingTimer;
 
     QList<Invader *> invaders;
     QGraphicsScene *m_scene;

@@ -6,7 +6,7 @@
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
     : MorseMode(parent, main), MGameMode(), MSequences(), KeyingReader(),
-      m_scores("Key Invaders"), invadingTimer(this),
+      m_scores("Key Invaders"), invadingTimer(0),
       invaders(), maxInvaderY(90)
 {
 }
@@ -33,6 +33,19 @@ KeyInvaders::advanceFrame() {
 
         if (results.length() > 0) {
             qDebug() << "got a keying: " << results;
+            foreach(QChar result, results) {
+                bool gotOne = false;
+                foreach (Invader *invader, invaders) {
+                    if (!gotOne && invader->text() == result.toUpper()) {
+                        // XXX: animate to fade out or explode (scale?) or ...?
+                        invaders.removeOne(invader);
+                        addToScore(10 * (maxInvaderY - invader->y()));
+                        delete invader;
+                        gotOne = true;
+                    }
+                }
+            }
+
             // XXX: this should only drop up till the 'timing_used' number of entries
             m_keyedTimes.clear();
         } else {
@@ -44,10 +57,7 @@ KeyInvaders::advanceFrame() {
 
     foreach (Invader *invader, invaders) {
         if (invader->advanceInvader(maxInvaderY)) {
-            // gameOver();
-            m_scene->removeItem(invader);
-            invaders.removeOne(invader);
-            delete invader;
+            gameOver();
         }
     }
 
@@ -145,14 +155,17 @@ void KeyInvaders::play()
         delete inv;
     }
     invaders.clear();
-    invadingTimer.setInterval(100);
-    connect(&invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));
-    invadingTimer.start();
+    if (!invadingTimer) {
+        invadingTimer = new QTimer(this);
+        connect(invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));
+        invadingTimer->setInterval(100);
+    }
+    invadingTimer->start();
 }
 
 void KeyInvaders::stop()
 {
-    invadingTimer.stop();
+    invadingTimer->stop();
 }
 
 void KeyInvaders::scaleWindow() {

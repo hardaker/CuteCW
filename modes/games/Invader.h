@@ -14,6 +14,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     bool advanceInvader(int maxYPos = 0);
+
+    const QString &text() const { return m_text; }
 protected:
 
 signals:
