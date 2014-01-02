@@ -3,7 +3,7 @@ Makefile
 Makefile.Debug
 Makefile.Release
 *.bak
-qtc_packaging
+#qtc_packaging
 cutecw.pro.user*
 cutecw.zip
 *.orig
