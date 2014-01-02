@@ -57,6 +57,8 @@ private:
     QGraphicsScene *m_scene;
 
     int addCount;
+    int addEvery;
+    int timerFreq;
     int maxInvaderY;
 };
 

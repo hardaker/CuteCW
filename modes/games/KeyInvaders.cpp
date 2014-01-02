@@ -3,6 +3,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsTextItem>
+#include <QtGui/QMenuBar>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
     : MorseMode(parent, main), MGameMode(), MSequences(), KeyingReader(),
@@ -63,13 +64,22 @@ KeyInvaders::advanceFrame() {
         }
     }
 
-    addCount++;
-    if (addCount%20 == 0) {
+    if (addCount++ % addEvery == 0) {
         // every once in a while do something interesting.  Like add more invaders.
         Invader *inv;
         m_scene->addItem(inv = new Invader(0, completeCharacterSet[qrand() % completeCharacterSet.length()].toUpper()));
         inv->setPos(qrand() % 200, 10);
         invaders.push_back(inv);
+    }
+
+    if (addCount % 200 == 0) {
+        if (addCount %400 == 0) {
+            // increase how often new letters get added
+            addEvery = int( 3 * addEvery / 2);
+        } else {
+            timerFreq = 3 * timerFreq / 2;
+            invadingTimer->setInterval(timerFreq);
+        }
     }
 }
 
@@ -152,6 +162,9 @@ QString KeyInvaders::icon()
 void KeyInvaders::play()
 {
     addCount = 0;
+    addEvery = 20;
+    timerFreq = 100;
+
     foreach (Invader *inv, invaders) {
         m_scene->removeItem(inv);
         delete inv;
@@ -164,7 +177,7 @@ void KeyInvaders::play()
     if (!invadingTimer) {
         invadingTimer = new QTimer(this);
         connect(invadingTimer, SIGNAL(timeout()), this, SLOT(advanceFrame()));
-        invadingTimer->setInterval(100);
+        invadingTimer->setInterval(timerFreq);
     }
     invadingTimer->start();
 }
