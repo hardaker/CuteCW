@@ -94,14 +94,20 @@ MainWindow::createAudioOutput()
 {
    QAudioFormat settings;
 
-    // TODO: settings.setFrequency(44100);
-    // TODO: settings.setChannels(1);
-    settings.setSampleSize(16);
-    settings.setCodec("audio/pcm");
-    settings.setByteOrder(QAudioFormat::LittleEndian);
-    settings.setSampleType(QAudioFormat::SignedInt);
+   // TODO: settings.setFrequency(44100);
+   settings.setSampleRate(44100);
+   settings.setChannelCount(1);
+   settings.setSampleSize(16);
+   settings.setCodec("audio/pcm");
+   settings.setByteOrder(QAudioFormat::LittleEndian);
+   settings.setSampleType(QAudioFormat::SignedInt);
 
-    m_audioOutput = new QAudioOutput(settings);
-    return m_audioOutput;
+   QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+   if (!info.isFormatSupported(settings)) {
+       qWarning() << "Raw audio format not supported by backend, cannot play audio.";
+   }
+
+   m_audioOutput = new QAudioOutput(settings);
+   return m_audioOutput;
 }
 
