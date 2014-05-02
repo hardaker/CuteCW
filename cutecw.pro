@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia network xml
+QT       += core gui multimedia network xml widgets
 
 TARGET = cutecw
 TEMPLATE = app
