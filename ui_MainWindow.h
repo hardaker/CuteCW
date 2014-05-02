@@ -157,15 +157,15 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Cute CW", 0, QApplication::UnicodeUTF8));
-        modeMenu->setText(QApplication::translate("MainWindow", "Mode", 0, QApplication::UnicodeUTF8));
-        play->setText(QApplication::translate("MainWindow", "Play", 0, QApplication::UnicodeUTF8));
-        changeSequence->setText(QApplication::translate("MainWindow", "Sequence", 0, QApplication::UnicodeUTF8));
-        changeWords->setText(QApplication::translate("MainWindow", "Change Words", 0, QApplication::UnicodeUTF8));
-        clearTraining->setText(QApplication::translate("MainWindow", "Clear Training", 0, QApplication::UnicodeUTF8));
-        prefs->setText(QApplication::translate("MainWindow", "Preferences", 0, QApplication::UnicodeUTF8));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Cute CW"));
+        modeMenu->setText(QApplication::translate("MainWindow", "Mode"));
+        play->setText(QApplication::translate("MainWindow", "Play"));
+        changeSequence->setText(QApplication::translate("MainWindow", "Sequence"));
+        changeWords->setText(QApplication::translate("MainWindow", "Change Words"));
+        clearTraining->setText(QApplication::translate("MainWindow", "Clear Training"));
+        prefs->setText(QApplication::translate("MainWindow", "Preferences"));
         helpBar->setText(QString());
-        label_2->setText(QApplication::translate("MainWindow", "Average WPM:", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("MainWindow", "Average WPM:"));
     } // retranslateUi
 
 };
