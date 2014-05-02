@@ -202,6 +202,7 @@ void Morse::generatorDone() {
 
 void Morse::setAudioMode(AudioMode newmode) {
     m_playingMode = newmode;
+    m_audioOutput->stop();
 }
 
 void Morse::pauseAudio() {
@@ -221,7 +222,7 @@ Morse::BadLetterWeighting Morse::badLetterWeighting() {
 }
 
 void
-Morse::audioFinished(QAudio::State state)
+Morse::audioFinished(QAudio::State newState)
 {
 #if (defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES))
     // This triggers a nasty hang on linux with Qt 4.7.1
@@ -231,7 +232,7 @@ Morse::audioFinished(QAudio::State state)
     if (state != QAudio::ActiveState)
         m_audioOutput->stop();
 #endif
-    m_modes[m_gameMode]->audioFinished(state);
+    m_modes[m_gameMode]->audioFinished(newState);
 }
 
 void Morse::switchMode(int newmode) {
