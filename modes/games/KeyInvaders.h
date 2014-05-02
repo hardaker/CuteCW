@@ -11,7 +11,7 @@
 #include <QtCore/QList>
 #include <QtCore/QList>
 #include <QtCore/QTime>
-#include <QtGui/QGraphicsView>
+#include <QGraphicsView>
 #include <QtCore/QTimer>
 
 #include "Invader.h"

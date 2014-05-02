@@ -5,11 +5,11 @@
 #include <QtMultimedia/QAudioOutput>
 #include <QtCore/QMap>
 #include <QtCore/QList>
-#include <QtGui/QLabel>
+#include <QLabel>
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
-#include <QtGui/QTextCursor>
-#include <QtGui/QIcon>
+#include <QTextCursor>
+#include <QIcon>
 #include <QtCore/QSignalMapper>
 
 #include "Generator.h"

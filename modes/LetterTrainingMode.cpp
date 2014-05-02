@@ -1,7 +1,7 @@
 #include "LetterTrainingMode.h"
 #include "Morse.h"
 
-#include <QtGui/QFormLayout>
+#include <QFormLayout>
 #include <QtCore/QTimer>
 
 #include <stdlib.h>

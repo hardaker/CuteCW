@@ -5,14 +5,14 @@
 #include <QtCore/QTime>
 #include <QtCore/QSet>
 #include <QtCore/QMap>
-#include <QtGui/QGridLayout>
-#include <QtGui/QAction>
-#include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QMessageBox>
-#include <QtGui/QInputDialog>
-#include <QtGui/QCheckBox>
+#include <QGridLayout>
+#include <QAction>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QCheckBox>
 
 class CustomSequenceDialog : public QDialog
 {

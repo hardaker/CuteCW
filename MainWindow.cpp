@@ -2,9 +2,9 @@
 #include "ui_MainWindow.h"
 #include "ui_AboutDialog.h"
 #include <QtMultimedia/QAudioFormat>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QIcon>
+#include <QMenu>
+#include <QMenuBar>
+#include <QIcon>
 #include <qdebug.h>
 
 // for SMALL_DEVICE definition
@@ -94,8 +94,8 @@ MainWindow::createAudioOutput()
 {
    QAudioFormat settings;
 
-    settings.setFrequency(44100);
-    settings.setChannels(1);
+    // TODO: settings.setFrequency(44100);
+    // TODO: settings.setChannels(1);
     settings.setSampleSize(16);
     settings.setCodec("audio/pcm");
     settings.setByteOrder(QAudioFormat::LittleEndian);

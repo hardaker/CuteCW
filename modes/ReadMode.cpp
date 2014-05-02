@@ -1,12 +1,12 @@
 #include <qdebug.h>
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtGui/QFormLayout>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QFormLayout>
 #include <QtCore/QTimer>
-#include <QtGui/QMenu>
+#include <QMenu>
 #include <QtXml/QDomDocument>
-#include <QtGui/QTextDocumentFragment>
+#include <QTextDocumentFragment>
 
 #include "ReadMode.h"
 #include "Morse.h"

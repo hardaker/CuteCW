@@ -6,7 +6,7 @@
 #include <QtCore/QTime>
 #include <QtCore/QSignalMapper>
 #include <QtCore/QSettings>
-#include <QtGui/QBoxLayout>
+#include <QBoxLayout>
 #include <qaudio.h>
 
 // #include "Morse.h"

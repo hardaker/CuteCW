@@ -3,15 +3,15 @@
 
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTime>
-#include <QtGui/QGridLayout>
-#include <QtGui/QAction>
-#include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QMessageBox>
-#include <QtGui/QInputDialog>
-#include <QtGui/QCheckBox>
-#include <QtGui/QProgressBar>
+#include <QGridLayout>
+#include <QAction>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QCheckBox>
+#include <QProgressBar>
 
 #include "ChooseSequenceDialog.h"
 

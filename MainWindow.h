@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtMultimedia/QAudioOutput>
 #include <QtCore/QSignalMapper>
-#include <QtGui/QKeyEvent>
+#include <QKeyEvent>
 #include "Generator.h"
 #include "Morse.h"
 

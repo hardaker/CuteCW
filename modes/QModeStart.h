@@ -2,7 +2,7 @@
 #define QMODESTART_H
 
 #include <QDialog>
-#include <QtGui/QVBoxLayout>
+#include <QVBoxLayout>
 
 class QModeStart : public QDialog
 {

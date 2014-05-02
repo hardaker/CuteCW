@@ -1,10 +1,10 @@
 #include "FrontPage.h"
 #include "Morse.h"
 
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QGroupBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QGroupBox>
 #include <QtCore/QSignalMapper>
 
 FrontPage::FrontPage(Morse *parent, Ui::MainWindow *ui)

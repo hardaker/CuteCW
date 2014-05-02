@@ -1,9 +1,9 @@
 #include "KeyInvaders.h"
 #include <qdebug.h>
-#include <QtGui/QMenu>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsTextItem>
-#include <QtGui/QMenuBar>
+#include <QMenu>
+#include <QGraphicsScene>
+#include <QGraphicsTextItem>
+#include <QMenuBar>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
     : MorseMode(parent, main), MGameMode(), MSequences(), KeyingReader(),
