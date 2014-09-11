@@ -133,7 +133,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 #ifdef Q_OS_LINUX
     // On linux (with Qt 4.7 and 4.7.1) there is a nasty second-long pause/freeze after the audio finishes playing, so
     // we continue to emit empty sound endlessly to get around the gui/qt lockup.
-#define ALWAYS_FILL_WITH_SPACE 1
+#define ALWAYS_FILL_WITH_SPACE 0
 #endif
 
 #ifdef ALWAYS_FILL_WITH_SPACE
