@@ -1,5 +1,5 @@
 #include <qdebug.h>
-#include <QtGui/QMenu>
+#include <QMenu>
 
 #include "WordTrainingMode.h"
 

@@ -1,6 +1,6 @@
 #include "Invader.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 Invader::Invader(QGraphicsWidget *parent, const QString &text) :
     QGraphicsItem(parent), m_text(text), m_exploding(false), m_explodeSize(InvaderCircleSize)

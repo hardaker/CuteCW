@@ -2,9 +2,9 @@
 #include "Morse.h"
 
 #include <qdebug.h>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QProgressBar>
+#include <QMenu>
+#include <QMenuBar>
+#include <QProgressBar>
 
 TrainingMode::TrainingMode(Morse *parent, Ui::MainWindow *ui)
     : MorseMode(parent, ui), MSequences(),

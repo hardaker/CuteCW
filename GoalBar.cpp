@@ -1,6 +1,6 @@
 #include "GoalBar.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 #include <qdebug.h>
 
 GoalBar::GoalBar(QWidget *parent)

@@ -1,7 +1,7 @@
 #include "KeyTimingDisplay.h"
 
-#include <QtGui/QPainter>
-#include <QtGui/QPolygon>
+#include <QPainter>
+#include <QPolygon>
 #include <qdebug.h>
 
 KeyTimingDisplay::KeyTimingDisplay(QWidget *parent) :
