@@ -64,12 +64,14 @@ void Generator::appendDataFrom(const Generator *copyFrom) {
 
 void Generator::start()
 {
+    qDebug() << "starting";
     open(QIODevice::ReadOnly);
     isGenerating = true;
 }
 
 void Generator::stop()
 {
+    qDebug() << "stopping";
     close();
     isGenerating = false;
 }
@@ -87,6 +89,7 @@ int Generator::fillData(char *start, int frequency, float seconds)
     int value;
     int ramp_samples = (int)(8e-3 * SYSTEM_FREQ); // ramp for 8ms
     int total_samples = int(seconds*SYSTEM_FREQ);
+    qDebug() << "filling";
     
     for(i=0; i<total_samples; i++) {
         if (frequency == 0.0)
@@ -105,6 +108,8 @@ int Generator::fillData(char *start, int frequency, float seconds)
     }
     bytes_left = len;
     pos = 0;
+
+    qDebug() << "   fill len" << len;
     return len;
 }
 
@@ -112,6 +117,7 @@ void Generator::restartData()
 {
     bytes_left = len;
     pos = 0;
+    qDebug() << "   restarting" << bytes_left;
 }
 
 qint64 Generator::readData(char *data, qint64 maxlen)
@@ -120,7 +126,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
     if (len > 65536)
         len = 65536;
 
-    //qDebug() << "left: " << bytes_left << " / wanted: " << len;
+    qDebug() << "left: " << bytes_left << " / wanted: " << len;
 
     if (bytes_left == -1 && isGenerating) {
         isGenerating = false;
@@ -183,6 +189,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
 
 qint64 Generator::writeData(const char *data, qint64 len)
 {
+    qDebug() << "  write";
     Q_UNUSED(data);
     Q_UNUSED(len);
 
@@ -194,4 +201,9 @@ QTime Generator::timeLeft()
     int secs = bytes_left/2/SYSTEM_FREQ;
     int msec = ((bytes_left - 2*SYSTEM_FREQ*secs)*1000)/2/SYSTEM_FREQ;
     return QTime(0, 0, secs, msec);
+}
+
+qint64 Generator::bytesAvailable() const
+{
+    return bytes_left + QIODevice::bytesAvailable();
 }

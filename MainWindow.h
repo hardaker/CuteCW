@@ -35,6 +35,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Ui::Prefs      *prefs;
+    QAudioDevice    m_device;
     QAudioSink     *m_audioOutput;
     Morse          *m_morse;
     QSignalMapper  *m_signalMapper;

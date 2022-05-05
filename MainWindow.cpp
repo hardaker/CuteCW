@@ -15,10 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_audioOutput(0),
     m_morse(0),
-    m_devices(new QMediaDevices(this))
-
-{
+    m_devices(new QMediaDevices(this)) {
     ui->setupUi(this);
+
+    m_device = QAudioDevice(m_devices->defaultAudioOutput());
 
     /*
 #ifdef SMALL_DEVICE
@@ -98,7 +98,6 @@ MainWindow::createAudioOutput()
 {
 
 //    settings.setFrequency(44100);
-//    settings.setChannels(1);
    /*
     settings.setSampleSize(16);
     settings.setCodec("audio/pcm");
@@ -106,9 +105,19 @@ MainWindow::createAudioOutput()
     settings.setSampleType(QAudioFormat::SignedInt);
     */
 
-    const QAudioDevice defaultDeviceInfo(m_devices->defaultAudioOutput());
-   QAudioFormat settings = defaultDeviceInfo.preferredFormat();
-   m_audioOutput = new QAudioSink(settings, this);
+    QAudioDevice defaultDeviceInfo(m_devices->defaultAudioOutput());
+    QAudioFormat settings = defaultDeviceInfo.preferredFormat();
+
+    settings.setSampleRate(44100);
+    settings.setChannelCount(1);
+    settings.setSampleFormat(QAudioFormat::Int32);
+
+    qDebug() << "valid audio config:" << settings.isValid();
+
+    qDebug() << "opened: " << defaultDeviceInfo.description();
+    
+    m_audioOutput = new QAudioSink(defaultDeviceInfo, settings, this);
+    m_audioOutput = new QAudioSink(settings, this);
    //m_audioOutput->reset(new QAudioSink(defaultDeviceInfo, settings));
    return m_audioOutput;
 }

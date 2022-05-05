@@ -111,7 +111,7 @@ void TrainingMode::setupSequences() {
     connect(action, SIGNAL(triggered()), this, SLOT(chooseCustomeSequence()));
 
     // Connect the mapper
-    connect(m_sequenceSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchSequence(int)));
+    connect(m_sequenceSignalMapper, SIGNAL(mappedInt(int)), this, SLOT(switchSequence(int)));
 }
 
 void TrainingMode::setupTrainingWidgets() {

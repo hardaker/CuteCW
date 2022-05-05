@@ -20,6 +20,7 @@ public:
     void clearBuffer();
     void restartPauses();
     void setupPauses();
+    qint64 bytesAvailable() const;
 
     char *t;
     int  len;

@@ -135,9 +135,11 @@ void Morse::clearStatsButton() {
 void
 Morse::playSequence()
 {
+    qDebug() << "init playing mode: " << m_playingMode;
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
+    qDebug() << "after morse playing mode: " << m_playingMode;
     qDebug() << "PLAYING";
     if (m_audioOutput->error() != QAudio::NoError) {
         // on OS X especially, this is needed on a regular basis.
@@ -147,7 +149,13 @@ Morse::playSequence()
     }
     
     qDebug() << "looading play buffer";
+    m_audioOutput->setBufferSize(640000);
     m_audioOutput->start(m_playBuffer);
+    qDebug() << "  volume:" << m_audioOutput->volume();
+    qDebug() << "  buffer:" << m_audioOutput->bufferSize();
+    qDebug() << "  error:" << m_audioOutput->error();
+    qDebug() << "  format:" << m_audioOutput->format();
+    qDebug() << "morse playing mode: " << m_playingMode;
     return;
 }
 
@@ -164,7 +172,10 @@ QTime Morse::maybePlaySequence(bool addPause) {
         QTime playTime = sequenceTime();
         if (addPause)
             add(pause());
+        qDebug() << " playingx mode: " << m_playingMode;
         playSequence();
+        qDebug() << "  new audio state: " << m_audioOutput->state();
+        qDebug() << " playingy mode: " << m_playingMode;
         return QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
     }
     return QTime(0,0,0);
