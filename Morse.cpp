@@ -33,7 +33,7 @@ Morse::Morse()
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_leadInPause(0,0), m_signalMapper(new QSignalMapper(this))
 {
-    m_audioOutput = QAudioDevice::defaultOutputDevice();
+    m_audioOutput = NULL;
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
 #include "morse_code.h"
@@ -52,7 +52,7 @@ Morse::Morse(MainWindow *parent, QAudioSink *output, Ui::MainWindow *ui)
 #include "morse_code.h"
 
     createTones(WPMGOAL);
-    QRandomGenerator::global()->seed(QTime::currentTime().msec());
+//    QRandomGenerator::global()->seed(QTime::currentTime().msec());
 
     qDebug() << "original buffer size: " << m_audioOutput->bufferSize();
     m_audioOutput->setBufferSize(qMin(m_audioOutput->bufferSize() * 4, 1024*64));
@@ -571,7 +571,7 @@ void Morse::createModesMenu(QMenu *modeMenu) {
     connect(action, SIGNAL(triggered()), m_signalMapper, SLOT(map()));
     m_signalMapper->setMapping(action, (int) Morse::READ);
 
-    connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(switchMode(int)));
+    connect(m_signalMapper, SIGNAL(mappedInt(int)), this, SLOT(switchMode(int)));
 #ifdef SMALL_DEVICE
     m_ui->modeMenu->setText(m_modes[PLAY]->name());
 #endif

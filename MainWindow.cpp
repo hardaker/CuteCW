@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_devices(new QMediaDevices(this))
 
 {
-    //ui->setupUi(this);
+    ui->setupUi(this);
 
     /*
 #ifdef SMALL_DEVICE
@@ -106,7 +106,7 @@ MainWindow::createAudioOutput()
     settings.setSampleType(QAudioFormat::SignedInt);
     */
 
-    const QAudioDevice defaultDeviceInfo(QAudioDevice::defaultOutputDevice());
+    const QAudioDevice defaultDeviceInfo(m_devices->defaultAudioOutput());
    QAudioFormat settings = defaultDeviceInfo.preferredFormat();
    m_audioOutput = new QAudioSink(settings, this);
    //m_audioOutput->reset(new QAudioSink(defaultDeviceInfo, settings));

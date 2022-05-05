@@ -75,7 +75,7 @@ void FrontPage::setupWidgets() {
         mapper->setMapping(button, (int) themode);
     }
 
-    connect(mapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
+    connect(mapper, SIGNAL(mappedInt(int)), m_morse, SLOT(switchMode(int)));
 
     m_ui->forModes->addLayout(topVBox);
     m_ui->forModes->setStretchFactor(topVBox, 5);
