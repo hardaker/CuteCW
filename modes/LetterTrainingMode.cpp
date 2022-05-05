@@ -3,6 +3,7 @@
 
 #include <QFormLayout>
 #include <QtCore/QTimer>
+#include <QRandomGenerator>
 
 #include <stdlib.h>
 
@@ -149,7 +150,7 @@ void LetterTrainingMode::startNextTrainingKey() {
     float randPercent;
     float newTotal = 0;
 
-    randPercent = float(totalPercent)*float(qrand())/float(RAND_MAX);
+    randPercent = float(totalPercent)*float(QRandomGenerator::global()->generate())/float(RAND_MAX);
 
     qDebug() << "randomizing: " << randPercent << " total: " << totalPercent << " min/max: " << minPercent
              << "/" << maxPercent << ", count: " << letters.count() << ", magic: " << magicHelper;

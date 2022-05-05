@@ -2,9 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtMultimedia/QAudioOutput>
-#include <QtCore/QSignalMapper>
+#include <QAudioOutput>
+#include <QMediaDevices>
+#include <QAudioDevice>
+#include <QSignalMapper>
 #include <QKeyEvent>
+#include <QAudioSink>
 #include "Generator.h"
 #include "Morse.h"
 
@@ -21,7 +24,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QAudioOutput *createAudioOutput();
+    QAudioSink *createAudioOutput();
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
     bool event(QEvent *event);
@@ -32,9 +35,10 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Ui::Prefs      *prefs;
-    QAudioOutput   *m_audioOutput;
+    QAudioSink     *m_audioOutput;
     Morse          *m_morse;
     QSignalMapper  *m_signalMapper;
+    QMediaDevices  *m_devices = nullptr;
 };
 
 #endif // MAINWINDOW_H

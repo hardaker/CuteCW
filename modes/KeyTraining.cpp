@@ -11,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QRandomGenerator>
 #include <qdebug.h>
 
 KeyTraining::KeyTraining(Morse *morse, Ui::MainWindow *ui)
@@ -135,7 +136,7 @@ void KeyTraining::selectKeySequence()
     // select the sequence we want them to key
     m_keySequence = "";
     for(int i = 0; i < m_letterCount; i++) {
-        m_keySequence += completeCharacterSet[qrand() % completeCharacterSet.length()];
+        m_keySequence += completeCharacterSet[QRandomGenerator::global()->generate() % completeCharacterSet.length()];
     }
 
     // translate the sequence into a list of timings (by MS)

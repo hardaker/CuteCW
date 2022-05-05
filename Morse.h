@@ -10,6 +10,7 @@
 #include <QtCore/QTimer>
 #include <QTextCursor>
 #include <QIcon>
+#include <QAudioSink>
 #include <QtCore/QSignalMapper>
 
 #include "Generator.h"
@@ -31,7 +32,7 @@ public:
 
 public:
     Morse();
-    Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui);
+    Morse(MainWindow *parent, QAudioSink *output, Ui::MainWindow *ui);
 
     static const int DEFAULT_TONE = 700;
 
@@ -145,7 +146,7 @@ private:
     QMap<TrainingMode, MorseMode *>  m_modes;
 
     MainWindow                      *m_parent;
-    QAudioOutput                    *m_audioOutput;
+    QAudioSink                      *m_audioOutput;
     float                            m_ditSecs, m_dahSecs, m_pauseSecs, m_letterPauseSecs, m_spaceSecs;
     int                              m_dahMult, m_pauseMult, m_letterPauseMult, m_spaceMult;
     Generator                       *m_dit, *m_dah, *m_space, *m_pause, *m_letterPause;

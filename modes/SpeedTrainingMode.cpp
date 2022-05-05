@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QFormLayout>
+#include <QRandomGenerator>
 
 #include "SpeedTrainingMode.h"
 
@@ -192,7 +193,7 @@ QTime SpeedTrainingMode::startNextTrainingKey() {
 
     float randWPM;
 
-    randWPM = totalWPM*float(qrand())/float(RAND_MAX);
+    randWPM = totalWPM*float(QRandomGenerator::global()->generate())/float(RAND_MAX);
 
     float newTotal = 0;
     // qDebug() << "letter set random: " << randWPM << " total: " << totalTime << " min: " << minTime/2 << ", count: " << letters.count();

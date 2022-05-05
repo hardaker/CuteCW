@@ -1,6 +1,7 @@
 #include <qdebug.h>
 
 #include "modes/GroupingMode.h"
+#include <QRandomGenerator>
 
 GroupingMode::GroupingMode(Morse *parent, Ui::MainWindow *ui) :
     TrainingMode(parent, ui), m_groupLength(0), m_goodGuesses(0), m_badGuesses(0), m_rightCount(0)
@@ -67,7 +68,7 @@ void GroupingMode::createNextSequence() {
 
     float m_trainingLength = float(m_trainingSequence.length());
     for(int i = 0 ; i < m_groupLength; i++) {
-        m_currentSequence += m_trainingSequence[int(float(m_trainingLength) * float(qrand())/float(RAND_MAX))];
+        m_currentSequence += m_trainingSequence[int(float(m_trainingLength) * float(QRandomGenerator::global()->generate())/float(RAND_MAX))];
     }
 }
 

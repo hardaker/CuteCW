@@ -8,6 +8,7 @@
 #include <QtCore/QSettings>
 #include <QBoxLayout>
 #include <QtMultimedia/QAudio>
+#include <QElapsedTimer>
 
 #include "Morse.h"
 #include "MorseMode.h"
@@ -65,7 +66,7 @@ protected:
 
 private:
     int        m_letterCount;
-    QTime      m_startTime;
+    QElapsedTimer m_startTime;
     QList<int> m_keyedTimes;
     QList<int> m_requiredTimes;
     int        m_required, m_keyCount;

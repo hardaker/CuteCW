@@ -5,6 +5,8 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QSizePolicy>
+#include <QtMultimedia/QAudioDevice>
+#include <QRandomGenerator>
 #include <qdebug.h>
 
 #include "MainWindow.h"
@@ -31,12 +33,13 @@ Morse::Morse()
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
     m_currentWPMGoal(WPMGOAL), m_currentWPMAccept(WPMACCEPT), m_ui(0), m_tone(DEFAULT_TONE), m_leadInPause(0,0), m_signalMapper(new QSignalMapper(this))
 {
+    m_audioOutput = QAudioDevice::defaultOutputDevice();
     qDebug() << "new morse";
     m_modes.insert(PLAY, new PlayMode(this, m_ui));
 #include "morse_code.h"
 }
 
-Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
+Morse::Morse(MainWindow *parent, QAudioSink *output, Ui::MainWindow *ui)
     : QObject(parent), m_parent(parent), m_audioOutput(output),
       m_dahMult(3), m_pauseMult(1), m_letterPauseMult(3), m_spaceMult(7),
       m_dit(0), m_dah(0), m_space(0), m_pause(0), m_letterPause(0), m_playBuffer(0), m_playingMode(STOPPED), m_gameMode(PLAY),
@@ -49,7 +52,7 @@ Morse::Morse(MainWindow *parent, QAudioOutput *output, Ui::MainWindow *ui)
 #include "morse_code.h"
 
     createTones(WPMGOAL);
-    qsrand(QTime::currentTime().msec());
+    QRandomGenerator::global()->seed(QTime::currentTime().msec());
 
     qDebug() << "original buffer size: " << m_audioOutput->bufferSize();
     m_audioOutput->setBufferSize(qMin(m_audioOutput->bufferSize() * 4, 1024*64));
@@ -135,13 +138,15 @@ Morse::playSequence()
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
+    qDebug() << "PLAYING";
     if (m_audioOutput->error() != QAudio::NoError) {
         // on OS X especially, this is needed on a regular basis.
         // (on OS X, it's every time the audio pauses)
+        qDebug() << "ERROR in audio output" << m_audioOutput->error();
         m_audioOutput = m_parent->createAudioOutput();
     }
     
-    
+    qDebug() << "looading play buffer";
     m_audioOutput->start(m_playBuffer);
     return;
 }
@@ -151,6 +156,8 @@ QTime Morse::sequenceTime() {
 }
 
 QTime Morse::maybePlaySequence(bool addPause) {
+    qDebug() << "playing mode: " << m_playingMode;
+    qDebug() << "audio state: " << m_audioOutput->state();
     if (m_playingMode == STOPPED || m_playingMode == PAUSED ||
         m_audioOutput->state() != QAudio::ActiveState) {
         m_playBuffer->restartData();

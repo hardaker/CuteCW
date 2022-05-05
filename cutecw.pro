@@ -84,15 +84,15 @@ HEADERS  += MainWindow.h \
 
 FORMS    += AboutDialog.ui
 
-CONFIG += mobility
-MOBILITY = 
+# CONFIG += mobility
+# MOBILITY =
 
-symbian {
-    TARGET.UID3 = 0xe0df144b
+#symbian {
+#    TARGET.UID3 = 0xe0df144b
     # TARGET.CAPABILITY += 
-    TARGET.EPOCSTACKSIZE = 0x14000
-    TARGET.EPOCHEAPSIZE = 0x020000 0x800000
-}
+#    TARGET.EPOCSTACKSIZE = 0x14000
+#    TARGET.EPOCHEAPSIZE = 0x020000 0x800000
+#}
 
 OTHER_FILES += \
     debian/changelog \

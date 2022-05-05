@@ -108,7 +108,7 @@ public:
         QFont font1;
         font1.setPointSize(24);
         font1.setBold(true);
-        font1.setWeight(75);
+        font1.setWeight(QFont::Weight(75));
         letter->setFont(font1);
 
         horizontalLayout_5->addWidget(letter);

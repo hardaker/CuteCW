@@ -14,23 +14,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_audioOutput(0),
-    m_morse(0)
+    m_morse(0),
+    m_devices(new QMediaDevices(this))
 
 {
-    ui->setupUi(this);
+    //ui->setupUi(this);
+
+    /*
 #ifdef SMALL_DEVICE
     resize(800,440);
 #else
     resize(1000,600);
 #endif
+*/
 
-    setWindowIcon(QIcon(":/icons/64x64/cutecw.png"));
+    //setWindowIcon(QIcon(":/icons/64x64/cutecw.png"));
 
     createAudioOutput();
 
     m_morse = new Morse(this, m_audioOutput, ui);
 
-    this->setFocus();
+    //this->setFocus();
 
     startIt();
 }
@@ -89,19 +93,23 @@ MainWindow::startIt()
     m_morse->playSequence();
 }
 
-QAudioOutput *
+QAudioSink *
 MainWindow::createAudioOutput()
 {
-   QAudioFormat settings;
 
 //    settings.setFrequency(44100);
 //    settings.setChannels(1);
+   /*
     settings.setSampleSize(16);
     settings.setCodec("audio/pcm");
     settings.setByteOrder(QAudioFormat::LittleEndian);
     settings.setSampleType(QAudioFormat::SignedInt);
+    */
 
-    m_audioOutput = new QAudioOutput(settings);
-    return m_audioOutput;
+    const QAudioDevice defaultDeviceInfo(QAudioDevice::defaultOutputDevice());
+   QAudioFormat settings = defaultDeviceInfo.preferredFormat();
+   m_audioOutput = new QAudioSink(settings, this);
+   //m_audioOutput->reset(new QAudioSink(defaultDeviceInfo, settings));
+   return m_audioOutput;
 }
 

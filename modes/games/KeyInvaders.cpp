@@ -3,6 +3,7 @@
 #include <QMenu>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
+#include <QRandomGenerator>
 
 KeyInvaders::KeyInvaders(Morse *parent, Ui::MainWindow *main)
     : MorseMode(parent, main), MGameMode(), MSequences(), KeyingReader(),
@@ -67,8 +68,8 @@ KeyInvaders::advanceFrame() {
     if (addCount%20 == 0) {
         // every once in a while do something interesting.  Like add more invaders.
         Invader *inv;
-        m_scene->addItem(inv = new Invader(0, completeCharacterSet[qrand() % completeCharacterSet.length()].toUpper()));
-        inv->setPos(qrand() % 200, 10);
+        m_scene->addItem(inv = new Invader(0, completeCharacterSet[QRandomGenerator::global()->generate() % completeCharacterSet.length()].toUpper()));
+        inv->setPos(QRandomGenerator::global()->generate() % 200, 10);
         invaders.push_back(inv);
     }
 }
