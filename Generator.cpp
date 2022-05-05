@@ -64,7 +64,7 @@ void Generator::appendDataFrom(const Generator *copyFrom) {
 
 void Generator::start()
 {
-    qDebug() << "starting";
+    //qDebug() << "starting";
     if (!isGenerating) {
         open(QIODevice::ReadOnly);
         isGenerating = true;
@@ -73,7 +73,7 @@ void Generator::start()
 
 void Generator::stop()
 {
-    qDebug() << "stopping";
+    //qDebug() << "stopping";
     close();
     isGenerating = false;
 }
@@ -91,7 +91,7 @@ int Generator::fillData(char *start, int frequency, float seconds)
     int value;
     int ramp_samples = (int)(8e-3 * SYSTEM_FREQ); // ramp for 8ms
     int total_samples = int(seconds*SYSTEM_FREQ);
-    qDebug() << "filling";
+    //qDebug() << "filling";
     
     for(i=0; i<total_samples; i++) {
         if (frequency == 0.0)
@@ -111,7 +111,7 @@ int Generator::fillData(char *start, int frequency, float seconds)
     bytes_left = len;
     pos = 0;
 
-    qDebug() << "   fill len" << len;
+    //qDebug() << "   fill len" << len;
     return len;
 }
 
