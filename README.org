@@ -12,7 +12,7 @@ Cute CW: train yourself
 
   You can download the source code or pre-built binaries from:
 
-    http://www.hamtools.org/qtcw/
+    http://www.hamtools.org/cutecw/
 
   You can also access the git repository, provided by githib, from:
 
@@ -22,7 +22,7 @@ Cute CW: train yourself
 
   More documentation can be found at:
 
-    http://www.hamtools.org/qtcw/
+    http://www.hamtools.org/cutecw/
 
   The growing list of [[file:docs/CHANGES.org][CHANGES]] and the hopefully shrinking [[file:docs/TODO.org][TODO list]]
 

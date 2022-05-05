@@ -68,7 +68,9 @@ void GroupingMode::createNextSequence() {
 
     float m_trainingLength = float(m_trainingSequence.length());
     for(int i = 0 ; i < m_groupLength; i++) {
-        m_currentSequence += m_trainingSequence[int(float(m_trainingLength) * float(QRandomGenerator::global()->generate())/float(RAND_MAX))];
+        m_currentSequence += m_trainingSequence[int(float(m_trainingLength) *
+                                                    float(QRandomGenerator::global()->generate()) /
+                                                    float(QRandomGenerator::global()->max()))];
     }
 }
 

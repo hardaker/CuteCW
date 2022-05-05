@@ -150,7 +150,8 @@ void LetterTrainingMode::startNextTrainingKey() {
     float randPercent;
     float newTotal = 0;
 
-    randPercent = float(totalPercent)*float(QRandomGenerator::global()->generate())/float(RAND_MAX);
+    randPercent = float(totalPercent)*float(QRandomGenerator::global()->generate()) /
+        float(QRandomGenerator::global()->max());
 
     qDebug() << "randomizing: " << randPercent << " total: " << totalPercent << " min/max: " << minPercent
              << "/" << maxPercent << ", count: " << letters.count() << ", magic: " << magicHelper;

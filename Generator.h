@@ -46,6 +46,9 @@ private:
     int fillData(char *start, int frequency, float seconds);
 
     bool isGenerating;
+   bool play_silent;
+   int max_read;
+   
 };
 
 
