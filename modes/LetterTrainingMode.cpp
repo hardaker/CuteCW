@@ -41,9 +41,9 @@ void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
 
 QString LetterTrainingMode::helpText()
 {
-    return tr("<p>In this mode characters will be played for you. You will need to press the appropriate within a half-a-second.  Accuracy is more important than speed."
+    return tr("<p>In this mode characters will be played for you. You will need to press the appropriate letter within a half-a-second.  Accuracy is more important than speed."
               "In order to continue advancing in the character set you will need to achieve at least a 90% accuracy rate on the letters, with at least 5 guesses for each"
-              "letter under your belt."
+              "letter under your belt.  "
               "Characters that you need the most help with will be sent more frequently than the characters you're good at.</p>"
               "<p>The important lesson is to learn to recognize and automatically type the letter you hear, without stressing out about the next letter. Be <b>sure</b> "
               "to aim for accuracy not speed in this mode.</p>"
