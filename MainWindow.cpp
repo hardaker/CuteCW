@@ -20,21 +20,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_device = QAudioDevice(m_devices->defaultAudioOutput());
 
-    /*
 #ifdef SMALL_DEVICE
     resize(800,440);
 #else
     resize(1000,600);
 #endif
-*/
 
-    //setWindowIcon(QIcon(":/icons/64x64/cutecw.png"));
+    setWindowIcon(QIcon(":/icons/64x64/cutecw.png"));
 
     createAudioOutput();
 
     m_morse = new Morse(this, m_audioOutput, ui);
 
-    //this->setFocus();
+    this->setFocus();
 
     startIt();
 }

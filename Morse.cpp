@@ -135,27 +135,27 @@ void Morse::clearStatsButton() {
 void
 Morse::playSequence()
 {
-    qDebug() << "init playing mode: " << m_playingMode;
+    //qDebug() << "init playing mode: " << m_playingMode;
     m_playBuffer->restartData();
     m_playBuffer->start();
     m_playingMode = PLAYING;
-    qDebug() << "after morse playing mode: " << m_playingMode;
-    qDebug() << "PLAYING";
+    //qDebug() << "after morse playing mode: " << m_playingMode;
+    //qDebug() << "PLAYING";
     if (m_audioOutput->error() != QAudio::NoError) {
         // on OS X especially, this is needed on a regular basis.
         // (on OS X, it's every time the audio pauses)
-        qDebug() << "ERROR in audio output" << m_audioOutput->error();
+        //qDebug() << "ERROR in audio output" << m_audioOutput->error();
         m_audioOutput = m_parent->createAudioOutput();
     }
     
-    qDebug() << "looading play buffer";
+    //qDebug() << "looading play buffer";
     m_audioOutput->setBufferSize(640000);
     m_audioOutput->start(m_playBuffer);
-    qDebug() << "  volume:" << m_audioOutput->volume();
-    qDebug() << "  buffer:" << m_audioOutput->bufferSize();
-    qDebug() << "  error:" << m_audioOutput->error();
-    qDebug() << "  format:" << m_audioOutput->format();
-    qDebug() << "morse playing mode: " << m_playingMode;
+    //qDebug() << "  volume:" << m_audioOutput->volume();
+    //qDebug() << "  buffer:" << m_audioOutput->bufferSize();
+    //qDebug() << "  error:" << m_audioOutput->error();
+    //qDebug() << "  format:" << m_audioOutput->format();
+    //qDebug() << "morse playing mode: " << m_playingMode;
     return;
 }
 
