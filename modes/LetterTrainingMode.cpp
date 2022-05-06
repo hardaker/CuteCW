@@ -110,7 +110,7 @@ void LetterTrainingMode::startNextTrainingKey() {
         }
 
         // Add the current letter its percentage to the list
-        qDebug() << "  adding " << *letter << " / " << thisPercent;
+        //qDebug() << "  adding " << *letter << " / " << thisPercent;
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
         // if they are below the target goal, then stop here until they pass this letter
@@ -147,10 +147,10 @@ void LetterTrainingMode::startNextTrainingKey() {
     QList<QPair<QChar, int> >::iterator aletter;
     QList<QPair<QChar, int> >::iterator last = letters.end();
     for(aletter = letters.begin(); aletter != last; ++aletter) {
-        qDebug() << "   adding percent: " << (*aletter).first << " = " << (*aletter).second;
+        //qDebug() << "   adding percent: " << (*aletter).first << " = " << (*aletter).second;
         // change the percentage based on the magicHelper value
         (*aletter).second = magicHelper - (*aletter).second;
-        qDebug() << "     magicified: " << (*aletter).first << " = " << (*aletter).second;
+        //qDebug() << "     magicified: " << (*aletter).first << " = " << (*aletter).second;
         totalPercent += (*aletter).second;
     }
 
