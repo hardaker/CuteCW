@@ -164,18 +164,18 @@ QTime Morse::sequenceTime() {
 }
 
 QTime Morse::maybePlaySequence(bool addPause) {
-    qDebug() << "playing mode: " << m_playingMode;
-    qDebug() << "audio state: " << m_audioOutput->state();
+    //qDebug() << "playing mode: " << m_playingMode;
+    //qDebug() << "audio state: " << m_audioOutput->state();
     if (m_playingMode == STOPPED || m_playingMode == PAUSED ||
         m_audioOutput->state() != QAudio::ActiveState) {
         m_playBuffer->restartData();
         QTime playTime = sequenceTime();
         if (addPause)
             add(pause());
-        qDebug() << " playingx mode: " << m_playingMode;
+        //qDebug() << " playingx mode: " << m_playingMode;
         playSequence();
-        qDebug() << "  new audio state: " << m_audioOutput->state();
-        qDebug() << " playingy mode: " << m_playingMode;
+        //qDebug() << "  new audio state: " << m_audioOutput->state();
+        //qDebug() << " playingy mode: " << m_playingMode;
         return QTime::currentTime().addSecs(playTime.second()).addMSecs(playTime.msec());
     }
     return QTime(0,0,0);
