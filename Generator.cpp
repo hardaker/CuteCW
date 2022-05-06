@@ -139,7 +139,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
         bytes_left = -1;
     if (bytes_left <= 0) {
         if (play_silent) {
-            qDebug() << "playing silent";
+            // qDebug() << "playing silent";
             memset(data, 0, len);
             return max_read;
         }
