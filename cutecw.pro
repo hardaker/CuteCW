@@ -101,7 +101,7 @@ OTHER_FILES += \
     debian/copyright \
     debian/README \
     debian/rules \
-    cutecw.desktop
+    dist/cutecw.desktop
 
 BINDIR = $$PREFIX/bin
 DATADIR =$$PREFIX/share
@@ -120,7 +120,7 @@ unix:!symbian {
     icon48.path = $$DATADIR/icons/hicolor/48x48/apps
     icon64.path = $$DATADIR/icons/hicolor/64x64/apps
 
-    desktopfile.files = $${TARGET}.desktop
+    desktopfile.files = dist/$${TARGET}.desktop
     maemo5 {
         target.path = /opt/usr/bin
         desktopfile.path = /usr/share/applications/hildon
