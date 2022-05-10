@@ -1,10 +1,10 @@
 #include "HighScoresDialog.h"
 
 #include <QtCore/QSettings>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
 #include <qdebug.h>
 
 HighScoresDialog::HighScoresDialog(const QString &tableName, QList<QPair<int,QString> >  *scores, int score, int newSlot)

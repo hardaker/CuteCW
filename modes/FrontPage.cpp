@@ -1,10 +1,10 @@
 #include "FrontPage.h"
 #include "Morse.h"
 
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QGroupBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QGroupBox>
 #include <QtCore/QSignalMapper>
 
 FrontPage::FrontPage(Morse *parent, Ui::MainWindow *ui)
@@ -75,7 +75,7 @@ void FrontPage::setupWidgets() {
         mapper->setMapping(button, (int) themode);
     }
 
-    connect(mapper, SIGNAL(mapped(int)), m_morse, SLOT(switchMode(int)));
+    connect(mapper, SIGNAL(mappedInt(int)), m_morse, SLOT(switchMode(int)));
 
     m_ui->forModes->addLayout(topVBox);
     m_ui->forModes->setStretchFactor(topVBox, 5);

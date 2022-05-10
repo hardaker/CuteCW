@@ -2,7 +2,7 @@
 #define GAMEMODE_H
 
 #include <QtCore/QObject>
-#include <QtGui/QLabel>
+#include <QLabel>
 
 class MGameMode
 {

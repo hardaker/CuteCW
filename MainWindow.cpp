@@ -2,9 +2,9 @@
 #include "ui_MainWindow.h"
 #include "ui_AboutDialog.h"
 #include <QtMultimedia/QAudioFormat>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QIcon>
+#include <QMenu>
+#include <QMenuBar>
+#include <QIcon>
 #include <qdebug.h>
 
 // for SMALL_DEVICE definition
@@ -14,10 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_audioOutput(0),
-    m_morse(0)
-
-{
+    m_morse(0),
+    m_devices(new QMediaDevices(this)) {
     ui->setupUi(this);
+
+    m_device = QAudioDevice(m_devices->defaultAudioOutput());
+
 #ifdef SMALL_DEVICE
     resize(800,440);
 #else
@@ -89,19 +91,32 @@ MainWindow::startIt()
     m_morse->playSequence();
 }
 
-QAudioOutput *
+QAudioSink *
 MainWindow::createAudioOutput()
 {
-   QAudioFormat settings;
 
-    settings.setFrequency(44100);
-    settings.setChannels(1);
+//    settings.setFrequency(44100);
+   /*
     settings.setSampleSize(16);
     settings.setCodec("audio/pcm");
     settings.setByteOrder(QAudioFormat::LittleEndian);
     settings.setSampleType(QAudioFormat::SignedInt);
+    */
 
-    m_audioOutput = new QAudioOutput(settings);
-    return m_audioOutput;
+    QAudioDevice defaultDeviceInfo(m_devices->defaultAudioOutput());
+    QAudioFormat settings = defaultDeviceInfo.preferredFormat();
+
+    settings.setSampleRate(44100);
+    settings.setChannelCount(1);
+    settings.setSampleFormat(QAudioFormat::Int32);
+
+    qDebug() << "valid audio config:" << settings.isValid();
+
+    qDebug() << "opened: " << defaultDeviceInfo.description();
+    
+    m_audioOutput = new QAudioSink(defaultDeviceInfo, settings, this);
+    m_audioOutput = new QAudioSink(settings, this);
+   //m_audioOutput->reset(new QAudioSink(defaultDeviceInfo, settings));
+   return m_audioOutput;
 }
 

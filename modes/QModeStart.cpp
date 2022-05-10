@@ -1,7 +1,7 @@
 #include "QModeStart.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
+#include <QLabel>
+#include <QPushButton>
 
 QModeStart::QModeStart(QWidget *parent, QString modeTitle) :
     QDialog(parent)

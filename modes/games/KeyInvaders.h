@@ -11,8 +11,9 @@
 #include <QtCore/QList>
 #include <QtCore/QList>
 #include <QtCore/QTime>
-#include <QtGui/QGraphicsView>
+#include <QGraphicsView>
 #include <QtCore/QTimer>
+#include <QElapsedTimer>
 
 #include "Invader.h"
 
@@ -47,7 +48,7 @@ public slots:
 private:
     HighScores  m_scores;
     int m_keyCount;
-    QTime m_startTime;
+    QElapsedTimer m_startTime;
     QList<int> m_keyedTimes;
     QGraphicsView *m_graph;
 

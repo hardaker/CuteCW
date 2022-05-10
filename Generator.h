@@ -20,6 +20,7 @@ public:
     void clearBuffer();
     void restartPauses();
     void setupPauses();
+    qint64 bytesAvailable() const;
 
     char *t;
     int  len;
@@ -45,6 +46,9 @@ private:
     int fillData(char *start, int frequency, float seconds);
 
     bool isGenerating;
+   bool play_silent;
+   int max_read;
+   
 };
 
 

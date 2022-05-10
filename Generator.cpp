@@ -13,7 +13,7 @@
 #define SYSTEM_FREQ 44100
 
 Generator::Generator(float secs, int freq)
-    :QIODevice( ), isGenerating(false)
+    :QIODevice( ), isGenerating(false), play_silent(true), max_read(65536)
 {
     finished = false;
     buffer = new char[int(secs * SYSTEM_FREQ * 4) + 3000];
@@ -25,7 +25,7 @@ Generator::Generator(float secs, int freq)
 }
 
 Generator::Generator(Generator *copyFrom)
-    : QIODevice(), isGenerating(false)
+    : QIODevice(), isGenerating(false), play_silent(true), max_read(65536)
 {
     buffer = new char[copyFrom->len];
     memcpy(buffer, copyFrom->buffer, copyFrom->len);
@@ -64,12 +64,16 @@ void Generator::appendDataFrom(const Generator *copyFrom) {
 
 void Generator::start()
 {
-    open(QIODevice::ReadOnly);
-    isGenerating = true;
+    //qDebug() << "starting";
+    if (!isGenerating) {
+        open(QIODevice::ReadOnly);
+        isGenerating = true;
+    }
 }
 
 void Generator::stop()
 {
+    //qDebug() << "stopping";
     close();
     isGenerating = false;
 }
@@ -87,6 +91,7 @@ int Generator::fillData(char *start, int frequency, float seconds)
     int value;
     int ramp_samples = (int)(8e-3 * SYSTEM_FREQ); // ramp for 8ms
     int total_samples = int(seconds*SYSTEM_FREQ);
+    //qDebug() << "filling";
     
     for(i=0; i<total_samples; i++) {
         if (frequency == 0.0)
@@ -105,6 +110,8 @@ int Generator::fillData(char *start, int frequency, float seconds)
     }
     bytes_left = len;
     pos = 0;
+
+    //qDebug() << "   fill len" << len;
     return len;
 }
 
@@ -112,77 +119,72 @@ void Generator::restartData()
 {
     bytes_left = len;
     pos = 0;
+    qDebug() << "   restarting" << bytes_left;
 }
 
 qint64 Generator::readData(char *data, qint64 maxlen)
 {
     int len = maxlen;
-    if (len > 65536)
-        len = 65536;
+    if (len > max_read)
+        len = max_read;
 
     //qDebug() << "left: " << bytes_left << " / wanted: " << len;
 
-    if (bytes_left == -1 && isGenerating) {
-        isGenerating = false;
-        emit generatorDone();
+    if (len <= 0) {
+        return 0;
     }
 
-#undef FILL_WITH_SPACE_ONCE
-#undef ALWAYS_FILL_WITH_SPACE
-
-#ifdef Q_OS_LINUX
-    // On linux (with Qt 4.7 and 4.7.1) there is a nasty second-long pause/freeze after the audio finishes playing, so
-    // we continue to emit empty sound endlessly to get around the gui/qt lockup.
-#define ALWAYS_FILL_WITH_SPACE 1
-#endif
-
-#ifdef ALWAYS_FILL_WITH_SPACE
-    if (bytes_left <= 0) {
-        // should really only be needed on linux with 4.7 I suspect
-        memset(data, 0, maxlen);
-        bytes_left = -1;
-        return maxlen;
-    }
-#elif defined(FILL_WITH_SPACE_ONCE)
-    /* fill with a blank space just once after the starting */
-    if (bytes_left == 0) {
-        memset(data, 0, maxlen);
-        bytes_left = -1;
-        return maxlen;
-    }
-    if (bytes_left == -1)
-        return -1;
-#else
     /* this is how it *should* be done, if the Qt output buffers didn't truncate things */
-    if (bytes_left == 0)
+    if (bytes_left == 0 && !play_silent)
         bytes_left = -1;
     if (bytes_left <= 0) {
+        if (play_silent) {
+            // qDebug() << "playing silent";
+            emit generatorDone();
+            memset(data, 0, len);
+            return max_read;
+        }
         if (isGenerating) {
             isGenerating = false;
             emit generatorDone();
+            qDebug() << "done playing";
         }
         return -1;
     }
-#endif
 
     if (len < bytes_left) {
-        // Normal
+        // they wanted less than we have
         memcpy(data, t+pos, len);
         pos += len;
         bytes_left -= len;
+        //qDebug() << "playing a chunk " << len;
+
         return len;
-    } else {
+    } else if (bytes_left > 0) {
         // Whats left
         memcpy(data, t+pos, bytes_left);
         int to_return = bytes_left;
         bytes_left = 0;
         pos=0;
+        //qDebug() << "playing remaining bytes " << to_return;
+
+        if (play_silent) {
+            memset(data + to_return, 0, len - to_return);
+            return max_read;
+        }
+
         return to_return;
     }
+
+    bytes_left = -1;
+    isGenerating = false;
+    emit generatorDone();
+    return 0;
 }
 
 qint64 Generator::writeData(const char *data, qint64 len)
 {
+    qDebug() << "  write";
     Q_UNUSED(data);
     Q_UNUSED(len);
 
@@ -194,4 +196,13 @@ QTime Generator::timeLeft()
     int secs = bytes_left/2/SYSTEM_FREQ;
     int msec = ((bytes_left - 2*SYSTEM_FREQ*secs)*1000)/2/SYSTEM_FREQ;
     return QTime(0, 0, secs, msec);
+}
+
+qint64 Generator::bytesAvailable() const
+{
+    //qDebug() << "returning max read: " << max_read;
+    //qDebug() << "returning silent: " << play_silent;
+    if (play_silent)
+        return max_read;
+    return bytes_left + QIODevice::bytesAvailable();
 }

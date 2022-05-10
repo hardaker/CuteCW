@@ -2,17 +2,17 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
-#include <QtGui/QMainWindow>
-#include <QtGui/QPushButton>
-#include <QtGui/QSpacerItem>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
+#include <QAction>
+#include <QApplication>
+#include <QButtonGroup>
+#include <QHBoxLayout>
+#include <QHeaderView>
+#include <QLabel>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QSpacerItem>
+#include <QVBoxLayout>
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -108,7 +108,7 @@ public:
         QFont font1;
         font1.setPointSize(24);
         font1.setBold(true);
-        font1.setWeight(75);
+        font1.setWeight(QFont::Weight(75));
         letter->setFont(font1);
 
         horizontalLayout_5->addWidget(letter);
@@ -157,15 +157,15 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Cute CW", 0, QApplication::UnicodeUTF8));
-        modeMenu->setText(QApplication::translate("MainWindow", "Mode", 0, QApplication::UnicodeUTF8));
-        play->setText(QApplication::translate("MainWindow", "Play", 0, QApplication::UnicodeUTF8));
-        changeSequence->setText(QApplication::translate("MainWindow", "Sequence", 0, QApplication::UnicodeUTF8));
-        changeWords->setText(QApplication::translate("MainWindow", "Change Words", 0, QApplication::UnicodeUTF8));
-        clearTraining->setText(QApplication::translate("MainWindow", "Clear Training", 0, QApplication::UnicodeUTF8));
-        prefs->setText(QApplication::translate("MainWindow", "Preferences", 0, QApplication::UnicodeUTF8));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Cute CW", 0));
+        modeMenu->setText(QApplication::translate("MainWindow", "Mode", 0));
+        play->setText(QApplication::translate("MainWindow", "Play", 0));
+        changeSequence->setText(QApplication::translate("MainWindow", "Sequence", 0));
+        changeWords->setText(QApplication::translate("MainWindow", "Change Words", 0));
+        clearTraining->setText(QApplication::translate("MainWindow", "Clear Training", 0));
+        prefs->setText(QApplication::translate("MainWindow", "Preferences", 0));
         helpBar->setText(QString());
-        label_2->setText(QApplication::translate("MainWindow", "Average WPM:", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("MainWindow", "Average WPM:", 0));
     } // retranslateUi
 
 };

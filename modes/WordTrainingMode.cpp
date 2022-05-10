@@ -1,5 +1,6 @@
 #include <qdebug.h>
-#include <QtGui/QMenu>
+#include <QMenu>
+#include <QRandomGenerator>
 
 #include "WordTrainingMode.h"
 
@@ -72,7 +73,7 @@ void WordTrainingMode::play() {
 }
 
 bool WordTrainingMode::enterPressed() {
-    m_wordnumber = qrand()%(m_maxWord);
+    m_wordnumber = QRandomGenerator::global()->generate()%(m_maxWord);
     m_morse->add((*(words[m_wordsNumber]))[m_wordnumber]);
     m_morse->maybePlaySequence(true);
     m_enteredWord = "";

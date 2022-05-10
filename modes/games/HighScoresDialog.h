@@ -1,9 +1,9 @@
 #ifndef HIGHSCORESDIALOG_H
 #define HIGHSCORESDIALOG_H
 
-#include <QtGui/QDialog>
-#include <QtGui/QTextEdit>
-#include <QtGui/QLineEdit>
+#include <QDialog>
+#include <QTextEdit>
+#include <QLineEdit>
 
 #include <QtCore/QList>
 #include <QtCore/QPair>

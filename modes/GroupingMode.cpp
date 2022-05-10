@@ -1,6 +1,7 @@
 #include <qdebug.h>
 
 #include "modes/GroupingMode.h"
+#include <QRandomGenerator>
 
 GroupingMode::GroupingMode(Morse *parent, Ui::MainWindow *ui) :
     TrainingMode(parent, ui), m_groupLength(0), m_goodGuesses(0), m_badGuesses(0), m_rightCount(0)
@@ -67,7 +68,9 @@ void GroupingMode::createNextSequence() {
 
     float m_trainingLength = float(m_trainingSequence.length());
     for(int i = 0 ; i < m_groupLength; i++) {
-        m_currentSequence += m_trainingSequence[int(float(m_trainingLength) * float(qrand())/float(RAND_MAX))];
+        m_currentSequence += m_trainingSequence[int(float(m_trainingLength) *
+                                                    float(QRandomGenerator::global()->generate()) /
+                                                    float(QRandomGenerator::global()->max()))];
     }
 }
 
@@ -112,10 +115,10 @@ QString GroupingMode::helpText()
               "Type in the characters you hear in the group.  Your results (good or bad) will be displayed "
               "on the screen in green/red colors indicating good/bad guesses."
               "<p>As you guess more and more groups correctly the number of characters in the group will slowly go upward. "
-              "After 4 successful series in a row, the number of characters in the group goes up by 1."
-              "<p>The time it takes to enter the group doesn't matter so it is possible to copy the group to paper instead"
+              "After 4 successful series in a row, the number of characters in the group goes up by 1.  "
+              "<p>The time it takes to enter the group doesn't matter so it is possible to copy the group to paper instead "
               "or to perform memorization of the letters or sequence</p>"
-              "<p>After you get good at grouping, you may wish to try the <i>grouping game</i>, which increases the characters"
+              "<p>After you get good at grouping, you may wish to try the <i>grouping game</i>, which increases the characters "
               "in the group more rapidly and also increases and decreases the WPM rate (and you can keep track of your scores!)");
 }
 

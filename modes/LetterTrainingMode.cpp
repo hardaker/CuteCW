@@ -1,8 +1,9 @@
 #include "LetterTrainingMode.h"
 #include "Morse.h"
 
-#include <QtGui/QFormLayout>
+#include <QFormLayout>
 #include <QtCore/QTimer>
+#include <QRandomGenerator>
 
 #include <stdlib.h>
 
@@ -40,9 +41,9 @@ void LetterTrainingMode::handleKeyPress(QChar letterPressed) {
 
 QString LetterTrainingMode::helpText()
 {
-    return tr("<p>In this mode characters will be played for you. You will need to press the appropriate within a half-a-second.  Accuracy is more important than speed."
+    return tr("<p>In this mode characters will be played for you. You will need to press the appropriate letter within a half-a-second.  Accuracy is more important than speed."
               "In order to continue advancing in the character set you will need to achieve at least a 90% accuracy rate on the letters, with at least 5 guesses for each"
-              "letter under your belt."
+              "letter under your belt.  "
               "Characters that you need the most help with will be sent more frequently than the characters you're good at.</p>"
               "<p>The important lesson is to learn to recognize and automatically type the letter you hear, without stressing out about the next letter. Be <b>sure</b> "
               "to aim for accuracy not speed in this mode.</p>"
@@ -93,6 +94,7 @@ void LetterTrainingMode::startNextTrainingKey() {
         minPercent = qMin(minPercent, thisPercent);
         maxPercent = qMax(minPercent, thisPercent);
 
+        // see if we have a brand new, never before keyed letter to give them immediately
         if (stat->getTryCount() == 0 && !m_doEntireSequence) {
             // never keyed yet; do it immediately if we got this far
             qDebug() << "|keying: " << *letter;
@@ -107,9 +109,12 @@ void LetterTrainingMode::startNextTrainingKey() {
             return;
         }
 
+        // Add the current letter its percentage to the list
         //qDebug() << "  adding " << *letter << " / " << thisPercent;
         letters.append(QPair<QChar, int>(*letter, thisPercent));
 
+        // if they are below the target goal, then stop here until they pass this letter
+        // (or they haven't seen this one enough yet)
         if(thisPercent < m_percentGoal || stat->getTryCount() < m_minimumTries) {
             qDebug() << "   too low: " << *letter << " / " << thisPercent << " / " << stat->getTryCount();
             if (++badLetters >= m_maxBadLetters || stat->getTryCount() <= m_minimumTries) {
@@ -131,29 +136,40 @@ void LetterTrainingMode::startNextTrainingKey() {
     } else
         magicHelper = 200;
 
+    qDebug() << "total percent: " << totalPercent;
+    qDebug() << "  num letters: " << letters.size();
+    m_avewpmLabel->setText("Average Percentage: " +
+                           QString().setNum(totalPercent/letters.size()) +
+                           ", Current new character: " + *letter +
+                           ", last keyed: " + m_lastKey);
+
     totalPercent = 0;
     QList<QPair<QChar, int> >::iterator aletter;
     QList<QPair<QChar, int> >::iterator last = letters.end();
     for(aletter = letters.begin(); aletter != last; ++aletter) {
+        //qDebug() << "   adding percent: " << (*aletter).first << " = " << (*aletter).second;
+        // change the percentage based on the magicHelper value
         (*aletter).second = magicHelper - (*aletter).second;
+        //qDebug() << "     magicified: " << (*aletter).first << " = " << (*aletter).second;
         totalPercent += (*aletter).second;
     }
 
-    m_avewpmLabel->setText("All Percentage: " + QString().setNum(totalPercent/letterCount) + ", " +
-                          *letter + ": NEW");
     setSequence(m_trainingSequence, letterCount);
 
-    setWPMLabel(totalPercent/letterCount);
+    setWPMLabel(0);  // was totalPercent/letterCount but that makes no sense
     // now pick a random time between 0 and the total of all the averages; averages with a slower speed are more likely
 
     float randPercent;
     float newTotal = 0;
 
-    randPercent = float(totalPercent)*float(qrand())/float(RAND_MAX);
+    randPercent = float(totalPercent)*float(QRandomGenerator::global()->generate()) /
+        float(QRandomGenerator::global()->max());
 
     qDebug() << "randomizing: " << randPercent << " total: " << totalPercent << " min/max: " << minPercent
              << "/" << maxPercent << ", count: " << letters.count() << ", magic: " << magicHelper;
     QList<QPair<QChar, int> >::iterator search;
+
+    // with the random value, find the letter/key just above the index in the magic values
     for(search = letters.begin(); search != last; ++search) {
         //qDebug() << "  -> " << (*search).first << "/" << (*search).second;
         newTotal += ((*search).second);
