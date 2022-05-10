@@ -140,6 +140,7 @@ qint64 Generator::readData(char *data, qint64 maxlen)
     if (bytes_left <= 0) {
         if (play_silent) {
             // qDebug() << "playing silent";
+            emit generatorDone();
             memset(data, 0, len);
             return max_read;
         }
