@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2022 Wes Hardaker <wes@ws6z.com> -->
+<component type="desktop-application">
+  <id>cutecw</id>
+  <metadata_license></metadata_license>
+  <project_license>GPL-2.0</project_license>
+  <name>CuteCW</name>
+  <summary>Morse code training application</summary>
+
+  <description>
+    <p>
+      CuteCW is a graphical interface that provides Carrier Wave (CW)
+      training with a number of different training modes and games.
+      If you want to learn Morse Code (aka CW), this app uses modern
+      teaching conventions to help you learn it as fast as possible.
+    </p>
+    <p>
+      CuteCW currently offers the following training modes:
+    </p>
+    <p>
+      <ul>
+        <li>Recognition Training</li>
+        <li>Speed Training</li>
+        <li>Word Training</li>
+        <li>Grouping Training</li>
+        <li>Straight Key Training</li>
+      </ul>
+    </p>
+    <p>
+      Additionally it provides the following extras:
+    </p>
+    <p>
+      <ul>
+        <li>Type Morse Code</li>
+        <li>Read to me</li>
+        <li>Word game</li>
+        <li>Grouping game</li>
+        <li>Key Invaders</li>
+      </ul>
+    </p>
+  </description>
+
+  <launchable type="desktop-id">cutecw.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Main Menu</caption>
+      <image>https://hamtools.org/cutecw/cutecw-mainmenu.png</image>
+    </screenshot>
+    <screenshot type="default">
+      <caption>Training Mode</caption>
+      <image>https://hamtools.org/cutecw/cutecw-linux.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://hamtools.org/cutecw/</url>
+  <project_group>KDE</project_group>
+
+  <provides>
+    <binary>cutecw</binary>
+  </provides>
+
+  <releases>
+    <release version="2.0" date="2020-05-06">
+      <description>
+        <p>Ported to Qt6</p>
+      </description>
+    </release>
+  </releases>
+</component>

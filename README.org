@@ -1,6 +1,31 @@
-Cute CW: train yourself
+*Cute CW: learn Morse Code*
 
 * Introduction
+
+  CuteCW is a graphical interface that provides Carrier Wave (CW)
+  training with a number of different training modes and games.
+  If you want to learn Morse Code (aka CW), this app uses modern
+  teaching conventions to help you learn it as fast as possible.
+
+*** Modes
+
+      CuteCW currently offers the following training modes:
+
+        + Recognition Training
+        + Speed Training
+        + Word Training
+        + Grouping Training
+        + Straight Key Training
+
+      Additionally it provides the following extras:
+
+        + Type Morse Code
+        + Read to me
+        + Word game
+        + Grouping game
+        + Key Invaders
+
+*** Background
 
   I've had thoughts for a long time about how we train ourselves in CW
   ("Carrier Wave" otherwise known as Morse Code).  After preparing for a
@@ -8,7 +33,7 @@ Cute CW: train yourself
   us out in ways not yet seen.  This is my effort to help decrease the
   pain in training your brain to understand Morse Code.
 
-* Get it!
+* Download
 
   You can download the source code or pre-built binaries from:
 
@@ -28,12 +53,12 @@ Cute CW: train yourself
 
 * Compiling It
 
-  CuteCW is a Qt4 based program.  That means to compile it you'll need
-  some distribution of [[http://qt.nokia.com/][Qt4]].  You can download any of the recent Qt SDK
-  sets and open the cutecw.pro file using qtcreator, which will then
+  CuteCW is a Qt6 based program.  That means to compile it you'll need
+  some distribution of [[http://qt.io/][Qt6]] You can download any of the recent Qt SDK
+  sets and open the /cutecw.pro/ file using /qtcreator/, which will then
   be able to compile and edit the code.  Or, if you want to compile it
   via a terminal you can try the following steps:
 
-  1. qmake-qt4                      (if that doesn't work, try just "qmake")
+  1. qmake6
   2. make
   3. optionally: make install
