@@ -56,7 +56,7 @@ void WordTrainingMode::switchToMode() {
 
     m_ui->letter->show();
     m_ui->changeWords->show();
-    m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.</font>");
+    m_ui->helpBar->setText("<font color=\"green\">Enter the word you hear and hit enter.<br /><br /><i>(also see preferences settings for Word Training</a></i></font>");
     m_ui->play->show();
 
     setupWordsMenu();
@@ -134,11 +134,14 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
 QString WordTrainingMode::helpText()
 {
     return
-            tr("Most words that you read or hear are from a very small set of words.  For example, 33% of the most common words fall into 100 simple words.  "
-              "If you memorize these words so you can regonize them not as individual letters but as entire words you'll greatly increase your listening rate.  "
-              "<p>As you hear words, type them in and hit enter when done.  After hitting enter the next word will be played.  "
-               "As you begin the number of words selected from will be small but will increase quickly for every right answer (and decrease for every wrong)."
-               "<p>Once you get good at the words in this group, try switching to the <i>Word Game</i> mode and see what score you can achieve!");
+            tr("Most words that you read or hear in English are from a very small set of words.  "
+               "For example, 33% of the most common words come from only 100 simple words.  "
+              "If you memorize these words so you can regonize them not as individual letters but as entire words you'll greatly increase your morse code listening rate.  "
+              "<br /><p>As you hear a word, type it in and hit enter to start the next word.  "
+               "As you begin the number of words selected from the list will be small but will increase quickly for every right answer (and decrease for every wrong)."
+               "<p>Once you get good at the words in this group, try switching to the <i>Word Game</i> mode and see what score you can achieve!  "
+              "<br /><p>For further help, the <i>preferences</i> settings include a spacing WPM, allowing you to set a longer spacing between letters.  "
+              "You might start with something about half the WPM rate you picked and slowly bring it back up to the regular WPM setting.");
 }
 
 QString WordTrainingMode::name()
