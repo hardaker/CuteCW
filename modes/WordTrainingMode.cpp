@@ -1,6 +1,7 @@
 #include <qdebug.h>
 #include <QMenu>
 #include <QRandomGenerator>
+#include <QFormLayout>
 
 #include "WordTrainingMode.h"
 
@@ -69,6 +70,9 @@ void WordTrainingMode::switchWords(int sequence) {
 }
 
 void WordTrainingMode::play() {
+//    if (m_spaceWPM != m_l) {
+        m_morse->createTones(m_morse->currentWPMGoal(), -1, m_letterSpacing);
+//    }
     enterPressed();
 }
 
@@ -150,13 +154,33 @@ QString WordTrainingMode::icon()
 void WordTrainingMode::loadSettings(QSettings &settings)
 {
     QString prefix = name();
-    m_wordsNumber = (wordNums) settings.value(prefix + "/wordsNumber",  int(N100)).toInt();
-    m_maxWord     =            settings.value(prefix + "/maxWord",      2).toInt();
+    m_wordsNumber   = (wordNums) settings.value(prefix + "/wordsNumber",  int(N100)).toInt();
+    m_maxWord       =            settings.value(prefix + "/maxWord",      2).toInt();
+    m_letterSpacing = settings.value(prefix + "/letterSpacing", 20).toInt();
 }
 
 void WordTrainingMode::saveSettings(QSettings &settings)
 {
     QString prefix = name();
-    settings.setValue(prefix + "/wordsNumber", m_wordsNumber);
-    settings.setValue(prefix + "/maxWord",     m_maxWord);
+    settings.setValue(prefix + "/wordsNumber",   m_wordsNumber);
+    settings.setValue(prefix + "/maxWord",       m_maxWord);
+    settings.setValue(prefix + "/letterSpacing", m_letterSpacing);
+}
+
+QBoxLayout *WordTrainingMode::getPrefsLayout()
+{
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QFormLayout *form = new QFormLayout();
+    hbox->addLayout(form);
+
+    form->addRow(tr("Letter Spacing WPM"), m_letterSpacingBox = new QSpinBox());
+    m_letterSpacingBox->setRange(1,50);
+    m_letterSpacingBox->setValue(m_letterSpacing);
+
+    return hbox;
+}
+
+void WordTrainingMode::acceptPrefs()
+{
+    m_letterSpacing = m_letterSpacingBox->value();
 }
