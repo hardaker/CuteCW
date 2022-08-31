@@ -35,7 +35,7 @@
        <item>
         <widget class="QPushButton" name="modeMenu">
          <property name="text">
-          <string>Mode</string>
+          <string>H</string>
          </property>
         </widget>
        </item>
@@ -125,7 +125,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="forModes" stretch="">
+      <layout class="QHBoxLayout" name="forModes">
        <property name="sizeConstraint">
         <enum>QLayout::SetNoConstraint</enum>
        </property>

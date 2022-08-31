@@ -521,6 +521,13 @@ void Morse::setupTopButtons(QLayout *parentLayout)
     parentLayout->addWidget(button);
     connect(button, SIGNAL(clicked()), this, SLOT(goHome()));
 
+    button = m_ui->helpButton = new QPushButton(tr("Help"));
+    policy = button->sizePolicy();
+    policy.setHorizontalPolicy(QSizePolicy::Fixed);
+    button->setSizePolicy(policy);
+    parentLayout->addWidget(button);
+    connect(button, SIGNAL(clicked()), this, SLOT(help()));
+
     button = m_ui->play = new QPushButton(tr("Play"));
     parentLayout->addWidget(button);
     m_ui->play->setIcon(QIcon(":/icons/play.png"));
@@ -601,6 +608,11 @@ MainWindow *Morse::parent()
 void Morse::goHome()
 {
     switchMode(FRONTPAGE);
+}
+
+void Morse::help()
+{
+    m_modes[m_gameMode]->help();
 }
 
 int Morse::tone()

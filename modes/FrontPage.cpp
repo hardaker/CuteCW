@@ -21,6 +21,7 @@ void FrontPage::switchToMode()
     m_ui->changeSequence->hide();
 
     m_ui->homeButton->hide();
+    m_ui->helpButton->hide();
 
     setupWidgets();
 }

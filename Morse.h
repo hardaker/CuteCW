@@ -119,6 +119,7 @@ public slots:
     void keyReleased(QString newtext);
     void keyReleased(QChar key);
     void goHome();
+    void help();
 
     void prefsButton();
     void aboutButton();

@@ -38,6 +38,7 @@ public:
     QLabel *label_2;
     QSpacerItem *verticalSpacer;
     QPushButton *homeButton;
+    QPushButton *helpButton;
 
     void setupUi(QMainWindow *MainWindow)
     {
