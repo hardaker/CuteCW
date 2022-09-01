@@ -56,7 +56,7 @@ void GroupingMode::handleKeyPress(QChar letter) {
 }
 
 void GroupingMode::setSequenceText() {
-    m_sequenceLabel->setText(QString("current length = %1, good = %2, bad = %3").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses));
+    setStatus(QString("current length = %1, good = %2, bad = %3").arg(m_groupLength).arg(m_goodGuesses).arg(m_badGuesses));
 }
 
 void GroupingMode::createNextSequence() {

@@ -68,6 +68,7 @@ public:
     // erases the contents of a layout object
     void clearLayout(QLayout *layout);
 
+
     // should return a global name and help text for the mode:
     virtual QString name() = 0;
     virtual QString helpText() = 0;
@@ -120,6 +121,8 @@ public slots:
     virtual void saveSettings(QSettings &settings);   // save any mode specific data
 
 protected:
+    virtual void setStatus(const QString &newStatus);
+
     Morse                          *m_morse;
     Ui::MainWindow                 *m_ui;
     int                             m_badCount, m_goodCount;
@@ -148,7 +151,7 @@ protected:
 
     QLabel                         *m_avewpmLabel;
     QLabel                         *m_lastwpmLabel;
-    QLabel                         *m_sequenceLabel;
+    QLabel                         *m_sequenceLabel; // use setStatus() to change text
 };
 
 #endif // MORSEMODE_H

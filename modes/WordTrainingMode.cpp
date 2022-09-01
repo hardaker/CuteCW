@@ -28,27 +28,27 @@ void WordTrainingMode::setupWordsMenu() {
     QMenu *modeMenu = new QMenu(m_ui->changeWords);
     m_ui->changeWords->setMenu(modeMenu);
 
-    QAction *action = modeMenu->addAction("Words 1-100");
+    QAction *action = modeMenu->addAction("Group 1: Words 1-100");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
     m_wordSignalMapper->setMapping(action, (int) N100);
 
-    action = modeMenu->addAction("Words 101-200");
+    action = modeMenu->addAction("Group 2: Words 101-200");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
     m_wordSignalMapper->setMapping(action, (int) N200);
 
-    action = modeMenu->addAction("Words 201-300");
+    action = modeMenu->addAction("Group 3: Words 201-300");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
     m_wordSignalMapper->setMapping(action, (int) N300);
 
-    action = modeMenu->addAction("Words 301-400");
+    action = modeMenu->addAction("Group 4: Words 301-400");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
     m_wordSignalMapper->setMapping(action, (int) N400);
 
-    action = modeMenu->addAction("Words 401-500");
+    action = modeMenu->addAction("Group 5: Words 401-500");
     connect(action, SIGNAL(triggered()), m_wordSignalMapper, SLOT(map()));
     m_wordSignalMapper->setMapping(action, (int) N500);
 
-    connect(m_wordSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchWords(int)));
+    connect(m_wordSignalMapper, SIGNAL(mappedInt(int)), this, SLOT(switchWords(int)));
 }
 
 void WordTrainingMode::switchToMode(bool showWPMWidgets) {
@@ -83,6 +83,7 @@ void WordTrainingMode::play() {
 }
 
 bool WordTrainingMode::enterPressed() {
+    // right now this is an equal probability per word -- may want to change that in the future?
     m_wordnumber = QRandomGenerator::global()->generate()%(m_maxWord);
     m_morse->add((*(words[m_wordsNumber]))[m_wordnumber]);
     m_morse->maybePlaySequence(true);
@@ -96,7 +97,7 @@ bool WordTrainingMode::enterPressed() {
 
 void WordTrainingMode::setSequenceText()
 {
-    m_sequenceLabel->setText(tr("Words: %1/%2").arg(m_maxWord).arg(words[m_wordsNumber]->length()));
+    setStatus(tr("Words in use: %1/%2 from group %3").arg(m_maxWord).arg(words[m_wordsNumber]->length()).arg(m_wordsNumber + 1));
 }
 
 void WordTrainingMode::handleKeyPress(QChar letter) {
@@ -121,10 +122,12 @@ void WordTrainingMode::handleKeyPress(QChar letter) {
     if ((*(words[m_wordsNumber]))[m_wordnumber].length() == m_enteredWord.length()) {
         if (m_wordWasGood) {
             m_ui->letter->setText(m_ui->letter->text() + " - <font color=\"green\">GOOD</font>");
+            // increase the number of words in the random pool by 2 if less than 10 so far, otherwise 1
             if (m_maxWord < 10)
                 m_maxWord += 2;
             else
                 m_maxWord += 1;
+            // limit to the maximum words in the pool in question
             if (m_maxWord > (*(words[m_wordsNumber])).count())
                 m_maxWord = (*(words[m_wordsNumber])).count();
 
@@ -170,6 +173,7 @@ void WordTrainingMode::loadSettings(QSettings &settings)
 
 void WordTrainingMode::saveSettings(QSettings &settings)
 {
+    // TODO: need to save these per word grouping -- right now too many words would be given in group 2 if group 1 was recently played/won
     QString prefix = name();
     settings.setValue(prefix + "/wordsNumber",   m_wordsNumber);
     settings.setValue(prefix + "/maxWord",       m_maxWord);

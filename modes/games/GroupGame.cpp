@@ -81,7 +81,7 @@ void GroupGame::groupGuessed(int right, int total)
 
 void GroupGame::setSequenceText()
 {
-  m_sequenceLabel->setText(tr("sequence length = %1, WPM=%2, score = %3, turn=%4/%5").arg(m_groupLength).arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
+  setStatus(tr("sequence length = %1, WPM=%2, score = %3, turn=%4/%5").arg(m_groupLength).arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
 }
 
 QString GroupGame::helpText()

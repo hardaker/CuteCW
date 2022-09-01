@@ -225,6 +225,10 @@ MorseMode::RunningMode MorseMode::runningMode()
     return m_runningMode;
 }
 
+void MorseMode::setStatus(const QString &newStatus) {
+    m_sequenceLabel->setText(newStatus);
+}
+
 void MorseMode::setRunningMode(RunningMode newMode)
 {
     m_runningMode = newMode;
