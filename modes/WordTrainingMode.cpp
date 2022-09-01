@@ -51,7 +51,7 @@ void WordTrainingMode::setupWordsMenu() {
     connect(m_wordSignalMapper, SIGNAL(mapped(int)), this, SLOT(switchWords(int)));
 }
 
-void WordTrainingMode::switchToMode() {
+void WordTrainingMode::switchToMode(bool showWPMWidgets) {
     setupSequenceLayout();
 
     m_ui->letter->show();
@@ -60,8 +60,14 @@ void WordTrainingMode::switchToMode() {
     m_ui->play->show();
 
     setupWordsMenu();
-    setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
+    //setupKeyWidgets("abcdefghijklmnopqrstuvwxyz");
     setSequenceText();
+    if (showWPMWidgets)
+        setupWPMWidgets();
+}
+
+void WordTrainingMode::switchToMode() {
+    switchToMode(true);
 }
 
 void WordTrainingMode::switchWords(int sequence) {
@@ -71,7 +77,7 @@ void WordTrainingMode::switchWords(int sequence) {
 
 void WordTrainingMode::play() {
 //    if (m_spaceWPM != m_l) {
-        m_morse->createTones(m_morse->currentWPMGoal(), -1, m_letterSpacing);
+//        m_morse->createTones(m_morse->currentWPMGoal(), -1, m_letterSpacing);
 //    }
     enterPressed();
 }

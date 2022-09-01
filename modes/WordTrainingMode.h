@@ -20,6 +20,7 @@ public:
     void setupWordsMenu();
 
     virtual void switchToMode();
+    virtual void switchToMode(bool noWPMWidgets);
     virtual bool enterPressed();
     virtual void setSequenceText();
 
