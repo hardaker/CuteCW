@@ -2,6 +2,7 @@
 #define WORDTRAININGMODE_H
 
 #include <QtCore/QSignalMapper>
+#include <QtWidgets/QSpinBox>
 
 #include "MorseMode.h"
 #include "Morse.h"
@@ -19,6 +20,7 @@ public:
     void setupWordsMenu();
 
     virtual void switchToMode();
+    virtual void switchToMode(bool noWPMWidgets);
     virtual bool enterPressed();
     virtual void setSequenceText();
 
@@ -30,6 +32,9 @@ public:
 
     virtual void loadSettings(QSettings &settings);
     virtual void saveSettings(QSettings &settings);
+
+    virtual QBoxLayout *getPrefsLayout();
+    void acceptPrefs();
 
 signals:
    void groupEntered(int right, int total);
@@ -51,6 +56,8 @@ private:
     int                              m_wordnumber;
     QString                          m_enteredWord;
     int                              m_rightCount;
+    QSpinBox                        *m_letterSpacingBox;
+    int                              m_letterSpacing;
 };
 
 #endif // WORDTRAININGMODE_H

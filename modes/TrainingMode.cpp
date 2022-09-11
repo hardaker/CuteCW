@@ -296,7 +296,7 @@ void TrainingMode::setSequence(const QString &sequence, int currentlyAt) {
     if (m_sequenceLabel) {
         QString left = sequence.left(currentlyAt);
         QString right = sequence.right(sequence.length() - currentlyAt);
-        m_sequenceLabel->setText("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
+        setStatus("<font color=\"red\">" + left.toUpper() + "</font>" + right.toUpper());
 
         QChar theLetter = sequence[currentlyAt-1].toLower();
         QString newLetter = "<font color=\"red\">" + QString(theLetter.toUpper()) + "&nbsp;&nbsp;&nbsp;&nbsp;";

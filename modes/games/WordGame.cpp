@@ -16,7 +16,7 @@ WordGame::WordGame(Morse *parent, Ui::MainWindow *ui) :
 }
 
 void WordGame::switchToMode() {
-    WordTrainingMode::switchToMode();
+    WordTrainingMode::switchToMode(false);
     m_ui->helpBar->setText(tr("<font color=\"green\">Type the groups of characters you hear ASAP.</font>"));
     m_ui->changeSequence->hide();
 }
@@ -69,7 +69,7 @@ void WordGame::groupGuessed(int right, int total)
 
 void WordGame::setSequenceText()
 {
-    m_sequenceLabel->setText(tr("WPM=%1, score = %2, turn=%3/%4").arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
+    setStatus(tr("WPM=%1, score = %2, turn=%3/%4").arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns()));
     qDebug() << tr("WPM=%1, score = %2, turn=%3/%4").arg(m_WPM).arg(score()).arg(turn()).arg(maxTurns());
 }
 
