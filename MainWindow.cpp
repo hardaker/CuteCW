@@ -111,10 +111,10 @@ MainWindow::createAudioOutput()
     settings.setSampleFormat(QAudioFormat::Int32);
 
     qDebug() << "valid audio config:" << settings.isValid();
+    qDebug() << settings;
 
     qDebug() << "opened: " << defaultDeviceInfo.description();
     
-    m_audioOutput = new QAudioSink(defaultDeviceInfo, settings, this);
     m_audioOutput = new QAudioSink(settings, this);
    //m_audioOutput->reset(new QAudioSink(defaultDeviceInfo, settings));
    return m_audioOutput;

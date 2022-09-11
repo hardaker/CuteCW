@@ -354,8 +354,10 @@ Morse::createTones(int wpm, int spacewpm, int letterspacewpm)
         spacewpm = wpm;
     if (letterspacewpm == -1)
         letterspacewpm = spacewpm;
-    createSpacedTones(float(60.0/float(wpm*50.0)), float(float(m_spaceMult) * float(60.0/float(spacewpm*50.0))),
-                float(float(m_letterPauseMult) * float(60.0/float(letterspacewpm*50.0))));
+    float multiplier = 25.0; // should be 50, but is now double-speeding
+    createSpacedTones(float(60.0/float(wpm*multiplier)),
+                      float(float(m_spaceMult) * float(60.0/float(spacewpm*multiplier))),
+                float(float(m_letterPauseMult) * float(60.0/float(letterspacewpm*multiplier))));
 }
 
 void
